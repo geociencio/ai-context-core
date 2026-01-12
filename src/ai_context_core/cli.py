@@ -1,3 +1,8 @@
+"""Command Line Interface for Ai-Context-Core.
+
+Provides commands for project initialization, analysis orchestration,
+and configuration profile management.
+"""
 import click
 import pathlib
 import shutil
@@ -20,20 +25,28 @@ def cli():
 )
 @click.option("--path", default=".", help="Project path")
 def init(profile: str, path: str):
-    """Initializes the .ai-context structure in the project."""
+    """Initializes the .ai-context structure in the project.
+
+    Creates necessary directories, copies configuration profiles,
+    and installs default agent workflows.
+
+    Args:
+        profile: The configuration profile name to use.
+        path: The target project directory.
+    """
     project_path = pathlib.Path(path).resolve()
     ai_context_dir = project_path / ".ai-context"
     agent_workflows_dir = project_path / ".agent" / "workflows"
 
     click.echo(f"🔄 Initializing AI Context in {project_path} with profile '{profile}'...")
 
-    # 1. Crear directorios
+    # 1. Create directories
     ai_context_dir.mkdir(exist_ok=True)
     agent_workflows_dir.mkdir(parents=True, exist_ok=True)
 
-    # 2. Copiar/Generar Config
+    # 2. Copy/Generate Config
     loader = ConfigLoader()
-    # Cargar config base del perfil para escribirla
+    # Load base profile configuration to install it locally
     if profile != "generic":
         profile_path = loader.profiles_path / f"{profile}.yaml"
         if profile_path.exists():
@@ -74,7 +87,16 @@ def init(profile: str, path: str):
 @click.option("--workers", "-w", default=None, type=int, help="Number of parallel workers")
 @click.option("--no-cache", is_flag=True, help="Disable cache")
 def analyze(path: str, workers: Optional[int], no_cache: bool):
-    """Runs project analysis and updates the context."""
+    """Runs project analysis and updates corporate/AI context.
+
+    Executes the analytical pipeline to compute metrics, technical debt,
+    and architectural patterns, generating MD and JSON reports.
+
+    Args:
+        path: Path to the project root.
+        workers: Optional number of parallel worker processes.
+        no_cache: Whether to bypass existing analysis caches.
+    """
     project_path = pathlib.Path(path).resolve()
 
     # Load configuration
@@ -94,10 +116,10 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
         except Exception:
             pass
 
-    # Load final config
+    # Load final composite config
     config = loader.load_config(profile_name=profile_name, override_config=local_config)
 
-    # Instantiate analyzer
+    # Instantiate analyzer engine
     analyzer = ProjectAnalyzer(project_path=str(project_path), config=config, max_workers=workers)
 
     click.echo(f"🚀 Starting analysis for {project_path.name}...")
@@ -128,7 +150,7 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
 
 @cli.command()
 def profiles():
-    """Lists available configuration profiles."""
+    """Lists all available project configuration profiles."""
     click.echo("Available profiles:")
     for p in list_profiles():
         click.echo(f" - {p}")

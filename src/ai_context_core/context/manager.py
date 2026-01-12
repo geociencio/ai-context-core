@@ -1,3 +1,8 @@
+"""Project context and AI prompt management.
+
+The AIContextManager identifies relevant context for specific tasks and
+formats optimized prompts for various AI models (DeepSeek, GPT, Claude).
+"""
 import json
 import yaml
 from pathlib import Path
@@ -5,14 +10,32 @@ from typing import Dict, Any, List
 
 
 class AIContextManager:
-    """Manages optimized context for different AIs."""
+    """Manages project context and optimizes prompts for different AI models.
+
+    This manager loads existing context files (JSON, Markdown, YAML) and
+    extracts relevant information based on specific tasks to create structured
+    prompts for LLMs.
+
+    Attributes:
+        project_path: Path to the project root.
+        contexts: Dictionary of loaded context contents.
+    """
 
     def __init__(self, project_path: str):
+        """Initializes the AIContextManager.
+
+        Args:
+            project_path: Directory path of the project.
+        """
         self.project_path = Path(project_path)
         self.contexts = self._load_contexts()
 
     def _load_contexts(self) -> Dict[str, Any]:
-        """Loads existing contexts."""
+        """Loads available project context files into memory.
+
+        Returns:
+            A dictionary mapping filenames to their parsed or raw content.
+        """
         contexts = {}
         context_files = ["project_context.json", "AI_CONTEXT.md", ".ai-context.yaml"]
 
@@ -24,7 +47,14 @@ class AIContextManager:
         return contexts
 
     def _load_file(self, path: Path) -> Any:
-        """Loads file content based on its extension."""
+        """Parses a file based on its extension or returns raw text.
+
+        Args:
+            path: Path to the file to load.
+
+        Returns:
+            Parsed JSON/YAML data or a raw string for Markdown/other files.
+        """
         try:
             if path.suffix == ".json":
                 return json.loads(path.read_text(encoding="utf-8"))
@@ -39,11 +69,20 @@ class AIContextManager:
     def create_optimized_prompt(
         self, task: str, ai_model: str = "deepseek-coder", max_tokens: int = 4000
     ) -> str:
-        """Creates optimized prompt for the specific task."""
-        # Project base context
+        """Constructs an AI-ready prompt optimized for the specified model and task.
+
+        Args:
+            task: The engineering task to perform.
+            ai_model: Identifier for the AI model (e.g., 'gpt-4', 'claude-3').
+            max_tokens: Maximum allowed token limit for the total prompt.
+
+        Returns:
+            A fully structured and optimized prompt string.
+        """
+        # Extract keywords and find relevant context snippets
         base_context = self._extract_relevant_context(task)
 
-        # Optimize based on AI model
+        # Select template based on model characteristics
         if "deepseek" in ai_model.lower():
             prompt_template = self._deepseek_template()
         elif "gpt" in ai_model.lower():
@@ -53,7 +92,7 @@ class AIContextManager:
         else:
             prompt_template = self._generic_template()
 
-        # Assemble final prompt
+        # Build final instruction
         full_prompt = prompt_template.format(
             task=task,
             context=base_context[: max_tokens // 2],
@@ -63,7 +102,11 @@ class AIContextManager:
         return self._truncate_to_tokens(full_prompt, max_tokens)
 
     def _deepseek_template(self) -> str:
-        """Optimized template for DeepSeek."""
+        """Returns a template optimized for DeepSeek Coder models.
+
+        Returns:
+            Markdown-formatted instruction string.
+        """
         return """You are a Python expert analyzing the project: {project_name}
 
 ## PROJECT CONTEXT:
@@ -91,7 +134,11 @@ next_steps
 ```"""
 
     def _chatgpt_template(self) -> str:
-        """Optimized template for ChatGPT."""
+        """Returns a concise template optimized for OpenAI GPT models.
+
+        Returns:
+            Markdown-formatted instruction string.
+        """
         return """Act as a Senior Python Developer expert in project {project_name}.
 
 RELEVANT CONTEXT:
@@ -107,7 +154,11 @@ GUIDELINES:
 """
 
     def _claude_template(self) -> str:
-        """Optimized template for Claude."""
+        """Returns an architectural template optimized for Anthropic Claude models.
+
+        Returns:
+            Markdown-formatted instruction string.
+        """
         return """System: You are an expert software architect analyzing {project_name}.
 
 Context:
@@ -120,7 +171,11 @@ Please provide a detailed analysis, considering architectural implications and b
 """
 
     def _generic_template(self) -> str:
-        """Generic template."""
+        """Returns a basic boilerplate template for other models.
+
+        Returns:
+            Simplified instruction string.
+        """
         return """Project: {project_name}
 
 Context:
@@ -131,53 +186,78 @@ Task:
 """
 
     def _extract_relevant_context(self, task: str) -> str:
-        """Extracts relevant context for the specific task."""
+        """Identifies and extracts matching snippets from loaded contexts using keywords.
+
+        Args:
+            task: The task description to match against.
+
+        Returns:
+            A string containing identified relevant context chunks.
+        """
         keywords = self._extract_keywords(task)
         relevant_parts = []
 
-        # Search in existing contexts
-        for context_name, context_content in self.contexts.items():
-            if isinstance(context_content, dict):
-                content_str = json.dumps(context_content)
-            else:
-                content_str = str(context_content)
+        if not keywords:
+            return "No specific context identifiers identified in the task."
 
-            # Check relevance
+        # Search through all loaded contexts (JSON meta, MD reports, YAML profiles)
+        for context_name, context_content in self.contexts.items():
+            content_str = self._get_serializable_content(context_content)
+            
+            # Simple keyword matching for relevance
             if any(keyword.lower() in content_str.lower() for keyword in keywords):
+                # Include a relevant snippet
                 relevant_parts.append(f"=== {context_name} ===\n{content_str[:1000]}")
 
-        return "\n\n".join(relevant_parts) if relevant_parts else "No specific context found"
+        return "\n\n".join(relevant_parts) if relevant_parts else "No specific project context matches found for this task."
+
+    def _get_serializable_content(self, context_content: Any) -> str:
+        """Recursively converts complex objects to strings for text analysis.
+
+        Args:
+            context_content: Dict, List, or raw string data.
+
+        Returns:
+            A string representation of the data.
+        """
+        if isinstance(context_content, (dict, list)):
+            return json.dumps(context_content, ensure_ascii=False)
+        return str(context_content)
 
     def _extract_keywords(self, text: str) -> List[str]:
-        """Extracts keywords from text."""
-        # Common stop words to ignore
+        """Tokenizes text and filters out common stop words to find searchable terms.
+
+        Args:
+            text: Input string to process.
+
+        Returns:
+            A list of lowercase keywords longer than 3 characters.
+        """
+        # Common English stop words
         stop_words = {
-            "the",
-            "and",
-            "for",
-            "with",
-            "from",
-            "that",
-            "this",
-            "what",
-            "how",
-            "when",
-            "where",
-            "which",
-            "who",
-            "whom",
+            "the", "and", "for", "with", "from", "that", "this",
+            "what", "how", "when", "where", "which", "who", "whom",
         }
         words = text.lower().split()
         return [w for w in words if w not in stop_words and len(w) > 3]
 
     def _truncate_to_tokens(self, text: str, max_tokens: int) -> str:
-        """Truncates text approximating tokens."""
-        # Simple estimation: 1 token ≈ 4 characters
+        """Estimates and truncates text to fit within token limits.
+
+        Approximate conversion: 1 token ≈ 4 characters.
+
+        Args:
+            text: Raw string to truncate.
+            max_tokens: The target token limit.
+
+        Returns:
+            The truncated string with a trailing notification if cut.
+        """
         max_chars = max_tokens * 4
         if len(text) <= max_chars:
             return text
 
-        # Truncate at logical point
+        # Attempt to find a logical breaking point (period or newline)
         truncated = text[:max_chars]
         last_period = truncated.rfind(".")
         last_newline = truncated.rfind("\n")
@@ -189,7 +269,11 @@ Task:
         return truncated + "\n\n[Context truncated due to limits...]"
 
     def update_context(self, new_info: Dict[str, Any]) -> None:
-        """Updates context with new information."""
+        """Persists new runtime discoveries into a YAML update file.
+
+        Args:
+            new_info: Dictionary of key-value pairs to add or update in context.
+        """
         update_file = self.project_path / ".ai-context-updates.yaml"
 
         current = {}
@@ -199,7 +283,7 @@ Task:
             except Exception:
                 current = {}
 
-        # Merge new information
+        # Merge updates into existing structure
         for key, value in new_info.items():
             if key in current:
                 if isinstance(current[key], list) and isinstance(value, list):
@@ -211,7 +295,7 @@ Task:
             else:
                 current[key] = value
 
-        # Save
+        # Save back to file
         with open(update_file, "w", encoding="utf-8") as f:
             yaml.dump(current, f, allow_unicode=True)
 

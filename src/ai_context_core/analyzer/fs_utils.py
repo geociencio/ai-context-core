@@ -1,3 +1,8 @@
+"""File system utilities and cache management.
+
+Provides optimized file reading, exclusion pattern handling, and
+project structure generation (tree view) with LRU caching.
+"""
 import os
 import pathlib
 import fnmatch
@@ -10,30 +15,62 @@ logger = logging.getLogger(__name__)
 
 
 class LRUCache:
-    """Cache simple para archivos."""
+    """Simple Least Recently Used (LRU) cache for file contents.
+
+    Attributes:
+        cache: Dictionary storing cached data.
+        maxsize: Maximum number of items the cache can hold.
+    """
 
     def __init__(self, maxsize: int = 256):
+        """Initializes the LRUCache.
+
+        Args:
+            maxsize: Maximum size of the cache. Defaults to 256.
+        """
         self.cache = {}
         self.maxsize = maxsize
 
-    def get(self, key: str):
+    def get(self, key: str) -> Any:
+        """Retrieves an item from the cache.
+
+        Args:
+            key: The key to look up.
+
+        Returns:
+            The cached value if found, otherwise None.
+        """
         return self.cache.get(key)
 
     def set(self, key: str, value: Any):
+        """Adds or updates an item in the cache.
+
+        Args:
+            key: The key identifying the item.
+            value: The value to store.
+        """
         if len(self.cache) > self.maxsize:
             self.cache.pop(next(iter(self.cache)))
         self.cache[key] = value
 
     def clear(self):
+        """Removes all items from the cache."""
         self.cache.clear()
 
 
-# Global cache instance
+# Global cache instance for performance optimization across modules
 file_cache = LRUCache()
 
 
 def read_file_fast(path: pathlib.Path) -> str:
-    """Lectura ultra rápida con memory mapping y cache."""
+    """Reads file content efficiently using memory mapping and caching.
+
+    Args:
+        path: Path to the file to read.
+
+    Returns:
+        The file content as a string, or an empty string if reading fails.
+    """
     cache_key = str(path)
     cached = file_cache.get(cache_key)
     if cached:
@@ -43,30 +80,38 @@ def read_file_fast(path: pathlib.Path) -> str:
         with open(path, "rb") as f:
             file_size = path.stat().st_size
 
-            # Usar memory mapping para archivos grandes (> 1MB)
+            # Use memory mapping for large files (> 1MB) to optimize performance
             if file_size > 1024 * 1024:
                 with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
                     content = mm.read().decode("utf-8-sig", errors="replace")
             else:
-                # Para archivos pequeños, lectura directa
+                # Direct read for small files
                 content = f.read().decode("utf-8-sig", errors="replace")
 
-            # Cachear resultado
+            # Cache result for future lookups
             file_cache.set(cache_key, content)
             return content
 
     except Exception as e:
-        logger.warning(f"⚠️ Error lectura {path}: {e}")
+        logger.warning(f"⚠️ Error reading {path}: {e}")
         return ""
 
 
 def load_exclusion_patterns(
     project_path: pathlib.Path, extra_patterns: List[str] = None
 ) -> List[str]:
-    """Carga patrones de exclusión."""
+    """Loads file exclusion patterns from .analyzerignore or returns defaults.
+
+    Args:
+        project_path: Root directory of the project.
+        extra_patterns: Additional patterns provided via CLI or config.
+
+    Returns:
+        A list of glob-style exclusion patterns.
+    """
     patterns = []
 
-    # 1. Prioridad: .analyzerignore
+    # 1. Priority: .analyzerignore (custom project configuration)
     ignore_file = project_path / ".analyzerignore"
     if ignore_file.exists():
         try:
@@ -75,7 +120,7 @@ def load_exclusion_patterns(
         except Exception:
             pass
 
-    # 2. Defaults
+    # 2. Defaults if no ignore file is found
     if not patterns:
         patterns = [
             "__pycache__",
@@ -99,7 +144,14 @@ def load_exclusion_patterns(
 
 
 def is_test_file(path: pathlib.Path) -> bool:
-    """Determina si es archivo de tests."""
+    """Heuristically determines if a given file is a test file.
+
+    Args:
+        path: Path to the file to check.
+
+    Returns:
+        True if the file matches common test naming patterns or directory structures.
+    """
     filename = path.name.lower()
     test_patterns = ["test_", "_test", "spec_", "_spec", "conftest"]
 
@@ -110,11 +162,22 @@ def is_test_file(path: pathlib.Path) -> bool:
     )
 
 
-def count_test_files(project_path: pathlib.Path) -> int:
-    """Cuenta archivos de test."""
+def count_test_files(project_path: pathlib.Path, exclusion_patterns: List[str]) -> int:
+    """Counts non-excluded test files in the project.
+
+    Args:
+        project_path: Root directory to search.
+        exclusion_patterns: List of patterns to ignore.
+
+    Returns:
+        The total count of identified test files.
+    """
     count = 0
-    for file in project_path.rglob("*.py"):
-        if is_test_file(file):
+    for py_file in project_path.rglob("*.py"):
+        rel_path = str(py_file.relative_to(project_path))
+        if _matches_exclusion_pattern(py_file, rel_path, exclusion_patterns):
+            continue
+        if is_test_file(py_file):
             count += 1
     return count
 
@@ -122,29 +185,21 @@ def count_test_files(project_path: pathlib.Path) -> int:
 def get_python_files_filtered(
     project_path: pathlib.Path, exclusion_patterns: List[str]
 ) -> List[pathlib.Path]:
-    """Obtener archivos Python con filtrado."""
+    """Retrieves a sorted list of Python modules, excluding specific patterns and tests.
+
+    Args:
+        project_path: Root directory to search.
+        exclusion_patterns: List of patterns to ignore.
+
+    Returns:
+        A sorted list of pathlib.Path objects for relevant Python files.
+    """
     python_files = []
 
     for py_file in project_path.rglob("*.py"):
         rel_path = str(py_file.relative_to(project_path))
 
-        should_exclude = False
-        for pattern in exclusion_patterns:
-            if pattern.endswith("/"):
-                pattern = pattern[:-1]
-
-            if (
-                fnmatch.fnmatch(rel_path, pattern)
-                or fnmatch.fnmatch(py_file.name, pattern)
-                or any(
-                    fnmatch.fnmatch(part, pattern)
-                    for part in py_file.relative_to(project_path).parts
-                )
-            ):
-                should_exclude = True
-                break
-
-        if should_exclude:
+        if _matches_exclusion_pattern(py_file, rel_path, exclusion_patterns):
             continue
 
         if is_test_file(py_file):
@@ -155,8 +210,44 @@ def get_python_files_filtered(
     return sorted(python_files)
 
 
+def _matches_exclusion_pattern(
+    py_file: pathlib.Path, rel_path: str, patterns: List[str]
+) -> bool:
+    """Checks if a file or its path matches any exclusion patterns.
+
+    Args:
+        py_file: Full path to the file.
+        rel_path: Path relative to project root.
+        patterns: List of glob-style patterns to check.
+
+    Returns:
+        True if a match is found, False otherwise.
+    """
+    for pattern in patterns:
+        if pattern.endswith("/"):
+            pattern = pattern[:-1]
+
+        if (
+            fnmatch.fnmatch(rel_path, pattern)
+            or fnmatch.fnmatch(py_file.name, pattern)
+            or any(fnmatch.fnmatch(part, pattern) for part in py_file.parts)
+        ):
+            return True
+    return False
+
+
 def generate_tree_optimized(project_path: pathlib.Path) -> str:
-    """Genera árbol de directorios optimizado."""
+    """Generates a text-based directory structure visualization.
+
+    Attempts to use the system 'tree' command for accuracy and speed,
+    falling back to a custom Python implementation if not available.
+
+    Args:
+        project_path: Directory to process.
+
+    Returns:
+        A string representing the directory tree.
+    """
     try:
         result = subprocess.run(
             [
@@ -185,7 +276,16 @@ def generate_tree_optimized(project_path: pathlib.Path) -> str:
 def _generate_tree_fallback(
     project_path: pathlib.Path, max_depth: int = 4, max_files_per_dir: int = 8
 ) -> str:
-    """Fallback Python-based tree generation."""
+    """Custom Python generator for directory structures when 'tree' is missing.
+
+    Args:
+        project_path: Directory to process.
+        max_depth: Reaching limit for recursive traversal. Defaults to 4.
+        max_files_per_dir: Maximum number of files to show per directory. Defaults to 8.
+
+    Returns:
+        A string representing the directory tree.
+    """
     tree_lines = ["./"]
 
     for root, dirs, files in os.walk(project_path):
@@ -193,38 +293,57 @@ def _generate_tree_fallback(
         if depth > max_depth:
             continue
 
+        # Prune hidden/private directories to reduce noise
         dirs[:] = [d for d in dirs if not d.startswith((".", "_"))]
 
         indent = "    " * depth
-        rel_path = os.path.relpath(root, project_path)
-        if rel_path != ".":
+        rel_root = os.path.relpath(root, project_path)
+        if rel_root != ".":
             tree_lines.append(f"{indent}{os.path.basename(root)}/")
 
         file_indent = "    " * (depth + 1)
-        for i, file in enumerate(sorted(files)[:max_files_per_dir]):
-            if i == max_files_per_dir - 1 and len(files) > max_files_per_dir:
-                tree_lines.append(f"{file_indent}... (+{len(files) - max_files_per_dir} más)")
-                break
-            tree_lines.append(f"{file_indent}{file}")
+        sorted_files = sorted(files)
+        for i, file in enumerate(sorted_files[:max_files_per_dir]):
+            line = _format_tree_line(file, i, len(files), max_files_per_dir, file_indent)
+            if line:
+                tree_lines.append(line)
+                if "..." in line:
+                    break
 
     return "\n".join(tree_lines)
 
 
+def _format_tree_line(file: str, index: int, total: int, limit: int, indent: str) -> str:
+    """Formats a single file entry or ellipsis for the tree visualization.
+
+    Args:
+        file: Filename to display.
+        index: Current file index.
+        total: Total files in the directory.
+        limit: Display limit for files.
+        indent: Indentation string.
+
+    Returns:
+        A formatted string line.
+    """
+    if index == limit - 1 and total > limit:
+        return f"{indent}... (+{total - limit} more)"
+    return f"{indent}{file}"
+
+
 def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
+    """Scans the project and counts occurrences of common file extensions.
+
+    Args:
+        project_path: Root directory to scan.
+
+    Returns:
+        A dictionary mapping extensions (e.g., '.py') to their counts.
+    """
     extensions = {}
     common_exts = {
-        ".py",
-        ".txt",
-        ".md",
-        ".json",
-        ".yml",
-        ".yaml",
-        ".html",
-        ".css",
-        ".js",
-        ".xml",
-        ".csv",
-        ".sql",
+        ".py", ".txt", ".md", ".json", ".yml", ".yaml",
+        ".html", ".css", ".js", ".xml", ".csv", ".sql",
     }
 
     for file in project_path.rglob("*"):
@@ -237,6 +356,14 @@ def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
 
 
 def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
+    """Computes high-level size and count statistics for the project.
+
+    Args:
+        project_path: Root directory to analyze.
+
+    Returns:
+        A dictionary with total size, file counts, and Python-specific metrics.
+    """
     stats = _accumulate_directory_stats(project_path)
 
     total_files = stats["total_files"]
@@ -254,33 +381,56 @@ def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
 
 
 def _accumulate_directory_stats(project_path: pathlib.Path) -> Dict[str, int]:
-    """Recorre directorios y acumula estadísticas."""
+    """Traverses the project to collect raw size and count data.
+
+    Args:
+        project_path: Root directory to traverse.
+
+    Returns:
+        A dictionary with accumulated totals for files and sizes.
+    """
     stats = {"total_files": 0, "total_size": 0, "python_files": 0, "python_size": 0}
 
     for entry in os.scandir(project_path):
         if entry.is_file():
-            stats["total_files"] += 1
-            stats["total_size"] += entry.stat().st_size
-            if entry.name.endswith(".py"):
-                stats["python_files"] += 1
-                stats["python_size"] += entry.stat().st_size
+            _process_entry(entry.name, entry.stat().st_size, stats)
         elif entry.is_dir() and not entry.name.startswith("."):
-            for root, _dirs, files in os.walk(entry.path):
+            for root, _, files in os.walk(entry.path):
                 for file in files:
-                    stats["total_files"] += 1
                     try:
                         file_path = os.path.join(root, file)
-                        file_size = os.path.getsize(file_path)
-                        stats["total_size"] += file_size
-                        if file.endswith(".py"):
-                            stats["python_files"] += 1
-                            stats["python_size"] += file_size
+                        size = os.path.getsize(file_path)
+                        _process_entry(file, size, stats)
                     except Exception:
                         pass
     return stats
 
 
+def _process_entry(filename: str, size: int, stats: Dict[str, int]):
+    """Updates a stats dictionary with data from a single file.
+
+    Args:
+        filename: Name of the file.
+        size: Size of the file in bytes.
+        stats: The statistics dictionary to update in-place.
+    """
+    stats["total_files"] += 1
+    stats["total_size"] += size
+    if filename.endswith(".py"):
+        stats["python_files"] += 1
+        stats["python_size"] += size
+
+
 def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[str, Any]:
+    """Generates a summary of project structure, types, and sizes.
+
+    Args:
+        project_path: Root directory to analyze.
+        modules_count: Pre-calculated count of project modules.
+
+    Returns:
+        A dictionary consolidating tree visualization and structural stats.
+    """
     return {
         "tree": generate_tree_optimized(project_path),
         "modules_count": modules_count,

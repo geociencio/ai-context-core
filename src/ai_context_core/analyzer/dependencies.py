@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Set
+from typing import Dict, Any, List, Set, Callable
 from pathlib import Path
 import logging
 
@@ -6,12 +6,27 @@ logger = logging.getLogger(__name__)
 
 
 def count_edges(import_graph: Dict[str, Set[str]]) -> int:
-    """Cuenta total de aristas en el grafo."""
+    """Counts total edges in the dependency graph.
+
+    Args:
+        import_graph: A dictionary where keys are module paths and values are sets of imported module paths.
+
+    Returns:
+        The total number of edges (imports) in the graph.
+    """
     return sum(len(neighbors) for neighbors in import_graph.values())
 
 
 def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> List[List[str]]:
-    """Detecta ciclos simples usando DFS."""
+    """Detects simple cycles in the import graph using Depth First Search.
+
+    Args:
+        import_graph: A graph representing internal project imports.
+        limit: Maximum number of cycles to detect before stopping. Defaults to 5.
+
+    Returns:
+        A list of cycles, where each cycle is a list of module paths.
+    """
     cycles = []
     visited = set()
     path = []
@@ -28,7 +43,7 @@ def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> Lis
         if u in import_graph:
             for v in import_graph[u]:
                 if v in path_set:
-                    # Ciclo detectado
+                    # Cycle detected
                     cycle_start = path.index(v)
                     cycles.append(path[cycle_start:])
                 elif v not in visited:
@@ -45,8 +60,15 @@ def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> Lis
 
 
 def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
-    """Cuenta componentes débilmente conectados."""
-    # Convertir a no dirigido
+    """Counts weakly connected components in the dependency graph.
+
+    Args:
+        import_graph: The project's import graph.
+
+    Returns:
+        The number of weakly connected components.
+    """
+    # Convert to undirected graph
     undirected = {}
     for u, neighbors in import_graph.items():
         if u not in undirected:
@@ -63,7 +85,7 @@ def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
     for node in undirected:
         if node not in visited:
             count += 1
-            # BFS
+            # BFS traversal
             queue = [node]
             visited.add(node)
             while queue:
@@ -76,9 +98,18 @@ def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
 
 
 def analyze_dependencies(
-    modules_data: List[Dict[str, Any]], project_path: Path, read_file_func
+    modules_data: List[Dict[str, Any]], project_path: Path, read_file_func: Callable
 ) -> Dict[str, Any]:
-    """Analiza dependencias del proyecto de forma optimizada."""
+    """Analyzes project dependencies, builds the import graph, and detects circularities.
+
+    Args:
+        modules_data: List of dictionaries containing module analysis results.
+        project_path: Root directory of the project.
+        read_file_func: Utility function to read file contents.
+
+    Returns:
+        A dictionary containing categorized imports, graph metrics, and identified cycles.
+    """
     dependencies = {
         "internal": [],
         "external": [],
@@ -89,7 +120,46 @@ def analyze_dependencies(
         "graph_metrics": {},
     }
 
-    # Analizar archivos de dependencias comunes
+    # 1. Parse common dependency files
+    dependencies["files"] = _parse_dependency_files(project_path, read_file_func)
+
+    # 2. Build import graph
+    import_graph = _build_import_graph(modules_data)
+    dependencies["import_graph"] = {k: list(v) for k, v in import_graph.items()}
+
+    # 3. Detect circular dependencies
+    try:
+        cycles = find_simple_cycles(import_graph, limit=5)
+        if cycles:
+            dependencies["circular_dependencies"] = cycles
+    except Exception:
+        pass
+
+    # 4. Calculate graph metrics
+    dependencies["graph_metrics"] = _calculate_graph_metrics(import_graph)
+
+    # 5. Classify imports
+    all_imports = set()
+    for module in modules_data:
+        all_imports.update(module.get("imports", []))
+
+    classified = _classify_imports(all_imports)
+    dependencies.update(classified)
+
+    return dependencies
+
+
+def _parse_dependency_files(project_path: Path, read_file_func: Callable) -> Dict[str, str]:
+    """Reads content from common dependency files (e.g., requirements.txt, pyproject.toml).
+
+    Args:
+        project_path: Root directory to search in.
+        read_file_func: Function used to read file contents.
+
+    Returns:
+        A dictionary mapping filenames to their filtered contents.
+    """
+    files_content = {}
     req_files = [
         "requirements.txt",
         "setup.py",
@@ -105,100 +175,109 @@ def analyze_dependencies(
             try:
                 content = read_file_func(path)
                 if content:
-                    dependencies["files"][req_file] = content[:2000]  # Limitar tamaño
-            except:
+                    files_content[req_file] = content[:2000]  # Limit size for documentation purposes
+            except Exception:
                 pass
+    return files_content
 
-    # Construir grafo de dependencias
+
+def _build_import_graph(modules_data: List[Dict[str, Any]]) -> Dict[str, Set[str]]:
+    """Builds a directed graph representing internal imports between project modules.
+
+    Args:
+        modules_data: Raw analysis data from all project modules.
+
+    Returns:
+        A dictionary mapping source module paths to sets of target module paths.
+    """
     import_graph = {}
-    all_imports = set()
+    # Create valid target module names (dots instead of slashes)
+    module_names = {}
+    for mod in modules_data:
+        path = mod.get("path", "")
+        if path:
+            # Map "pkg/sub/mod.py" -> "pkg.sub.mod"
+            canonical = path.replace(".py", "").replace("/", ".").replace("\\", ".")
+            module_names[canonical] = path
 
     for module in modules_data:
         module_path = module.get("path", "")
         imports = module.get("imports", [])
 
         if module_path:
-            # Añadir nodo
             if module_path not in import_graph:
                 import_graph[module_path] = set()
 
-            all_imports.update(imports)
-
-            # Añadir aristas al grafo
             for imp in imports:
-                # Buscar si la importación corresponde a un módulo del proyecto
-                for other_module in modules_data:
-                    other_path = other_module.get("path", "")
-                    if other_path and other_path.replace(".py", "").replace("/", ".") in imp:
-                        # Añadir edge: module_path -> other_path
-                        import_graph[module_path].add(other_path)
-                        # Asegurar que el destino también existe como nodo
-                        if other_path not in import_graph:
-                            import_graph[other_path] = set()
+                # Check if import refers to an internal project module
+                for canonical, target_path in module_names.items():
+                    if canonical in imp:
+                        import_graph[module_path].add(target_path)
+                        if target_path not in import_graph:
+                            import_graph[target_path] = set()
+                        break
+    return import_graph
 
-    dependencies["import_graph"] = {k: list(v) for k, v in import_graph.items()}  # Serializable
 
-    # Detectar dependencias circulares
-    try:
-        cycles = find_simple_cycles(import_graph, limit=5)
-        if cycles:
-            dependencies["circular_dependencies"] = cycles
-    except:
-        pass
+def _calculate_graph_metrics(import_graph: Dict[str, Set[str]]) -> Dict[str, Any]:
+    """Calculates density, connectivity, and acyclicity metrics for the import graph.
 
-    # Calcular métricas del grafo
+    Args:
+        import_graph: The project's import graph.
+
+    Returns:
+        A dictionary with node/edge counts, density, and graph properties.
+    """
     num_nodes = len(import_graph)
-    if num_nodes > 0:
-        try:
-            num_edges = count_edges(import_graph)
-            # Density for directed graph: E / (V * (V - 1))
-            max_edges = num_nodes * (num_nodes - 1)
-            density = num_edges / max_edges if max_edges > 0 else 0
+    if num_nodes == 0:
+        return {}
 
-            dependencies["graph_metrics"] = {
-                "nodes": num_nodes,
-                "edges": num_edges,
-                "density": density,
-                "is_dag": len(find_simple_cycles(import_graph, limit=1)) == 0,
-                "weakly_connected_components": count_connected_components(import_graph),
-            }
-        except Exception as e:
-            logger.exception(f"Error calculando métricas de grafo: {e}")
+    try:
+        num_edges = count_edges(import_graph)
+        # Density for directed graph: E / (V * (V - 1))
+        max_edges = num_nodes * (num_nodes - 1)
+        density = num_edges / max_edges if max_edges > 0 else 0
 
-    # Clasificar imports
+        return {
+            "nodes": num_nodes,
+            "edges": num_edges,
+            "density": density,
+            "is_dag": len(find_simple_cycles(import_graph, limit=1)) == 0,
+            "weakly_connected_components": count_connected_components(import_graph),
+        }
+    except Exception as e:
+        logger.exception(f"Error calculating graph metrics: {e}")
+        return {}
+
+
+def _classify_imports(all_imports: Set[str]) -> Dict[str, List[str]]:
+    """Categorizes imports into internal, external (StdLib), and third-party modules.
+
+    Args:
+        all_imports: A combined set of all import strings found in the project.
+
+    Returns:
+        A dictionary with three lists: internal, external, and third_party.
+    """
     stdlib_modules = {
-        "os",
-        "sys",
-        "json",
-        "pathlib",
-        "typing",
-        "datetime",
-        "re",
-        "collections",
-        "itertools",
-        "math",
-        "random",
-        "statistics",
-        "functools",
-        "hashlib",
-        "base64",
-        "csv",
-        "pickle",
-        "sqlite3",
-        "subprocess",
-        "logging",
-        "time",
-        "traceback",
+        "os", "sys", "json", "pathlib", "typing", "datetime", "re",
+        "collections", "itertools", "math", "random", "statistics",
+        "functools", "hashlib", "base64", "csv", "pickle", "sqlite3",
+        "subprocess", "logging", "time", "traceback", "ast", "abc",
+        "threading", "multiprocessing", "concurrent", "shutil", "tempfile"
     }
 
-    for imp in sorted(all_imports):
-        # Determinar si es import interno (relativo)
-        if imp.startswith(".") or any(seg in imp for seg in ["..", "./"]):
-            dependencies["internal"].append(imp)
-        # Determinar si es stdlib
-        elif imp.split(".")[0] in stdlib_modules:
-            dependencies["external"].append(imp)
-        else:
-            dependencies["third_party"].append(imp)
+    results = {"internal": [], "external": [], "third_party": []}
 
-    return dependencies
+    for imp in sorted(all_imports):
+        # Determine if it's internal (relative or project-specific)
+        if imp.startswith(".") or any(seg in imp for seg in ["..", "./"]):
+            results["internal"].append(imp)
+        # Determine if it's part of the Python Standard Library
+        elif imp.split(".")[0] in stdlib_modules:
+            results["external"].append(imp)
+        else:
+            results["third_party"].append(imp)
+
+    return results
+

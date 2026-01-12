@@ -1,8 +1,20 @@
+"""Project quality metrics and scoring algorithms.
+
+Defines the logic for calculating cyclomatic distribution, overall
+quality scores based on weights, and aggregated project metrics.
+"""
 from typing import List, Dict, Any
 
 
 def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dict[str, int]:
-    """Calcula distribución de complejidad."""
+    """Calculates the distribution of cyclomatic complexity across modules.
+
+    Args:
+        modules_data: List of module metrics dictionaries.
+
+    Returns:
+        A dictionary with complexity buckets (low, medium, high, very_high) and counts.
+    """
     distribution = {"low (0-5)": 0, "medium (6-15)": 0, "high (16-30)": 0, "very_high (31+)": 0}
 
     for module in modules_data:
@@ -22,14 +34,26 @@ def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dic
 def calculate_quality_score(
     modules_data: List[Dict[str, Any]], config: Dict[str, Any], context_patterns: Dict[str, Any]
 ) -> float:
-    """Calcula un score de calidad general."""
+    """Calculates an overall quality score for the project based on weighted metrics.
+
+    Evaluates documentation, complexity, file size, and syntax correctness. It
+    also factors in QGIS compliance if applicable and penalizes for linter errors.
+
+    Args:
+        modules_data: List of analyzed module dictionaries.
+        config: Configuration containing quality weights and thresholds.
+        context_patterns: Additional context data like QGIS compliance and linter info.
+
+    Returns:
+        A normalized quality score between 0 and 100.
+    """
     if not modules_data:
         return 0.0
 
     weights = config.get("quality_weights", {})
     thresholds = config.get("thresholds", {})
 
-    # Calcular puntuación máxima posible por módulo
+    # Calculate maximum possible score per module
     max_module_score = (
         weights.get("docstrings", 0)
         + weights.get("complexity_low", 0)
@@ -44,11 +68,11 @@ def calculate_quality_score(
     for module in modules_data:
         module_score = 0
 
-        # Puntos por tener docstring
+        # Points for having docstrings
         if module.get("docstrings", {}).get("module", False):
             module_score += weights.get("docstrings", 0)
 
-        # Puntos por complejidad baja
+        # Points for low complexity
         complexity = module.get("complexity", 0)
         if complexity <= thresholds.get("complexity_low", 5):
             module_score += weights.get("complexity_low", 0)
@@ -57,39 +81,39 @@ def calculate_quality_score(
         elif complexity <= thresholds.get("complexity_high", 15):
             module_score += weights.get("complexity_high", 0)
 
-        # Puntos por tamaño adecuado
+        # Points for adequate file size
         lines = module.get("lines", 0)
         if lines <= thresholds.get("size_small", 200):
             module_score += weights.get("size_small", 0)
         elif lines <= thresholds.get("size_medium", 400):
             module_score += weights.get("size_medium", 0)
 
-        # Puntos por tener main guard
+        # Points for having a main guard
         if module.get("has_main", False):
             module_score += weights.get("has_main", 0)
 
-        # Puntos por no tener errores de sintaxis
+        # Points for no syntax errors
         if not module.get("syntax_error", False):
             module_score += weights.get("no_syntax_error", 0)
 
         total_score += module_score
 
-    # Normalizar a porcentaje
+    # Normalize to percentage
     final_score = (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
 
-    # Factorizar el score de cumplimiento de QGIS (si existe)
+    # Factor in QGIS compliance score if present
     qgis_data = context_patterns.get("qgis_compliance", {})
     qgis_score = qgis_data.get("compliance_score")
 
     if qgis_score is not None:
-        # El Score final es un promedio ponderada: 60% Calidad Código, 30% Estándares QGIS, 10% Linter
+        # Final score is weighted: 70% Code Quality, 30% QGIS Standards
         final_score = (final_score * 0.7) + (qgis_score * 0.3)
 
-    # Penalización por errores de linter
+    # Penalty for linter errors
     linter_data = context_patterns.get("linter", {})
     if linter_data.get("available"):
         errors = linter_data.get("errors", 0)
-        # Penalizar 0.5 puntos por error, máx 10 puntos
+        # Penalize 0.5 points per error, max 10 points
         penalty = min(10, errors * 0.5)
         final_score = max(0, final_score - penalty)
 
@@ -103,26 +127,55 @@ def calculate_project_metrics(
     config: Dict[str, Any],
     context_patterns: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """Calcula métricas generales del proyecto."""
+    """Calculates general project-level metrics from analyzed modules.
+
+    Args:
+        modules_data: List of module analysis objects.
+        context_entry_points: List of identified entry point paths.
+        test_files_count: Total count of test files in the project.
+        config: Metric weights and thresholds configuration.
+        context_patterns: Additional scoring data (QGIS, Linter).
+
+    Returns:
+        A dictionary containing aggregated metrics like totals, averages, and quality score.
+    """
     if not modules_data:
         return {}
 
     total_size_kb = sum(m.get("file_size_kb", 0) for m in modules_data)
     total_lines = sum(m.get("lines", 0) for m in modules_data)
 
-    # Calcular métricas de calidad
-    modules_with_docstrings = sum(
-        1 for m in modules_data if m.get("docstrings", {}).get("module", False)
-    )
+    # Calculate documentation coverage
+    total_doc_score = 0
+    total_symbols = 0
+
+    for m in modules_data:
+        m_docs = m.get("docstrings", {})
+        # Module docstring (binary)
+        total_symbols += 1
+        if m_docs.get("module", False):
+            total_doc_score += 1
+
+        # Classes
+        classes = m_docs.get("classes", {})
+        total_symbols += len(classes)
+        total_doc_score += sum(1 for documented in classes.values() if documented)
+
+        # Functions
+        functions = m_docs.get("functions", {})
+        total_symbols += len(functions)
+        total_doc_score += sum(1 for documented in functions.values() if documented)
+
+    doc_coverage = (total_doc_score / total_symbols * 100) if total_symbols > 0 else 0
 
     modules_with_main = sum(1 for m in modules_data if m.get("has_main", False))
     modules_with_syntax_error = sum(1 for m in modules_data if m.get("syntax_error", False))
 
-    # Calcular estadísticas de complejidad
+    # Complexity statistics
     complexities = [m.get("complexity", 0) for m in modules_data]
     avg_complexity = sum(complexities) / len(complexities) if complexities else 0
 
-    # Calcular promedios de nuevas métricas
+    # Coverage metrics
     type_hint_cov = [m.get("type_hints", {}).get("coverage", 100) for m in modules_data]
     i18n_scores = [m.get("i18n", {}).get("i18n_score", 100) for m in modules_data]
 
@@ -131,10 +184,10 @@ def calculate_project_metrics(
         "total_lines_code": total_lines,
         "avg_module_size_kb": round(total_size_kb / len(modules_data), 2),
         "avg_lines_per_module": round(total_lines / len(modules_data), 2),
-        "modules_with_docstrings": modules_with_docstrings,
+        "modules_with_docstrings": sum(1 for m in modules_data if m.get("docstrings", {}).get("module", False)),
         "modules_with_main_guard": modules_with_main,
         "modules_with_syntax_errors": modules_with_syntax_error,
-        "docstring_coverage": round(modules_with_docstrings / len(modules_data) * 100, 2),
+        "docstring_coverage": round(doc_coverage, 2),
         "type_hint_coverage": round(sum(type_hint_cov) / len(modules_data), 2)
         if modules_data
         else 0,

@@ -1,10 +1,11 @@
+"""AST utilities for Python code analysis.
+
+This module provides tools for extracting functions, classes, complexity,
+type hint coverage, Halstead metrics, and imports from Python source code.
+"""
 import ast
 from collections import Counter
 from typing import Any, List, Dict
-
-
-def extract_functions(tree: ast.AST) -> List[str]:
-    """Extrae nombres de funciones."""
 
 
 HALSTEAD_OPERATORS = (
@@ -47,12 +48,19 @@ HALSTEAD_OPERATORS = (
 
 
 def extract_functions(tree: ast.AST) -> List[str]:
-    """Extrae nombres de funciones."""
+    """Extracts function names and basic argument counts from an AST.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A list of strings representing function names and their argument counts (e.g., "func(3 args)").
+    """
     functions = []
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
             func_info = node.name
-            # Extraer argumentos
+            # Extract arguments
             args_count = len(node.args.args)
             if args_count > 0:
                 func_info = f"{func_info}({args_count} args)"
@@ -61,11 +69,18 @@ def extract_functions(tree: ast.AST) -> List[str]:
 
 
 def extract_classes(tree: ast.AST) -> List[str]:
-    """Extrae nombres de clases con herencia."""
+    """Extracts class names with inheritance information from an AST.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A list of strings representing class names and their bases (e.g., "ClassName(BaseClass)").
+    """
     classes = []
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
-            # Incluir información de herencia
+            # Include inheritance info
             bases = [get_base_name(base) for base in node.bases]
             inheritance = f"({', '.join(bases)})" if bases else ""
             classes.append(f"{node.name}{inheritance}")
@@ -73,24 +88,38 @@ def extract_classes(tree: ast.AST) -> List[str]:
 
 
 def get_base_name(node: ast.AST) -> str:
-    """Obtiene nombre de clase base."""
+    """Retrieves the name of a base class from an AST node.
+
+    Args:
+        node: The AST node representing the base class.
+
+    Returns:
+        The name of the base class as a string, or "Unknown" if it cannot be determined.
+    """
     if isinstance(node, ast.Name):
         return node.id
     elif isinstance(node, ast.Attribute):
         return ast.unparse(node)
-    else:
-        return "Unknown"
+    return "Unknown"
 
 
 def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
-    """Verifica docstrings por elemento."""
+    """Checks for the presence of docstrings in modules, classes, and functions.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A dictionary containing boolean values for module docstring presence and
+        nested dictionaries for classes and functions.
+    """
     docstrings = {"module": False, "classes": {}, "functions": {}}
 
-    # Docstring del módulo
+    # Module docstring
     if isinstance(tree, ast.Module):
         docstrings["module"] = ast.get_docstring(tree) is not None
 
-    # Docstrings de clases y funciones
+    # Class and function docstrings
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
             docstrings["classes"][node.name] = ast.get_docstring(node) is not None
@@ -101,11 +130,18 @@ def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
 
 
 def has_main_guard(tree: ast.AST) -> bool:
-    """Verifica si el módulo tiene if __name__ == '__main__'."""
+    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        True if the guard is found, False otherwise.
+    """
     for node in ast.walk(tree):
         if isinstance(node, ast.If):
             try:
-                # Verificar condición __name__ == '__main__'
+                # Verify condition __name__ == '__main__'
                 if (
                     isinstance(node.test, ast.Compare)
                     and isinstance(node.test.left, ast.Name)
@@ -120,22 +156,29 @@ def has_main_guard(tree: ast.AST) -> bool:
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
-    """Calcula el porcentaje de funciones y clases con type hints."""
+    """Calculates the percentage of functions with type hints.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A dictionary with total_functions, typed_functions, and coverage percentage.
+    """
     total_items = 0
     typed_items = 0
 
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
             total_items += 1
-            # Comprobar retorno
+            # Check return type
             has_return_type = node.returns is not None
 
-            # Comprobar argumentos (excluyendo self/cls)
+            # Check arguments (excluding self/cls)
             args = [arg for arg in node.args.args if arg.arg not in ("self", "cls")]
             total_args = len(args)
             typed_args = sum(1 for arg in args if arg.annotation is not None)
 
-            if has_return_type and (total_args in (0, typed_args)):
+            if has_return_type and (total_args == 0 or total_args == typed_args):
                 typed_items += 1
 
     return {
@@ -146,7 +189,14 @@ def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
 
 
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
-    """Calcula métricas de Halstead básicas."""
+    """Calculates basic Halstead complexity metrics.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A dictionary containing vocabulary, length, volume, difficulty, and effort.
+    """
     operators = Counter()
     operands = Counter()
 
@@ -184,7 +234,14 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
 
 
 def extract_imports(tree: ast.AST) -> List[str]:
-    """Extrae imports de forma optimizada."""
+    """Extracts module imports in an optimized way.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A unique list of imported module names.
+    """
     imports = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
@@ -198,7 +255,7 @@ def extract_imports(tree: ast.AST) -> List[str]:
                 else:
                     imports.append(alias.name)
 
-    # De-duplicar manteniendo orden
+    # De-duplicate while maintaining order
     seen = set()
     unique_imports = []
     for imp in imports:
@@ -210,13 +267,19 @@ def extract_imports(tree: ast.AST) -> List[str]:
 
 
 def calculate_complexity(tree: ast.AST) -> int:
-    """Calcula complejidad ciclomática optimizada."""
+    """Calculates optimized cyclomatic complexity.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        The calculated cyclomatic complexity as an integer.
+    """
     complexity = 0
     decision_lines = set()
 
     for node in ast.walk(tree):
-        # Decisiones básicas
-        # Decisiones básicas
+        # Decision nodes
         if isinstance(
             node,
             (ast.If, ast.While, ast.For, ast.Try, ast.ExceptHandler, ast.AsyncFor, ast.AsyncWith),
@@ -225,17 +288,18 @@ def calculate_complexity(tree: ast.AST) -> int:
             if hasattr(node, "lineno"):
                 decision_lines.add(node.lineno)
 
-        # Operadores booleanos
+        # Boolean operators
         elif isinstance(node, ast.BoolOp):
             complexity += len(node.values) - 1
 
         # Comprehensions
-        elif isinstance(node, ast.ListComp | ast.SetComp | ast.DictComp | ast.GeneratorExp):
+        elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
             complexity += len(node.generators)
 
-    # Penalizar módulos con muchas decisiones en pocas líneas
+    # Penalty for highly dense logic (many decisions in few lines)
     if decision_lines:
-        density_penalty = len(decision_lines) * 0.3
-        complexity += int(density_penalty)
+        density = len(decision_lines) / (max(decision_lines) - min(decision_lines) + 1)
+        if density > 0.5:
+            complexity = int(complexity * 1.2)
 
     return complexity
