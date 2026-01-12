@@ -8,14 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-01-11
+
 ### Added
+- **Docstrings**: Fully standardized all core modules to Google Style (98.2% coverage).
+- **Security**: Added advanced obfuscation and false positive reduction for security scanning.
+- **Licensing**: Added GPL-3.0-or-later license and professional PyPI metadata.
 - **Tests**: Initial unit test suite for analyzer modules (`ast_utils`, `fs_utils`, `issues`).
-- **Docs**: Quick start guide for users.
+- **Docs**: Comprehensive Release Workflow and AI documentation.
 
 ### Changed
-- **Analyzer Refactoring**: Reduced cyclomatic complexity in `fs_utils.py` and `ast_utils.py` by extracting helper functions.
-- **Security Logic**: Modularized security pattern scanning in `issues.py` to separate pattern definition from execution.
-- **Code Quality**: Fixed bare `except` blocks and improved detection of false positives in security scanning.
+- **Analyzer Refactoring**: Major modularization of `fs_utils.py`, `ast_utils.py`, and `engine.py`.
+- **Localization**: Full translation of CLI, reports, and logs to English.
+- **Technical Debt**: Reduced cyclomatic complexity across all core modules.
 
 ## [0.1.0] - 2026-01-11
 
