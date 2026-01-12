@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   # 1. Create Draft Release on Tag Push
@@ -24,8 +25,8 @@ jobs:
         with:
           draft: true
           name: "Release ${{ github.ref_name }}"
-          # Tries to use the specific release note file if it exists, otherwise falls back to template or empty
-          body_path: docs/GITHUB_RELEASE_${{ github.ref_name }}.md
+          # Use our persistent release notes
+          body_path: docs/releases/notes/${{ github.ref_name }}.md
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

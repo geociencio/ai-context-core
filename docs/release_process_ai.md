@@ -40,11 +40,11 @@ Before touching version numbers, validate the project state.
 
 4. **Generate Release Notes**:
    ```bash
-   VERSION=1.2.0
-   DATE=$(date +%F)
-   sed -e "s/{version}/$VERSION/g" -e "s/{date}/$DATE/g" .github/release_template.md > /tmp/release_notes.md
+   VERSION=1.0.0
+   mkdir -p docs/releases/notes
+   sed -e "s/{version}/$VERSION/g" -e "s/{date}/$(date +%F)/g" .github/release_template.md > docs/releases/notes/v$VERSION.md
    ```
-   > **Review**: Check `/tmp/release_notes.md` and fill in any placeholders.
+   > **Review**: Check `docs/releases/notes/v$VERSION.md` and fill in any placeholders.
 
 ## Phase 3: Verification
 Ensure the codebase is clean and functional before tagging.
