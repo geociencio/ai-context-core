@@ -10,22 +10,22 @@ from .config.loader import ConfigLoader, list_profiles
 
 @click.group()
 def cli():
-    """Herramienta CLI para gestión de contexto IA y análisis de proyectos."""
+    """CLI tool for AI context management and project analysis."""
     pass
 
 
 @cli.command()
 @click.option(
-    "--profile", "-p", help="Perfil de configuración (ej. qgis-plugin)", default="generic"
+    "--profile", "-p", help="Configuration profile (e.g. qgis-plugin)", default="generic"
 )
-@click.option("--path", default=".", help="Ruta del proyecto")
+@click.option("--path", default=".", help="Project path")
 def init(profile: str, path: str):
-    """Inicializa la estructura .ai-context en el proyecto."""
+    """Initializes the .ai-context structure in the project."""
     project_path = pathlib.Path(path).resolve()
     ai_context_dir = project_path / ".ai-context"
     agent_workflows_dir = project_path / ".agent" / "workflows"
 
-    click.echo(f"🔄 Inicializando AI Context en {project_path} con perfil '{profile}'...")
+    click.echo(f"🔄 Initializing AI Context in {project_path} with profile '{profile}'...")
 
     # 1. Crear directorios
     ai_context_dir.mkdir(exist_ok=True)
@@ -38,49 +38,49 @@ def init(profile: str, path: str):
         profile_path = loader.profiles_path / f"{profile}.yaml"
         if profile_path.exists():
             shutil.copy2(profile_path, ai_context_dir / "config.yaml")
-            click.echo(f"✅ Configuración de perfil '{profile}' copiada.")
+            click.echo(f"✅ Profile configuration '{profile}' copied.")
         else:
             click.secho(
-                f"⚠️ Perfil '{profile}' no encontrado. Usando configuración base.", fg="yellow"
+                f"⚠️ Profile '{profile}' not found. Using base configuration.", fg="yellow"
             )
 
-    # 3. Copiar Workflows
+    # 3. Copy Workflows
     templates_dir = pathlib.Path(__file__).parent / "templates" / "workflows"
     if templates_dir.exists():
         for wf in templates_dir.glob("*.md"):
             dest = agent_workflows_dir / wf.name
             if not dest.exists():
                 shutil.copy2(wf, dest)
-                click.echo(f"✅ Workflow instalado: {wf.name}")
+                click.echo(f"✅ Workflow installed: {wf.name}")
             else:
-                click.echo(f"ℹ️ Workflow {wf.name} ya existe. Saltando.")
+                click.echo(f"ℹ️ Workflow {wf.name} already exists. Skipping.")
 
-    # 4. Copiar Prompt Inicial
+    # 4. Copy Initial Prompt
     prompt_src = pathlib.Path(__file__).parent / "templates" / "initial_prompt.md"
     prompt_dest = ai_context_dir / "prompt_inicial.md"
     if prompt_src.exists() and not prompt_dest.exists():
         content = prompt_src.read_text(encoding="utf-8")
-        # Reemplazar placeholders básicos
+        # Replace basic placeholders
         content = content.replace("{project_name}", project_path.name)
         content = content.replace("{project_type}", profile)
         prompt_dest.write_text(content, encoding="utf-8")
-        click.echo("✅ Prompt inicial generado.")
+        click.echo("✅ Initial prompt generated.")
 
-    click.secho("✨ Inicialización completada exitosamente.", fg="green")
+    click.secho("✨ Initialization completed successfully.", fg="green")
 
 
 @cli.command()
-@click.option("--path", default=".", help="Ruta del proyecto")
-@click.option("--workers", "-w", default=None, type=int, help="Número de workers paralelos")
-@click.option("--no-cache", is_flag=True, help="Deshabilitar caché")
+@click.option("--path", default=".", help="Path to the project")
+@click.option("--workers", "-w", default=None, type=int, help="Number of parallel workers")
+@click.option("--no-cache", is_flag=True, help="Disable cache")
 def analyze(path: str, workers: Optional[int], no_cache: bool):
-    """Ejecuta el análisis del proyecto y actualiza el contexto."""
+    """Runs project analysis and updates the context."""
     project_path = pathlib.Path(path).resolve()
 
-    # Cargar configuración
+    # Load configuration
     loader = ConfigLoader()
 
-    # Intentar detectar perfil o cargar config local
+    # Try to detect profile or load local config
     local_config_path = project_path / ".ai-context" / "config.yaml"
     local_config = {}
     profile_name = None
@@ -94,13 +94,13 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
         except Exception:
             pass
 
-    # Cargar config final
+    # Load final config
     config = loader.load_config(profile_name=profile_name, override_config=local_config)
 
-    # Instanciar analizador
+    # Instantiate analyzer
     analyzer = ProjectAnalyzer(project_path=str(project_path), config=config, max_workers=workers)
 
-    click.echo(f"🚀 Iniciando análisis de {project_path.name}...")
+    click.echo(f"🚀 Starting analysis for {project_path.name}...")
 
     try:
         results = analyzer.analyze()
@@ -110,15 +110,15 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
 
         click.echo("-" * 40)
         click.secho(
-            f"🏆 Score de Calidad: {quality:.1f}/100", fg="green" if quality > 80 else "yellow"
+            f"🏆 Quality Score: {quality:.1f}/100", fg="green" if quality > 80 else "yellow"
         )
-        click.echo(f"📊 Líneas de Código: {metrics.get('total_lines_code', 0):,}")
-        click.echo(f"💡 Optimizaciones: {len(results.get('optimizations', []))}")
+        click.echo(f"📊 Lines of Code: {metrics.get('total_lines_code', 0):,}")
+        click.echo(f"💡 Optimizations: {len(results.get('optimizations', []))}")
         click.echo("-" * 40)
-        click.secho("✅ Análisis completado y contexto actualizado.", fg="green")
+        click.secho("✅ Analysis completed and context updated.", fg="green")
 
     except Exception as e:
-        click.secho(f"❌ Error durante el análisis: {e}", fg="red")
+        click.secho(f"❌ Error during analysis: {e}", fg="red")
         if os.environ.get("DEBUG"):
             raise e
         import sys
@@ -128,8 +128,8 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
 
 @cli.command()
 def profiles():
-    """Lista los perfiles de configuración disponibles."""
-    click.echo("Perfiles disponibles:")
+    """Lists available configuration profiles."""
+    click.echo("Available profiles:")
     for p in list_profiles():
         click.echo(f" - {p}")
 

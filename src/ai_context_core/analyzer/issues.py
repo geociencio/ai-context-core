@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Identifica deuda técnica con severidad."""
+    """Identifies technical debt with severity."""
     debt_items = []
 
     for module in modules_data:
@@ -14,22 +14,22 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
 
         issues = []
 
-        # Clasificar por severidad
+        # Classify by severity
         if complexity > 20:
             issues.append(
                 {
-                    "type": "alta_complejidad",
-                    "severity": "alta",
-                    "message": f"Complejidad ciclomática muy alta ({complexity})",
+                    "type": "high_complexity",
+                    "severity": "high",
+                    "message": f"Very high cyclomatic complexity ({complexity})",
                     "value": complexity,
                 }
             )
         elif complexity > 10:
             issues.append(
                 {
-                    "type": "complejidad_moderada",
-                    "severity": "media",
-                    "message": f"Complejidad ciclomática alta ({complexity})",
+                    "type": "moderate_complexity",
+                    "severity": "medium",
+                    "message": f"High cyclomatic complexity ({complexity})",
                     "value": complexity,
                 }
             )
@@ -37,18 +37,18 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
         if lines > 800:
             issues.append(
                 {
-                    "type": "archivo_muy_largo",
-                    "severity": "alta",
-                    "message": f"Archivo muy largo ({lines} líneas)",
+                    "type": "very_long_file",
+                    "severity": "high",
+                    "message": f"Very long file ({lines} lines)",
                     "value": lines,
                 }
             )
         elif lines > 500:
             issues.append(
                 {
-                    "type": "archivo_largo",
-                    "severity": "media",
-                    "message": f"Archivo largo ({lines} líneas)",
+                    "type": "long_file",
+                    "severity": "medium",
+                    "message": f"Long file ({lines} lines)",
                     "value": lines,
                 }
             )
@@ -56,13 +56,13 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
         if not docstrings.get("module", False):
             issues.append(
                 {
-                    "type": "sin_docstring_modulo",
-                    "severity": "baja",
-                    "message": "Falta docstring a nivel de módulo",
+                    "type": "missing_module_docstring",
+                    "severity": "low",
+                    "message": "Missing module-level docstring",
                 }
             )
 
-        # Verificar docstrings en clases y funciones
+        # Verify docstrings in classes and functions
         classes_without_doc = sum(
             1 for has_doc in docstrings.get("classes", {}).values() if not has_doc
         )
@@ -73,18 +73,18 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
         if classes_without_doc > 0:
             issues.append(
                 {
-                    "type": "clases_sin_docstring",
-                    "severity": "baja",
-                    "message": f"{classes_without_doc} clases sin docstring",
+                    "type": "classes_without_docstring",
+                    "severity": "low",
+                    "message": f"{classes_without_doc} classes without docstring",
                 }
             )
 
         if funcs_without_doc > 0:
             issues.append(
                 {
-                    "type": "funciones_sin_docstring",
-                    "severity": "baja",
-                    "message": f"{funcs_without_doc} funciones sin docstring",
+                    "type": "functions_without_docstring",
+                    "severity": "low",
+                    "message": f"{funcs_without_doc} functions without docstring",
                 }
             )
 
@@ -95,19 +95,19 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
                     "issues": issues,
                     "total_issues": len(issues),
                     "severity_score": sum(
-                        3 if i["severity"] == "alta" else 2 if i["severity"] == "media" else 1
+                        3 if i["severity"] == "high" else 2 if i["severity"] == "medium" else 1
                         for i in issues
                     ),
                 }
             )
 
-    # Ordenar por severidad
+    # Sort by severity
     debt_items.sort(key=lambda x: x["severity_score"], reverse=True)
-    return debt_items[:50]  # Limitar resultados
+    return debt_items[:50]  # Limit results
 
 
 def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Identifica oportunidades de optimización específicas."""
+    """Identifies specific optimization opportunities."""
     optimizations = []
 
     for module in modules_data:
@@ -119,63 +119,63 @@ def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any
 
         suggestions = []
 
-        # Optimizaciones basadas en imports
+        # Optimizations based on imports
         if len(imports) > 25:
             suggestions.append(
                 {
-                    "type": "imports_excesivos",
-                    "priority": "media",
-                    "message": f"Muchos imports ({len(imports)})",
+                    "type": "excessive_imports",
+                    "priority": "medium",
+                    "message": f"Too many imports ({len(imports)})",
                     "suggestions": [
-                        "Agrupar imports relacionados",
-                        "Usar imports locales dentro de funciones",
-                        "Eliminar imports no utilizados con herramientas como autoflake",
+                        "Group related imports",
+                        "Use local imports inside functions",
+                        "Remove unused imports with tools like autoflake",
                     ],
                 }
             )
 
-        # Optimizaciones de complejidad
+        # Complexity optimizations
         if complexity > 15 and len(functions) > 5:
             suggestions.append(
                 {
-                    "type": "refactorizacion_complejidad",
-                    "priority": "alta",
-                    "message": f"Alta complejidad ({complexity}) con {len(functions)} funciones",
+                    "type": "complexity_refactoring",
+                    "priority": "high",
+                    "message": f"High complexity ({complexity}) with {len(functions)} functions",
                     "suggestions": [
-                        "Extraer métodos de funciones largas",
-                        "Usar polimorfismo en lugar de if/else largos",
-                        "Aplicar principios SOLID",
-                        "Considerar usar patrones de diseño",
+                        "Extract methods from long functions",
+                        "Use polymorphism instead of long if/else chains",
+                        "Apply SOLID principles",
+                        "Consider using design patterns",
                     ],
                 }
             )
 
-        # Optimizaciones de tamaño
+        # Size optimizations
         if lines > 300:
             suggestions.append(
                 {
-                    "type": "modulo_demasiado_grande",
-                    "priority": "media",
-                    "message": f"Módulo muy grande ({lines} líneas)",
+                    "type": "module_too_large",
+                    "priority": "medium",
+                    "message": f"Very large module ({lines} lines)",
                     "suggestions": [
-                        "Dividir en múltiples módulos",
-                        "Agrupar funcionalidad relacionada en paquetes",
-                        "Extraer clases a módulos separados",
+                        "Split into multiple modules",
+                        "Group related functionality into packages",
+                        "Extract classes to separate modules",
                     ],
                 }
             )
 
-        # Detectar funciones demasiado largas
+        # Detect very long functions
         if functions and lines / len(functions) > 50:
             suggestions.append(
                 {
-                    "type": "funciones_demasiado_largas",
-                    "priority": "media",
-                    "message": f"Funciones muy largas (promedio {lines / len(functions):.1f} líneas/función)",
+                    "type": "functions_too_long",
+                    "priority": "medium",
+                    "message": f"Very long functions (average {lines / len(functions):.1f} lines/function)",
                     "suggestions": [
-                        "Refactorizar funciones > 50 líneas",
-                        "Extraer lógica común a funciones helper",
-                        "Usar comprehensions y generadores",
+                        "Refactor functions > 50 lines",
+                        "Extract common logic to helper functions",
+                        "Use comprehensions and generators",
                     ],
                 }
             )
@@ -185,17 +185,17 @@ def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any
                 {
                     "module": path,
                     "suggestions": suggestions,
-                    "priority": "alta" if complexity > 20 else "media",
+                    "priority": "high" if complexity > 20 else "medium",
                 }
             )
 
-    return optimizations[:30]  # Limitar resultados
+    return optimizations[:30]  # Limit results
 
 
 def find_security_issues(
     modules_data: List[Dict[str, Any]], project_path: str
 ) -> List[Dict[str, Any]]:
-    """Identifica posibles problemas de seguridad."""
+    """Identifies potential security issues."""
     security_issues = []
     base_path = Path(project_path)
     dangerous_patterns = _get_dangerous_patterns()
@@ -207,7 +207,7 @@ def find_security_issues(
 
         try:
             full_path = base_path / path
-            # Obfuscamos el uso de open para evitar que el analizador se auto-detecte
+            # Obfuscate open usage to prevent self-detection
             reader = (
                 getattr(__builtins__, "op" + "en") if hasattr(__builtins__, "op" + "en") else open
             )
@@ -224,53 +224,53 @@ def find_security_issues(
                         "total_issues": len(issues_found),
                         "max_severity": max(
                             (i["severity"] for i in issues_found),
-                            key=lambda x: {"alta": 3, "media": 2, "baja": 1}[x],
+                            key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
                         ),
                     }
                 )
 
         except Exception:
-            # Ignorar errores de lectura
+            # Ignore read errors
             continue
 
-    # Ordenar por severidad
+    # Sort by severity
     security_issues.sort(
-        key=lambda x: {"alta": 3, "media": 2, "baja": 1}[x["max_severity"]], reverse=True
+        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x["max_severity"]], reverse=True
     )
-    return security_issues[:20]  # Limitar resultados
+    return security_issues[:20]  # Limit results
 
 
 def _get_dangerous_patterns() -> List[Tuple[str, str, str]]:
-    """Devuelve patrones peligrosos."""
-    # Construir patrones dinámicamente para evitar falsos positivos en este mismo archivo
-    # Usamos concatenación para que la búsqueda literal no encuentre estos strings
+    """Returns dangerous patterns."""
+    # Construct patterns dynamically to avoid self-detection in this file
+    # We use concatenation so literal searches don't find these strings
     return [
-        ("ex" + "ec(", f"Uso de {'ex' + 'ec'}() - Vulnerable a inyección de código", "alta"),
-        ("ev" + "al(", f"Uso de {'ev' + 'al'}() - Vulnerable a inyección de código", "alta"),
+        ("ex" + "ec(", f"Use of {'ex' + 'ec'}() - Vulnerable to code injection", "high"),
+        ("ev" + "al(", f"Use of {'ev' + 'al'}() - Vulnerable to code injection", "high"),
         (
             "pic" + "kle.loads",
-            f"Deserialización insegura - Puede ejecutar código {'arbitrario'}",
-            "alta",
+            f"Insecure deserialization - Can execute {'arbitrary'} code",
+            "high",
         ),
-        ("subpro" + "cess.ca" + "ll(", "Ejecución de shell sin sanitizar", "alta"),
-        ("subpro" + "cess.Po" + "pen(", "Ejecución de shell sin sanitizar", "alta"),
-        ("os" + ".sys" + "tem(", "Ejecución de comandos del sistema", "alta"),
-        ("inp" + "ut()", "Entrada de usuario sin validar", "media"),
-        ("op" + "en(", f"Apertura de archivos sin validar {'ruta'}", "media"),
-        ("ya" + "ml.load(", f"Carga de {'YA' + 'ML'} insegura (usar safe_load)", "alta"),
-        ("mar" + "shal.loads", "Deserialización insegura", "alta"),
-        ("sql" + "ite3.execute(", f"Posible inyección {'S' + 'QL'}", "alta"),
-        ("fla" + "sk.request.args.get", "Parámetros GET sin validar", "media"),
-        ("dja" + "ngo.forms.CharField", "Validación insuficiente", "media"),
-        ("m" + "d5(", "Uso de hash inseguro", "media"),
-        ("sh" + "a1(", "Uso de hash inseguro", "media"),
+        ("subpro" + "cess.ca" + "ll(", "Unsanitized shell execution", "high"),
+        ("subpro" + "cess.Po" + "pen(", "Unsanitized shell execution", "high"),
+        ("os" + ".sys" + "tem(", "System command execution", "high"),
+        ("inp" + "ut()", "Unvalidated user input", "medium"),
+        ("op" + "en(", f"File opening without {'path'} validation", "medium"),
+        ("ya" + "ml.load(", f"Insecure {'YA' + 'ML'} load (use safe_load)", "high"),
+        ("mar" + "shal.loads", "Insecure deserialization", "high"),
+        ("sql" + "ite3.execute(", f"Possible {'S' + 'QL'} injection", "high"),
+        ("fla" + "sk.request.args.get", "Unvalidated GET parameters", "medium"),
+        ("dja" + "ngo.forms.CharField", "Insufficient validation", "medium"),
+        ("m" + "d5(", "Insecure hash usage", "medium"),
+        ("sh" + "a1(", "Insecure hash usage", "medium"),
     ]
 
 
 def _scan_file_for_issues(
     content: str, patterns: List[Tuple[str, str, str]]
 ) -> List[Dict[str, Any]]:
-    """Escanea contenido en busca de patrones peligrosos."""
+    """Scans content for dangerous patterns."""
     issues_found = []
     lines = content.split("\n")
 
@@ -278,7 +278,7 @@ def _scan_file_for_issues(
         if pattern in content:
             for i, line in enumerate(lines, 1):
                 stripped = line.strip()
-                # Heurística simple: ignorar comentarios y líneas que parecen definiciones de la propia lista
+                # Simple heuristic: ignore comments and lines that look like our own list definitions
                 if pattern in line and not stripped.startswith("#") and '"+"' not in stripped:
                     issues_found.append(
                         {
@@ -289,5 +289,6 @@ def _scan_file_for_issues(
                             "code": stripped[:120],
                         }
                     )
-                    break  # Solo primera ocurrencia por patrón
+                    break  # Only first occurrence per pattern
     return issues_found
+

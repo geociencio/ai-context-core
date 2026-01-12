@@ -1,30 +1,30 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1768185579.0826788,
+  "timestamp": 1768185980.7452323,
   "metrics": {
-    "total_size_kb": 69.3,
-    "total_lines_code": 2064,
-    "avg_module_size_kb": 5.78,
-    "avg_lines_per_module": 172.0,
+    "total_size_kb": 67.88,
+    "total_lines_code": 2050,
+    "avg_module_size_kb": 6.17,
+    "avg_lines_per_module": 186.36,
     "modules_with_docstrings": 1,
     "modules_with_main_guard": 1,
     "modules_with_syntax_errors": 0,
-    "docstring_coverage": 8.33,
-    "type_hint_coverage": 80.42,
+    "docstring_coverage": 9.09,
+    "type_hint_coverage": 78.64,
     "i18n_coverage": 100.0,
     "entry_points_count": 1,
     "test_files_count": 4,
-    "avg_complexity": 32.08,
+    "avg_complexity": 34.82,
     "max_complexity": 61,
-    "quality_score": 47.5
+    "quality_score": 45.9
   },
   "structure": {
-    "tree": "./\n    .gitignore\n    AI_CONTEXT.md\n    CHANGELOG.md\n    PROJECT_SUMMARY.md\n    README.md\n    debug_issues.py\n    project_context.json\n    ... (+1 más)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                issues.py\n                metrics.py\n                reporting.py\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    cierra-sesion.md\n                    crea-el-comit.md\n                    create-commit.md\n                    end-session.md\n                    inicia-sesion.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        development/\n            ARCHITECTURE.md\n            CONTRIBUTING.md\n        releases/\n            github/\n            notes/\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n    tests/\n        __init__.py\n        test_ast_utils.py\n        test_fs_utils.py\n        test_issues.py",
-    "modules_count": 12,
+    "tree": "./\n    .gitignore\n    AI_CONTEXT.md\n    CHANGELOG.md\n    PROJECT_SUMMARY.md\n    README.md\n    project_context.json\n    pyproject.toml\n    uv.lock\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                issues.py\n                metrics.py\n                reporting.py\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        development/\n            ARCHITECTURE.md\n            CONTRIBUTING.md\n        releases/\n            github/\n            notes/\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n    tests/\n        __init__.py\n        test_ast_utils.py\n        test_fs_utils.py\n        test_issues.py",
+    "modules_count": 11,
     "file_types": {
-      ".py": 541,
+      ".py": 540,
       ".pyc": 45,
-      ".md": 23,
+      ".md": 20,
       ".sample": 14,
       ".txt": 11,
       ".json": 4,
@@ -44,22 +44,22 @@
       ".so": 1
     },
     "size_stats": {
-      "total_files": 58,
-      "total_size_mb": 0.24,
-      "python_files": 16,
+      "total_files": 54,
+      "total_size_mb": 0.23,
+      "python_files": 15,
       "python_size_mb": 0.07,
-      "avg_file_size_kb": 4.23,
-      "python_percentage": 29.65
+      "avg_file_size_kb": 4.45,
+      "python_percentage": 29.67
     }
   },
   "complexity": {
-    "total_modules": 12,
-    "total_lines": 2064,
+    "total_modules": 11,
+    "total_lines": 2050,
     "total_functions": 67,
     "total_classes": 4,
-    "average_complexity": 32.08,
+    "average_complexity": 34.82,
     "complexity_distribution": {
-      "low (0-5)": 2,
+      "low (0-5)": 1,
       "medium (6-15)": 1,
       "high (16-30)": 3,
       "very_high (31+)": 6
@@ -107,7 +107,6 @@
       "typing.Tuple"
     ],
     "third_party": [
-      "ai_context_core.analyzer.issues",
       "analyzer.engine.ProjectAnalyzer",
       "ast",
       "ast_utils",
@@ -131,25 +130,24 @@
     },
     "import_graph": {
       "src/ai_context_core/__init__.py": [],
-      "debug_issues.py": [],
       "src/ai_context_core/cli.py": [],
       "src/ai_context_core/analyzer/dependencies.py": [],
-      "src/ai_context_core/analyzer/metrics.py": [],
       "src/ai_context_core/config/loader.py": [],
-      "src/ai_context_core/analyzer/ast_utils.py": [],
       "src/ai_context_core/analyzer/engine.py": [],
+      "src/ai_context_core/analyzer/metrics.py": [],
       "src/ai_context_core/analyzer/issues.py": [],
+      "src/ai_context_core/analyzer/ast_utils.py": [],
       "src/ai_context_core/analyzer/fs_utils.py": [],
-      "src/ai_context_core/context/manager.py": [],
-      "src/ai_context_core/analyzer/reporting.py": []
+      "src/ai_context_core/analyzer/reporting.py": [],
+      "src/ai_context_core/context/manager.py": []
     },
     "circular_dependencies": [],
     "graph_metrics": {
-      "nodes": 12,
+      "nodes": 11,
       "edges": 0,
       "density": 0.0,
       "is_dag": true,
-      "weakly_connected_components": 12
+      "weakly_connected_components": 11
     }
   },
   "debt": [
@@ -157,20 +155,20 @@
       "module": "src/ai_context_core/analyzer/dependencies.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (53)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (53)",
           "value": 53
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         },
         {
-          "type": "funciones_sin_docstring",
-          "severity": "baja",
-          "message": "1 funciones sin docstring"
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "1 functions without docstring"
         }
       ],
       "total_issues": 3,
@@ -180,20 +178,20 @@
       "module": "src/ai_context_core/analyzer/engine.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (21)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (21)",
           "value": 21
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         },
         {
-          "type": "funciones_sin_docstring",
-          "severity": "baja",
-          "message": "1 funciones sin docstring"
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "1 functions without docstring"
         }
       ],
       "total_issues": 3,
@@ -203,20 +201,20 @@
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (61)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (61)",
           "value": 61
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         },
         {
-          "type": "funciones_sin_docstring",
-          "severity": "baja",
-          "message": "7 funciones sin docstring"
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "7 functions without docstring"
         }
       ],
       "total_issues": 3,
@@ -226,79 +224,61 @@
       "module": "src/ai_context_core/context/manager.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (33)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (33)",
           "value": 33
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         },
         {
-          "type": "funciones_sin_docstring",
-          "severity": "baja",
-          "message": "1 funciones sin docstring"
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "1 functions without docstring"
         }
       ],
       "total_issues": 3,
       "severity_score": 5
     },
     {
-      "module": "src/ai_context_core/analyzer/metrics.py",
-      "issues": [
-        {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (30)",
-          "value": 30
-        },
-        {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
-        }
-      ],
-      "total_issues": 2,
-      "severity_score": 4
-    },
-    {
       "module": "src/ai_context_core/config/loader.py",
       "issues": [
         {
-          "type": "complejidad_moderada",
-          "severity": "media",
-          "message": "Complejidad ciclomática alta (14)",
+          "type": "moderate_complexity",
+          "severity": "medium",
+          "message": "High cyclomatic complexity (14)",
           "value": 14
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         },
         {
-          "type": "funciones_sin_docstring",
-          "severity": "baja",
-          "message": "1 funciones sin docstring"
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "1 functions without docstring"
         }
       ],
       "total_issues": 3,
       "severity_score": 4
     },
     {
-      "module": "src/ai_context_core/analyzer/ast_utils.py",
+      "module": "src/ai_context_core/analyzer/metrics.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (61)",
-          "value": 61
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (30)",
+          "value": 30
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         }
       ],
       "total_issues": 2,
@@ -308,15 +288,33 @@
       "module": "src/ai_context_core/analyzer/issues.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (39)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (39)",
           "value": 39
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
+        }
+      ],
+      "total_issues": 2,
+      "severity_score": 4
+    },
+    {
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (61)",
+          "value": 61
+        },
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         }
       ],
       "total_issues": 2,
@@ -326,15 +324,15 @@
       "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
-          "type": "alta_complejidad",
-          "severity": "alta",
-          "message": "Complejidad ciclomática muy alta (51)",
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (51)",
           "value": 51
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         }
       ],
       "total_issues": 2,
@@ -344,116 +342,104 @@
       "module": "src/ai_context_core/cli.py",
       "issues": [
         {
-          "type": "complejidad_moderada",
-          "severity": "media",
-          "message": "Complejidad ciclomática alta (20)",
+          "type": "moderate_complexity",
+          "severity": "medium",
+          "message": "High cyclomatic complexity (20)",
           "value": 20
         },
         {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
         }
       ],
       "total_issues": 2,
       "severity_score": 3
-    },
-    {
-      "module": "debug_issues.py",
-      "issues": [
-        {
-          "type": "sin_docstring_modulo",
-          "severity": "baja",
-          "message": "Falta docstring a nivel de módulo"
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 1
     }
   ],
   "optimizations": [
     {
-      "module": "src/ai_context_core/analyzer/ast_utils.py",
-      "suggestions": [
-        {
-          "type": "refactorizacion_complejidad",
-          "priority": "alta",
-          "message": "Alta complejidad (61) con 10 funciones",
-          "suggestions": [
-            "Extraer métodos de funciones largas",
-            "Usar polimorfismo en lugar de if/else largos",
-            "Aplicar principios SOLID",
-            "Considerar usar patrones de diseño"
-          ]
-        }
-      ],
-      "priority": "alta"
-    },
-    {
       "module": "src/ai_context_core/analyzer/issues.py",
       "suggestions": [
         {
-          "type": "funciones_demasiado_largas",
-          "priority": "media",
-          "message": "Funciones muy largas (promedio 58.6 líneas/función)",
+          "type": "functions_too_long",
+          "priority": "medium",
+          "message": "Very long functions (average 58.8 lines/function)",
           "suggestions": [
-            "Refactorizar funciones > 50 líneas",
-            "Extraer lógica común a funciones helper",
-            "Usar comprehensions y generadores"
+            "Refactor functions > 50 lines",
+            "Extract common logic to helper functions",
+            "Use comprehensions and generators"
           ]
         }
       ],
-      "priority": "alta"
+      "priority": "high"
+    },
+    {
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (61) with 10 functions",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles",
+            "Consider using design patterns"
+          ]
+        }
+      ],
+      "priority": "high"
     },
     {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "suggestions": [
         {
-          "type": "refactorizacion_complejidad",
-          "priority": "alta",
-          "message": "Alta complejidad (61) con 15 funciones",
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (61) with 15 functions",
           "suggestions": [
-            "Extraer métodos de funciones largas",
-            "Usar polimorfismo en lugar de if/else largos",
-            "Aplicar principios SOLID",
-            "Considerar usar patrones de diseño"
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles",
+            "Consider using design patterns"
           ]
         }
       ],
-      "priority": "alta"
-    },
-    {
-      "module": "src/ai_context_core/context/manager.py",
-      "suggestions": [
-        {
-          "type": "refactorizacion_complejidad",
-          "priority": "alta",
-          "message": "Alta complejidad (33) con 12 funciones",
-          "suggestions": [
-            "Extraer métodos de funciones largas",
-            "Usar polimorfismo en lugar de if/else largos",
-            "Aplicar principios SOLID",
-            "Considerar usar patrones de diseño"
-          ]
-        }
-      ],
-      "priority": "alta"
+      "priority": "high"
     },
     {
       "module": "src/ai_context_core/analyzer/reporting.py",
       "suggestions": [
         {
-          "type": "funciones_demasiado_largas",
-          "priority": "media",
-          "message": "Funciones muy largas (promedio 78.7 líneas/función)",
+          "type": "functions_too_long",
+          "priority": "medium",
+          "message": "Very long functions (average 79.0 lines/function)",
           "suggestions": [
-            "Refactorizar funciones > 50 líneas",
-            "Extraer lógica común a funciones helper",
-            "Usar comprehensions y generadores"
+            "Refactor functions > 50 lines",
+            "Extract common logic to helper functions",
+            "Use comprehensions and generators"
           ]
         }
       ],
-      "priority": "alta"
+      "priority": "high"
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (33) with 12 functions",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles",
+            "Consider using design patterns"
+          ]
+        }
+      ],
+      "priority": "high"
     }
   ],
   "security": [
@@ -462,56 +448,56 @@
       "issues": [
         {
           "pattern": "open(",
-          "description": "Apertura de archivos sin validar ruta",
-          "severity": "media",
+          "description": "File opening without path validation",
+          "severity": "medium",
           "line": 150,
           "code": "with open(self.project_path / \"project_context.json\", \"w\", encoding=\"utf-8\") as f:"
         }
       ],
       "total_issues": 1,
-      "max_severity": "media"
+      "max_severity": "medium"
     },
     {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
           "pattern": "open(",
-          "description": "Apertura de archivos sin validar ruta",
-          "severity": "media",
+          "description": "File opening without path validation",
+          "severity": "medium",
           "line": 43,
           "code": "with open(path, \"rb\") as f:"
         }
       ],
       "total_issues": 1,
-      "max_severity": "media"
-    },
-    {
-      "module": "src/ai_context_core/context/manager.py",
-      "issues": [
-        {
-          "pattern": "open(",
-          "description": "Apertura de archivos sin validar ruta",
-          "severity": "media",
-          "line": 215,
-          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "media"
+      "max_severity": "medium"
     },
     {
       "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
           "pattern": "open(",
-          "description": "Apertura de archivos sin validar ruta",
-          "severity": "media",
+          "description": "File opening without path validation",
+          "severity": "medium",
           "line": 130,
           "code": "with open(output_path, \"w\", encoding=\"utf-8\") as f:"
         }
       ],
       "total_issues": 1,
-      "max_severity": "media"
+      "max_severity": "medium"
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "pattern": "open(",
+          "description": "File opening without path validation",
+          "severity": "medium",
+          "line": 215,
+          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "medium"
     }
   ],
   "entry_points": [

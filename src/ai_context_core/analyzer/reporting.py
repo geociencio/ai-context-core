@@ -25,107 +25,107 @@ def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
 def generate_project_summary(
     analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
 ) -> None:
-    """Genera resumen ejecutivo del proyecto."""
+    """Generates an executive summary of the project."""
     structure = analyses.get("structure", {})
     complexity = analyses.get("complexity", {})
     metrics = analyses.get("metrics", {})
     dependencies = analyses.get("dependencies", {})
 
-    summary_content = f"""# RESUMEN DEL PROYECTO - {project_name}
-Fecha de análisis: {time.strftime("%Y-%m-%d %H:%M:%S")}
-Versión del analizador: 2.0 (Ai-Context-Core)
+    summary_content = f"""# PROJECT SUMMARY - {project_name}
+Analysis Date: {time.strftime("%Y-%m-%d %H:%M:%S")}
+Analyzer Version: 2.0 (Ai-Context-Core)
 
-## 📊 MÉTRICAS CLAVE
-- **Total módulos**: {complexity.get("total_modules", 0):,}
-- **Líneas de código**: {complexity.get("total_lines", 0):,}
-- **Tamaño total**: {structure.get("size_stats", {}).get("total_size_mb", 0):.1f} MB
-- **Complejidad promedio**: {complexity.get("average_complexity", 0):.1f}
-- **Cobertura de docstrings**: {metrics.get("docstring_coverage", 0):.1f}%
-- **Score de calidad**: {metrics.get("quality_score", 0):.1f}/100
-- **Archivos de test**: {metrics.get("test_files_count", 0)}
+## 📊 KEY METRICS
+- **Total Modules**: {complexity.get("total_modules", 0):,}
+- **Lines of Code**: {complexity.get("total_lines", 0):,}
+- **Total Size**: {structure.get("size_stats", {}).get("total_size_mb", 0):.1f} MB
+- **Average Complexity**: {complexity.get("average_complexity", 0):.1f}
+- **Docstring Coverage**: {metrics.get("docstring_coverage", 0):.1f}%
+- **Quality Score**: {metrics.get("quality_score", 0):.1f}/100
+- **Test Files**: {metrics.get("test_files_count", 0)}
 
-## 📁 ESTRUCTURA
-- **Archivos Python**: {structure.get("size_stats", {}).get("python_files", 0)}
-- **Total archivos**: {structure.get("size_stats", {}).get("total_files", 0)}
-- **Tipo de archivos principales**: {", ".join(list(structure.get("file_types", {}).keys())[:5])}
+## 📁 STRUCTURE
+- **Python Files**: {structure.get("size_stats", {}).get("python_files", 0)}
+- **Total Files**: {structure.get("size_stats", {}).get("total_files", 0)}
+- **Primary File Types**: {", ".join(list(structure.get("file_types", {}).keys())[:5])}
 
-## 🚨 PROBLEMAS CRÍTICOS
+## 🚨 CRITICAL ISSUES
 """
 
-    # Agregar problemas de seguridad
+    # Add security issues
     security = analyses.get("security", [])
     if security:
-        summary_content += "\n### 🔒 Problemas de Seguridad:\n"
+        summary_content += "\n### 🔒 Security Issues:\n"
         high_security = [s for s in security if s.get("max_severity") == "alta"]
         for item in high_security[:3]:
             summary_content += (
-                f"- **{item['module']}**: {item['total_issues']} problemas críticos\n"
+                f"- **{item['module']}**: {item['total_issues']} critical issues\n"
             )
 
-    # Agregar deuda técnica
+    # Add technical debt
     debt = analyses.get("debt", [])
     if debt:
-        summary_content += "\n### 🏗️ Deuda Técnica Crítica:\n"
+        summary_content += "\n### 🏗️ Critical Technical Debt:\n"
         high_debt = [d for d in debt if d.get("severity_score", 0) >= 5]
         for item in high_debt[:5]:
             summary_content += f"- **{item['module']}**: {item['total_issues']} issues (score: {item['severity_score']})\n"
 
-    # Agregar dependencias circulares
+    # Add circular dependencies
     circular = dependencies.get("circular_dependencies", [])
     if circular:
-        summary_content += "\n### 🔄 Dependencias Circulares:\n"
+        summary_content += "\n### 🔄 Circular Dependencies:\n"
         for cycle in circular[:3]:
             summary_content += f"- {cycle}\n"
 
-    # Agregar cumplimiento QGIS
+    # Add QGIS compliance
     qgis = analyses.get("qgis_compliance", {})
     if qgis:
-        summary_content += "\n## 📦 ESTÁNDARES DE PLUGIN QGIS\n"
+        summary_content += "\n## 📦 QGIS PLUGIN STANDARDS\n"
         summary_content += (
-            f"- **Score de Cumplimiento**: {qgis.get('compliance_score', 0):.1f}/100\n"
+            f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100\n"
         )
 
-        # Archivos faltantes
+        # Missing files
         mandatory = qgis.get("mandatory_files", {})
         missing = [f for f, exists in mandatory.get("files", {}).items() if not exists]
         if missing:
-            summary_content += f"- ❌ **Archivos faltantes**: {', '.join(missing)}\n"
+            summary_content += f"- ❌ **Missing Files**: {', '.join(missing)}\n"
 
-        # Violaciones de arquitectura
+        # Architecture violations
         arch = qgis.get("architecture", {})
         if arch.get("violations"):
             violations = arch["violations"]
             summary_content += (
-                f"- ⚠️ **Arquitectura**: {len(violations)} violaciones detectadas (mezcla UI/Core)\n"
+                f"- ⚠️ **Architecture**: {len(violations)} violations detected (UI/Core mix)\n"
             )
             for v in violations[:2]:
                 summary_content += f"  - {v['file']}: {v['type']}\n"
 
-        # Recomendaciones de widgets
+        # Widget recommendations
         widgets = qgis.get("widgets", {})
         if widgets.get("recommendations"):
-            summary_content += f"- 💡 **Mejora UI**: {len(widgets['recommendations'])} componentes genéricos podrían ser widgets de QGIS\n"
+            summary_content += f"- 💡 **UI Enhancement**: {len(widgets['recommendations'])} generic components could be QGIS widgets\n"
 
         # Performance
         perf = qgis.get("performance", {})
         if perf.get("issues"):
-            summary_content += f"- ⚡ **Optimización**: {len(perf['issues'])} patrones de rendimiento PyQGIS detectados\n"
+            summary_content += f"- ⚡ **Optimization**: {len(perf['issues'])} PyQGIS performance patterns detected\n"
 
-    # Agregar recomendaciones
+    # Add recommendations
     optimizations = analyses.get("optimizations", [])
     if optimizations:
-        summary_content += "\n## 💡 RECOMENDACIONES PRINCIPALES\n"
+        summary_content += "\n## 💡 MAIN RECOMMENDATIONS\n"
         high_priority = [o for o in optimizations if o.get("priority") == "alta"]
         for opt in high_priority[:3]:
             summary_content += f"\n### {opt['module']}\n"
             for suggestion in opt["suggestions"][:2]:
                 summary_content += f"- {suggestion['message']}\n"
 
-    summary_content += "\n## 📈 DISTRIBUCIÓN DE COMPLEJIDAD\n"
+    summary_content += "\n## 📈 COMPLEXITY DISTRIBUTION\n"
     dist = complexity.get("complexity_distribution", {})
     for key, value in dist.items():
         percentage = (value / complexity.get("total_modules", 1)) * 100
-        summary_content += f"- {key}: {value} módulos ({percentage:.1f}%)\n"
+        summary_content += f"- {key}: {value} modules ({percentage:.1f}%)\n"
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(summary_content)
@@ -134,103 +134,104 @@ Versión del analizador: 2.0 (Ai-Context-Core)
 def generate_ai_context(
     analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
 ) -> None:
-    """Genera contexto optimizado para IA."""
+    """Generates optimized context for AI."""
     structure = analyses.get("structure", {})
     entry_points = analyses.get("entry_points", [])
     patterns = analyses.get("patterns", {})
     complexity = analyses.get("complexity", {})
     dependencies = analyses.get("dependencies", {})
 
-    extra_eps = f"\n... y {len(entry_points) - 10} más" if len(entry_points) > 10 else ""
-    context_content = f"""# CONTEXTO PARA IA - {project_name}
-Generado automáticamente por Ai-Context-Core
-## 📁 ESTRUCTURA DEL PROYECTO
+    extra_eps = f"\n... and {len(entry_points) - 10} more" if len(entry_points) > 10 else ""
+    context_content = f"""# AI CONTEXT - {project_name}
+Automatically generated by Ai-Context-Core
+## 📁 PROJECT STRUCTURE
 
-{structure.get("tree", "No disponible")[:1200]}
+{structure.get("tree", "Not available")[:1200]}
 
 
-## 🎯 PUNTOS DE ENTRADA
+## 🎯 ENTRY POINTS
 {chr(10).join(f"- `{ep}`" for ep in entry_points[:10])}
 {extra_eps}
 
-## 🏗️ PATRONES DETECTADOS
+## 🏗️ DETECTED PATTERNS
 """
 
-    # Listar patrones encontrados
+    # List patterns found
     detected_patterns = []
     for pattern_name, pattern_data in patterns.items():
         if isinstance(pattern_data, dict) and pattern_data.get("detected"):
             confidence = pattern_data.get("confidence", 0)
             detected_patterns.append(
-                f"- **{pattern_name.upper()}**: Detectado (confianza: {confidence:.0%})"
+                f"- **{pattern_name.upper()}**: Detected (confidence: {confidence:.0%})"
             )
 
     if detected_patterns:
         context_content += "\n".join(detected_patterns)
     else:
-        context_content += "\nNo se detectaron patrones de diseño claros."
+        context_content += "\nNo clear design patterns detected."
 
     context_content += f"""
-## 📈 COMPLEJIDAD Y MÉTRICAS
-- **Módulos totales**: {complexity.get("total_modules", 0)}
-- **Líneas de código**: {complexity.get("total_lines", 0):,}
-- **Funciones**: {complexity.get("total_functions", 0)}
-- **Clases**: {complexity.get("total_classes", 0)}
-- **Complejidad promedio**: {complexity.get("average_complexity", 0):.1f}
-- **Módulos más complejos**: {", ".join([m[0] for m in complexity.get("most_complex_modules", [])[:3]])}
+## 📈 COMPLEXITY AND METRICS
+- **Total Modules**: {complexity.get("total_modules", 0)}
+- **Lines of Code**: {complexity.get("total_lines", 0):,}
+- **Functions**: {complexity.get("total_functions", 0)}
+- **Classes**: {complexity.get("total_classes", 0)}
+- **Average Complexity**: {complexity.get("average_complexity", 0):.1f}
+- **Most Complex Modules**: {", ".join([m[0] for m in complexity.get("most_complex_modules", [])[:3]])}
 
-## 🔗 DEPENDENCIAS PRINCIPALES
+## 🔗 PRIMARY DEPENDENCIES
 """
 
-    # Agregar dependencias principales
+    # Add primary dependencies
     third_party = dependencies.get("third_party", [])
     if third_party:
-        # Agrupar por paquete base
+        # Group by base package
         base_packages = {}
         for dep in third_party:
             base = dep.split(".")[0]
             base_packages[base] = base_packages.get(base, 0) + 1
 
-        context_content += "\n### Third Party (más frecuentes):\n"
+        context_content += "\n### Third Party (most frequent):\n"
         for package, count in sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[:15]:
             context_content += f"- `{package}` ({count} imports)\n"
 
-    # Agregar recomendaciones principales
+    # Add main recommendations
     optimizations = analyses.get("optimizations", [])
     if optimizations:
-        context_content += "\n## 💡 RECOMENDACIONES DE OPTIMIZACIÓN\n"
+        context_content += "\n## 💡 OPTIMIZATION RECOMMENDATIONS\n"
         for opt in optimizations[:5]:
-            context_content += f"\n### {opt['module']} (Prioridad: {opt['priority'].upper()})\n"
+            context_content += f"\n### {opt['module']} (Priority: {opt['priority'].upper()})\n"
             for suggestion in opt["suggestions"][:2]:
                 context_content += f"- **{suggestion['type']}**: {suggestion['message']}\n"
 
-    # Agregar estructura de dependencias
+    # Add dependency structure
     graph_metrics = dependencies.get("graph_metrics", {})
     if graph_metrics:
         context_content += f"""
-## 🕸️  ESTRUCTURA DE DEPENDENCIAS
-- **Nodos**: {graph_metrics.get("nodes", 0)}
-- **Aristas**: {graph_metrics.get("edges", 0)}
-- **Densidad**: {graph_metrics.get("density", 0):.3f}
-- **Grafo acíclico**: {"Sí" if graph_metrics.get("is_dag", False) else "No"}
-- **Componentes conectados**: {graph_metrics.get("weakly_connected_components", 0)}
+## 🕸️  DEPENDENCY STRUCTURE
+- **Nodes**: {graph_metrics.get("nodes", 0)}
+- **Edges**: {graph_metrics.get("edges", 0)}
+- **Density**: {graph_metrics.get("density", 0):.3f}
+- **Acyclic Graph**: {"Yes" if graph_metrics.get("is_dag", False) else "No"}
+- **Connected Components**: {graph_metrics.get("weakly_connected_components", 0)}
 
-## 🕸️ DIAGRAMA DE DEPENDENCIAS (Conceptuall)
+## 🕸️ DEPENDENCY DIAGRAM (Conceptual)
 ```mermaid
 {generate_mermaid_graph(dependencies)}
 ```
 
-## 🔑 PALABRAS CLAVE DEL PROYECTO
+## 🔑 PROJECT KEYWORDS
 """
-    # Por ahora, un resumen de los tipos de archivos y patterns detectados
+    # Summary of file types and detected patterns
     context_content += (
-        "- **Tecnologías**: " + ", ".join(list(structure.get("file_types", {}).keys())[:8]) + "\n"
+        "- **Technologies**: " + ", ".join(list(structure.get("file_types", {}).keys())[:8]) + "\n"
     )
     context_content += (
-        "- **Patrones**: "
+        "- **Patterns**: "
         + ", ".join([p for p, d in patterns.items() if isinstance(d, dict) and d.get("detected")])
         + "\n"
     )
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(context_content)
+

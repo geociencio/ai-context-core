@@ -5,14 +5,14 @@ from typing import Dict, Any, List
 
 
 class AIContextManager:
-    """Gestiona contexto optimizado para diferentes IAs."""
+    """Manages optimized context for different AIs."""
 
     def __init__(self, project_path: str):
         self.project_path = Path(project_path)
         self.contexts = self._load_contexts()
 
     def _load_contexts(self) -> Dict[str, Any]:
-        """Carga contextos existentes."""
+        """Loads existing contexts."""
         contexts = {}
         context_files = ["project_context.json", "AI_CONTEXT.md", ".ai-context.yaml"]
 
@@ -24,7 +24,7 @@ class AIContextManager:
         return contexts
 
     def _load_file(self, path: Path) -> Any:
-        """Carga el contenido de un archivo según su extensión."""
+        """Loads file content based on its extension."""
         try:
             if path.suffix == ".json":
                 return json.loads(path.read_text(encoding="utf-8"))
@@ -33,17 +33,17 @@ class AIContextManager:
             else:
                 return path.read_text(encoding="utf-8")
         except Exception as e:
-            print(f"⚠️ Error cargando {path}: {e}")
+            print(f"⚠️ Error loading {path}: {e}")
             return ""
 
     def create_optimized_prompt(
         self, task: str, ai_model: str = "deepseek-coder", max_tokens: int = 4000
     ) -> str:
-        """Crea prompt optimizado para la tarea específica."""
-        # Contexto base del proyecto
+        """Creates optimized prompt for the specific task."""
+        # Project base context
         base_context = self._extract_relevant_context(task)
 
-        # Optimizar según modelo de IA
+        # Optimize based on AI model
         if "deepseek" in ai_model.lower():
             prompt_template = self._deepseek_template()
         elif "gpt" in ai_model.lower():
@@ -53,7 +53,7 @@ class AIContextManager:
         else:
             prompt_template = self._generic_template()
 
-        # Ensamblar prompt final
+        # Assemble final prompt
         full_prompt = prompt_template.format(
             task=task,
             context=base_context[: max_tokens // 2],
@@ -63,51 +63,51 @@ class AIContextManager:
         return self._truncate_to_tokens(full_prompt, max_tokens)
 
     def _deepseek_template(self) -> str:
-        """Template optimizado para DeepSeek."""
-        return """Eres un experto en Python analizando el proyecto: {project_name}
+        """Optimized template for DeepSeek."""
+        return """You are a Python expert analyzing the project: {project_name}
 
-## CONTEXTO DEL PROYECTO:
+## PROJECT CONTEXT:
 {context}
 
-## TAREA ASIGNADA:
+## ASSIGNED TASK:
 {task}
 
-## INSTRUCCIONES ESPECÍFICAS PARA DEEPSEEK:
-1. Enfócate en código práctico y eficiente
-2. Sugiere optimizaciones de performance
-3. Mantén compatibilidad con Python 3.8+
-4. Incluye ejemplos de código específicos
-5. Prioriza soluciones con bibliotecas estándar
+## SPECIFIC INSTRUCTIONS FOR DEEPSEEK:
+1. Focus on practical and efficient code
+2. Suggest performance optimizations
+3. Maintain compatibility with Python 3.8+
+4. Include specific code examples
+5. Prioritize solutions with standard libraries
 
-## FORMATO DE RESPUESTA:
+## RESPONSE FORMAT:
 ```analysis
-[Análisis breve del problema]
+[Brief analysis of the problem]
 suggestions
-[Lista numerada de sugerencias]
+[Numbered list of suggestions]
 code_examples
-[Código de ejemplo si aplica]
+[Example code if applicable]
 next_steps
-[Próximos pasos recomendados]
+[Recommended next steps]
 ```"""
 
     def _chatgpt_template(self) -> str:
-        """Template optimizado para ChatGPT."""
-        return """Actúa como un Senior Python Developer experto en el proyecto {project_name}.
+        """Optimized template for ChatGPT."""
+        return """Act as a Senior Python Developer expert in project {project_name}.
 
-CONTEXTO RELEVANTE:
+RELEVANT CONTEXT:
 {context}
 
-TU TAREA:
+YOUR TASK:
 {task}
 
 GUIDELINES:
-- Sé conciso y directo.
-- Si sugieres cambios, explica el 'por qué'.
-- Usa formato markdown para código.
+- Be concise and direct.
+- If you suggest changes, explain 'why'.
+- Use markdown format for code.
 """
 
     def _claude_template(self) -> str:
-        """Template optimizado para Claude."""
+        """Optimized template for Claude."""
         return """System: You are an expert software architect analyzing {project_name}.
 
 Context:
@@ -120,76 +120,76 @@ Please provide a detailed analysis, considering architectural implications and b
 """
 
     def _generic_template(self) -> str:
-        """Template genérico."""
-        return """Proyecto: {project_name}
+        """Generic template."""
+        return """Project: {project_name}
 
-Contexto:
+Context:
 {context}
 
-Tarea:
+Task:
 {task}
 """
 
     def _extract_relevant_context(self, task: str) -> str:
-        """Extrae contexto relevante para la tarea específica."""
+        """Extracts relevant context for the specific task."""
         keywords = self._extract_keywords(task)
         relevant_parts = []
 
-        # Buscar en contextos existentes
+        # Search in existing contexts
         for context_name, context_content in self.contexts.items():
             if isinstance(context_content, dict):
                 content_str = json.dumps(context_content)
             else:
                 content_str = str(context_content)
 
-            # Verificar relevancia
+            # Check relevance
             if any(keyword.lower() in content_str.lower() for keyword in keywords):
                 relevant_parts.append(f"=== {context_name} ===\n{content_str[:1000]}")
 
-        return "\n\n".join(relevant_parts) if relevant_parts else "No hay contexto específico"
+        return "\n\n".join(relevant_parts) if relevant_parts else "No specific context found"
 
     def _extract_keywords(self, text: str) -> List[str]:
-        """Extrae palabras clave del texto."""
-        # Palabras comunes a ignorar
+        """Extracts keywords from text."""
+        # Common stop words to ignore
         stop_words = {
-            "el",
-            "la",
-            "los",
-            "las",
-            "de",
-            "en",
-            "y",
-            "o",
-            "a",
-            "para",
-            "que",
-            "es",
-            "un",
-            "una",
+            "the",
+            "and",
+            "for",
+            "with",
+            "from",
+            "that",
+            "this",
+            "what",
+            "how",
+            "when",
+            "where",
+            "which",
+            "who",
+            "whom",
         }
         words = text.lower().split()
         return [w for w in words if w not in stop_words and len(w) > 3]
 
     def _truncate_to_tokens(self, text: str, max_tokens: int) -> str:
-        """Trunca texto aproximando tokens."""
-        # Estimación simple: 1 token ≈ 4 caracteres en inglés, 2 en español
-        max_chars = max_tokens * 3  # Conservador para español/código
+        """Truncates text approximating tokens."""
+        # Simple estimation: 1 token ≈ 4 characters
+        max_chars = max_tokens * 4
         if len(text) <= max_chars:
             return text
 
-        # Truncar en punto lógico
+        # Truncate at logical point
         truncated = text[:max_chars]
         last_period = truncated.rfind(".")
         last_newline = truncated.rfind("\n")
 
         cutoff = max(last_period, last_newline)
-        if cutoff > max_chars * 0.8:  # Si encontramos punto cercano
-            return truncated[: cutoff + 1] + "\n\n[Contexto truncado por límites...]"
+        if cutoff > max_chars * 0.8:
+            return truncated[: cutoff + 1] + "\n\n[Context truncated due to limits...]"
 
-        return truncated + "\n\n[Contexto truncado por límites...]"
+        return truncated + "\n\n[Context truncated due to limits...]"
 
     def update_context(self, new_info: Dict[str, Any]) -> None:
-        """Actualiza contexto con nueva información."""
+        """Updates context with new information."""
         update_file = self.project_path / ".ai-context-updates.yaml"
 
         current = {}
@@ -199,7 +199,7 @@ Tarea:
             except Exception:
                 current = {}
 
-        # Mergear nueva información
+        # Merge new information
         for key, value in new_info.items():
             if key in current:
                 if isinstance(current[key], list) and isinstance(value, list):
@@ -211,8 +211,8 @@ Tarea:
             else:
                 current[key] = value
 
-        # Guardar
+        # Save
         with open(update_file, "w", encoding="utf-8") as f:
             yaml.dump(current, f, allow_unicode=True)
 
-        print(f"✅ Contexto actualizado en {update_file}")
+        print(f"✅ Context updated in {update_file}")
