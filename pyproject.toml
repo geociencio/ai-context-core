@@ -24,3 +24,8 @@ build-backend = "setuptools.build_meta"
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]

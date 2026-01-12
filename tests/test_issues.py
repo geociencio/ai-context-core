@@ -20,7 +20,7 @@ class TestIssues(unittest.TestCase):
         self.assertTrue(any(d["module"] == "complex_module.py" for d in debt))
         # Check specific issue type
         item = next(d for d in debt if d["module"] == "complex_module.py")
-        self.assertTrue(any(i["type"] == "alta_complejidad" for i in item["issues"]))
+        self.assertTrue(any(i["type"] == "high_complexity" for i in item["issues"]))
 
     def test_find_security_issues(self):
         # Create a temp file with "vulnerable" code
