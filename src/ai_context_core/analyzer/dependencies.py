@@ -1,13 +1,14 @@
-
-from typing import Dict, Any, List, Set, Tuple
+from typing import Dict, Any, List, Set
 from pathlib import Path
 import logging
 
 logger = logging.getLogger(__name__)
 
+
 def count_edges(import_graph: Dict[str, Set[str]]) -> int:
     """Cuenta total de aristas en el grafo."""
     return sum(len(neighbors) for neighbors in import_graph.values())
+
 
 def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> List[List[str]]:
     """Detecta ciclos simples usando DFS."""
@@ -42,6 +43,7 @@ def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> Lis
 
     return cycles
 
+
 def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
     """Cuenta componentes débilmente conectados."""
     # Convertir a no dirigido
@@ -72,7 +74,10 @@ def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
                         queue.append(neighbor)
     return count
 
-def analyze_dependencies(modules_data: List[Dict[str, Any]], project_path: Path, read_file_func) -> Dict[str, Any]:
+
+def analyze_dependencies(
+    modules_data: List[Dict[str, Any]], project_path: Path, read_file_func
+) -> Dict[str, Any]:
     """Analiza dependencias del proyecto de forma optimizada."""
     dependencies = {
         "internal": [],
@@ -131,7 +136,7 @@ def analyze_dependencies(modules_data: List[Dict[str, Any]], project_path: Path,
                         if other_path not in import_graph:
                             import_graph[other_path] = set()
 
-    dependencies["import_graph"] = {k: list(v) for k, v in import_graph.items()} # Serializable
+    dependencies["import_graph"] = {k: list(v) for k, v in import_graph.items()}  # Serializable
 
     # Detectar dependencias circulares
     try:
@@ -162,9 +167,28 @@ def analyze_dependencies(modules_data: List[Dict[str, Any]], project_path: Path,
 
     # Clasificar imports
     stdlib_modules = {
-        "os", "sys", "json", "pathlib", "typing", "datetime", "re", "collections",
-        "itertools", "math", "random", "statistics", "functools", "hashlib",
-        "base64", "csv", "pickle", "sqlite3", "subprocess", "logging", "time", "traceback"
+        "os",
+        "sys",
+        "json",
+        "pathlib",
+        "typing",
+        "datetime",
+        "re",
+        "collections",
+        "itertools",
+        "math",
+        "random",
+        "statistics",
+        "functools",
+        "hashlib",
+        "base64",
+        "csv",
+        "pickle",
+        "sqlite3",
+        "subprocess",
+        "logging",
+        "time",
+        "traceback",
     }
 
     for imp in sorted(all_imports):

@@ -1,9 +1,8 @@
-
 import json
-import time
 import yaml
 from pathlib import Path
 from typing import Dict, Any, List
+
 
 class AIContextManager:
     """Gestiona contexto optimizado para diferentes IAs."""
@@ -23,7 +22,7 @@ class AIContextManager:
                 contexts[file] = self._load_file(path)
 
         return contexts
-    
+
     def _load_file(self, path: Path) -> Any:
         """Carga el contenido de un archivo según su extensión."""
         try:
@@ -152,7 +151,22 @@ Tarea:
     def _extract_keywords(self, text: str) -> List[str]:
         """Extrae palabras clave del texto."""
         # Palabras comunes a ignorar
-        stop_words = {"el", "la", "los", "las", "de", "en", "y", "o", "a", "para", "que", "es", "un", "una"}
+        stop_words = {
+            "el",
+            "la",
+            "los",
+            "las",
+            "de",
+            "en",
+            "y",
+            "o",
+            "a",
+            "para",
+            "que",
+            "es",
+            "un",
+            "una",
+        }
         words = text.lower().split()
         return [w for w in words if w not in stop_words and len(w) > 3]
 

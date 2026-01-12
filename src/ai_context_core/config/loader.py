@@ -1,7 +1,7 @@
-
 import yaml
 import pathlib
 from typing import Dict, Any, Optional
+
 
 class ConfigLoader:
     """Carga y gestiona la configuración del analizador."""
@@ -11,9 +11,11 @@ class ConfigLoader:
         self.defaults_path = self.base_path / "defaults.yaml"
         self.profiles_path = self.base_path / "profiles"
 
-    def load_config(self, profile_name: Optional[str] = None, override_config: Optional[Dict] = None) -> Dict[str, Any]:
+    def load_config(
+        self, profile_name: Optional[str] = None, override_config: Optional[Dict] = None
+    ) -> Dict[str, Any]:
         """Carga la configuración combinando defaults, perfil y overrides."""
-        
+
         # 1. Cargar defaults
         config = self._load_yaml(self.defaults_path)
 
@@ -24,7 +26,9 @@ class ConfigLoader:
                 profile_config = self._load_yaml(profile_file)
                 config = self._merge_dicts(config, profile_config)
             else:
-                print(f"⚠️ Perfil '{profile_name}' no encontrado en {self.profiles_path}. Usando defaults.")
+                print(
+                    f"⚠️ Perfil '{profile_name}' no encontrado en {self.profiles_path}. Usando defaults."
+                )
 
         # 3. Aplicar overrides (ej. desde CLI)
         if override_config:
@@ -48,6 +52,7 @@ class ConfigLoader:
             else:
                 base[key] = value
         return base
+
 
 def list_profiles() -> list[str]:
     """Lista los perfiles disponibles."""

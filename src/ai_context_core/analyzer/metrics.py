@@ -1,5 +1,5 @@
-
 from typing import List, Dict, Any
+
 
 def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dict[str, int]:
     """Calcula distribución de complejidad."""
@@ -18,7 +18,10 @@ def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dic
 
     return distribution
 
-def calculate_quality_score(modules_data: List[Dict[str, Any]], config: Dict[str, Any], context_patterns: Dict[str, Any]) -> float:
+
+def calculate_quality_score(
+    modules_data: List[Dict[str, Any]], config: Dict[str, Any], context_patterns: Dict[str, Any]
+) -> float:
     """Calcula un score de calidad general."""
     if not modules_data:
         return 0.0
@@ -92,7 +95,14 @@ def calculate_quality_score(modules_data: List[Dict[str, Any]], config: Dict[str
 
     return round(final_score, 1)
 
-def calculate_project_metrics(modules_data: List[Dict[str, Any]], context_entry_points: List[str], test_files_count: int, config: Dict[str, Any], context_patterns: Dict[str, Any]) -> Dict[str, Any]:
+
+def calculate_project_metrics(
+    modules_data: List[Dict[str, Any]],
+    context_entry_points: List[str],
+    test_files_count: int,
+    config: Dict[str, Any],
+    context_patterns: Dict[str, Any],
+) -> Dict[str, Any]:
     """Calcula métricas generales del proyecto."""
     if not modules_data:
         return {}

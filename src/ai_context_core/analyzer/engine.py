@@ -1,4 +1,3 @@
-
 import logging
 import time
 import ast
@@ -12,6 +11,7 @@ from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)
 
+
 class ProjectAnalyzer:
     """Analizador de proyectos Python optimizado y modular."""
 
@@ -23,9 +23,11 @@ class ProjectAnalyzer:
         exclude_patterns: List[str] = None,
     ):
         self.project_path = pathlib.Path(project_path).resolve()
-        self.max_workers = max_workers or (2 * (1 if not hasattr(time, 'get_clock_info') else 4)) # Fallback safe
+        self.max_workers = max_workers or (
+            2 * (1 if not hasattr(time, "get_clock_info") else 4)
+        )  # Fallback safe
         self.config = config or {}
-        
+
         # Cargar patrones de exclusión
         self.exclusion_patterns = fs_utils.load_exclusion_patterns(
             self.project_path, exclude_patterns
@@ -33,11 +35,11 @@ class ProjectAnalyzer:
 
         # Contexto AI
         self.context_manager = AIContextManager(project_path)
-        
+
         # Cache
         self.ast_cache = {}
         self.file_cache = {}
-        
+
         # Estado
         self.error_log = {}
 
@@ -88,19 +90,19 @@ class ProjectAnalyzer:
         deps_data = dependencies.analyze_dependencies(
             modules_data, self.project_path, fs_utils.read_file_fast
         )
-        
+
         # 5. Métricas globales
         test_files_count = fs_utils.count_test_files(self.project_path)
         entry_points = [m["path"] for m in modules_data if m.get("has_main")]
-        
+
         project_metrics = metrics.calculate_project_metrics(
-            modules_data, 
-            entry_points, 
-            test_files_count, 
-            self.config, 
-            {"qgis_compliance": {}} # TODO: Implementar análisis QGIS real
+            modules_data,
+            entry_points,
+            test_files_count,
+            self.config,
+            {"qgis_compliance": {}},  # TODO: Implementar análisis QGIS real
         )
-        
+
         complexity_dist = metrics.calculate_complexity_distribution(modules_data)
 
         # 6. Detección de problemas y optimizaciones
@@ -124,34 +126,30 @@ class ProjectAnalyzer:
                 "most_complex_modules": sorted(
                     [(m["path"], m["complexity"]) for m in modules_data],
                     key=lambda x: x[1],
-                    reverse=True
-                )[:5]
+                    reverse=True,
+                )[:5],
             },
             "dependencies": deps_data,
             "debt": tech_debt,
             "optimizations": optimization_suggestions,
             "security": security_list,
             "entry_points": entry_points,
-            "patterns": {}, # TODO: Extraer detección de patrones
+            "patterns": {},  # TODO: Extraer detección de patrones
         }
 
         # 8. Generar reportes
         try:
             reporting.generate_project_summary(
-                results, 
-                self.project_path / "PROJECT_SUMMARY.md",
-                self.project_path.name
+                results, self.project_path / "PROJECT_SUMMARY.md", self.project_path.name
             )
             reporting.generate_ai_context(
-                results, 
-                self.project_path / "AI_CONTEXT.md",
-                self.project_path.name
+                results, self.project_path / "AI_CONTEXT.md", self.project_path.name
             )
-            
+
             # Guardar JSON completo
             with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
-                
+
         except Exception as e:
             logger.error(f"Error generando reportes: {e}")
 
@@ -162,11 +160,8 @@ class ProjectAnalyzer:
         """Analiza módulos en paralelo."""
         results = []
         with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_file = {
-                executor.submit(self._analyze_single_module, f): f 
-                for f in files
-            }
-            
+            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files}
+
             for future in concurrent.futures.as_completed(future_to_file):
                 f = future_to_file[future]
                 try:
@@ -176,22 +171,22 @@ class ProjectAnalyzer:
                 except Exception as e:
                     logger.error(f"Error analizando {f}: {e}")
                     self.error_log[str(f)] = str(e)
-                    
+
         return results
 
     def _analyze_single_module(self, file_path: pathlib.Path) -> Dict[str, Any]:
         """Analiza un solo módulo (método estático compatible para pickling si fuera necesario)."""
-        # Nota: ProcessPoolExecutor requiere que esto sea pickleable. 
+        # Nota: ProcessPoolExecutor requiere que esto sea pickleable.
         # Si usamos métodos de instancia, self debe ser pickleable.
         # ProjectAnalyzer es pickleable si sus atributos lo son.
-        
+
         try:
             content = fs_utils.read_file_fast(file_path)
             if not content:
                 return {}
 
             tree = ast.parse(content)
-            
+
             # Métricas AST
             return {
                 "path": str(file_path.relative_to(self.project_path)),
@@ -205,18 +200,18 @@ class ProjectAnalyzer:
                 "has_main": ast_utils.has_main_guard(tree),
                 "type_hints": ast_utils.calculate_type_hint_coverage(tree),
                 "halstead": ast_utils.calculate_halstead_metrics(tree),
-                "syntax_error": False
+                "syntax_error": False,
             }
 
         except SyntaxError:
             return {
                 "path": str(file_path.relative_to(self.project_path)),
                 "syntax_error": True,
-                "error": "SyntaxError"
+                "error": "SyntaxError",
             }
         except Exception as e:
             return {
                 "path": str(file_path.relative_to(self.project_path)),
-                "syntax_error": True, # Tratamos como error
-                "error": str(e)
+                "syntax_error": True,  # Tratamos como error
+                "error": str(e),
             }

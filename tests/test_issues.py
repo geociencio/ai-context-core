@@ -1,0 +1,47 @@
+import unittest
+from ai_context_core.analyzer import issues
+import tempfile
+import shutil
+from pathlib import Path
+
+
+class TestIssues(unittest.TestCase):
+    def test_find_technical_debt(self):
+        # Mock module data
+        modules_data = [
+            {
+                "path": "complex_module.py",
+                "complexity": 25,
+                "lines": 100,
+                "docstrings": {"module": True, "classes": {}, "functions": {}},
+            }
+        ]
+        debt = issues.find_technical_debt(modules_data)
+        self.assertTrue(any(d["module"] == "complex_module.py" for d in debt))
+        # Check specific issue type
+        item = next(d for d in debt if d["module"] == "complex_module.py")
+        self.assertTrue(any(i["type"] == "alta_complejidad" for i in item["issues"]))
+
+    def test_find_security_issues(self):
+        # Create a temp file with "vulnerable" code
+        tmp_dir = tempfile.mkdtemp()
+        try:
+            p = Path(tmp_dir)
+            vuln_file = p / "vuln.py"
+            with open(vuln_file, "w") as f:
+                f.write("import os\nos.system('rm -rf /')")
+
+            modules_data = [{"path": "vuln.py"}]
+            # Pass absolute path as project root for test
+            security_issues = issues.find_security_issues(modules_data, str(p))
+
+            self.assertEqual(len(security_issues), 1)
+            self.assertEqual(security_issues[0]["module"], "vuln.py")
+            self.assertTrue(any("os.system" in i["pattern"] for i in security_issues[0]["issues"]))
+
+        finally:
+            shutil.rmtree(tmp_dir)
+
+
+if __name__ == "__main__":
+    unittest.main()

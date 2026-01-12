@@ -1,4 +1,3 @@
-
 import os
 import pathlib
 import fnmatch
@@ -9,8 +8,10 @@ from typing import List, Dict, Any
 
 logger = logging.getLogger(__name__)
 
+
 class LRUCache:
     """Cache simple para archivos."""
+
     def __init__(self, maxsize: int = 256):
         self.cache = {}
         self.maxsize = maxsize
@@ -22,12 +23,14 @@ class LRUCache:
         if len(self.cache) > self.maxsize:
             self.cache.pop(next(iter(self.cache)))
         self.cache[key] = value
-        
+
     def clear(self):
         self.cache.clear()
 
+
 # Global cache instance
 file_cache = LRUCache()
+
 
 def read_file_fast(path: pathlib.Path) -> str:
     """Lectura ultra rápida con memory mapping y cache."""
@@ -56,30 +59,44 @@ def read_file_fast(path: pathlib.Path) -> str:
         logger.warning(f"⚠️ Error lectura {path}: {e}")
         return ""
 
-def load_exclusion_patterns(project_path: pathlib.Path, extra_patterns: List[str] = None) -> List[str]:
+
+def load_exclusion_patterns(
+    project_path: pathlib.Path, extra_patterns: List[str] = None
+) -> List[str]:
     """Carga patrones de exclusión."""
     patterns = []
-    
+
     # 1. Prioridad: .analyzerignore
     ignore_file = project_path / ".analyzerignore"
     if ignore_file.exists():
         try:
             with open(ignore_file, encoding="utf-8") as f:
                 patterns = [line.strip() for line in f if line.strip() and not line.startswith("#")]
-        except:
+        except Exception:
             pass
 
     # 2. Defaults
     if not patterns:
         patterns = [
-            "__pycache__", ".git", ".venv", "venv", "env", ".tox", ".pytest_cache",
-            ".mypy_cache", ".coverage", "build", "dist", "*.egg-info"
+            "__pycache__",
+            ".git",
+            ".venv",
+            "venv",
+            "env",
+            ".tox",
+            ".pytest_cache",
+            ".mypy_cache",
+            ".coverage",
+            "build",
+            "dist",
+            "*.egg-info",
         ]
 
     if extra_patterns:
         patterns.extend(extra_patterns)
 
     return patterns
+
 
 def is_test_file(path: pathlib.Path) -> bool:
     """Determina si es archivo de tests."""
@@ -92,6 +109,7 @@ def is_test_file(path: pathlib.Path) -> bool:
         or "test" in path.parent.name.lower()
     )
 
+
 def count_test_files(project_path: pathlib.Path) -> int:
     """Cuenta archivos de test."""
     count = 0
@@ -100,13 +118,16 @@ def count_test_files(project_path: pathlib.Path) -> int:
             count += 1
     return count
 
-def get_python_files_filtered(project_path: pathlib.Path, exclusion_patterns: List[str]) -> List[pathlib.Path]:
+
+def get_python_files_filtered(
+    project_path: pathlib.Path, exclusion_patterns: List[str]
+) -> List[pathlib.Path]:
     """Obtener archivos Python con filtrado."""
     python_files = []
 
     for py_file in project_path.rglob("*.py"):
         rel_path = str(py_file.relative_to(project_path))
-        
+
         should_exclude = False
         for pattern in exclusion_patterns:
             if pattern.endswith("/"):
@@ -115,11 +136,14 @@ def get_python_files_filtered(project_path: pathlib.Path, exclusion_patterns: Li
             if (
                 fnmatch.fnmatch(rel_path, pattern)
                 or fnmatch.fnmatch(py_file.name, pattern)
-                or any(fnmatch.fnmatch(part, pattern) for part in py_file.relative_to(project_path).parts)
+                or any(
+                    fnmatch.fnmatch(part, pattern)
+                    for part in py_file.relative_to(project_path).parts
+                )
             ):
                 should_exclude = True
                 break
-        
+
         if should_exclude:
             continue
 
@@ -130,24 +154,42 @@ def get_python_files_filtered(project_path: pathlib.Path, exclusion_patterns: Li
 
     return sorted(python_files)
 
+
 def generate_tree_optimized(project_path: pathlib.Path) -> str:
     """Genera árbol de directorios optimizado."""
     try:
         result = subprocess.run(
-            ["tree", "-I", "__pycache__|*.pyc|*.pyo|*.pycache|.git|.venv|venv|env", "-a", "--noreport", "-L", "4"],
-            check=False, cwd=project_path, capture_output=True, text=True, timeout=3
+            [
+                "tree",
+                "-I",
+                "__pycache__|*.pyc|*.pyo|*.pycache|.git|.venv|venv|env",
+                "-a",
+                "--noreport",
+                "-L",
+                "4",
+            ],
+            check=False,
+            cwd=project_path,
+            capture_output=True,
+            text=True,
+            timeout=3,
         )
         if result.returncode == 0:
             return result.stdout[:1500]
-    except:
+    except Exception:
         pass
 
+    return _generate_tree_fallback(project_path)
+
+
+def _generate_tree_fallback(
+    project_path: pathlib.Path, max_depth: int = 4, max_files_per_dir: int = 8
+) -> str:
+    """Fallback Python-based tree generation."""
     tree_lines = ["./"]
-    max_depth = 4
-    max_files_per_dir = 8
 
     for root, dirs, files in os.walk(project_path):
-        depth = root[len(str(project_path)):].count(os.sep)
+        depth = root[len(str(project_path)) :].count(os.sep)
         if depth > max_depth:
             continue
 
@@ -167,9 +209,23 @@ def generate_tree_optimized(project_path: pathlib.Path) -> str:
 
     return "\n".join(tree_lines)
 
+
 def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
     extensions = {}
-    common_exts = {".py", ".txt", ".md", ".json", ".yml", ".yaml", ".html", ".css", ".js", ".xml", ".csv", ".sql"}
+    common_exts = {
+        ".py",
+        ".txt",
+        ".md",
+        ".json",
+        ".yml",
+        ".yaml",
+        ".html",
+        ".css",
+        ".js",
+        ".xml",
+        ".csv",
+        ".sql",
+    }
 
     for file in project_path.rglob("*"):
         if file.is_file():
@@ -179,41 +235,50 @@ def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
 
     return dict(sorted(extensions.items(), key=lambda x: x[1], reverse=True)[:20])
 
-def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
-    total_files = 0
-    total_size = 0
-    python_files = 0
-    python_size = 0
 
-    for entry in os.scandir(project_path):
-        if entry.is_file():
-            total_files += 1
-            total_size += entry.stat().st_size
-            if entry.name.endswith(".py"):
-                python_files += 1
-                python_size += entry.stat().st_size
-        elif entry.is_dir() and not entry.name.startswith("."):
-            for root, _dirs, files in os.walk(entry.path):
-                for file in files:
-                    total_files += 1
-                    try:
-                        file_path = os.path.join(root, file)
-                        file_size = os.path.getsize(file_path)
-                        total_size += file_size
-                        if file.endswith(".py"):
-                            python_files += 1
-                            python_size += file_size
-                    except:
-                        pass
+def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
+    stats = _accumulate_directory_stats(project_path)
+
+    total_files = stats["total_files"]
+    total_size = stats["total_size"]
+    python_size = stats["python_size"]
 
     return {
         "total_files": total_files,
         "total_size_mb": round(total_size / (1024 * 1024), 2),
-        "python_files": python_files,
+        "python_files": stats["python_files"],
         "python_size_mb": round(python_size / (1024 * 1024), 2),
         "avg_file_size_kb": round(total_size / total_files / 1024, 2) if total_files > 0 else 0,
         "python_percentage": round(python_size / total_size * 100, 2) if total_size > 0 else 0,
     }
+
+
+def _accumulate_directory_stats(project_path: pathlib.Path) -> Dict[str, int]:
+    """Recorre directorios y acumula estadísticas."""
+    stats = {"total_files": 0, "total_size": 0, "python_files": 0, "python_size": 0}
+
+    for entry in os.scandir(project_path):
+        if entry.is_file():
+            stats["total_files"] += 1
+            stats["total_size"] += entry.stat().st_size
+            if entry.name.endswith(".py"):
+                stats["python_files"] += 1
+                stats["python_size"] += entry.stat().st_size
+        elif entry.is_dir() and not entry.name.startswith("."):
+            for root, _dirs, files in os.walk(entry.path):
+                for file in files:
+                    stats["total_files"] += 1
+                    try:
+                        file_path = os.path.join(root, file)
+                        file_size = os.path.getsize(file_path)
+                        stats["total_size"] += file_size
+                        if file.endswith(".py"):
+                            stats["python_files"] += 1
+                            stats["python_size"] += file_size
+                    except Exception:
+                        pass
+    return stats
+
 
 def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[str, Any]:
     return {

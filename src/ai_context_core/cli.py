@@ -1,4 +1,3 @@
-
 import click
 import pathlib
 import shutil
@@ -8,20 +7,24 @@ from typing import Optional
 from .analyzer.engine import ProjectAnalyzer
 from .config.loader import ConfigLoader, list_profiles
 
+
 @click.group()
 def cli():
     """Herramienta CLI para gestión de contexto IA y análisis de proyectos."""
     pass
 
+
 @cli.command()
-@click.option("--profile", "-p", help="Perfil de configuración (ej. qgis-plugin)", default="generic")
+@click.option(
+    "--profile", "-p", help="Perfil de configuración (ej. qgis-plugin)", default="generic"
+)
 @click.option("--path", default=".", help="Ruta del proyecto")
 def init(profile: str, path: str):
     """Inicializa la estructura .ai-context en el proyecto."""
     project_path = pathlib.Path(path).resolve()
     ai_context_dir = project_path / ".ai-context"
     agent_workflows_dir = project_path / ".agent" / "workflows"
-    
+
     click.echo(f"🔄 Inicializando AI Context en {project_path} con perfil '{profile}'...")
 
     # 1. Crear directorios
@@ -37,8 +40,10 @@ def init(profile: str, path: str):
             shutil.copy2(profile_path, ai_context_dir / "config.yaml")
             click.echo(f"✅ Configuración de perfil '{profile}' copiada.")
         else:
-            click.secho(f"⚠️ Perfil '{profile}' no encontrado. Usando configuración base.", fg="yellow")
-    
+            click.secho(
+                f"⚠️ Perfil '{profile}' no encontrado. Usando configuración base.", fg="yellow"
+            )
+
     # 3. Copiar Workflows
     templates_dir = pathlib.Path(__file__).parent / "templates" / "workflows"
     if templates_dir.exists():
@@ -63,6 +68,7 @@ def init(profile: str, path: str):
 
     click.secho("✨ Inicialización completada exitosamente.", fg="green")
 
+
 @cli.command()
 @click.option("--path", default=".", help="Ruta del proyecto")
 @click.option("--workers", "-w", default=None, type=int, help="Número de workers paralelos")
@@ -70,54 +76,55 @@ def init(profile: str, path: str):
 def analyze(path: str, workers: Optional[int], no_cache: bool):
     """Ejecuta el análisis del proyecto y actualiza el contexto."""
     project_path = pathlib.Path(path).resolve()
-    
+
     # Cargar configuración
     loader = ConfigLoader()
-    
+
     # Intentar detectar perfil o cargar config local
     local_config_path = project_path / ".ai-context" / "config.yaml"
     local_config = {}
     profile_name = None
-    
+
     if local_config_path.exists():
         try:
             import yaml
+
             local_config = yaml.safe_load(local_config_path.read_text()) or {}
             profile_name = local_config.get("profile_name")
-        except:
+        except Exception:
             pass
-            
+
     # Cargar config final
     config = loader.load_config(profile_name=profile_name, override_config=local_config)
-    
+
     # Instanciar analizador
-    analyzer = ProjectAnalyzer(
-        project_path=str(project_path),
-        config=config,
-        max_workers=workers
-    )
-    
+    analyzer = ProjectAnalyzer(project_path=str(project_path), config=config, max_workers=workers)
+
     click.echo(f"🚀 Iniciando análisis de {project_path.name}...")
-    
+
     try:
         results = analyzer.analyze()
-        
+
         metrics = results.get("metrics", {})
-        quality = metrics.get('quality_score', 0)
-        
+        quality = metrics.get("quality_score", 0)
+
         click.echo("-" * 40)
-        click.secho(f"🏆 Score de Calidad: {quality:.1f}/100", fg="green" if quality > 80 else "yellow")
+        click.secho(
+            f"🏆 Score de Calidad: {quality:.1f}/100", fg="green" if quality > 80 else "yellow"
+        )
         click.echo(f"📊 Líneas de Código: {metrics.get('total_lines_code', 0):,}")
         click.echo(f"💡 Optimizaciones: {len(results.get('optimizations', []))}")
         click.echo("-" * 40)
         click.secho("✅ Análisis completado y contexto actualizado.", fg="green")
-        
+
     except Exception as e:
         click.secho(f"❌ Error durante el análisis: {e}", fg="red")
         if os.environ.get("DEBUG"):
             raise e
         import sys
+
         sys.exit(1)
+
 
 @cli.command()
 def profiles():
@@ -125,6 +132,7 @@ def profiles():
     click.echo("Perfiles disponibles:")
     for p in list_profiles():
         click.echo(f" - {p}")
+
 
 if __name__ == "__main__":
     cli()

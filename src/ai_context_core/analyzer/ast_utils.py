@@ -1,7 +1,50 @@
-
 import ast
 from collections import Counter
 from typing import Any, List, Dict
+
+
+def extract_functions(tree: ast.AST) -> List[str]:
+    """Extrae nombres de funciones."""
+
+
+HALSTEAD_OPERATORS = (
+    ast.Add,
+    ast.Sub,
+    ast.Mult,
+    ast.Div,
+    ast.Mod,
+    ast.Pow,
+    ast.LShift,
+    ast.RShift,
+    ast.BitOr,
+    ast.BitXor,
+    ast.BitAnd,
+    ast.FloorDiv,
+    ast.And,
+    ast.Or,
+    ast.Not,
+    ast.Invert,
+    ast.UAdd,
+    ast.USub,
+    ast.Eq,
+    ast.NotEq,
+    ast.Lt,
+    ast.LtE,
+    ast.Gt,
+    ast.GtE,
+    ast.Is,
+    ast.IsNot,
+    ast.In,
+    ast.NotIn,
+    ast.If,
+    ast.For,
+    ast.While,
+    ast.Try,
+    ast.With,
+    ast.FunctionDef,
+    ast.ClassDef,
+)
+
 
 def extract_functions(tree: ast.AST) -> List[str]:
     """Extrae nombres de funciones."""
@@ -16,6 +59,7 @@ def extract_functions(tree: ast.AST) -> List[str]:
             functions.append(func_info)
     return functions
 
+
 def extract_classes(tree: ast.AST) -> List[str]:
     """Extrae nombres de clases con herencia."""
     classes = []
@@ -27,6 +71,7 @@ def extract_classes(tree: ast.AST) -> List[str]:
             classes.append(f"{node.name}{inheritance}")
     return classes
 
+
 def get_base_name(node: ast.AST) -> str:
     """Obtiene nombre de clase base."""
     if isinstance(node, ast.Name):
@@ -35,6 +80,7 @@ def get_base_name(node: ast.AST) -> str:
         return ast.unparse(node)
     else:
         return "Unknown"
+
 
 def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
     """Verifica docstrings por elemento."""
@@ -53,6 +99,7 @@ def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
 
     return docstrings
 
+
 def has_main_guard(tree: ast.AST) -> bool:
     """Verifica si el módulo tiene if __name__ == '__main__'."""
     for node in ast.walk(tree):
@@ -65,14 +112,12 @@ def has_main_guard(tree: ast.AST) -> bool:
                     and node.test.left.id == "__name__"
                 ):
                     for comparator in node.test.comparators:
-                        if (
-                            isinstance(comparator, ast.Constant)
-                            and comparator.value == "__main__"
-                        ):
+                        if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
                             return True
-            except:
+            except Exception:
                 continue
     return False
+
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
     """Calcula el porcentaje de funciones y clases con type hints."""
@@ -99,6 +144,7 @@ def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
         "coverage": (typed_items / total_items * 100) if total_items > 0 else 100.0,
     }
 
+
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
     """Calcula métricas de Halstead básicas."""
     operators = Counter()
@@ -106,44 +152,7 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
 
     for node in ast.walk(tree):
         node_type = type(node).__name__
-        if isinstance(
-            node,
-            ast.Add
-            | ast.Sub
-            | ast.Mult
-            | ast.Div
-            | ast.Mod
-            | ast.Pow
-            | ast.LShift
-            | ast.RShift
-            | ast.BitOr
-            | ast.BitXor
-            | ast.BitAnd
-            | ast.FloorDiv
-            | ast.And
-            | ast.Or
-            | ast.Not
-            | ast.Invert
-            | ast.UAdd
-            | ast.USub
-            | ast.Eq
-            | ast.NotEq
-            | ast.Lt
-            | ast.LtE
-            | ast.Gt
-            | ast.GtE
-            | ast.Is
-            | ast.IsNot
-            | ast.In
-            | ast.NotIn
-            | ast.If
-            | ast.For
-            | ast.While
-            | ast.Try
-            | ast.With
-            | ast.FunctionDef
-            | ast.ClassDef,
-        ):
+        if isinstance(node, HALSTEAD_OPERATORS):
             operators[node_type] += 1
         elif isinstance(node, ast.Name):
             operands[node.id] += 1
@@ -173,6 +182,7 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
         "effort": round(h_effort, 2),
     }
 
+
 def extract_imports(tree: ast.AST) -> List[str]:
     """Extrae imports de forma optimizada."""
     imports = []
@@ -198,6 +208,7 @@ def extract_imports(tree: ast.AST) -> List[str]:
 
     return unique_imports
 
+
 def calculate_complexity(tree: ast.AST) -> int:
     """Calcula complejidad ciclomática optimizada."""
     complexity = 0
@@ -205,15 +216,10 @@ def calculate_complexity(tree: ast.AST) -> int:
 
     for node in ast.walk(tree):
         # Decisiones básicas
+        # Decisiones básicas
         if isinstance(
             node,
-            ast.If
-            | ast.While
-            | ast.For
-            | ast.Try
-            | ast.ExceptHandler
-            | ast.AsyncFor
-            | ast.AsyncWith,
+            (ast.If, ast.While, ast.For, ast.Try, ast.ExceptHandler, ast.AsyncFor, ast.AsyncWith),
         ):
             complexity += 1
             if hasattr(node, "lineno"):

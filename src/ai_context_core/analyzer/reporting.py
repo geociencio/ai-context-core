@@ -1,8 +1,7 @@
-
 import pathlib
 import time
-import json
-from typing import Dict, Any, List
+from typing import Dict, Any
+
 
 def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
     """Genera diagrama Mermaid de dependencias principales."""
@@ -22,7 +21,10 @@ def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
 
     return "\n".join(graph[:30])
 
-def generate_project_summary(analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str) -> None:
+
+def generate_project_summary(
+    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+) -> None:
     """Genera resumen ejecutivo del proyecto."""
     structure = analyses.get("structure", {})
     complexity = analyses.get("complexity", {})
@@ -93,7 +95,9 @@ Versión del analizador: 2.0 (Ai-Context-Core)
         arch = qgis.get("architecture", {})
         if arch.get("violations"):
             violations = arch["violations"]
-            summary_content += f"- ⚠️ **Arquitectura**: {len(violations)} violaciones detectadas (mezcla UI/Core)\n"
+            summary_content += (
+                f"- ⚠️ **Arquitectura**: {len(violations)} violaciones detectadas (mezcla UI/Core)\n"
+            )
             for v in violations[:2]:
                 summary_content += f"  - {v['file']}: {v['type']}\n"
 
@@ -126,7 +130,10 @@ Versión del analizador: 2.0 (Ai-Context-Core)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(summary_content)
 
-def generate_ai_context(analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str) -> None:
+
+def generate_ai_context(
+    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+) -> None:
     """Genera contexto optimizado para IA."""
     structure = analyses.get("structure", {})
     entry_points = analyses.get("entry_points", [])
@@ -185,9 +192,7 @@ Generado automáticamente por Ai-Context-Core
             base_packages[base] = base_packages.get(base, 0) + 1
 
         context_content += "\n### Third Party (más frecuentes):\n"
-        for package, count in sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[
-            :15
-        ]:
+        for package, count in sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[:15]:
             context_content += f"- `{package}` ({count} imports)\n"
 
     # Agregar recomendaciones principales
@@ -219,15 +224,11 @@ Generado automáticamente por Ai-Context-Core
 """
     # Por ahora, un resumen de los tipos de archivos y patterns detectados
     context_content += (
-        "- **Tecnologías**: "
-        + ", ".join(list(structure.get("file_types", {}).keys())[:8])
-        + "\n"
+        "- **Tecnologías**: " + ", ".join(list(structure.get("file_types", {}).keys())[:8]) + "\n"
     )
     context_content += (
         "- **Patrones**: "
-        + ", ".join(
-            [p for p, d in patterns.items() if isinstance(d, dict) and d.get("detected")]
-        )
+        + ", ".join([p for p, d in patterns.items() if isinstance(d, dict) and d.get("detected")])
         + "\n"
     )
 
