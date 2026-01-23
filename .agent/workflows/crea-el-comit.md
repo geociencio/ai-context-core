@@ -1,6 +1,10 @@
-
 ---
-description: Crea el comit asegurando calidad (Ruff), métricas y changelog.
+description: "Crea el comit asegurando calidad (Ruff), métricas y changelog."
+agent: QA Engineer
+skills:
+  - commit-standards
+  - tech-stack
+  - project-context
 ---
 
 # Workflow: Crea el Comit (Enhanced)

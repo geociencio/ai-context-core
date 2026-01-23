@@ -1,6 +1,9 @@
-
 ---
-description: Inicializa la sesión: actualiza métricas, carga contexto crítico y verifica entorno.
+description: "Inicializa la sesión: actualiza métricas, carga contexto crítico y verifica entorno."
+agent: Senior Architect
+skills:
+  - project-context
+  - tech-stack
 ---
 
 Este workflow prepara el entorno para una sesión de desarrollo productiva.

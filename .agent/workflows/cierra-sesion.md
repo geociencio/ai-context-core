@@ -1,6 +1,9 @@
-
 ---
-description: Finaliza sesión: corre tests, actualiza logs (Dev/Maintenance), regenera contexto IA y propone commit de cierre.
+description: "Finaliza sesión: corre tests, actualiza logs (Dev/Maintenance), regenera contexto IA y propone commit de cierre."
+agent: QA Engineer
+skills:
+  - project-context
+  - commit-standards
 ---
 
 Este workflow asegura un cierre limpio y documentado del trabajo realizado.
