@@ -3,6 +3,7 @@
 Defines the logic for calculating cyclomatic distribution, overall
 quality scores based on weights, and aggregated project metrics.
 """
+
 from typing import List, Dict, Any
 
 
@@ -184,7 +185,9 @@ def calculate_project_metrics(
         "total_lines_code": total_lines,
         "avg_module_size_kb": round(total_size_kb / len(modules_data), 2),
         "avg_lines_per_module": round(total_lines / len(modules_data), 2),
-        "modules_with_docstrings": sum(1 for m in modules_data if m.get("docstrings", {}).get("module", False)),
+        "modules_with_docstrings": sum(
+            1 for m in modules_data if m.get("docstrings", {}).get("module", False)
+        ),
         "modules_with_main_guard": modules_with_main,
         "modules_with_syntax_errors": modules_with_syntax_error,
         "docstring_coverage": round(doc_coverage, 2),

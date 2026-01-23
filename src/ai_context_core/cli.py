@@ -3,6 +3,7 @@
 Provides commands for project initialization, analysis orchestration,
 and configuration profile management.
 """
+
 import click
 import pathlib
 import shutil
@@ -20,9 +21,7 @@ def cli():
 
 
 @cli.command()
-@click.option(
-    "--profile", "-p", help="Configuration profile (e.g. qgis-plugin)", default="generic"
-)
+@click.option("--profile", "-p", help="Configuration profile (e.g. qgis-plugin)", default="generic")
 @click.option("--path", default=".", help="Project path")
 def init(profile: str, path: str):
     """Initializes the .ai-context structure in the project.
@@ -53,9 +52,7 @@ def init(profile: str, path: str):
             shutil.copy2(profile_path, ai_context_dir / "config.yaml")
             click.echo(f"✅ Profile configuration '{profile}' copied.")
         else:
-            click.secho(
-                f"⚠️ Profile '{profile}' not found. Using base configuration.", fg="yellow"
-            )
+            click.secho(f"⚠️ Profile '{profile}' not found. Using base configuration.", fg="yellow")
 
     # 3. Copy Workflows
     templates_dir = pathlib.Path(__file__).parent / "templates" / "workflows"

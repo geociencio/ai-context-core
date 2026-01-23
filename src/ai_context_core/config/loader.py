@@ -3,6 +3,7 @@
 Handles merging default settings with project-specific profiles and
 runtime overrides (CLI flags).
 """
+
 import yaml
 import pathlib
 from typing import Dict, Any, Optional

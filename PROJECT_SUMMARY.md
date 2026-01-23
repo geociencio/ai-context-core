@@ -1,11 +1,11 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-11 22:19:09
+Analysis Date: 2026-01-11 22:50:01
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Total Modules**: 11
 - **Lines of Code**: 2,864
-- **Total Size**: 0.3 MB
+- **Total Size**: 0.4 MB
 - **Average Complexity**: 29.4
 - **Docstring Coverage**: 98.2%
 - **Quality Score**: 70.5/100
@@ -13,7 +13,7 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📁 STRUCTURE
 - **Python Files**: 15
-- **Total Files**: 58
+- **Total Files**: 60
 - **Primary File Types**: .py, .pyc, .md, .txt, .sample
 
 ## 🚨 CRITICAL ISSUES
@@ -32,11 +32,11 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 ### src/ai_context_core/analyzer/metrics.py
 - Very long functions (average 66.7 lines/function).
 
-### src/ai_context_core/analyzer/engine.py
-- High complexity (18) with several functions. Consider breaking down large logic.
-
 ### src/ai_context_core/analyzer/dependencies.py
 - High complexity (44) with several functions. Consider breaking down large logic.
+
+### src/ai_context_core/analyzer/ast_utils.py
+- High complexity (51) with several functions. Consider breaking down large logic.
 
 ## 📈 COMPLEXITY DISTRIBUTION
 - low (0-5): 1 modules (9.1%)

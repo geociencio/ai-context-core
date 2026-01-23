@@ -3,6 +3,7 @@
 The ProjectAnalyzer coordinates the analysis of multiple Python modules,
 aggregating results from AST analysis, dependency checking, and issue detection.
 """
+
 import logging
 import time
 import ast
@@ -296,4 +297,3 @@ class ProjectAnalyzer:
                 "syntax_error": True,
                 "error": str(e),
             }
-

@@ -3,6 +3,7 @@
 Provides optimized file reading, exclusion pattern handling, and
 project structure generation (tree view) with LRU caching.
 """
+
 import os
 import pathlib
 import fnmatch
@@ -210,9 +211,7 @@ def get_python_files_filtered(
     return sorted(python_files)
 
 
-def _matches_exclusion_pattern(
-    py_file: pathlib.Path, rel_path: str, patterns: List[str]
-) -> bool:
+def _matches_exclusion_pattern(py_file: pathlib.Path, rel_path: str, patterns: List[str]) -> bool:
     """Checks if a file or its path matches any exclusion patterns.
 
     Args:
@@ -342,8 +341,18 @@ def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
     """
     extensions = {}
     common_exts = {
-        ".py", ".txt", ".md", ".json", ".yml", ".yaml",
-        ".html", ".css", ".js", ".xml", ".csv", ".sql",
+        ".py",
+        ".txt",
+        ".md",
+        ".json",
+        ".yml",
+        ".yaml",
+        ".html",
+        ".css",
+        ".js",
+        ".xml",
+        ".csv",
+        ".sql",
     }
 
     for file in project_path.rglob("*"):

@@ -3,6 +3,7 @@
 Generates executive Markdown summaries and optimized context files for
 AI interaction (LLM prompts). Includes Mermaid graph support.
 """
+
 import pathlib
 import time
 from typing import Dict, Any
@@ -121,7 +122,9 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
     if security:
         sections.append("\n### 🔒 Security Issues:")
         for item in security[:3]:
-            sections.append(f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})")
+            sections.append(
+                f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})"
+            )
 
     # Technical Debt
     debt = analyses.get("debt", [])
@@ -129,7 +132,9 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
         sections.append("\n### 🏗️ Critical Technical Debt:")
         high_debt = [d for d in debt if d.get("severity_score", 0) >= 4]
         for item in high_debt[:5]:
-            sections.append(f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})")
+            sections.append(
+                f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})"
+            )
 
     # Circular Dependencies
     deps = analyses.get("dependencies", {})
@@ -254,13 +259,13 @@ def generate_ai_context(
     context_lines.append("\n## 🏗️ DETECTED PATTERNS")
     _add_patterns_section(analyses, context_lines)
 
-    context_lines.append(f"\n## 📈 COMPLEXITY AND METRICS")
+    context_lines.append("\n## 📈 COMPLEXITY AND METRICS")
     context_lines.append(f"- **Total Modules**: {complexity.get('total_modules', 0)}")
     context_lines.append(f"- **Lines of Code**: {complexity.get('total_lines', 0):,}")
     context_lines.append(f"- **Functions**: {complexity.get('total_functions', 0)}")
     context_lines.append(f"- **Classes**: {complexity.get('total_classes', 0)}")
     context_lines.append(f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}")
-    
+
     comp_mods = [m[0] for m in complexity.get("most_complex_modules", [])[:3]]
     context_lines.append(f"- **Most Complex Modules**: {', '.join(comp_mods)}")
 
@@ -290,8 +295,10 @@ def _add_patterns_section(analyses: Dict[str, Any], lines: list):
     detected = []
     for name, data in patterns.items():
         if isinstance(data, dict) and data.get("detected"):
-            detected.append(f"- **{name.upper()}**: Detected (Confidence: {data.get('confidence', 0):.0%})")
-    
+            detected.append(
+                f"- **{name.upper()}**: Detected (Confidence: {data.get('confidence', 0):.0%})"
+            )
+
     if detected:
         lines.extend(detected)
     else:
@@ -311,7 +318,7 @@ def _add_dependencies_section(dependencies: Dict[str, Any], lines: list):
         for dep in third_party:
             base = dep.split(".")[0]
             base_packages[base] = base_packages.get(base, 0) + 1
-        
+
         lines.append("\n### Third Party (most frequent):")
         sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[:15]
         for package, count in sorted_pkgs:
@@ -332,7 +339,9 @@ def _add_optimizations_section(analyses: Dict[str, Any], lines: list):
             module = opt.get("module", "Unknown")
             lines.append(f"\n### {module}")
             for suggestion in opt.get("suggestions", [])[:2]:
-                lines.append(f"- **{suggestion.get('type', 'Opt')}**: {suggestion.get('message', 'N/A')}")
+                lines.append(
+                    f"- **{suggestion.get('type', 'Opt')}**: {suggestion.get('message', 'N/A')}"
+                )
 
 
 def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
@@ -350,9 +359,8 @@ def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
         lines.append(f"- **Density**: {metrics.get('density', 0):.3f}")
         lines.append(f"- **Acyclic Graph**: {'Yes' if metrics.get('is_dag') else 'No'}")
         lines.append(f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}")
-        
+
         lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)")
         lines.append("```mermaid")
         lines.append(generate_mermaid_graph(dependencies))
         lines.append("```")
-

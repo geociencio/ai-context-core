@@ -175,7 +175,9 @@ def _parse_dependency_files(project_path: Path, read_file_func: Callable) -> Dic
             try:
                 content = read_file_func(path)
                 if content:
-                    files_content[req_file] = content[:2000]  # Limit size for documentation purposes
+                    files_content[req_file] = content[
+                        :2000
+                    ]  # Limit size for documentation purposes
             except Exception:
                 pass
     return files_content
@@ -260,11 +262,35 @@ def _classify_imports(all_imports: Set[str]) -> Dict[str, List[str]]:
         A dictionary with three lists: internal, external, and third_party.
     """
     stdlib_modules = {
-        "os", "sys", "json", "pathlib", "typing", "datetime", "re",
-        "collections", "itertools", "math", "random", "statistics",
-        "functools", "hashlib", "base64", "csv", "pickle", "sqlite3",
-        "subprocess", "logging", "time", "traceback", "ast", "abc",
-        "threading", "multiprocessing", "concurrent", "shutil", "tempfile"
+        "os",
+        "sys",
+        "json",
+        "pathlib",
+        "typing",
+        "datetime",
+        "re",
+        "collections",
+        "itertools",
+        "math",
+        "random",
+        "statistics",
+        "functools",
+        "hashlib",
+        "base64",
+        "csv",
+        "pickle",
+        "sqlite3",
+        "subprocess",
+        "logging",
+        "time",
+        "traceback",
+        "ast",
+        "abc",
+        "threading",
+        "multiprocessing",
+        "concurrent",
+        "shutil",
+        "tempfile",
     }
 
     results = {"internal": [], "external": [], "third_party": []}
@@ -280,4 +306,3 @@ def _classify_imports(all_imports: Set[str]) -> Dict[str, List[str]]:
             results["third_party"].append(imp)
 
     return results
-

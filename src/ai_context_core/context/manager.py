@@ -3,6 +3,7 @@
 The AIContextManager identifies relevant context for specific tasks and
 formats optimized prompts for various AI models (DeepSeek, GPT, Claude).
 """
+
 import json
 import yaml
 from pathlib import Path
@@ -203,13 +204,17 @@ Task:
         # Search through all loaded contexts (JSON meta, MD reports, YAML profiles)
         for context_name, context_content in self.contexts.items():
             content_str = self._get_serializable_content(context_content)
-            
+
             # Simple keyword matching for relevance
             if any(keyword.lower() in content_str.lower() for keyword in keywords):
                 # Include a relevant snippet
                 relevant_parts.append(f"=== {context_name} ===\n{content_str[:1000]}")
 
-        return "\n\n".join(relevant_parts) if relevant_parts else "No specific project context matches found for this task."
+        return (
+            "\n\n".join(relevant_parts)
+            if relevant_parts
+            else "No specific project context matches found for this task."
+        )
 
     def _get_serializable_content(self, context_content: Any) -> str:
         """Recursively converts complex objects to strings for text analysis.
@@ -235,8 +240,20 @@ Task:
         """
         # Common English stop words
         stop_words = {
-            "the", "and", "for", "with", "from", "that", "this",
-            "what", "how", "when", "where", "which", "who", "whom",
+            "the",
+            "and",
+            "for",
+            "with",
+            "from",
+            "that",
+            "this",
+            "what",
+            "how",
+            "when",
+            "where",
+            "which",
+            "who",
+            "whom",
         }
         words = text.lower().split()
         return [w for w in words if w not in stop_words and len(w) > 3]

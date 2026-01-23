@@ -3,6 +3,7 @@
 Includes rule-based detection for complexity hotspots, large modules,
 security patterns, and optimization opportunities.
 """
+
 from typing import List, Dict, Any, Tuple
 from pathlib import Path
 
@@ -248,7 +249,10 @@ def _check_docstring_optimization(module: Dict[str, Any], issues: List[Dict[str,
                 "type": "low_documentation_coverage",
                 "priority": "medium",
                 "message": f"Low docstring coverage ({funcs_with_doc}/{total_funcs} functions).",
-                "suggestions": ["Add docstrings to public methods and classes", "Use Google or NumPy docstring formats"],
+                "suggestions": [
+                    "Add docstrings to public methods and classes",
+                    "Use Google or NumPy docstring formats",
+                ],
             }
         )
 
@@ -267,7 +271,11 @@ def _check_import_optimization(module: Dict[str, Any], issues: List[Dict[str, An
                 "type": "excessive_imports",
                 "priority": "medium",
                 "message": f"Too many imports ({len(imports)})",
-                "suggestions": ["Group related imports", "Group from imports", "Remove unused imports"],
+                "suggestions": [
+                    "Group related imports",
+                    "Group from imports",
+                    "Remove unused imports",
+                ],
             }
         )
 
@@ -411,4 +419,3 @@ def _scan_file_for_issues(
                     )
                     break
     return issues_found
-
