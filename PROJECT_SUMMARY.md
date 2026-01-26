@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-26 00:39:08
+Analysis Date: 2026-01-26 00:51:43
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -14,7 +14,7 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📁 STRUCTURE
 - **Python Files**: 34
-- **Total Files**: 135
+- **Total Files**: 136
 - **Primary File Types**: .md, .py, .yaml, .json, .yml
 
 ## 🚨 CRITICAL ISSUES
@@ -46,17 +46,17 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 364
-- **Additions**: +28350
-- **Deletions**: -12213
-- **Total Churn**: 40563
+- **Files Changed**: 378
+- **Additions**: +29776
+- **Deletions**: -14739
+- **Total Churn**: 44515
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/reporting.py`: 16 commits
 - `src/ai_context_core/analyzer/engine.py`: 16 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 12 commits
+- `src/ai_context_core/analyzer/issues.py`: 11 commits
 - `src/ai_context_core/analyzer/dependencies.py`: 11 commits
-- `src/ai_context_core/analyzer/fs_utils.py`: 10 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
 - low (0-5): 2 modules (11.1%)

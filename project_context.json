@@ -1,6 +1,6 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1769405948.3671567,
+  "timestamp": 1769406703.3354313,
   "metrics": {
     "total_size_kb": 126.87,
     "total_lines_code": 3810,
@@ -16,10 +16,10 @@
     "type_hint_coverage": 62.42
   },
   "structure": {
-    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    ... (+13 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ai_recommendations.py\n                antipatterns.py\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                git_analysis.py\n                ... (+4 more)\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        PATTERNS_DETECTION.md\n        cierra-sesion-res.md\n        crea-commit-res.md\n        ... (+3 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            session_2026-01-25_phase2_advanced_analysis.md\n            ... (+4 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_dependencies_advanced.py\n        test_entry_points.py\n        ... (+7 more)\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py",
+    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    ... (+13 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ai_recommendations.py\n                antipatterns.py\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                git_analysis.py\n                ... (+4 more)\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        PATTERNS_DETECTION.md\n        cierra-sesion-res.md\n        crea-commit-res.md\n        ... (+3 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_modularization_cycle.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            ... (+5 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_dependencies_advanced.py\n        test_entry_points.py\n        ... (+7 more)\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py",
     "modules_count": 18,
     "file_types": {
-      ".md": 66,
+      ".md": 67,
       ".py": 34,
       ".yaml": 4,
       ".json": 3,
@@ -33,12 +33,12 @@
       ".tag": 1
     },
     "size_stats": {
-      "total_files": 135,
+      "total_files": 136,
       "total_size_mb": 0.83,
       "python_files": 34,
       "python_size_mb": 0.15,
-      "avg_file_size_kb": 6.26,
-      "python_percentage": 18.39
+      "avg_file_size_kb": 6.23,
+      "python_percentage": 18.35
     }
   },
   "complexity": {
@@ -165,10 +165,70 @@
       "weakly_connected_components": 17
     },
     "coupling_metrics": {
+      "src/ai_context_core/analyzer/ai_recommendations.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/secrets.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/fs_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/metrics.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/dependencies.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/config/loader.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/reporting.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipatterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
       "src/ai_context_core/analyzer/engine.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
+      },
+      ".agent/scripts/benchmark.py": {
+        "fan_in": 0,
+        "fan_out": 1,
+        "cbo": 1
       },
       "src/ai_context_core/__init__.py": {
         "fan_in": 0,
@@ -180,57 +240,7 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/cli.py": {
-        "fan_in": 1,
-        "fan_out": 0,
-        "cbo": 1
-      },
-      "src/ai_context_core/config/loader.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/reporting.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ai_recommendations.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/dependencies.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipatterns.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      ".agent/scripts/benchmark.py": {
-        "fan_in": 0,
-        "fan_out": 1,
-        "cbo": 1
-      },
-      "src/ai_context_core/analyzer/issues.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns.py": {
+      ".agent/scripts/skill_sync.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -240,20 +250,10 @@
         "fan_out": 0,
         "cbo": 0
       },
-      ".agent/scripts/skill_sync.py": {
-        "fan_in": 0,
+      "src/ai_context_core/cli.py": {
+        "fan_in": 1,
         "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/metrics.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/secrets.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
+        "cbo": 1
       }
     },
     "unused_imports": {}
@@ -2382,21 +2382,21 @@
         "commits": 12
       },
       {
-        "path": "src/ai_context_core/analyzer/dependencies.py",
+        "path": "src/ai_context_core/analyzer/issues.py",
         "commits": 11
       },
       {
-        "path": "src/ai_context_core/analyzer/fs_utils.py",
-        "commits": 10
+        "path": "src/ai_context_core/analyzer/dependencies.py",
+        "commits": 11
       }
     ],
     "churn": {
       "available": true,
       "period_days": 30,
-      "added": 28350,
-      "deleted": 12213,
-      "total_churn": 40563,
-      "files_changed": 364
+      "added": 29776,
+      "deleted": 14739,
+      "total_churn": 44515,
+      "files_changed": 378
     }
   }
 }

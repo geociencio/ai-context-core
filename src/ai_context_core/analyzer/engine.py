@@ -38,6 +38,7 @@ class ProjectAnalyzer:
         config: Optional[Dict[str, Any]] = None,
         max_workers: Optional[int] = None,
         exclude_patterns: Optional[List[str]] = None,
+        ignore_cache: bool = False,
     ):
         self.project_path = pathlib.Path(project_path).resolve()
         self.max_workers = max_workers or (
@@ -48,7 +49,7 @@ class ProjectAnalyzer:
             self.project_path, exclude_patterns
         )
         self.context_manager = AIContextManager(project_path)
-        self.analysis_cache = fs_utils.load_cache(self.project_path)
+        self.analysis_cache = {} if ignore_cache else fs_utils.load_cache(self.project_path)
         self.error_log = {}
 
     def _get_default_config(self) -> Dict[str, Any]:
