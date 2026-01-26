@@ -21,7 +21,12 @@ def cli():
 
 
 @cli.command()
-@click.option("--profile", "-p", help="Configuration profile (e.g. qgis-plugin)", default="generic")
+@click.option(
+    "--profile",
+    "-p",
+    help="Configuration profile (e.g. qgis-plugin)",
+    default="generic",
+)
 @click.option("--path", default=".", help="Project path")
 def init(profile: str, path: str):
     """Initializes the .ai-context structure in the project.
@@ -37,7 +42,9 @@ def init(profile: str, path: str):
     ai_context_dir = project_path / ".ai-context"
     agent_workflows_dir = project_path / ".agent" / "workflows"
 
-    click.echo(f"🔄 Initializing AI Context in {project_path} with profile '{profile}'...")
+    click.echo(
+        f"🔄 Initializing AI Context in {project_path} with profile '{profile}'..."
+    )
 
     # 1. Create directories
     ai_context_dir.mkdir(exist_ok=True)
@@ -52,7 +59,10 @@ def init(profile: str, path: str):
             shutil.copy2(profile_path, ai_context_dir / "config.yaml")
             click.echo(f"✅ Profile configuration '{profile}' copied.")
         else:
-            click.secho(f"⚠️ Profile '{profile}' not found. Using base configuration.", fg="yellow")
+            click.secho(
+                f"⚠️ Profile '{profile}' not found. Using base configuration.",
+                fg="yellow",
+            )
 
     # 3. Copy Workflows
     templates_dir = pathlib.Path(__file__).parent / "templates" / "workflows"
@@ -81,7 +91,9 @@ def init(profile: str, path: str):
 
 @cli.command()
 @click.option("--path", default=".", help="Path to the project")
-@click.option("--workers", "-w", default=None, type=int, help="Number of parallel workers")
+@click.option(
+    "--workers", "-w", default=None, type=int, help="Number of parallel workers"
+)
 @click.option("--no-cache", is_flag=True, help="Disable cache")
 def analyze(path: str, workers: Optional[int], no_cache: bool):
     """Runs project analysis and updates corporate/AI context.
@@ -117,7 +129,9 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
     config = loader.load_config(profile_name=profile_name, override_config=local_config)
 
     # Instantiate analyzer engine
-    analyzer = ProjectAnalyzer(project_path=str(project_path), config=config, max_workers=workers)
+    analyzer = ProjectAnalyzer(
+        project_path=str(project_path), config=config, max_workers=workers
+    )
 
     click.echo(f"🚀 Starting analysis for {project_path.name}...")
 
@@ -129,7 +143,8 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
 
         click.echo("-" * 40)
         click.secho(
-            f"🏆 Quality Score: {quality:.1f}/100", fg="green" if quality > 80 else "yellow"
+            f"🏆 Quality Score: {quality:.1f}/100",
+            fg="green" if quality > 80 else "yellow",
         )
         click.echo(f"📊 Lines of Code: {metrics.get('total_lines_code', 0):,}")
         click.echo(f"💡 Optimizations: {len(results.get('optimizations', []))}")

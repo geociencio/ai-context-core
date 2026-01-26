@@ -117,7 +117,11 @@ def load_exclusion_patterns(
     if ignore_file.exists():
         try:
             with open(ignore_file, encoding="utf-8") as f:
-                patterns = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+                patterns = [
+                    line.strip()
+                    for line in f
+                    if line.strip() and not line.startswith("#")
+                ]
         except Exception:
             pass
 
@@ -211,7 +215,9 @@ def get_python_files_filtered(
     return sorted(python_files)
 
 
-def _matches_exclusion_pattern(py_file: pathlib.Path, rel_path: str, patterns: List[str]) -> bool:
+def _matches_exclusion_pattern(
+    py_file: pathlib.Path, rel_path: str, patterns: List[str]
+) -> bool:
     """Checks if a file or its path matches any exclusion patterns.
 
     Args:
@@ -303,7 +309,9 @@ def _generate_tree_fallback(
         file_indent = "    " * (depth + 1)
         sorted_files = sorted(files)
         for i, file in enumerate(sorted_files[:max_files_per_dir]):
-            line = _format_tree_line(file, i, len(files), max_files_per_dir, file_indent)
+            line = _format_tree_line(
+                file, i, len(files), max_files_per_dir, file_indent
+            )
             if line:
                 tree_lines.append(line)
                 if "..." in line:
@@ -312,7 +320,9 @@ def _generate_tree_fallback(
     return "\n".join(tree_lines)
 
 
-def _format_tree_line(file: str, index: int, total: int, limit: int, indent: str) -> str:
+def _format_tree_line(
+    file: str, index: int, total: int, limit: int, indent: str
+) -> str:
     """Formats a single file entry or ellipsis for the tree visualization.
 
     Args:
@@ -384,8 +394,12 @@ def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
         "total_size_mb": round(total_size / (1024 * 1024), 2),
         "python_files": stats["python_files"],
         "python_size_mb": round(python_size / (1024 * 1024), 2),
-        "avg_file_size_kb": round(total_size / total_files / 1024, 2) if total_files > 0 else 0,
-        "python_percentage": round(python_size / total_size * 100, 2) if total_size > 0 else 0,
+        "avg_file_size_kb": (
+            round(total_size / total_files / 1024, 2) if total_files > 0 else 0
+        ),
+        "python_percentage": (
+            round(python_size / total_size * 100, 2) if total_size > 0 else 0
+        ),
     }
 
 

@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Docker Support**: Multi-stage Dockerfile with development, test, and production images
+- **Docker Compose**: Services for development, testing, and linting
+- **Makefile Targets**: Added `docker-build`, `docker-test`, `docker-lint`, `docker-shell`, `docker-clean`
+
+### Changed
+- **Workflows**: Enhanced all session workflows with Agent Actions and validation criteria
+  - `inicia-sesion`: Added context prioritization and Docker support
+  - `cierra-sesion`: Added code formatting, historical archiving, and mandatory session reports
+  - `crea-el-comit`/`create-commit`: Added AI-assisted commit message generation
+- **CLI Commands**: Fixed workflow commands to use correct module path
+- **Code Formatting**: Applied black formatter to entire codebase (11 files reformatted)
+
+### Documentation
+- **README**: Added comprehensive Docker usage section
+- **Session Reports**: Created structured session documentation in `docs/sessions/`
+- **Next Steps**: Implemented historical archiving system for development continuity
+
+
 ## [1.0.1] - 2026-01-22
 
 ### Fixed

@@ -1,11 +1,11 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1769146926.8914425,
+  "timestamp": 1769390783.2902775,
   "metrics": {
-    "total_size_kb": 99.47,
-    "total_lines_code": 3075,
-    "avg_module_size_kb": 8.29,
-    "avg_lines_per_module": 256.25,
+    "total_size_kb": 100.89,
+    "total_lines_code": 3196,
+    "avg_module_size_kb": 8.41,
+    "avg_lines_per_module": 266.33,
     "modules_with_docstrings": 10,
     "modules_with_main_guard": 2,
     "modules_with_syntax_errors": 0,
@@ -13,48 +13,48 @@
     "type_hint_coverage": 67.43,
     "i18n_coverage": 100.0,
     "entry_points_count": 2,
-    "test_files_count": 4,
+    "test_files_count": 6,
     "avg_complexity": 28.67,
     "max_complexity": 52,
     "quality_score": 67.5
   },
   "structure": {
-    "tree": "./\n    .gitignore\n    AI_CONTEXT.md\n    CHANGELOG.md\n    LICENSE\n    MANIFEST.in\n    PROJECT_SUMMARY.md\n    README.md\n    ... (+4 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                issues.py\n                metrics.py\n                reporting.py\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        COMMIT_GUIDELINES.md\n        release_process_ai.md\n        development/\n            ARCHITECTURE.md\n            CONTRIBUTING.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n    tests/\n        __init__.py\n        test_ast_utils.py\n        test_fs_utils.py\n        test_issues.py\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/",
+    "tree": "./\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    CONTRIBUTING.md\n    ... (+11 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                issues.py\n                metrics.py\n                reporting.py\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        COMMIT_GUIDELINES.md\n        DEVELOPMENT_LOG.md\n        cierra-sesion-res.md\n        crea-commit-res.md\n        inicia-sesion-res.md\n        release_process_ai.md\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_workflow_optimization_plan.md\n            session_2026-01-25_workflows_optimization.md\n    tests/\n        __init__.py\n        test_ast_utils.py\n        test_cli.py\n        test_fs_utils.py\n        test_issues.py\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py",
     "modules_count": 12,
     "file_types": {
-      ".py": 654,
-      ".pyc": 153,
-      ".md": 40,
-      ".txt": 15,
+      ".py": 902,
+      ".pyc": 201,
+      ".md": 50,
+      ".txt": 29,
       ".sample": 14,
-      ".typed": 9,
-      ".yaml": 5,
-      ".json": 4,
+      ".typed": 13,
+      ".yaml": 8,
+      ".whl": 7,
+      ".json": 6,
+      ".bat": 6,
+      ".exe": 6,
+      ".gz": 5,
+      ".yml": 3,
       ".tag": 3,
-      ".bat": 3,
-      ".gz": 2,
-      ".whl": 2,
-      ".pth": 2,
-      ".toml": 1,
-      ".lock": 1,
-      ".in": 1,
-      ".zip": 1,
-      ".cfg": 1,
-      ".yml": 1,
-      ".13": 1
+      ".pth": 3,
+      ".toml": 2,
+      ".lock": 2,
+      ".13": 2,
+      ".csh": 2,
+      ".fish": 2
     },
     "size_stats": {
-      "total_files": 89,
-      "total_size_mb": 0.65,
-      "python_files": 26,
+      "total_files": 111,
+      "total_size_mb": 0.84,
+      "python_files": 28,
       "python_size_mb": 0.19,
-      "avg_file_size_kb": 7.43,
-      "python_percentage": 29.05
+      "avg_file_size_kb": 7.7,
+      "python_percentage": 22.78
     }
   },
   "complexity": {
     "total_modules": 12,
-    "total_lines": 3075,
+    "total_lines": 3196,
     "total_functions": 97,
     "total_classes": 4,
     "average_complexity": 28.67,
@@ -128,21 +128,21 @@
       "yaml"
     ],
     "files": {
-      "pyproject.toml": "[project]\nname = \"ai-context-core\"\nversion = \"1.0.1\"\ndescription = \"Core logic for AI-driven development context management\"\nreadme = \"README.md\"\nrequires-python = \">=3.9\"\nauthors = [\n    {name = \"Juan M. Bernales\", email = \"juanbernales@gmail.com\"}\n]\nlicense = {text = \"GPL-3.0-or-later\"}\nkeywords = [\"ai\", \"context\", \"llm\", \"analysis\", \"development-tools\", \"productivity\"]\nclassifiers = [\n    \"Development Status :: 4 - Beta\",\n    \"Intended Audience :: Developers\",\n    \"Topic :: Software Development :: Libraries :: Python Modules\",\n    \"License :: OSI Approved :: GNU General Public License v3 (GPLv3)\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.9\",\n    \"Programming Language :: Python :: 3.10\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Operating System :: OS Independent\",\n]\ndependencies = [\n    \"pyyaml>=6.0\",\n    \"click>=8.0\",\n    \"rich>=13.0\",\n]\n\n[project.urls]\nRepository = \"https://github.com/geociencio/ai-context-core\"\nIssues = \"https://github.com/geociencio/ai-context-core/issues\"\nDocumentation = \"https://github.com/geociencio/ai-context-core/blob/main/README.md\"\n\n[project.scripts]\nai-ctx = \"ai_context_core.cli:cli\"\n\n[build-system]\nrequires = [\"setuptools>=61.0\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[tool.setuptools.package-data]\n\"ai_context_core\" = [\"**/*.yaml\", \"**/*.json\", \"**/*.md\"]\n\n[tool.setuptools]\ninclude-package-data = true\n\n[tool.ruff]\nline-length = 100\ntarget-version = \"py39\"\n\n[dependency-groups]\ndev = [\n    \"pytest>=8.4.2\",\n]\n"
+      "pyproject.toml": "[project]\nname = \"ai-context-core\"\nversion = \"1.0.1\"\ndescription = \"Core logic for AI-driven development context management\"\nreadme = \"README.md\"\nrequires-python = \">=3.9\"\nauthors = [\n    {name = \"Juan M. Bernales\", email = \"juanbernales@gmail.com\"}\n]\nlicense = {text = \"GPL-3.0-or-later\"}\nkeywords = [\"ai\", \"context\", \"llm\", \"analysis\", \"development-tools\", \"productivity\"]\nclassifiers = [\n    \"Development Status :: 4 - Beta\",\n    \"Intended Audience :: Developers\",\n    \"Topic :: Software Development :: Libraries :: Python Modules\",\n    \"License :: OSI Approved :: GNU General Public License v3 (GPLv3)\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.9\",\n    \"Programming Language :: Python :: 3.10\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Operating System :: OS Independent\",\n]\ndependencies = [\n    \"pyyaml>=6.0\",\n    \"click>=8.0\",\n    \"rich>=13.0\",\n]\n\n[project.urls]\nRepository = \"https://github.com/geociencio/ai-context-core\"\nIssues = \"https://github.com/geociencio/ai-context-core/issues\"\nDocumentation = \"https://github.com/geociencio/ai-context-core/blob/main/README.md\"\n\n[project.scripts]\nai-ctx = \"ai_context_core.cli:cli\"\n\n[build-system]\nrequires = [\"setuptools>=61.0\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[tool.setuptools.package-data]\n\"ai_context_core\" = [\"**/*.yaml\", \"**/*.json\", \"**/*.md\"]\n\n[tool.setuptools]\ninclude-package-data = true\n\n[tool.ruff]\nline-length = 100\ntarget-version = \"py39\"\n\n[dependency-groups]\ndev = [\n    \"pytest>=8.4.2\",\n    \"pytest-cov>=5.0.0\",\n    \"pre-commit>=3.7.1\",\n]\n"
     },
     "import_graph": {
       "src/ai_context_core/__init__.py": [],
       ".agent/scripts/skill_sync.py": [],
-      "src/ai_context_core/analyzer/metrics.py": [],
-      "src/ai_context_core/analyzer/engine.py": [],
-      "src/ai_context_core/analyzer/dependencies.py": [],
-      "src/ai_context_core/analyzer/ast_utils.py": [],
       "src/ai_context_core/cli.py": [],
       "src/ai_context_core/config/loader.py": [],
+      "src/ai_context_core/analyzer/engine.py": [],
+      "src/ai_context_core/analyzer/dependencies.py": [],
+      "src/ai_context_core/analyzer/metrics.py": [],
+      "src/ai_context_core/analyzer/ast_utils.py": [],
+      "src/ai_context_core/context/manager.py": [],
       "src/ai_context_core/analyzer/fs_utils.py": [],
-      "src/ai_context_core/analyzer/reporting.py": [],
       "src/ai_context_core/analyzer/issues.py": [],
-      "src/ai_context_core/context/manager.py": []
+      "src/ai_context_core/analyzer/reporting.py": []
     },
     "circular_dependencies": [],
     "graph_metrics": {
@@ -227,6 +227,19 @@
       "severity_score": 3
     },
     {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (28)",
+          "value": 28
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 3
+    },
+    {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
@@ -234,19 +247,6 @@
           "severity": "high",
           "message": "Very high cyclomatic complexity (52)",
           "value": 52
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 3
-    },
-    {
-      "module": "src/ai_context_core/analyzer/reporting.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high cyclomatic complexity (38)",
-          "value": 38
         }
       ],
       "total_issues": 1,
@@ -266,30 +266,17 @@
       "severity_score": 3
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
+      "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
           "type": "high_complexity",
           "severity": "high",
-          "message": "Very high cyclomatic complexity (28)",
-          "value": 28
+          "message": "Very high cyclomatic complexity (38)",
+          "value": 38
         }
       ],
       "total_issues": 1,
       "severity_score": 3
-    },
-    {
-      "module": "src/ai_context_core/analyzer/engine.py",
-      "issues": [
-        {
-          "type": "moderate_complexity",
-          "severity": "medium",
-          "message": "High cyclomatic complexity (18)",
-          "value": 18
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 2
     },
     {
       "module": "src/ai_context_core/cli.py",
@@ -316,6 +303,19 @@
       ],
       "total_issues": 1,
       "severity_score": 2
+    },
+    {
+      "module": "src/ai_context_core/analyzer/engine.py",
+      "issues": [
+        {
+          "type": "moderate_complexity",
+          "severity": "medium",
+          "message": "High cyclomatic complexity (18)",
+          "value": 18
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 2
     }
   ],
   "optimizations": [
@@ -326,21 +326,6 @@
           "type": "functions_too_long",
           "priority": "medium",
           "message": "Very long functions (average 71.5 lines/function).",
-          "suggestions": [
-            "Refactor functions > 50 lines",
-            "Extract common logic to helper functions",
-            "Use comprehensions and generators"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "src/ai_context_core/analyzer/metrics.py",
-      "suggestions": [
-        {
-          "type": "functions_too_long",
-          "priority": "medium",
-          "message": "Very long functions (average 67.7 lines/function).",
           "suggestions": [
             "Refactor functions > 50 lines",
             "Extract common logic to helper functions",
@@ -380,12 +365,42 @@
       ]
     },
     {
+      "module": "src/ai_context_core/analyzer/metrics.py",
+      "suggestions": [
+        {
+          "type": "functions_too_long",
+          "priority": "medium",
+          "message": "Very long functions (average 73.3 lines/function).",
+          "suggestions": [
+            "Refactor functions > 50 lines",
+            "Extract common logic to helper functions",
+            "Use comprehensions and generators"
+          ]
+        }
+      ]
+    },
+    {
       "module": "src/ai_context_core/analyzer/ast_utils.py",
       "suggestions": [
         {
           "type": "complexity_refactoring",
           "priority": "high",
           "message": "High complexity (51) with several functions. Consider breaking down large logic.",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (28) with several functions. Consider breaking down large logic.",
           "suggestions": [
             "Extract methods from long functions",
             "Use polymorphism instead of long if/else chains",
@@ -410,25 +425,10 @@
         {
           "type": "module_too_large",
           "priority": "medium",
-          "message": "Module is quite large (448 lines)",
+          "message": "Module is quite large (462 lines)",
           "suggestions": [
             "Split into multiple modules",
             "Extract classes to separate files"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "src/ai_context_core/analyzer/reporting.py",
-      "suggestions": [
-        {
-          "type": "complexity_refactoring",
-          "priority": "high",
-          "message": "High complexity (38) with several functions. Consider breaking down large logic.",
-          "suggestions": [
-            "Extract methods from long functions",
-            "Use polymorphism instead of long if/else chains",
-            "Apply SOLID principles"
           ]
         }
       ]
@@ -449,7 +449,7 @@
         {
           "type": "module_too_large",
           "priority": "medium",
-          "message": "Module is quite large (421 lines)",
+          "message": "Module is quite large (451 lines)",
           "suggestions": [
             "Split into multiple modules",
             "Extract classes to separate files"
@@ -458,12 +458,12 @@
       ]
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
+      "module": "src/ai_context_core/analyzer/reporting.py",
       "suggestions": [
         {
           "type": "complexity_refactoring",
           "priority": "high",
-          "message": "High complexity (28) with several functions. Consider breaking down large logic.",
+          "message": "High complexity (38) with several functions. Consider breaking down large logic.",
           "suggestions": [
             "Extract methods from long functions",
             "Use polymorphism instead of long if/else chains",
@@ -495,8 +495,22 @@
           "pattern": "open(",
           "description": "File opening without path validation",
           "severity": "medium",
-          "line": 226,
-          "code": "with open(self.project_path / \"project_context.json\", \"w\", encoding=\"utf-8\") as f:"
+          "line": 234,
+          "code": "with open("
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "medium"
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "pattern": "open(",
+          "description": "File opening without path validation",
+          "severity": "medium",
+          "line": 316,
+          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
         }
       ],
       "total_issues": 1,
@@ -525,20 +539,6 @@
           "severity": "medium",
           "line": 61,
           "code": "with open(output_path, \"w\", encoding=\"utf-8\") as f:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "medium"
-    },
-    {
-      "module": "src/ai_context_core/context/manager.py",
-      "issues": [
-        {
-          "pattern": "open(",
-          "description": "File opening without path validation",
-          "severity": "medium",
-          "line": 316,
-          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
         }
       ],
       "total_issues": 1,

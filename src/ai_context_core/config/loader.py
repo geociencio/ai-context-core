@@ -97,6 +97,8 @@ def list_profiles() -> list[str]:
         A list of profile stem names (e.g., ['qgis-plugin', 'generic']).
     """
     profiles_dir = pathlib.Path(__file__).parent / "profiles"
+    profiles = ["generic"]
     if not profiles_dir.exists():
-        return []
-    return [p.stem for p in profiles_dir.glob("*.yaml")]
+        return profiles
+    profiles.extend([p.stem for p in profiles_dir.glob("*.yaml")])
+    return profiles

@@ -7,7 +7,9 @@ quality scores based on weights, and aggregated project metrics.
 from typing import List, Dict, Any
 
 
-def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dict[str, int]:
+def calculate_complexity_distribution(
+    modules_data: List[Dict[str, Any]],
+) -> Dict[str, int]:
     """Calculates the distribution of cyclomatic complexity across modules.
 
     Args:
@@ -16,7 +18,12 @@ def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dic
     Returns:
         A dictionary with complexity buckets (low, medium, high, very_high) and counts.
     """
-    distribution = {"low (0-5)": 0, "medium (6-15)": 0, "high (16-30)": 0, "very_high (31+)": 0}
+    distribution = {
+        "low (0-5)": 0,
+        "medium (6-15)": 0,
+        "high (16-30)": 0,
+        "very_high (31+)": 0,
+    }
 
     for module in modules_data:
         complexity = module.get("complexity", 0)
@@ -33,7 +40,9 @@ def calculate_complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dic
 
 
 def calculate_quality_score(
-    modules_data: List[Dict[str, Any]], config: Dict[str, Any], context_patterns: Dict[str, Any]
+    modules_data: List[Dict[str, Any]],
+    config: Dict[str, Any],
+    context_patterns: Dict[str, Any],
 ) -> float:
     """Calculates an overall quality score for the project based on weighted metrics.
 
@@ -100,7 +109,9 @@ def calculate_quality_score(
         total_score += module_score
 
     # Normalize to percentage
-    final_score = (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
+    final_score = (
+        (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
+    )
 
     # Factor in QGIS compliance score if present
     qgis_data = context_patterns.get("qgis_compliance", {})
@@ -170,7 +181,9 @@ def calculate_project_metrics(
     doc_coverage = (total_doc_score / total_symbols * 100) if total_symbols > 0 else 0
 
     modules_with_main = sum(1 for m in modules_data if m.get("has_main", False))
-    modules_with_syntax_error = sum(1 for m in modules_data if m.get("syntax_error", False))
+    modules_with_syntax_error = sum(
+        1 for m in modules_data if m.get("syntax_error", False)
+    )
 
     # Complexity statistics
     complexities = [m.get("complexity", 0) for m in modules_data]
@@ -191,13 +204,17 @@ def calculate_project_metrics(
         "modules_with_main_guard": modules_with_main,
         "modules_with_syntax_errors": modules_with_syntax_error,
         "docstring_coverage": round(doc_coverage, 2),
-        "type_hint_coverage": round(sum(type_hint_cov) / len(modules_data), 2)
-        if modules_data
-        else 0,
-        "i18n_coverage": round(sum(i18n_scores) / len(modules_data), 2) if modules_data else 0,
+        "type_hint_coverage": (
+            round(sum(type_hint_cov) / len(modules_data), 2) if modules_data else 0
+        ),
+        "i18n_coverage": (
+            round(sum(i18n_scores) / len(modules_data), 2) if modules_data else 0
+        ),
         "entry_points_count": len(context_entry_points),
         "test_files_count": test_files_count,
         "avg_complexity": round(avg_complexity, 2),
         "max_complexity": max(complexities) if complexities else 0,
-        "quality_score": calculate_quality_score(modules_data, config, context_patterns),
+        "quality_score": calculate_quality_score(
+            modules_data, config, context_patterns
+        ),
     }

@@ -13,7 +13,6 @@ This workflow prepares the environment for a productive development session.
     ```
     
     Reads the following files to load the context into memory:
-    *   `.ai-context/project_brain.md`
     *   `AI_CONTEXT.md`
     *   `docs/DEVELOPMENT_LOG.md`
     *   `task.md`

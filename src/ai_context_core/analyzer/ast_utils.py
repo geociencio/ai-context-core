@@ -149,7 +149,10 @@ def has_main_guard(tree: ast.AST) -> bool:
                     and node.test.left.id == "__name__"
                 ):
                     for comparator in node.test.comparators:
-                        if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
+                        if (
+                            isinstance(comparator, ast.Constant)
+                            and comparator.value == "__main__"
+                        ):
                             return True
             except Exception:
                 continue
@@ -283,7 +286,15 @@ def calculate_complexity(tree: ast.AST) -> int:
         # Decision nodes
         if isinstance(
             node,
-            (ast.If, ast.While, ast.For, ast.Try, ast.ExceptHandler, ast.AsyncFor, ast.AsyncWith),
+            (
+                ast.If,
+                ast.While,
+                ast.For,
+                ast.Try,
+                ast.ExceptHandler,
+                ast.AsyncFor,
+                ast.AsyncWith,
+            ),
         ):
             complexity += 1
             if hasattr(node, "lineno"):
@@ -294,7 +305,9 @@ def calculate_complexity(tree: ast.AST) -> int:
             complexity += len(node.values) - 1
 
         # Comprehensions
-        elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+        elif isinstance(
+            node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
+        ):
             complexity += len(node.generators)
 
     # Penalty for highly dense logic (many decisions in few lines)

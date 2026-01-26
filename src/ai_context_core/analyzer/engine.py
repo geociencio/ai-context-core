@@ -141,7 +141,9 @@ class ProjectAnalyzer:
 
         # 4. Structure and Tests
         structure = fs_utils.analyze_structure(self.project_path, len(modules_data))
-        test_files_count = fs_utils.count_test_files(self.project_path, self.exclusion_patterns)
+        test_files_count = fs_utils.count_test_files(
+            self.project_path, self.exclusion_patterns
+        )
 
         return {
             "modules_data": modules_data,
@@ -180,7 +182,9 @@ class ProjectAnalyzer:
         # Debt and suggestions
         tech_debt = issues.find_technical_debt(modules_data)
         optimization_suggestions = issues.find_optimizations(modules_data)
-        security_list = issues.find_security_issues(modules_data, str(self.project_path))
+        security_list = issues.find_security_issues(
+            modules_data, str(self.project_path)
+        )
 
         return {
             "project_name": self.project_path.name,
@@ -190,7 +194,9 @@ class ProjectAnalyzer:
             "complexity": {
                 "total_modules": len(modules_data),
                 "total_lines": project_metrics.get("total_lines_code", 0),
-                "total_functions": sum(len(m.get("functions", [])) for m in modules_data),
+                "total_functions": sum(
+                    len(m.get("functions", [])) for m in modules_data
+                ),
                 "total_classes": sum(len(m.get("classes", [])) for m in modules_data),
                 "average_complexity": project_metrics.get("avg_complexity", 0),
                 "complexity_distribution": complexity_dist,
@@ -216,20 +222,26 @@ class ProjectAnalyzer:
         """
         try:
             reporting.generate_project_summary(
-                results, self.project_path / "PROJECT_SUMMARY.md", self.project_path.name
+                results,
+                self.project_path / "PROJECT_SUMMARY.md",
+                self.project_path.name,
             )
             reporting.generate_ai_context(
                 results, self.project_path / "AI_CONTEXT.md", self.project_path.name
             )
 
             # Save full JSON
-            with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
+            with open(
+                self.project_path / "project_context.json", "w", encoding="utf-8"
+            ) as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
 
         except Exception as e:
             logger.error(f"Error generating outputs: {e}")
 
-    def _analyze_modules_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
+    def _analyze_modules_parallel(
+        self, files: List[pathlib.Path]
+    ) -> List[Dict[str, Any]]:
         """Analyzes multiple modules in parallel using a process pool.
 
         Args:
@@ -239,8 +251,12 @@ class ProjectAnalyzer:
             A list of dictionaries, one per successfully analyzed module.
         """
         results = []
-        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files}
+        with concurrent.futures.ProcessPoolExecutor(
+            max_workers=self.max_workers
+        ) as executor:
+            future_to_file = {
+                executor.submit(self._analyze_single_module, f): f for f in files
+            }
 
             for future in concurrent.futures.as_completed(future_to_file):
                 f = future_to_file[future]

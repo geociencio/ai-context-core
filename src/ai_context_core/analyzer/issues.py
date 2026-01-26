@@ -38,7 +38,11 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
                     "issues": issues_list,
                     "total_issues": len(issues_list),
                     "severity_score": sum(
-                        3 if i["severity"] == "high" else 2 if i["severity"] == "medium" else 1
+                        (
+                            3
+                            if i["severity"] == "high"
+                            else 2 if i["severity"] == "medium" else 1
+                        )
                         for i in issues_list
                     ),
                 }
@@ -177,7 +181,9 @@ def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any
     return optimizations[:30]
 
 
-def _check_complexity_optimization(module: Dict[str, Any], issues: List[Dict[str, Any]]):
+def _check_complexity_optimization(
+    module: Dict[str, Any], issues: List[Dict[str, Any]]
+):
     """Suggests splitting logic for modules with borderline complexity.
 
     Args:
@@ -201,7 +207,9 @@ def _check_complexity_optimization(module: Dict[str, Any], issues: List[Dict[str
         )
 
 
-def _check_function_length_optimization(module: Dict[str, Any], issues: List[Dict[str, Any]]):
+def _check_function_length_optimization(
+    module: Dict[str, Any], issues: List[Dict[str, Any]]
+):
     """Detects and suggests refactoring for modules with excessively long functions.
 
     Args:
@@ -240,7 +248,9 @@ def _check_docstring_optimization(module: Dict[str, Any], issues: List[Dict[str,
     if total_funcs == 0:
         return
 
-    funcs_with_doc = sum(1 for has_doc in docstrings.get("functions", {}).values() if has_doc)
+    funcs_with_doc = sum(
+        1 for has_doc in docstrings.get("functions", {}).values() if has_doc
+    )
     coverage = funcs_with_doc / total_funcs
 
     if coverage < 0.5:
@@ -280,7 +290,9 @@ def _check_import_optimization(module: Dict[str, Any], issues: List[Dict[str, An
         )
 
 
-def _check_module_size_optimization(module: Dict[str, Any], issues: List[Dict[str, Any]]):
+def _check_module_size_optimization(
+    module: Dict[str, Any], issues: List[Dict[str, Any]]
+):
     """Suggests splitting large modules into smaller, more focused ones.
 
     Args:
@@ -294,7 +306,10 @@ def _check_module_size_optimization(module: Dict[str, Any], issues: List[Dict[st
                 "type": "module_too_large",
                 "priority": "medium",
                 "message": f"Module is quite large ({lines} lines)",
-                "suggestions": ["Split into multiple modules", "Extract classes to separate files"],
+                "suggestions": [
+                    "Split into multiple modules",
+                    "Extract classes to separate files",
+                ],
             }
         )
 
@@ -326,7 +341,9 @@ def find_security_issues(
             full_path = base_path / path
             # Obfuscate open usage to prevent self-detection during code scanning
             reader = (
-                getattr(__builtins__, "op" + "en") if hasattr(__builtins__, "op" + "en") else open
+                getattr(__builtins__, "op" + "en")
+                if hasattr(__builtins__, "op" + "en")
+                else open
             )
             with reader(full_path, "r", encoding="utf-8", errors="replace") as f:
                 content = f.read()
@@ -352,7 +369,8 @@ def find_security_issues(
 
     # Sort results by severity
     security_issues.sort(
-        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x["max_severity"]], reverse=True
+        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x["max_severity"]],
+        reverse=True,
     )
     return security_issues[:20]
 
@@ -365,8 +383,16 @@ def _get_dangerous_patterns() -> List[Tuple[str, str, str]]:
     """
     # Construct patterns dynamically to avoid self-detection in this file
     return [
-        ("ex" + "ec(", f"Use of {'ex' + 'ec'}() - Vulnerable to code injection", "high"),
-        ("ev" + "al(", f"Use of {'ev' + 'al'}() - Vulnerable to code injection", "high"),
+        (
+            "ex" + "ec(",
+            f"Use of {'ex' + 'ec'}() - Vulnerable to code injection",
+            "high",
+        ),
+        (
+            "ev" + "al(",
+            f"Use of {'ev' + 'al'}() - Vulnerable to code injection",
+            "high",
+        ),
         (
             "pic" + "kle.loads",
             f"Insecure deserialization - Can execute {'arbitrary'} code",
@@ -407,7 +433,11 @@ def _scan_file_for_issues(
             for i, line in enumerate(lines, 1):
                 stripped = line.strip()
                 # Simple heuristic: ignore comments and lines that look like our own list definitions
-                if pattern in line and not stripped.startswith("#") and '"+"' not in stripped:
+                if (
+                    pattern in line
+                    and not stripped.startswith("#")
+                    and '"+"' not in stripped
+                ):
                     issues_found.append(
                         {
                             "pattern": pattern,

@@ -18,7 +18,9 @@ The central nervous system for your AI-assisted coding workflow.
 uv tool install .
 ```
 
-### In a Virtual Environment (Recommended for development)
+### In a Virtual Environment
+
+This is the recommended way to install and use `ai-context-core`.
 
 1. **Create and activate the environment**:
    ```bash
@@ -26,12 +28,29 @@ uv tool install .
    source .venv/bin/activate
    ```
 
-2. **Install the package (editable)**:
+2. **Install the package**:
    ```bash
-   uv sync
+   uv pip install .
    ```
 
-This will install the project and its dependencies in the `.venv` directory. The `ai-ctx` command will be available within the virtual environment.
+   The `ai-ctx` command will be available within the virtual environment.
+
+### For Development
+
+If you want to contribute to the project, you need to install it in editable mode with the development dependencies.
+
+1. **Create and activate the environment**:
+   ```bash
+   uv venv
+   source .venv/bin/activate
+   ```
+
+2. **Install the package with development dependencies**:
+   ```bash
+   uv sync --all-extras
+   ```
+
+   This will install the project in editable mode and all the dependencies, including the ones for testing and documentation.
 
 ### Using in Another Project
 
@@ -55,6 +74,50 @@ If the other project also uses `uv`:
 uv add --dev --path /path/to/ai-context-core
 ```
 
+```
+
+## Docker Support
+
+The project includes Docker support for reproducible development, testing, and CI/CD.
+
+### Quick Start with Docker
+
+```bash
+# Build all images
+make docker-build
+
+# Run tests in Docker
+make docker-test
+
+# Interactive development shell
+make docker-shell
+
+# Run linter
+make docker-lint
+```
+
+### Docker Images
+
+- **Development** (`ai-ctx:dev`) - Full environment with dev dependencies
+- **Test** (`ai-ctx:test`) - Runs test suite with coverage
+- **Production** (`ai-ctx:prod`) - Minimal runtime image
+
+### Manual Docker Commands
+
+```bash
+# Build specific stage
+docker build --target test -t ai-ctx:test .
+
+# Run tests
+docker run --rm ai-ctx:test
+
+# Run CLI from production image
+docker run --rm ai-ctx:prod analyze
+
+# Interactive shell
+docker run --rm -it ai-ctx:dev /bin/bash
+```
+
 ## Usage
 
 ```bash
@@ -64,3 +127,4 @@ ai-ctx init --profile qgis-plugin
 # Update context manually
 ai-ctx analyze
 ```
+

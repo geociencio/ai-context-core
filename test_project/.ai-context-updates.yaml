@@ -1,0 +1,6 @@
+files:
+- content: 'def hello(): pass'
+  file_path: test_project/test.py
+- content: 'def hello(): pass'
+  file_path: test_project/test.py
+project_name: test_project

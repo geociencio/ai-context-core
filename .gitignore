@@ -7,3 +7,7 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Docker
+.docker/
+*.tar

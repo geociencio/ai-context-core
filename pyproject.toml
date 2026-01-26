@@ -52,4 +52,6 @@ target-version = "py39"
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",
+    "pytest-cov>=5.0.0",
+    "pre-commit>=3.7.1",
 ]

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Development service with hot-reload
+  dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+    working_dir: /app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+
+  # Test service - runs full test suite
+  test:
+    build:
+      context: .
+      target: test
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+    environment:
+      - PYTHONPATH=/app/src
+
+  # Lint service - runs code quality checks
+  lint:
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src:ro
+    command: sh -c "uv run ruff check . && uv run ruff format --check ."
+
+  # Production service - minimal runtime
+  prod:
+    build:
+      context: .
+      target: production
+    command: [ "--help" ]
