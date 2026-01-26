@@ -1,492 +1,360 @@
-"""
-Design patterns detection module for ai-context-core.
-Uses AST to identify common architectural patterns.
+"""Design patterns detection module for ai-context-core.
+
+Uses AST to identify common architectural patterns through a class-based detection system.
 """
 
 import ast
 from typing import Dict, List, Any
 
 
-def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
-    """
-    Analyzes an AST to detect common design patterns.
+class PatternDetector:
+    """Base class for design pattern detectors."""
 
-    Args:
-        tree: The AST to analyze.
+    def __init__(self):
+        self.evidence = []
+        self.confidence = 0
 
-    Returns:
-        A dictionary containing detected patterns and their confidence levels.
-    """
-    patterns = {}
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Analyzes a node and returns detected pattern instances."""
+        raise NotImplementedError
 
-    # Singleton detection
-    singleton_info = detect_singleton(tree)
-    if singleton_info:
-        patterns["Singleton"] = singleton_info
-
-    # Factory detection
-    factory_info = detect_factory(tree)
-    if factory_info:
-        patterns["Factory"] = factory_info
-
-    # Observer detection
-    observer_info = detect_observer(tree)
-    if observer_info:
-        patterns["Observer"] = observer_info
-
-    # Strategy detection
-    strategy_info = detect_strategy(tree)
-    if strategy_info:
-        patterns["Strategy"] = strategy_info
-
-    # Decorator detection
-    decorator_info = detect_decorator(tree)
-    if decorator_info:
-        patterns["Decorator"] = decorator_info
-
-    return patterns
+    def _add_evidence(self, msg: str, weight: int):
+        self.evidence.append(msg)
+        self.confidence += weight
 
 
-def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Detects Decorator pattern implementations (wrappers).
-    Looks for:
-    1. Functions that define a 'wrapper' function inside and return it.
-    2. Use of functools.wraps.
-    3. Classes that take a callable in __init__ and implement __call__.
+class SingletonDetector(PatternDetector):
+    """Detects Singleton pattern implementations."""
 
-    Args:
-        tree: The AST to analyze.
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.ClassDef):
+            return []
+        self.evidence, self.confidence = [], 0
 
-    Returns:
-        A list of detected Decorator patterns with confidence scores.
-    """
-    decorators = []
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and item.name == "__new__":
+                self._add_evidence("Overrides __new__ to control instantiation", 60)
 
-    for node in ast.walk(tree):
-        # 1. Functional Decorators
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            confidence = 0
-            evidence = []
+            if isinstance(item, ast.FunctionDef):
+                is_static = any(
+                    isinstance(d, (ast.Name, ast.Attribute))
+                    and (
+                        getattr(d, "id", "") in ("classmethod", "staticmethod")
+                        or getattr(d, "attr", "") in ("classmethod", "staticmethod")
+                    )
+                    for d in item.decorator_list
+                )
+                if is_static and any(
+                    k in item.name.lower()
+                    for k in ("instance", "singleton", "get_inst")
+                ):
+                    self._add_evidence(
+                        f"Static/Class method '{item.name}' detected", 30
+                    )
 
-            # Check for inner function that usually acts as a wrapper
-            inner_func = None
-            for item in node.body:
-                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    inner_func = item
-                    break
-
-            if inner_func:
-                # Check if it returns the inner function
-                returns_inner = False
-                for item in node.body:
-                    if (
-                        isinstance(item, ast.Return)
-                        and isinstance(item.value, ast.Name)
-                        and item.value.id == inner_func.name
+            if isinstance(item, (ast.Assign, ast.AnnAssign)):
+                targets = (
+                    item.targets if isinstance(item, ast.Assign) else [item.target]
+                )
+                for t in targets:
+                    if isinstance(t, ast.Name) and any(
+                        k in t.id.lower() for k in ("instance", "_inst")
                     ):
-                        returns_inner = True
+                        self._add_evidence(
+                            f"Static instance variable '{t.id}' found", 20
+                        )
+
+        if self.confidence >= 50:
+            return [
+                {
+                    "class": node.name,
+                    "confidence": min(self.confidence, 100),
+                    "evidence": self.evidence,
+                }
+            ]
+        return []
+
+
+class FactoryDetector(PatternDetector):
+    """Detects Factory pattern implementations."""
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.ClassDef):
+            return []
+        res = []
+        base_conf = 30 if "factory" in node.name.lower() else 0
+
+        for item in node.body:
+            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                self.evidence, self.confidence = [], base_conf
+                if base_conf:
+                    self.evidence.append(
+                        f"Class '{node.name}' contains 'Factory' in name"
+                    )
+
+                if any(
+                    p in item.name.lower()
+                    for p in ("create_", "build_", "make_", "factory")
+                ):
+                    self._add_evidence(
+                        f"Method '{item.name}' matches factory naming", 40
+                    )
+
+                for sub in ast.walk(item):
+                    if isinstance(sub, ast.Return) and isinstance(sub.value, ast.Call):
+                        self._add_evidence(
+                            "Method instantiates and returns an object", 30
+                        )
                         break
 
-                if returns_inner:
-                    evidence.append(
-                        f"Function '{node.name}' contains and returns inner function '{inner_func.name}'"
-                    )
-                    confidence += 50
-
-                    # Check for functools.wraps
-                    for dec in inner_func.decorator_list:
-                        if (
-                            isinstance(dec, ast.Call)
-                            and isinstance(dec.func, ast.Attribute)
-                            and dec.func.attr == "wraps"
-                        ) or (
-                            isinstance(dec, ast.Call)
-                            and isinstance(dec.func, ast.Name)
-                            and dec.func.id == "wraps"
-                        ):
-                            evidence.append(
-                                "Uses @functools.wraps on the inner function"
-                            )
-                            confidence += 40
-                            break
-
-            if confidence >= 50:
-                decorators.append(
-                    {
-                        "name": node.name,
-                        "type": "function",
-                        "confidence": min(confidence, 100),
-                        "evidence": evidence,
-                    }
-                )
-
-        # 2. Class-based Decorators
-        elif isinstance(node, ast.ClassDef):
-            confidence = 0
-            evidence = []
-
-            has_init_callable = False
-            has_call_method = False
-
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef):
-                    if item.name == "__init__":
-                        # Check if it takes at least one arg (besides self) and stores it
-                        if len(item.args.args) >= 2:
-                            has_init_callable = True
-                    elif item.name == "__call__":
-                        has_call_method = True
-
-            if has_init_callable and has_call_method:
-                evidence.append(
-                    "Class implements both __init__ (taking an object) and __call__"
-                )
-                confidence += 60
-
-                if confidence >= 50:
-                    decorators.append(
+                if self.confidence >= 60:
+                    res.append(
                         {
-                            "name": node.name,
-                            "type": "class",
-                            "confidence": min(confidence, 100),
-                            "evidence": evidence,
+                            "class": node.name,
+                            "method": item.name,
+                            "confidence": min(self.confidence, 100),
+                            "evidence": self.evidence,
                         }
                     )
-
-    return decorators
-
-
-def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Detects Strategy pattern implementations.
-    Looks for:
-    1. Context classes that accept a strategy/handler/engine object.
-    2. Context classes that call a method on the stored strategy object.
-    3. Naming conventions like '*Strategy', '*Algorithm'.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A list of detected Strategy patterns with confidence scores.
-    """
-    strategies = []
-
-    # 1. Identify potential strategy implementations (classes/functions with specific names)
-    potential_strategies = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            if any(
-                kw in node.name.lower()
-                for kw in ("strategy", "algorithm", "handler", "engine")
-            ):
-                potential_strategies.append(node.name)
-
-    # 2. Look for Context classes using these strategies
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            confidence = 0
-            evidence = []
-
-            # Check for strategy injection in __init__ or setter
-            has_injection = False
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef) and (
-                    item.name == "__init__" or "set_" in item.name
-                ):
-                    for arg in item.args.args:
-                        if any(
-                            kw in arg.arg.lower()
-                            for kw in (
-                                "strategy",
-                                "algorithm",
-                                "engine",
-                                "handler",
-                                "mode",
-                            )
-                        ):
-                            has_injection = True
-                            evidence.append(
-                                f"Strategy injection detected in '{item.name}' via argument '{arg.arg}'"
-                            )
-                            confidence += 30
-                            # Try to find which attribute it's stored in
-                            for sub in ast.walk(item):
-                                if isinstance(sub, ast.Assign) and any(
-                                    ast.unparse(t) == f"self.{arg.arg}"
-                                    or arg.arg in ast.unparse(t)
-                                    for t in sub.targets
-                                ):
-                                    break
-                            break
-
-            # Check for usage of stored strategy
-            if has_injection:
-                for item in node.body:
-                    if isinstance(item, ast.FunctionDef) and item.name not in (
-                        "__init__",
-                        "set_",
-                    ):
-                        for sub in ast.walk(item):
-                            if isinstance(sub, ast.Call) and isinstance(
-                                sub.func, ast.Attribute
-                            ):
-                                if any(
-                                    kw in ast.unparse(sub.func).lower()
-                                    for kw in (
-                                        "strategy",
-                                        "algorithm",
-                                        "engine",
-                                        "handler",
-                                    )
-                                ):
-                                    evidence.append(
-                                        f"Strategy call detected in method '{item.name}': {ast.unparse(sub.func)}()"
-                                    )
-                                    confidence += 40
-                                    break
-
-            if confidence >= 50:
-                strategies.append(
-                    {
-                        "class": node.name,
-                        "confidence": min(confidence, 100),
-                        "evidence": evidence,
-                    }
-                )
-
-    return strategies
+        return res
 
 
-def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Detects Observer pattern implementations.
-    Looks for:
-    1. Methods like attach/detach, subscribe/unsubscribe, notify.
-    2. Collections of observers (list/set).
-    3. Notification loops (for obs in observers: obs.update()).
+class ObserverDetector(PatternDetector):
+    """Detects Observer pattern implementations."""
 
-    Args:
-        tree: The AST to analyze.
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.ClassDef):
+            return []
+        self.evidence, self.confidence = [], 0
 
-    Returns:
-        A list of detected Observer patterns with confidence scores.
-    """
-    observers = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            confidence = 0
-            evidence = []
-
-            # Check for observer collection initialization
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef) and item.name == "__init__":
-                    for sub in ast.walk(item):
-                        if isinstance(sub, ast.Assign):
-                            for target in sub.targets:
-                                if isinstance(target, ast.Attribute) and any(
-                                    kw in target.attr.lower()
-                                    for kw in ("observers", "subscribers", "listeners")
-                                ):
-                                    evidence.append(
-                                        f"Observer collection '{target.attr}' initialized in __init__"
-                                    )
-                                    confidence += 20
-                                    break
-
-            # Check for attach/notify methods
-            method_counts = 0
-            for item in node.body:
-                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    m_name = item.name.lower()
-                    if any(
-                        kw in m_name
-                        for kw in (
-                            "attach",
-                            "detach",
-                            "subscribe",
-                            "unsubscribe",
-                            "register",
-                            "unregister",
-                        )
-                    ):
-                        method_counts += 1
-                        evidence.append(f"Management method '{item.name}' detected")
-                    if any(kw in m_name for kw in ("notify", "emit", "broadcast")):
-                        method_counts += 1
-                        evidence.append(f"Notification method '{item.name}' detected")
-
-                        # Look for loop over collection inside notify
-                        for sub in ast.walk(item):
-                            if isinstance(sub, ast.For) and any(
-                                kw in ast.unparse(sub.iter).lower()
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and item.name == "__init__":
+                for sub in ast.walk(item):
+                    if isinstance(sub, ast.Assign):
+                        for t in sub.targets:
+                            if isinstance(t, ast.Attribute) and any(
+                                kw in t.attr.lower()
                                 for kw in ("observers", "subscribers", "listeners")
                             ):
-                                confidence += 30
-                                evidence.append(
-                                    "Notification method contains a loop over the observer collection"
+                                self._add_evidence(
+                                    f"Collection '{t.attr}' initialized in __init__", 20
                                 )
                                 break
 
-            confidence += method_counts * 15
-
-            if confidence >= 50:
-                observers.append(
-                    {
-                        "class": node.name,
-                        "confidence": min(confidence, 100),
-                        "evidence": evidence,
-                    }
-                )
-
-    return observers
-
-
-def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Detects Factory pattern implementations.
-    Looks for:
-    1. Methods named create_*, build_*, get_*, or factory.
-    2. Methods that instantiate and return objects.
-    3. Static or class methods in a "Factory" named class.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A list of detected Factory patterns with confidence scores.
-    """
-    factories = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            # Check class name
-            class_confidence = 0
-            if "factory" in node.name.lower():
-                class_confidence += 30
-
-            for item in node.body:
-                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    confidence = class_confidence
-                    evidence = []
-
-                    if class_confidence > 0:
-                        evidence.append(
-                            f"Class '{node.name}' contains 'Factory' in its name"
-                        )
-
-                    # Check method name
-                    method_name = item.name.lower()
-                    if any(
-                        prefix in method_name
-                        for prefix in ("create_", "build_", "make_", "factory")
-                    ):
-                        confidence += 40
-                        evidence.append(
-                            f"Method '{item.name}' matches common factory naming conventions"
-                        )
-
-                    # Check if it returns an instantiation
-                    for subnode in ast.walk(item):
-                        if isinstance(subnode, ast.Return) and isinstance(
-                            subnode.value, ast.Call
+            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                m_low = item.name.lower()
+                if any(
+                    kw in m_low
+                    for kw in (
+                        "attach",
+                        "detach",
+                        "subscribe",
+                        "unsubscribe",
+                        "register",
+                        "unregister",
+                    )
+                ):
+                    self._add_evidence(f"Management method '{item.name}' detected", 15)
+                if any(kw in m_low for kw in ("notify", "emit", "broadcast")):
+                    self._add_evidence(
+                        f"Notification method '{item.name}' detected", 15
+                    )
+                    for sub in ast.walk(item):
+                        if isinstance(sub, ast.For) and any(
+                            kw in ast.unparse(sub.iter).lower()
+                            for kw in ("observers", "subscribers", "listeners")
                         ):
-                            # Simple check: returns something initialized
-                            confidence += 30
-                            evidence.append(
-                                "Method contains a return statement that instantiates a class"
+                            self._add_evidence(
+                                "Notification method iterates over collection", 30
                             )
                             break
 
-                    if confidence >= 60:
-                        factories.append(
-                            {
-                                "class": node.name,
-                                "method": item.name,
-                                "confidence": min(confidence, 100),
-                                "evidence": evidence,
-                            }
-                        )
-
-    return factories
+        if self.confidence >= 50:
+            return [
+                {
+                    "class": node.name,
+                    "confidence": min(self.confidence, 100),
+                    "evidence": self.evidence,
+                }
+            ]
+        return []
 
 
-def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Detects Singleton pattern implementations.
-    Looks for:
-    1. A class with a private instance (e.g., _instance = None)
-    2. A class method or static method that returns the instance (e.g., get_instance())
-    3. Overriding __new__ to control instantiation.
+class StrategyDetector(PatternDetector):
+    """Detects Strategy pattern implementations."""
 
-    Args:
-        tree: The AST to analyze.
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.ClassDef):
+            return []
+        self.evidence, self.confidence = [], 0
+        has_inj = False
 
-    Returns:
-        A list of detected Singleton patterns with confidence scores.
-    """
-    singletons = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            confidence = 0
-            evidence = []
-
-            # 1. Check for __new__ override (Strongest indicator)
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef) and item.name == "__new__":
-                    evidence.append("Overrides __new__ to control instantiation")
-                    confidence += 60
-                    break
-
-            # 2. Check for class methods like "get_instance" or similar
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef):
-                    # Check decorators for @classmethod or @staticmethod
-                    is_class_or_static = any(
-                        (
-                            isinstance(dec, ast.Name)
-                            and dec.id in ("classmethod", "staticmethod")
-                        )
-                        or (
-                            isinstance(dec, ast.Attribute)
-                            and dec.attr in ("classmethod", "staticmethod")
-                        )
-                        for dec in item.decorator_list
-                    )
-
-                    if is_class_or_static and any(
-                        keyword in item.name.lower()
-                        for keyword in ("instance", "singleton", "get_inst")
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and (
+                item.name == "__init__" or "set_" in item.name
+            ):
+                for arg in item.args.args:
+                    if any(
+                        kw in arg.arg.lower()
+                        for kw in ("strategy", "algorithm", "engine", "handler", "mode")
                     ):
-                        evidence.append(f"Static/Class method '{item.name}' detected")
-                        confidence += 30
+                        has_inj = True
+                        self._add_evidence(
+                            f"Injection detected in '{item.name}' via '{arg.arg}'", 30
+                        )
+                        break
 
-            # 3. Check for static instance variable
+        if has_inj:
             for item in node.body:
-                if isinstance(item, (ast.Assign, ast.AnnAssign)):
-                    targets = (
-                        item.targets if isinstance(item, ast.Assign) else [item.target]
-                    )
-                    for target in targets:
-                        if isinstance(target, ast.Name) and any(
-                            keyword in target.id.lower()
-                            for keyword in ("instance", "_inst")
+                if isinstance(item, ast.FunctionDef) and item.name not in (
+                    "__init__",
+                    "set_",
+                ):
+                    for sub in ast.walk(item):
+                        if isinstance(sub, ast.Call) and isinstance(
+                            sub.func, ast.Attribute
                         ):
-                            evidence.append(
-                                f"Static instance variable '{target.id}' found"
-                            )
-                            confidence += 20
+                            if any(
+                                kw in ast.unparse(sub.func).lower()
+                                for kw in ("strategy", "algorithm", "engine", "handler")
+                            ):
+                                self._add_evidence(
+                                    f"Strategy call in '{item.name}': {ast.unparse(sub.func)}()",
+                                    40,
+                                )
+                                break
 
-            if confidence >= 50:
-                singletons.append(
+        if self.confidence >= 50:
+            return [
+                {
+                    "class": node.name,
+                    "confidence": min(self.confidence, 100),
+                    "evidence": self.evidence,
+                }
+            ]
+        return []
+
+
+class DecoratorDetector(PatternDetector):
+    """Detects Decorator pattern implementations."""
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        res = []
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            self.evidence, self.confidence = [], 0
+            inner = next(
+                (
+                    i
+                    for i in node.body
+                    if isinstance(i, (ast.FunctionDef, ast.AsyncFunctionDef))
+                ),
+                None,
+            )
+            if inner:
+                if any(
+                    isinstance(i, ast.Return)
+                    and isinstance(i.value, ast.Name)
+                    and i.value.id == inner.name
+                    for i in node.body
+                ):
+                    self._add_evidence(
+                        f"Function contains and returns inner '{inner.name}'", 50
+                    )
+                    if any(
+                        isinstance(d, ast.Call)
+                        and (
+                            getattr(d.func, "attr", "") == "wraps"
+                            or getattr(d.func, "id", "") == "wraps"
+                        )
+                        for d in inner.decorator_list
+                    ):
+                        self._add_evidence("Uses @functools.wraps", 40)
+            if self.confidence >= 50:
+                res.append(
                     {
-                        "class": node.name,
-                        "confidence": min(confidence, 100),
-                        "evidence": evidence,
+                        "name": node.name,
+                        "type": "function",
+                        "confidence": min(self.confidence, 100),
+                        "evidence": self.evidence,
                     }
                 )
 
-    return singletons
+        elif isinstance(node, ast.ClassDef):
+            self.evidence, self.confidence = [], 0
+            names = {i.name for i in node.body if isinstance(i, ast.FunctionDef)}
+            if "__init__" in names and "__call__" in names:
+                self._add_evidence("Class implements both __init__ and __call__", 60)
+            if self.confidence >= 50:
+                res.append(
+                    {
+                        "name": node.name,
+                        "type": "class",
+                        "confidence": min(self.confidence, 100),
+                        "evidence": self.evidence,
+                    }
+                )
+        return res
+
+
+def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
+    """Analyzes an AST to detect common design patterns using specialized detectors."""
+    detectors = {
+        "Singleton": SingletonDetector(),
+        "Factory": FactoryDetector(),
+        "Observer": ObserverDetector(),
+        "Strategy": StrategyDetector(),
+        "Decorator": DecoratorDetector(),
+    }
+    results = {}
+
+    for node in ast.walk(tree):
+        for name, det in detectors.items():
+            found = det.detect(node)
+            if found:
+                if name not in results:
+                    results[name] = []
+                results[name].extend(found)
+    return results
+
+
+# --- Legacy Compatibility Wrappers ---
+
+
+def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
+    det = SingletonDetector()
+    res = []
+    for node in ast.walk(tree):
+        res.extend(det.detect(node))
+    return res
+
+
+def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
+    det = FactoryDetector()
+    res = []
+    for node in ast.walk(tree):
+        res.extend(det.detect(node))
+    return res
+
+
+def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
+    det = ObserverDetector()
+    res = []
+    for node in ast.walk(tree):
+        res.extend(det.detect(node))
+    return res
+
+
+def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
+    det = StrategyDetector()
+    res = []
+    for node in ast.walk(tree):
+        res.extend(det.detect(node))
+    return res
+
+
+def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
+    det = DecoratorDetector()
+    res = []
+    for node in ast.walk(tree):
+        res.extend(det.detect(node))
+    return res

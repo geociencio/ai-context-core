@@ -6,63 +6,41 @@ AI interaction (LLM prompts). Includes Mermaid graph support.
 
 import pathlib
 import time
-from typing import Dict, Any
-
-
 import string
+from typing import Dict, Any, List
 
 
 def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
-    """Generates a Mermaid-formatted dependency graph for the top project modules.
-
-    Args:
-        dependencies: Dependency analysis dictionary containing import graphs.
-
-    Returns:
-        A string representing the Mermaid dependency graph.
-    """
+    """Generates a Mermaid-formatted dependency graph for the top project modules."""
     graph = ["graph TD"]
     import_graph = dependencies.get("import_graph", {})
     if not import_graph:
         return ""
 
-    # Calculate node scores (connections) to filter noisy graphs
     node_scores = {u: len(v) for u, v in import_graph.items()}
-    # Filter out likely external packages if any slipped through or low-value nodes
     top_nodes = sorted(node_scores.items(), key=lambda x: x[1], reverse=True)[:20]
     top_node_names = {name for name, _ in top_nodes}
 
-    # Add edges
     added_edges = set()
     for u, neighbors in import_graph.items():
         if u in top_node_names or any(v in top_node_names for v in neighbors):
             u_short = u.split("/")[-1].replace(".py", "").replace("__init__", "init")
             for v in neighbors:
-                # Filter self-loops and internal implementation details if needed
                 if u == v:
                     continue
-
                 v_short = v.split(".")[-1]
                 edge = f"{u_short}->{v_short}"
-
                 if edge not in added_edges:
                     graph.append(f"    {u_short} --> {v_short}")
                     added_edges.add(edge)
 
-    # Styling
     graph.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
-    # Apply class to top nodes and ensure they are rendered
     for name in top_node_names:
         short = name.split("/")[-1].replace(".py", "").replace("__init__", "init")
-        graph.append(f"    {short}")  # Explicitly declare node
+        graph.append(f"    {short}")
         graph.append(f"    class {short} module;")
 
     return "\n".join(graph)
-
-
-generate_mermaid_graph = (
-    generate_dependency_diagram  # Alias for backward compatibility if needed
-)
 
 
 class MarkdownBuilder:
@@ -76,25 +54,12 @@ class MarkdownBuilder:
             "",
         ]
 
-    def add_section(self, title: str, level: int = 2):
-        """Adds a section header."""
+    def add_section(self, title: str, content: str, level: int = 2):
         self.lines.append(f"{'#' * level} {title}")
-
-    def add_text(self, text: str):
-        """Adds raw text or formatted blocks."""
-        self.lines.append(text)
-
-    def add_list_item(self, text: str, bullet: str = "-"):
-        """Adds a bulleted list item."""
-        self.lines.append(f"{bullet} {text}")
-
-    def add_list(self, items: list, bullet: str = "-"):
-        """Adds multiple list items."""
-        for item in items:
-            self.add_list_item(item, bullet)
+        self.lines.append(content)
+        self.lines.append("")
 
     def build(self) -> str:
-        """Returns the complete Markdown string."""
         return "\n".join(self.lines)
 
 
@@ -112,37 +77,16 @@ class HTMLBuilder:
     ul { list-style-type: none; padding: 0; }
     li { padding: 5px 0; border-bottom: 1px solid #eee; }
     li:last-child { border-bottom: none; }
-    .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; color: white; display: inline-block; }
-    .badge-critical { background: #e74c3c; }
-    .badge-high { background: #e67e22; }
-    .badge-medium { background: #f1c40f; color: #333; }
-    .badge-low { background: #3498db; }
     .mermaid { text-align: center; overflow-x: auto; background: white; padding: 20px; }
     """
 
     TEMPLATE = string.Template(
-        """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$title</title>
-    <style>$css</style>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
-    </script>
-</head>
-<body>
-    <h1>$title</h1>
-    <div class="card">
-        <p><strong>Date:</strong> $date</p>
-        <p><strong>Version:</strong> 2.0 (Ai-Context-Core)</p>
-    </div>
-    $content
-</body>
-</html>
-    """
+        "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+        "<title>$title</title><style>$css</style><script type='module'>"
+        "import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';"
+        "mermaid.initialize({ startOnLoad: true });"
+        "</script></head><body><h1>$title</h1><div class='card'><p><strong>Date:</strong> $date</p>"
+        "<p><strong>Version:</strong> 2.0 (Ai-Context-Core)</p></div>$content</body></html>"
     )
 
     def __init__(self, title: str):
@@ -150,27 +94,210 @@ class HTMLBuilder:
         self.content_parts = []
 
     def add_section(self, title: str, content: str):
-        """Adds a section wrapped in a card."""
         self.content_parts.append(f'<div class="card"><h2>{title}</h2>{content}</div>')
 
-    def add_raw(self, html: str):
-        """Adds raw HTML."""
-        self.content_parts.append(html)
-
-    def build_list(self, items: list) -> str:
-        """Helper to build an HTML list."""
+    def build_list(self, items: List[str]) -> str:
         if not items:
             return ""
-        lis = "".join(f"<li>{item}</li>" for item in items)
-        return f"<ul>{lis}</ul>"
+        return "<ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>"
 
     def render(self) -> str:
-        """Renders final HTML."""
         return self.TEMPLATE.substitute(
             title=self.title,
             css=self.CSS,
             date=time.strftime("%Y-%m-%d %H:%M:%S"),
             content="\n".join(self.content_parts),
+        )
+
+
+class SummaryGenerator:
+    """Orchestrates the generation of project summaries in different formats."""
+
+    def __init__(self, analyses: Dict[str, Any], project_name: str):
+        self.analyses = analyses
+        self.project_name = project_name
+
+    def generate_html(self, output_path: pathlib.Path):
+        builder = HTMLBuilder(f"PROJECT SUMMARY - {self.project_name}")
+
+        # Metrics
+        m = self.analyses.get("metrics", {})
+        c = self.analyses.get("complexity", {})
+        m_html = f"""
+        <div class="metric">Quality Score: <span class="metric-value">{m.get("quality_score", 0)}/100</span></div>
+        <div class="metric">Lines of Code: <span class="metric-value">{m.get("total_lines_code", 0):,}</span></div>
+        <div class="metric">Modules: <span class="metric-value">{c.get("total_modules", 0)}</span></div>
+        """
+        builder.add_section("📊 KEY METRICS", m_html)
+
+        # Issues
+        sec = self.analyses.get("security", [])
+        if sec:
+            s_list = [
+                f"<strong>{i['module']}</strong>: {i['total_issues']} issues (Max: {i['max_severity']})"
+                for i in sec[:5]
+            ]
+            builder.add_section("🚨 SECURITY ISSUES", builder.build_list(s_list))
+
+        # Recommendations
+        opt = self.analyses.get("optimizations", [])
+        if opt:
+            o_list = [
+                f"<strong>{o['module']}</strong>: {'; '.join(s.get('message', '') for s in o.get('suggestions', []))}"
+                for o in opt[:5]
+            ]
+            builder.add_section("💡 RECOMMENDATIONS", builder.build_list(o_list))
+
+        # Graph
+        graph = generate_dependency_diagram(self.analyses.get("dependencies", {}))
+        if graph:
+            builder.add_section(
+                "🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>'
+            )
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(builder.render())
+
+    def generate_markdown(self, output_path: pathlib.Path):
+        builder = MarkdownBuilder(f"PROJECT SUMMARY - {self.project_name}")
+
+        sections = [
+            ("📊 KEY METRICS", self._build_metrics()),
+            ("📁 STRUCTURE", self._build_structure()),
+            ("🚨 CRITICAL ISSUES", self._build_issues()),
+            ("📦 QGIS STANDARDS", self._build_qgis()),
+            ("💡 MAIN RECOMMENDATIONS", self._build_recommendations()),
+            ("🏗️ DESIGN PATTERNS", self._build_patterns()),
+            ("🔄 GIT ANALYSIS", self._build_git()),
+            ("📈 COMPLEXITY DISTRIBUTION", self._build_complexity()),
+        ]
+
+        for title, content in sections:
+            if content:
+                builder.add_section(title, content)
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(builder.build())
+
+    def _build_metrics(self) -> str:
+        c = self.analyses.get("complexity", {})
+        m = self.analyses.get("metrics", {})
+        s = self.analyses.get("structure", {}).get("size_stats", {})
+        return (
+            f"- **Total Modules**: {c.get('total_modules', 0):,}\n"
+            f"- **Lines of Code**: {c.get('total_lines', 0):,}\n"
+            f"- **Total Size**: {s.get('total_size_mb', 0):.1f} MB\n"
+            f"- **Average Complexity**: {c.get('average_complexity', 0):.1f}\n"
+            f"- **Avg Maintenance Index**: {m.get('avg_maintenance_index', 0):.1f}\n"
+            f"- **Docstring Coverage**: {m.get('docstring_coverage', 0):.1f}%\n"
+            f"- **Quality Score**: {m.get('quality_score', 0):.1f}/100\n"
+            f"- **Test Files**: {m.get('test_files_count', 0)}"
+        )
+
+    def _build_structure(self) -> str:
+        s = self.analyses.get("structure", {})
+        sz = s.get("size_stats", {})
+        ft = list(s.get("file_types", {}).keys())
+        return (
+            f"- **Python Files**: {sz.get('python_files', 0)}\n"
+            f"- **Total Files**: {sz.get('total_files', 0)}\n"
+            f"- **Primary File Types**: {', '.join(ft[:5])}"
+        )
+
+    def _build_issues(self) -> str:
+        lines = []
+        sec = self.analyses.get("security", [])
+        if sec:
+            lines.append("### 🔒 Security Issues:")
+            for i in sec[:3]:
+                lines.append(
+                    f"- **{i['module']}**: {i['total_issues']} issues (Max: {i['max_severity'].upper()})"
+                )
+
+        debt = self.analyses.get("debt", [])
+        if debt:
+            lines.append("\n### 🏗️ Critical Technical Debt:")
+            for i in [d for d in debt if d.get("severity_score", 0) >= 4][:5]:
+                lines.append(
+                    f"- **{i['module']}**: {i['total_issues']} issues (Score: {i['severity_score']})"
+                )
+
+        circ = self.analyses.get("dependencies", {}).get("circular_dependencies", [])
+        if circ:
+            lines.append("\n### 🔄 Circular Dependencies:")
+            for cycle in circ[:3]:
+                lines.append(
+                    f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}"
+                )
+
+        return "\n".join(lines)
+
+    def _build_qgis(self) -> str:
+        q = self.analyses.get("qgis_compliance", {})
+        if not q:
+            return ""
+        missing = [
+            f
+            for f, exists in q.get("mandatory_files", {}).get("files", {}).items()
+            if not exists
+        ]
+        arch_v = q.get("architecture", {}).get("violations", [])
+        res = [f"- **Compliance Score**: {q.get('compliance_score', 0):.1f}/100"]
+        if missing:
+            res.append(f"- ❌ **Missing Files**: {', '.join(missing)}")
+        if arch_v:
+            res.append(f"- ⚠️ **Architecture**: {len(arch_v)} violations")
+        return "\n".join(res)
+
+    def _build_recommendations(self) -> str:
+        opts = self.analyses.get("optimizations", [])
+        if not opts:
+            return ""
+        res = []
+        for o in opts[:3]:
+            res.append(f"### {o.get('module')}")
+            for sug in o.get("suggestions", [])[:2]:
+                res.append(f"- {sug.get('message', 'N/A')}")
+        return "\n".join(res)
+
+    def _build_patterns(self) -> str:
+        pats = self.analyses.get("patterns", {})
+        if not pats:
+            return ""
+        res = []
+        for name, occs in pats.items():
+            res.append(f"### {name}")
+            for occ in occs[:5]:
+                res.append(
+                    f"- **{occ['class']}** in `{occ['module']}` ({occ['confidence']}%)"
+                )
+        return "\n".join(res)
+
+    def _build_git(self) -> str:
+        git = self.analyses.get("git", {})
+        if not git:
+            return ""
+        res = []
+        churn = git.get("churn", {})
+        if churn.get("available"):
+            res.append(f"### Code Churn (last {churn.get('period_days')} days)")
+            res.append(
+                f"- **Files Changed**: {churn['files_changed']}\n- **Additions**: +{churn['added']}\n- **Deletions**: -{churn['deleted']}\n- **Total Churn**: {churn['total_churn']}"
+            )
+
+        hot = git.get("hotspots", [])
+        if hot:
+            res.append("\n### 🔥 Hotspots")
+            for h in hot[:5]:
+                res.append(f"- `{h['path']}`: {h['commits']} commits")
+        return "\n".join(res)
+
+    def _build_complexity(self) -> str:
+        c = self.analyses.get("complexity", {})
+        dist = c.get("complexity_distribution", {})
+        total = c.get("total_modules", 1) or 1
+        return "\n".join(
+            f"- {k}: {v} modules ({v/total*100:.1f}%)" for k, v in dist.items()
         )
 
 
@@ -180,469 +307,172 @@ def generate_project_summary(
     project_name: str,
     format: str = "markdown",
 ) -> None:
-    """Generates an executive summary of the project.
-
-    Args:
-        analyses: Aggregated analysis results dictionary.
-        output_path: File system path to write the report to.
-        project_name: Human-readable name of the project.
-        format: 'markdown' or 'html'.
-    """
+    """Generates an executive summary of the project."""
+    gen = SummaryGenerator(analyses, project_name)
     if format == "html":
-        _generate_project_summary_html(analyses, output_path, project_name)
+        gen.generate_html(output_path)
     else:
-        _generate_project_summary_md(analyses, output_path, project_name)
-
-
-def _generate_project_summary_html(
-    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
-):
-    builder = HTMLBuilder(f"PROJECT SUMMARY - {project_name}")
-
-    # Key Metrics
-    metrics = analyses.get("metrics", {})
-    m_html = f"""
-    <div class="metric">Quality Score: <span class="metric-value">{metrics.get("quality_score", 0)}/100</span></div>
-    <div class="metric">Lines of Code: <span class="metric-value">{metrics.get("total_lines_code", 0):,}</span></div>
-    <div class="metric">Modules: <span class="metric-value">{analyses.get("complexity", {}).get("total_modules", 0)}</span></div>
-    """
-    builder.add_section("📊 KEY METRICS", m_html)
-
-    # Issues
-    security = analyses.get("security", [])
-    if security:
-        sec_list = [
-            f"<strong>{i['module']}</strong>: {i['total_issues']} issues (Max: {i['max_severity']})"
-            for i in security[:5]
-        ]
-        builder.add_section("🚨 SECURITY ISSUES", builder.build_list(sec_list))
-
-    # Optimizations
-    opt = analyses.get("optimizations", [])
-    if opt:
-        opt_list = []
-        for o in opt[:5]:
-            msgs = [s.get("message", "") for s in o.get("suggestions", [])]
-            opt_list.append(f"<strong>{o.get('module')}</strong>: {'; '.join(msgs)}")
-        builder.add_section("💡 RECOMMENDATIONS", builder.build_list(opt_list))
-
-    # Dependency Graph
-    graph = generate_dependency_diagram(analyses.get("dependencies", {}))
-    if graph:
-        builder.add_section("🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>')
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(builder.render())
-
-
-def _generate_project_summary_md(
-    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
-) -> None:
-    """Generates the Markdown summary (original implementation)."""
-    builder = MarkdownBuilder(f"PROJECT SUMMARY - {project_name}")
-
-    builder.add_text(_build_key_metrics_section(analyses))
-    builder.add_text(_build_structure_section(analyses))
-    builder.add_text(_build_critical_issues_section(analyses))
-    builder.add_text(_build_qgis_compliance_section(analyses))
-    builder.add_text(_build_recommendations_section(analyses))
-    builder.add_text(_build_patterns_summary_section(analyses))
-    builder.add_text(_build_git_analysis_section(analyses))
-    builder.add_text(_build_complexity_dist_section(analyses))
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(builder.build())
-
-
-def _build_key_metrics_section(analyses: Dict[str, Any]) -> str:
-    """Builds the formatted Key Metrics section of the summary."""
-    complexity = analyses.get("complexity", {})
-    metrics = analyses.get("metrics", {})
-    structure = analyses.get("structure", {})
-    size_stats = structure.get("size_stats", {})
-
-    return f"""## 📊 KEY METRICS
-- **Total Modules**: {complexity.get("total_modules", 0):,}
-- **Lines of Code**: {complexity.get("total_lines", 0):,}
-- **Total Size**: {size_stats.get("total_size_mb", 0):.1f} MB
-- **Average Complexity**: {complexity.get("average_complexity", 0):.1f}
-- **Avg Maintenance Index**: {metrics.get("avg_maintenance_index", 0):.1f}
-- **Docstring Coverage**: {metrics.get("docstring_coverage", 0):.1f}%
-- **Quality Score**: {metrics.get("quality_score", 0):.1f}/100
-- **Test Files**: {metrics.get("test_files_count", 0)}"""
-
-
-def _build_structure_section(analyses: Dict[str, Any]) -> str:
-    """Builds the project structure overview section."""
-    structure = analyses.get("structure", {})
-    size_stats = structure.get("size_stats", {})
-    file_types = list(structure.get("file_types", {}).keys())
-
-    return f"""
-## 📁 STRUCTURE
-- **Python Files**: {size_stats.get("python_files", 0)}
-- **Total Files**: {size_stats.get("total_files", 0)}
-- **Primary File Types**: {", ".join(file_types[:5])}"""
-
-
-def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
-    """Compiles the Critical Issues section, including security and technical debt."""
-    lines = ["\n## 🚨 CRITICAL ISSUES"]
-
-    # Security
-    security = analyses.get("security", [])
-    if security:
-        lines.append("\n### 🔒 Security Issues:")
-        for item in security[:3]:
-            lines.append(
-                f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})"
-            )
-
-    # Technical Debt
-    debt = analyses.get("debt", [])
-    if debt:
-        lines.append("\n### 🏗️ Critical Technical Debt:")
-        high_debt = [d for d in debt if d.get("severity_score", 0) >= 4]
-        for item in high_debt[:5]:
-            lines.append(
-                f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})"
-            )
-
-    # Circular Dependencies
-    deps = analyses.get("dependencies", {})
-    circular = deps.get("circular_dependencies", [])
-    if circular:
-        lines.append("\n### 🔄 Circular Dependencies:")
-        for cycle in circular[:3]:
-            lines.append(
-                f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}"
-            )
-
-    return "\n".join(lines)
-
-
-def _build_qgis_compliance_section(analyses: Dict[str, Any]) -> str:
-    """Builds the QGIS plugin standards compliance overview."""
-    qgis = analyses.get("qgis_compliance", {})
-    if not qgis:
-        return ""
-
-    lines = ["\n## 📦 QGIS PLUGIN STANDARDS"]
-    lines.append(f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100")
-
-    mandatory = qgis.get("mandatory_files", {})
-    missing = [f for f, exists in mandatory.get("files", {}).items() if not exists]
-    if missing:
-        lines.append(f"- ❌ **Missing Files**: {', '.join(missing)}")
-
-    arch = qgis.get("architecture", {})
-    violations = arch.get("violations", [])
-    if violations:
-        lines.append(f"- ⚠️ **Architecture**: {len(violations)} violations detected")
-        for v in violations[:2]:
-            lines.append(f"  - {v['file']}: {v['type']}")
-
-    return "\n".join(lines)
-
-
-def _build_recommendations_section(analyses: Dict[str, Any]) -> str:
-    """Constructs the recommendations and optimizations section."""
-    optimizations = analyses.get("optimizations", [])
-    if not optimizations:
-        return ""
-
-    lines = ["\n## 💡 MAIN RECOMMENDATIONS"]
-    for opt in optimizations[:3]:
-        module_path = opt.get("module", "Unknown")
-        lines.append(f"\n### {module_path}")
-        for suggestion in opt.get("suggestions", [])[:2]:
-            lines.append(f"- {suggestion.get('message', 'N/A')}")
-
-    return "\n".join(lines)
-
-
-def _build_patterns_summary_section(analyses: Dict[str, Any]) -> str:
-    """Builds the Summary section for detected design patterns."""
-    patterns = analyses.get("patterns", {})
-    if not patterns:
-        return ""
-
-    sections = ["\n## 🏗️ DESIGN PATTERNS"]
-    for name, occurrences in patterns.items():
-        sections.append(f"\n### {name}")
-        for occ in occurrences[:5]:
-            sections.append(
-                f"- **{occ['class']}** in `{occ['module']}` (Confidence: {occ['confidence']}%)"
-            )
-
-    return "\n".join(sections)
-
-
-def _build_git_analysis_section(analyses: Dict[str, Any]) -> str:
-    """Builds the Git analysis section (Hotspots and Churn)."""
-    git = analyses.get("git", {})
-    if not git:
-        return ""
-
-    sections = ["\n## 🔄 GIT ANALYSIS"]
-
-    # Churn
-    churn = git.get("churn", {})
-    if churn.get("available"):
-        sections.append(f"### Code Churn (last {churn.get('period_days')} days)")
-        sections.append(f"- **Files Changed**: {churn.get('files_changed')}")
-        sections.append(f"- **Additions**: +{churn.get('added')}")
-        sections.append(f"- **Deletions**: -{churn.get('deleted')}")
-        sections.append(f"- **Total Churn**: {churn.get('total_churn')}")
-
-    # Hotspots
-    hotspots = git.get("hotspots", [])
-    if hotspots:
-        sections.append("\n### 🔥 Hotspots (Frequently Changed Files)")
-        for hs in hotspots:
-            sections.append(f"- `{hs['path']}`: {hs['commits']} commits")
-
-    return "\n".join(sections)
-
-
-def _build_complexity_dist_section(analyses: Dict[str, Any]) -> str:
-    """Creates the complexity distribution breakdown.
-
-    Args:
-        analyses: Results dictionary containing complexity distribution data.
-
-    Returns:
-        A Markdown-formatted string for the Complexity Distribution section.
-    """
-    complexity = analyses.get("complexity", {})
-    dist = complexity.get("complexity_distribution", {})
-    total = complexity.get("total_modules", 1) or 1
-
-    sections = ["\n## 📈 COMPLEXITY DISTRIBUTION"]
-    for key, value in dist.items():
-        percentage = (value / total) * 100
-        sections.append(f"- {key}: {value} modules ({percentage:.1f}%)")
-
-    return "\n".join(sections)
+        gen.generate_markdown(output_path)
 
 
 def generate_ai_context(
     analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
 ) -> None:
-    """Generates an optimized project overview file for AI consumption.
-
-    Focuses on structural elements, metrics, and patterns to help LLMs
-    understand the codebase quickly.
-
-    Args:
-        analyses: Full analysis results dictionary.
-        output_path: Path to save the AI context report.
-        project_name: Human-readable project name.
-    """
-    structure = analyses.get("structure", {})
-    entry_points = analyses.get("entry_points", [])
-    complexity = analyses.get("complexity", {})
-    dependencies = analyses.get("dependencies", {})
-
-    context_lines = [
-        f"# AI CONTEXT - {project_name}",
-        "Automatically generated by Ai-Context-Core",
-        "",
-        "## 📁 PROJECT STRUCTURE",
-        f"\n{structure.get('tree', 'N/A')[:1200]}\n",
-        "",
-        "## 🎯 ENTRY POINTS",
-    ]
-
-    for ep in entry_points[:10]:
-        context_lines.append(f"- `{ep}`")
-    if len(entry_points) > 10:
-        context_lines.append(f"... and {len(entry_points) - 10} more")
-
-    context_lines.append("\n## 🏗️ DETECTED PATTERNS")
-    _add_patterns_section(analyses, context_lines)
-
-    _add_antipatterns_section(analyses, context_lines)
-
-    context_lines.append("\n## 📈 COMPLEXITY AND METRICS")
-    context_lines.append(f"- **Total Modules**: {complexity.get('total_modules', 0)}")
-    context_lines.append(f"- **Lines of Code**: {complexity.get('total_lines', 0):,}")
-    context_lines.append(f"- **Functions**: {complexity.get('total_functions', 0)}")
-    context_lines.append(f"- **Classes**: {complexity.get('total_classes', 0)}")
-    context_lines.append(
-        f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}"
-    )
-    context_lines.append(
-        f"- **Avg Maintenance Index**: {complexity.get('avg_maintenance_index', 0) or analyses.get('metrics', {}).get('avg_maintenance_index', 0):.1f}"
-    )
-
-    comp_mods = [m[0] for m in complexity.get("most_complex_modules", [])[:3]]
-    context_lines.append(f"- **Most Complex Modules**: {', '.join(comp_mods)}")
-
-    context_lines.append("\n## 🔗 PRIMARY DEPENDENCIES")
-    _add_dependencies_section(dependencies, context_lines)
-
-    _add_optimizations_section(analyses, context_lines)
-
-    _add_dependency_insights_section(dependencies, context_lines)
-
-    _add_dependency_graph_section(dependencies, context_lines)
-
-    _add_git_context_section(analyses, context_lines)
-
-    context_lines.append("\n## 🔑 PROJECT KEYWORDS")
-    file_types = list(structure.get("file_types", {}).keys())
-    context_lines.append(f"- **Technologies**: {', '.join(file_types[:8])}")
-
+    """Generates an optimized project overview file for AI consumption."""
+    gen = AICtxGenerator(analyses, project_name)
+    content = gen.build()
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(context_lines))
+        f.write(content)
 
 
-def _add_patterns_section(analyses: Dict[str, Any], lines: list):
-    """Parses and adds detected design patterns to the context list.
+class AICtxGenerator:
+    """Generator for AI Context documents."""
 
-    Args:
-        analyses: Analysis results containing pattern detection data.
-        lines: The list of context report lines to append to.
-    """
-    patterns = analyses.get("patterns", {})
-    if not patterns:
-        lines.append("No clear design patterns detected.")
-        return
-
-    for name, occurrences in patterns.items():
-        lines.append(f"### {name}")
-        for occ in occurrences[:3]:
-            lines.append(
-                f"- **{occ['class']}** in `{occ['module']}` (Confidence: {occ['confidence']}%)"
-            )
-            for ev in occ.get("evidence", []):
-                lines.append(f"  - _Evidence: {ev}_")
-
-
-def _add_dependencies_section(dependencies: Dict[str, Any], lines: list):
-    """Categorizes and summarizes external dependencies for the context report.
-
-    Args:
-        dependencies: Dependency analysis results.
-        lines: The list of context report lines to append to.
-    """
-    third_party = dependencies.get("third_party", [])
-    if third_party:
-        base_packages = {}
-        for dep in third_party:
-            base = dep.split(".")[0]
-            base_packages[base] = base_packages.get(base, 0) + 1
-
-        lines.append("\n### Third Party (most frequent):")
-        sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[
-            :15
+    def __init__(self, analyses: Dict[str, Any], project_name: str):
+        self.analyses = analyses
+        self.project_name = project_name
+        self.lines = [
+            f"# AI CONTEXT - {project_name}",
+            "Automatically generated by Ai-Context-Core",
+            "",
         ]
-        for package, count in sorted_pkgs:
-            lines.append(f"- `{package}` ({count} imports)")
 
+    def build(self) -> str:
+        s = self.analyses.get("structure", {})
+        c = self.analyses.get("complexity", {})
+        m = self.analyses.get("metrics", {})
 
-def _add_optimizations_section(analyses: Dict[str, Any], lines: list):
-    """Extracts top optimization opportunities for the context report.
+        self.lines.append("## 📁 PROJECT STRUCTURE")
+        self.lines.append(f"\n{s.get('tree', 'N/A')[:1200]}\n")
 
-    Args:
-        analyses: Full analysis results.
-        lines: The list of context report lines to append to.
-    """
-    optimizations = analyses.get("optimizations", [])
-    if optimizations:
-        lines.append("\n## 💡 OPTIMIZATION RECOMMENDATIONS")
-        for opt in optimizations[:5]:
-            module = opt.get("module", "Unknown")
-            lines.append(f"\n### {module}")
-            for suggestion in opt.get("suggestions", [])[:2]:
-                lines.append(
-                    f"- **{suggestion.get('type', 'Opt')}**: {suggestion.get('message', 'N/A')}"
+        self._add_entry_points()
+        self._add_patterns()
+        self._add_antipatterns()
+
+        self.lines.append("\n## 📈 COMPLEXITY AND METRICS")
+        self.lines.append(f"- **Total Modules**: {c.get('total_modules', 0)}")
+        self.lines.append(f"- **Lines of Code**: {c.get('total_lines', 0):,}")
+        self.lines.append(f"- **Functions**: {c.get('total_functions', 0)}")
+        self.lines.append(f"- **Classes**: {c.get('total_classes', 0)}")
+        self.lines.append(
+            f"- **Average Complexity**: {c.get('average_complexity', 0):.1f}"
+        )
+        self.lines.append(
+            f"- **Avg Maintenance Index**: {c.get('avg_maintenance_index', 0) or m.get('avg_maintenance_index', 0):.1f}"
+        )
+
+        cm = [m[0] for m in c.get("most_complex_modules", [])[:3]]
+        self.lines.append(f"- **Most Complex Modules**: {', '.join(cm)}")
+
+        self._add_dependencies()
+        self._add_optimizations()
+        self._add_git()
+
+        self.lines.append("\n## 🔑 PROJECT KEYWORDS")
+        ft = list(s.get("file_types", {}).keys())
+        self.lines.append(f"- **Technologies**: {', '.join(ft[:8])}")
+
+        return "\n".join(self.lines)
+
+    def _add_entry_points(self):
+        ep = self.analyses.get("entry_points", [])
+        self.lines.append("## 🎯 ENTRY POINTS")
+        for p in ep[:10]:
+            self.lines.append(f"- `{p}`")
+        if len(ep) > 10:
+            self.lines.append(f"... and {len(ep) - 10} more")
+
+    def _add_patterns(self):
+        pats = self.analyses.get("patterns", {})
+        self.lines.append("\n## 🏗️ DETECTED PATTERNS")
+        if not pats:
+            self.lines.append("No clear design patterns detected.")
+            return
+        for name, occs in pats.items():
+            self.lines.append(f"### {name}")
+            for o in occs[:3]:
+                self.lines.append(
+                    f"- **{o['class']}** in `{o['module']}` ({o['confidence']}%)"
                 )
+                for ev in o.get("evidence", []):
+                    self.lines.append(f"  - _Evidence: {ev}_")
 
+    def _add_antipatterns(self):
+        ap = self.analyses.get("antipatterns", [])
+        if not ap:
+            return
+        self.lines.append("\n## ⚠️ DETECTED ANTI-PATTERNS")
+        for i in ap[:5]:
+            self.lines.append(f"- **{i['module']}**")
+            for issue in i.get("issues", [])[:2]:
+                self.lines.append(f"  - {issue.get('message', 'N/A')}")
 
-def _add_dependency_insights_section(dependencies: Dict[str, Any], lines: list):
-    """Adds advanced dependency insights like unused imports and coupling."""
-    unused = dependencies.get("unused_imports", {})
-    if unused:
-        lines.append("\n## ⚠️ UNUSED IMPORTS")
-        # Show top 5 modules with unused imports
-        for mod, items in list(unused.items())[:5]:
-            lines.append(f"- **{mod}**: {', '.join(items[:5])}")
+    def _add_dependencies(self):
+        deps = self.analyses.get("dependencies", {})
+        self.lines.append("\n## 🔗 PRIMARY DEPENDENCIES")
+        tp = deps.get("third_party", [])
+        if tp:
+            counts = {}
+            for d in tp:
+                base = d.split(".")[0]
+                counts[base] = counts.get(base, 0) + 1
+            self.lines.append("### Third Party (most frequent):")
+            for p, c in sorted(counts.items(), key=lambda x: x[1], reverse=True)[:15]:
+                self.lines.append(f"- `{p}` ({c} imports)")
 
-    coupling = dependencies.get("coupling_metrics", {})
-    if coupling:
-        high_coupling = sorted(
-            coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True
+        unused = deps.get("unused_imports", {})
+        if unused:
+            self.lines.append("\n## ⚠️ UNUSED IMPORTS")
+            for mod, items in list(unused.items())[:5]:
+                self.lines.append(f"- **{mod}**: {', '.join(items[:5])}")
+
+        high_c = sorted(
+            deps.get("coupling_metrics", {}).items(),
+            key=lambda x: x[1].get("cbo", 0),
+            reverse=True,
         )[:5]
-        # Only show if CBO is significant
-        high_coupling = [item for item in high_coupling if item[1].get("cbo", 0) > 5]
-
-        if high_coupling:
-            lines.append("\n## 🔗 HIGH COUPLING MODULES (CBO)")
-            for mod, m in high_coupling:
-                lines.append(
+        high_c = [i for i in high_c if i[1].get("cbo", 0) > 5]
+        if high_c:
+            self.lines.append("\n## 🔗 HIGH COUPLING MODULES (CBO)")
+            for mod, m in high_c:
+                self.lines.append(
                     f"- **{mod}**: CBO {m['cbo']} (In: {m['fan_in']}, Out: {m['fan_out']})"
                 )
 
+        g_m = deps.get("graph_metrics", {})
+        if g_m:
+            self.lines.append("\n## 🕸️  DEPENDENCY STRUCTURE")
+            self.lines.append(
+                f"- **Nodes**: {g_m.get('nodes', 0)}\n- **Edges**: {g_m.get('edges', 0)}\n- **Density**: {g_m.get('density', 0):.3f}"
+            )
+            self.lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)\n```mermaid")
+            self.lines.append(generate_dependency_diagram(deps))
+            self.lines.append("```")
 
-def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
-    """Appends dependency graph statistics and the Mermaid diagram.
+    def _add_optimizations(self):
+        opts = self.analyses.get("optimizations", [])
+        if not opts:
+            return
+        self.lines.append("\n## 💡 OPTIMIZATION RECOMMENDATIONS")
+        for o in opts[:5]:
+            self.lines.append(f"### {o.get('module')}")
+            for s in o.get("suggestions", [])[:2]:
+                self.lines.append(
+                    f"- **{s.get('type', 'Opt')}**: {s.get('message', 'N/A')}"
+                )
 
-    Args:
-        dependencies: Dependency analysis data.
-        lines: The list of context report lines to append to.
-    """
-    metrics = dependencies.get("graph_metrics", {})
-    if metrics:
-        lines.append("\n## 🕸️  DEPENDENCY STRUCTURE")
-        lines.append(f"- **Nodes**: {metrics.get('nodes', 0)}")
-        lines.append(f"- **Edges**: {metrics.get('edges', 0)}")
-        lines.append(f"- **Density**: {metrics.get('density', 0):.3f}")
-        lines.append(f"- **Acyclic Graph**: {'Yes' if metrics.get('is_dag') else 'No'}")
-        lines.append(
-            f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}"
-        )
+    def _add_git(self):
+        git = self.analyses.get("git", {})
+        if not git:
+            return
+        self.lines.append("\n## 🔄 GIT AND EVOLUTION")
+        hot = git.get("hotspots", [])
+        if hot:
+            self.lines.append("### Top Hotspots:")
+            for h in hot[:5]:
+                self.lines.append(f"- `{h['path']}` ({h['commits']} commits)")
 
-        lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)")
-        lines.append("```mermaid")
-        lines.append(generate_mermaid_graph(dependencies))
-        lines.append("```")
-
-
-def _add_antipatterns_section(analyses: Dict[str, Any], lines: list):
-    """Adds detected anti-patterns to the context report.
-
-    Args:
-        analyses: Analysis results containing antipatterns data.
-        lines: The list of context report lines to append to.
-    """
-    antipatterns = analyses.get("antipatterns", [])
-    if antipatterns:
-        lines.append("\n## ⚠️ DETECTED ANTI-PATTERNS")
-        for item in antipatterns[:5]:
-            module = item.get("module", "Unknown")
-            lines.append(f"- **{module}**")
-            for issue in item.get("issues", [])[:2]:
-                lines.append(f"  - {issue.get('message', 'N/A')}")
-
-
-def _add_git_context_section(analyses: Dict[str, Any], lines: list):
-    """Adds git context like hotspots and churn to the AI context."""
-    git = analyses.get("git", {})
-    if not git:
-        return
-
-    lines.append("\n## 🔄 GIT AND EVOLUTION")
-
-    # Hotspots are very useful for AI context
-    hotspots = git.get("hotspots", [])
-    if hotspots:
-        lines.append("### Top Hotspots (High change frequency):")
-        for hs in hotspots:
-            lines.append(f"- `{hs['path']}` ({hs['commits']} commits)")
-
-    churn = git.get("churn", {})
-    if churn.get("available"):
-        lines.append(f"### Recent Churn ({churn.get('period_days')} days):")
-        lines.append(f"- Total lines changed: {churn.get('total_churn')}")
+        ch = git.get("churn", {})
+        if ch.get("available"):
+            self.lines.append(f"### Recent Churn ({ch.get('period_days')} days):")
+            self.lines.append(f"- Total lines changed: {ch.get('total_churn')}")

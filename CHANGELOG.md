@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Final Modularization**: deep refactor of `reporting.py` and `patterns.py` into class-based section generators and detectors.
+- **Major Refactoring**: Deep refactor of `ast_utils.py`, `dependencies.py`, `fs_utils.py`, and `engine.py` to reduce complexity and improve modularity.
 - **HTML Reporting**: New `--format html` option to generate interactive project summaries.
 - **Mermaid Diagrams**: Visual dependency graphs integrated into Markdown and HTML reports.
 - **AI Recommendations**: Heuristic engine (`ai_recommendations.py`) for automated quality and maintenance advice.
