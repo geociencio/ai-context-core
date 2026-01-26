@@ -155,7 +155,9 @@ class ProjectAnalyzer:
 
         # 4. Structure and Tests
         structure = fs_utils.analyze_structure(self.project_path, len(modules_data))
-        test_files_count = fs_utils.count_test_files(self.project_path, self.exclusion_patterns)
+        test_files_count = fs_utils.count_test_files(
+            self.project_path, self.exclusion_patterns
+        )
 
         # 5. Git Analysis
         git_data = {
@@ -212,7 +214,9 @@ class ProjectAnalyzer:
             "timestamp": time.time(),
             "metrics": project_metrics,
             "structure": structure,
-            "complexity": self._build_complexity_metadata(modules_data, project_metrics, complexity_dist),
+            "complexity": self._build_complexity_metadata(
+                modules_data, project_metrics, complexity_dist
+            ),
             "dependencies": deps_data,
             "debt": tech_debt,
             "optimizations": optimization_suggestions,
@@ -223,9 +227,13 @@ class ProjectAnalyzer:
             "git": git_data,
         }
 
-    def _aggregate_security_issues(self, modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _aggregate_security_issues(
+        self, modules_data: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """Aggregates security issues from all modules, merging basic and AST-based results."""
-        security_list = issues.find_security_issues(modules_data, str(self.project_path))
+        security_list = issues.find_security_issues(
+            modules_data, str(self.project_path)
+        )
 
         # Severity weights for comparison
         severity_map = {"high": 3, "medium": 2, "low": 1}
@@ -235,14 +243,20 @@ class ProjectAnalyzer:
             if not ast_items:
                 continue
 
-            existing = next((x for x in security_list if x["module"] == m["path"]), None)
+            existing = next(
+                (x for x in security_list if x["module"] == m["path"]), None
+            )
             if existing:
                 existing["issues"].extend(ast_items)
                 existing["total_issues"] += len(ast_items)
 
                 # Update max severity if any new issue is higher
-                new_max = max(ast_items, key=lambda i: severity_map.get(i["severity"], 0))["severity"]
-                if severity_map.get(new_max, 0) > severity_map.get(existing["max_severity"], 0):
+                new_max = max(
+                    ast_items, key=lambda i: severity_map.get(i["severity"], 0)
+                )["severity"]
+                if severity_map.get(new_max, 0) > severity_map.get(
+                    existing["max_severity"], 0
+                ):
                     existing["max_severity"] = new_max
             else:
                 security_list.append(
@@ -250,12 +264,16 @@ class ProjectAnalyzer:
                         "module": m["path"],
                         "issues": ast_items,
                         "total_issues": len(ast_items),
-                        "max_severity": max(ast_items, key=lambda i: severity_map.get(i["severity"], 0))["severity"],
+                        "max_severity": max(
+                            ast_items, key=lambda i: severity_map.get(i["severity"], 0)
+                        )["severity"],
                     }
                 )
         return security_list
 
-    def _aggregate_antipatterns(self, modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _aggregate_antipatterns(
+        self, modules_data: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """Aggregates detected anti-patterns from all modules."""
         antipatterns_list = []
         for m in modules_data:
@@ -270,7 +288,10 @@ class ProjectAnalyzer:
         return antipatterns_list
 
     def _build_complexity_metadata(
-        self, modules_data: List[Dict[str, Any]], project_metrics: Dict[str, Any], complexity_dist: Dict[str, Any]
+        self,
+        modules_data: List[Dict[str, Any]],
+        project_metrics: Dict[str, Any],
+        complexity_dist: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Builds a structured dictionary for project complexity metadata."""
         return {
@@ -327,13 +348,17 @@ class ProjectAnalyzer:
             )
 
             # Save full JSON
-            with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
+            with open(
+                self.project_path / "project_context.json", "w", encoding="utf-8"
+            ) as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
 
         except Exception as e:
             logger.error(f"Error generating outputs: {e}")
 
-    def _analyze_modules_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
+    def _analyze_modules_parallel(
+        self, files: List[pathlib.Path]
+    ) -> List[Dict[str, Any]]:
         """Analyzes multiple modules in parallel using a process pool with caching.
 
         Args:
@@ -350,7 +375,7 @@ class ProjectAnalyzer:
         for f in files:
             rel_path = str(f.relative_to(self.project_path))
             current_hash = fs_utils.calculate_file_hash(f)
-            
+
             cached_entry = self.analysis_cache.get(rel_path)
             if cached_entry and cached_entry.get("hash") == current_hash:
                 # Cache Hit
@@ -367,9 +392,14 @@ class ProjectAnalyzer:
             return results
 
         logger.info(f"Analyzing {len(files_to_analyze)} modules...")
-        
-        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files_to_analyze}
+
+        with concurrent.futures.ProcessPoolExecutor(
+            max_workers=self.max_workers
+        ) as executor:
+            future_to_file = {
+                executor.submit(self._analyze_single_module, f): f
+                for f in files_to_analyze
+            }
 
             for future in concurrent.futures.as_completed(future_to_file):
                 f = future_to_file[future]
@@ -377,16 +407,16 @@ class ProjectAnalyzer:
                     data = future.result()
                     if data:
                         results.append(data)
-                        
+
                         # Update cache
                         rel_path = str(f.relative_to(self.project_path))
-                        # We need to re-calculate hash here or pass it if possible, 
+                        # We need to re-calculate hash here or pass it if possible,
                         # but re-calc is safer to ensure it matches analyzed content
                         current_hash = fs_utils.calculate_file_hash(f)
                         self.analysis_cache[rel_path] = {
                             "hash": current_hash,
                             "data": data,
-                            "timestamp": time.time()
+                            "timestamp": time.time(),
                         }
                 except Exception as e:
                     logger.error(f"Error analyzing {f}: {e}")
@@ -451,7 +481,9 @@ class ProjectAnalyzer:
         detected.extend(antipatterns.detect_dead_code(tree))
         return detected
 
-    def _handle_analysis_error(self, file_path: pathlib.Path, error_msg: str) -> Dict[str, Any]:
+    def _handle_analysis_error(
+        self, file_path: pathlib.Path, error_msg: str
+    ) -> Dict[str, Any]:
         """Standardizes error reporting for module analysis failures."""
         return {
             "path": str(file_path.relative_to(self.project_path)),

@@ -42,7 +42,9 @@ def init(profile: str, path: str):
     ai_context_dir = project_path / ".ai-context"
     agent_workflows_dir = project_path / ".agent" / "workflows"
 
-    click.echo(f"🔄 Initializing AI Context in {project_path} with profile '{profile}'...")
+    click.echo(
+        f"🔄 Initializing AI Context in {project_path} with profile '{profile}'..."
+    )
 
     # 1. Create directories
     ai_context_dir.mkdir(exist_ok=True)
@@ -89,7 +91,9 @@ def init(profile: str, path: str):
 
 @cli.command()
 @click.option("--path", default=".", help="Path to the project")
-@click.option("--workers", "-w", default=None, type=int, help="Number of parallel workers")
+@click.option(
+    "--workers", "-w", default=None, type=int, help="Number of parallel workers"
+)
 @click.option("--no-cache", is_flag=True, help="Disable cache")
 def analyze(path: str, workers: Optional[int], no_cache: bool):
     """Runs project analysis and updates corporate/AI context.
@@ -125,7 +129,9 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
     config = loader.load_config(profile_name=profile_name, override_config=local_config)
 
     # Instantiate analyzer engine
-    analyzer = ProjectAnalyzer(project_path=str(project_path), config=config, max_workers=workers)
+    analyzer = ProjectAnalyzer(
+        project_path=str(project_path), config=config, max_workers=workers
+    )
 
     click.echo(f"🚀 Starting analysis for {project_path.name}...")
 

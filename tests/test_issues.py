@@ -37,7 +37,9 @@ class TestIssues(unittest.TestCase):
 
             self.assertEqual(len(security_issues), 1)
             self.assertEqual(security_issues[0]["module"], "vuln.py")
-            self.assertTrue(any("os.system" in i["pattern"] for i in security_issues[0]["issues"]))
+            self.assertTrue(
+                any("os.system" in i["pattern"] for i in security_issues[0]["issues"])
+            )
 
         finally:
             shutil.rmtree(tmp_dir)

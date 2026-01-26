@@ -31,7 +31,9 @@ def is_git_repo(path: pathlib.Path) -> bool:
         return False
 
 
-def get_git_hotspots(project_path: pathlib.Path, limit: int = 5) -> List[Dict[str, Any]]:
+def get_git_hotspots(
+    project_path: pathlib.Path, limit: int = 5
+) -> List[Dict[str, Any]]:
     """Identifies files with the most changes in the repository history.
 
     Args:
@@ -54,7 +56,9 @@ def get_git_hotspots(project_path: pathlib.Path, limit: int = 5) -> List[Dict[st
             check=True,
         )
 
-        files = [f for f in result.stdout.splitlines() if f.strip() and f.endswith(".py")]
+        files = [
+            f for f in result.stdout.splitlines() if f.strip() and f.endswith(".py")
+        ]
         from collections import Counter
 
         counts = Counter(files).most_common(limit)

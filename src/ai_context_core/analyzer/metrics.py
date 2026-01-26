@@ -143,7 +143,9 @@ def calculate_quality_score(
         total_score += module_score
 
     # Normalize to percentage
-    final_score = (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
+    final_score = (
+        (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
+    )
 
     # Factor in QGIS compliance score if present
     qgis_data = context_patterns.get("qgis_compliance", {})
@@ -213,7 +215,9 @@ def calculate_project_metrics(
     doc_coverage = (total_doc_score / total_symbols * 100) if total_symbols > 0 else 0
 
     modules_with_main = sum(1 for m in modules_data if m.get("has_main", False))
-    modules_with_syntax_error = sum(1 for m in modules_data if m.get("syntax_error", False))
+    modules_with_syntax_error = sum(
+        1 for m in modules_data if m.get("syntax_error", False)
+    )
 
     # Complexity statistics
     complexities = [m.get("complexity", 0) for m in modules_data]
@@ -224,7 +228,11 @@ def calculate_project_metrics(
     i18n_scores = [m.get("i18n", {}).get("i18n_score", 100) for m in modules_data]
 
     # Maintenance Index
-    mi_scores = [m.get("maintenance_index", 100) for m in modules_data if not m.get("syntax_error")]
+    mi_scores = [
+        m.get("maintenance_index", 100)
+        for m in modules_data
+        if not m.get("syntax_error")
+    ]
     avg_mi = sum(mi_scores) / len(mi_scores) if mi_scores else 100
 
     return {
@@ -241,11 +249,15 @@ def calculate_project_metrics(
         "type_hint_coverage": (
             round(sum(type_hint_cov) / len(modules_data), 2) if modules_data else 0
         ),
-        "i18n_coverage": (round(sum(i18n_scores) / len(modules_data), 2) if modules_data else 0),
+        "i18n_coverage": (
+            round(sum(i18n_scores) / len(modules_data), 2) if modules_data else 0
+        ),
         "entry_points_count": len(context_entry_points),
         "test_files_count": test_files_count,
         "avg_complexity": round(avg_complexity, 2),
         "max_complexity": max(complexities) if complexities else 0,
         "avg_maintenance_index": round(avg_mi, 2),
-        "quality_score": calculate_quality_score(modules_data, config, context_patterns),
+        "quality_score": calculate_quality_score(
+            modules_data, config, context_patterns
+        ),
     }

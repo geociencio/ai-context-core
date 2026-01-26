@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Incremental Cache**: Implementation of persistent cache to bypass analysis of unchanged files (SHA-256).
+- **Testing Standards**: New agent skill and workflow to standardize testing with Pytest and Docker.
 - **Maintenance Index (MI)**: Comprehensive maintainability scoring for modules and project level.
 - **Git Analysis**: Native integration to detect Hotspots and monitor Code Churn over time.
 - **Design Patterns**: New detection module supporting Singleton, Factory, Observer, Strategy, and Decorator patterns.
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Makefile Targets**: Added `docker-build`, `docker-test`, `docker-lint`, `docker-shell`, `docker-clean`
 
 ### Changed
+- **Hotspot Refactoring**: Major refactor of `ast_utils.py`, `engine.py`, and `reporting.py` to reduce complexity.
+- **Workflow**: Updated `run-tests` to default to `make docker-test`.
 - **Workflows**: Enhanced all session workflows with Agent Actions and validation criteria
   - `inicia-sesion`: Added context prioritization and Docker support
   - `cierra-sesion`: Added code formatting, historical archiving, and mandatory session reports

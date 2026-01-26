@@ -39,7 +39,12 @@ class MarkdownBuilder:
     """Helper class for building Markdown documents."""
 
     def __init__(self, title: str):
-        self.lines = [f"# {title}", f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}", "Analyzer Version: 2.0 (Ai-Context-Core)", ""]
+        self.lines = [
+            f"# {title}",
+            f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}",
+            "Analyzer Version: 2.0 (Ai-Context-Core)",
+            "",
+        ]
 
     def add_section(self, title: str, level: int = 2):
         """Adds a section header."""
@@ -63,7 +68,9 @@ class MarkdownBuilder:
         return "\n".join(self.lines)
 
 
-def generate_project_summary(analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str) -> None:
+def generate_project_summary(
+    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+) -> None:
     """Generates an executive summary of the project in Markdown format.
 
     Args:
@@ -126,7 +133,9 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
     if security:
         lines.append("\n### 🔒 Security Issues:")
         for item in security[:3]:
-            lines.append(f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})")
+            lines.append(
+                f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})"
+            )
 
     # Technical Debt
     debt = analyses.get("debt", [])
@@ -134,7 +143,9 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
         lines.append("\n### 🏗️ Critical Technical Debt:")
         high_debt = [d for d in debt if d.get("severity_score", 0) >= 4]
         for item in high_debt[:5]:
-            lines.append(f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})")
+            lines.append(
+                f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})"
+            )
 
     # Circular Dependencies
     deps = analyses.get("dependencies", {})
@@ -142,7 +153,9 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
     if circular:
         lines.append("\n### 🔄 Circular Dependencies:")
         for cycle in circular[:3]:
-            lines.append(f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}")
+            lines.append(
+                f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}"
+            )
 
     return "\n".join(lines)
 
@@ -295,7 +308,9 @@ def generate_ai_context(
     context_lines.append(f"- **Lines of Code**: {complexity.get('total_lines', 0):,}")
     context_lines.append(f"- **Functions**: {complexity.get('total_functions', 0)}")
     context_lines.append(f"- **Classes**: {complexity.get('total_classes', 0)}")
-    context_lines.append(f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}")
+    context_lines.append(
+        f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}"
+    )
     context_lines.append(
         f"- **Avg Maintenance Index**: {complexity.get('avg_maintenance_index', 0) or analyses.get('metrics', {}).get('avg_maintenance_index', 0):.1f}"
     )
@@ -359,7 +374,9 @@ def _add_dependencies_section(dependencies: Dict[str, Any], lines: list):
             base_packages[base] = base_packages.get(base, 0) + 1
 
         lines.append("\n### Third Party (most frequent):")
-        sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[:15]
+        sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[
+            :15
+        ]
         for package, count in sorted_pkgs:
             lines.append(f"- `{package}` ({count} imports)")
 
@@ -394,7 +411,9 @@ def _add_dependency_insights_section(dependencies: Dict[str, Any], lines: list):
 
     coupling = dependencies.get("coupling_metrics", {})
     if coupling:
-        high_coupling = sorted(coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True)[:5]
+        high_coupling = sorted(
+            coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True
+        )[:5]
         # Only show if CBO is significant
         high_coupling = [item for item in high_coupling if item[1].get("cbo", 0) > 5]
 
@@ -420,7 +439,9 @@ def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
         lines.append(f"- **Edges**: {metrics.get('edges', 0)}")
         lines.append(f"- **Density**: {metrics.get('density', 0):.3f}")
         lines.append(f"- **Acyclic Graph**: {'Yes' if metrics.get('is_dag') else 'No'}")
-        lines.append(f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}")
+        lines.append(
+            f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}"
+        )
 
         lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)")
         lines.append("```mermaid")

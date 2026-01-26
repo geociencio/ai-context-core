@@ -177,7 +177,10 @@ def _check_main_guard(node: ast.If) -> Dict[str, Any]:
             and node.test.left.id == "__name__"
         ):
             for comparator in node.test.comparators:
-                if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
+                if (
+                    isinstance(comparator, ast.Constant)
+                    and comparator.value == "__main__"
+                ):
                     return {"is_entry_point": True, "type": "main_guard"}
     except Exception:
         pass
@@ -187,7 +190,9 @@ def _check_main_guard(node: ast.If) -> Dict[str, Any]:
 def _check_function_entry(node: ast.FunctionDef) -> Dict[str, Any]:
     """Checks function names and decorators for entry point signatures."""
     # QGIS classFactory
-    if node.name == "classFactory" and any(arg.arg == "iface" for arg in node.args.args):
+    if node.name == "classFactory" and any(
+        arg.arg == "iface" for arg in node.args.args
+    ):
         return {"is_entry_point": True, "type": "qgis_plugin"}
 
     # Decorators (Click, Flask, FastAPI)
@@ -199,7 +204,10 @@ def _check_function_entry(node: ast.FunctionDef) -> Dict[str, Any]:
         if isinstance(check_node, ast.Attribute):
             attr = check_node.attr
             # Click
-            if isinstance(check_node.value, ast.Name) and check_node.value.id == "click":
+            if (
+                isinstance(check_node.value, ast.Name)
+                and check_node.value.id == "click"
+            ):
                 if attr in ("command", "group"):
                     return {"is_entry_point": True, "type": "click_cli"}
             # Flask
@@ -396,7 +404,9 @@ def detect_unused_imports(tree: ast.AST) -> List[str]:
                 used_names.add(curr.id)
 
     unused = [
-        name for alias, name in imported_names.items() if alias not in used_names and alias != "*"
+        name
+        for alias, name in imported_names.items()
+        if alias not in used_names and alias != "*"
     ]
 
     return sorted(list(set(unused)))
@@ -437,7 +447,9 @@ def calculate_complexity(tree: ast.AST) -> int:
             complexity += len(node.values) - 1
 
         # Comprehensions
-        elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+        elif isinstance(
+            node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
+        ):
             complexity += len(node.generators)
 
     return _apply_complexity_penalty(complexity, decision_lines)
