@@ -1,7 +1,7 @@
-
 import unittest
 import ast
 from src.ai_context_core.analyzer.patterns import detect_singleton
+
 
 class TestPatterns(unittest.TestCase):
     def test_singleton_new_override(self):
@@ -48,6 +48,7 @@ class NormalClass:
 
     def test_factory_class_and_method(self):
         from src.ai_context_core.analyzer.patterns import detect_factory
+
         code = """
 class WidgetFactory:
     def create_widget(self, type):
@@ -65,6 +66,7 @@ class WidgetFactory:
 
     def test_factory_method_only(self):
         from src.ai_context_core.analyzer.patterns import detect_factory
+
         code = """
 class ServiceProvider:
     def build_service(self):
@@ -78,6 +80,7 @@ class ServiceProvider:
 
     def test_observer_pattern(self):
         from src.ai_context_core.analyzer.patterns import detect_observer
+
         code = """
 class NewsAgency:
     def __init__(self):
@@ -99,6 +102,7 @@ class NewsAgency:
 
     def test_strategy_pattern(self):
         from src.ai_context_core.analyzer.patterns import detect_strategy
+
         code = """
 class DataProcessor:
     def __init__(self, strategy):
@@ -116,6 +120,7 @@ class DataProcessor:
 
     def test_functional_decorator(self):
         from src.ai_context_core.analyzer.patterns import detect_decorator
+
         code = """
 import functools
 def my_decorator(func):
@@ -133,6 +138,7 @@ def my_decorator(func):
 
     def test_class_decorator(self):
         from src.ai_context_core.analyzer.patterns import detect_decorator
+
         code = """
 class ClassDecorator:
     def __init__(self, func):
@@ -149,10 +155,11 @@ class ClassDecorator:
 
     def test_singleton_confidence_levels(self):
         from src.ai_context_core.analyzer.patterns import detect_singleton
+
         # Only static var = 20 (not reported as < 50)
         code_low = "class A: _instance = None"
         self.assertEqual(len(detect_singleton(ast.parse(code_low))), 0)
-        
+
         # Static var (20) + method (30) = 50
         code_mid = """
 class B:
@@ -169,6 +176,7 @@ class C:
     def __new__(cls): pass
 """
         self.assertEqual(detect_singleton(ast.parse(code_high))[0]["confidence"], 80)
+
 
 if __name__ == "__main__":
     unittest.main()

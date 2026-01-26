@@ -286,12 +286,12 @@ class ProjectAnalyzer:
             for pattern_name, results in module_patterns.items():
                 if pattern_name not in aggregated:
                     aggregated[pattern_name] = []
-                
+
                 # 'results' is a list of occurrences (e.g., list of singletons in this module)
                 for res in results:
                     res["module"] = m["path"]
                     aggregated[pattern_name].append(res)
-        
+
         return aggregated
 
     def _generate_outputs(self, results: Dict[str, Any]):

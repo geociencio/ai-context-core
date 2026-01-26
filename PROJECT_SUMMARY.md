@@ -1,19 +1,19 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-25 21:48:00
+Analysis Date: 2026-01-25 21:56:40
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Total Modules**: 14
-- **Lines of Code**: 4,183
+- **Lines of Code**: 4,275
 - **Total Size**: 1.1 MB
-- **Average Complexity**: 39.1
+- **Average Complexity**: 40.1
 - **Docstring Coverage**: 97.0%
 - **Quality Score**: 67.5/100
 - **Test Files**: 11
 
 ## 📁 STRUCTURE
 - **Python Files**: 35
-- **Total Files**: 135
+- **Total Files**: 137
 - **Primary File Types**: .py, .pyc, .md, .txt, .sample
 
 ## 🚨 CRITICAL ISSUES

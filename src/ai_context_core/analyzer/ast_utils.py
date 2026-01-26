@@ -204,13 +204,17 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                     # Django wsgi/asgi application
                     if target.id == "application":
                         return {"is_entry_point": True, "type": "django_app"}
-                    
+
                     # Django URL patterns
-                    if target.id == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
+                    if target.id == "urlpatterns" and isinstance(
+                        node.value, (ast.List, ast.Tuple)
+                    ):
                         return {"is_entry_point": True, "type": "django_urls"}
 
                     # Django Settings
-                    if target.id == "INSTALLED_APPS" and isinstance(node.value, (ast.List, ast.Tuple)):
+                    if target.id == "INSTALLED_APPS" and isinstance(
+                        node.value, (ast.List, ast.Tuple)
+                    ):
                         return {"is_entry_point": True, "type": "django_settings"}
 
                     # Explicit Flask/FastAPI instantiation (app = Flask(__name__) ...)
@@ -221,7 +225,10 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                                 if call_node.id == "Flask":
                                     return {"is_entry_point": True, "type": "flask_app"}
                                 if call_node.id == "FastAPI":
-                                    return {"is_entry_point": True, "type": "fastapi_app"}
+                                    return {
+                                        "is_entry_point": True,
+                                        "type": "fastapi_app",
+                                    }
 
     return result
 
@@ -362,13 +369,13 @@ def detect_unused_imports(tree: ast.AST) -> List[str]:
         A list of unused import strings (either module names or aliases).
     """
     imported_names = {}  # alias -> original_name
-    
+
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
                 # For 'import a.b.c', the name in namespace is 'a'
                 # For 'import a.b.c as x', the name in namespace is 'x'
-                name_in_scope = alias.asname or alias.name.split('.')[0]
+                name_in_scope = alias.asname or alias.name.split(".")[0]
                 imported_names[name_in_scope] = alias.name
         elif isinstance(node, ast.ImportFrom):
             # For from x import y, y is the name used in code
@@ -392,10 +399,11 @@ def detect_unused_imports(tree: ast.AST) -> List[str]:
                 used_names.add(curr.id)
 
     unused = [
-        name for alias, name in imported_names.items() 
+        name
+        for alias, name in imported_names.items()
         if alias not in used_names and alias != "*"
     ]
-    
+
     return sorted(list(set(unused)))
 
 

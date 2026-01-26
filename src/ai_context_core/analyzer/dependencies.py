@@ -99,7 +99,9 @@ def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
     return count
 
 
-def calculate_coupling_metrics(import_graph: Dict[str, Set[str]]) -> Dict[str, Dict[str, int]]:
+def calculate_coupling_metrics(
+    import_graph: Dict[str, Set[str]],
+) -> Dict[str, Dict[str, int]]:
     """Calculates Coupling Between Objects (CBO) metrics for each module.
 
     Args:
@@ -125,9 +127,9 @@ def calculate_coupling_metrics(import_graph: Dict[str, Set[str]]) -> Dict[str, D
         metrics[node] = {
             "fan_in": fan_in[node],
             "fan_out": fan_out[node],
-            "cbo": fan_in[node] + fan_out[node]
+            "cbo": fan_in[node] + fan_out[node],
         }
-    
+
     return metrics
 
 

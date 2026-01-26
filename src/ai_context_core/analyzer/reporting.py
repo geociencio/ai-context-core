@@ -398,11 +398,13 @@ def _add_dependency_insights_section(dependencies: Dict[str, Any], lines: list):
         )[:5]
         # Only show if CBO is significant
         high_coupling = [item for item in high_coupling if item[1].get("cbo", 0) > 5]
-        
+
         if high_coupling:
             lines.append("\n## 🔗 HIGH COUPLING MODULES (CBO)")
             for mod, m in high_coupling:
-                lines.append(f"- **{mod}**: CBO {m['cbo']} (In: {m['fan_in']}, Out: {m['fan_out']})")
+                lines.append(
+                    f"- **{mod}**: CBO {m['cbo']} (In: {m['fan_in']}, Out: {m['fan_out']})"
+                )
 
 
 def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
