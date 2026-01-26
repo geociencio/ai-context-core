@@ -35,9 +35,35 @@ def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
     return "\n".join(graph[:30])
 
 
-def generate_project_summary(
-    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
-) -> None:
+class MarkdownBuilder:
+    """Helper class for building Markdown documents."""
+
+    def __init__(self, title: str):
+        self.lines = [f"# {title}", f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}", "Analyzer Version: 2.0 (Ai-Context-Core)", ""]
+
+    def add_section(self, title: str, level: int = 2):
+        """Adds a section header."""
+        self.lines.append(f"{'#' * level} {title}")
+
+    def add_text(self, text: str):
+        """Adds raw text or formatted blocks."""
+        self.lines.append(text)
+
+    def add_list_item(self, text: str, bullet: str = "-"):
+        """Adds a bulleted list item."""
+        self.lines.append(f"{bullet} {text}")
+
+    def add_list(self, items: list, bullet: str = "-"):
+        """Adds multiple list items."""
+        for item in items:
+            self.add_list_item(item, bullet)
+
+    def build(self) -> str:
+        """Returns the complete Markdown string."""
+        return "\n".join(self.lines)
+
+
+def generate_project_summary(analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str) -> None:
     """Generates an executive summary of the project in Markdown format.
 
     Args:
@@ -45,34 +71,23 @@ def generate_project_summary(
         output_path: File system path to write the report to.
         project_name: Human-readable name of the project.
     """
-    summary_content = [
-        f"# PROJECT SUMMARY - {project_name}",
-        f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}",
-        "Analyzer Version: 2.0 (Ai-Context-Core)",
-        "",
-        _build_key_metrics_section(analyses),
-        _build_structure_section(analyses),
-        _build_critical_issues_section(analyses),
-        _build_qgis_compliance_section(analyses),
-        _build_recommendations_section(analyses),
-        _build_patterns_summary_section(analyses),
-        _build_git_analysis_section(analyses),
-        _build_complexity_dist_section(analyses),
-    ]
+    builder = MarkdownBuilder(f"PROJECT SUMMARY - {project_name}")
+
+    builder.add_text(_build_key_metrics_section(analyses))
+    builder.add_text(_build_structure_section(analyses))
+    builder.add_text(_build_critical_issues_section(analyses))
+    builder.add_text(_build_qgis_compliance_section(analyses))
+    builder.add_text(_build_recommendations_section(analyses))
+    builder.add_text(_build_patterns_summary_section(analyses))
+    builder.add_text(_build_git_analysis_section(analyses))
+    builder.add_text(_build_complexity_dist_section(analyses))
 
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(summary_content))
+        f.write(builder.build())
 
 
 def _build_key_metrics_section(analyses: Dict[str, Any]) -> str:
-    """Builds the formatted Key Metrics section of the summary.
-
-    Args:
-        analyses: Results dictionary containing metrics and complexity.
-
-    Returns:
-        A Markdown-formatted string for the Key Metrics section.
-    """
+    """Builds the formatted Key Metrics section of the summary."""
     complexity = analyses.get("complexity", {})
     metrics = analyses.get("metrics", {})
     structure = analyses.get("structure", {})
@@ -90,14 +105,7 @@ def _build_key_metrics_section(analyses: Dict[str, Any]) -> str:
 
 
 def _build_structure_section(analyses: Dict[str, Any]) -> str:
-    """Builds the project structure overview section.
-
-    Args:
-        analyses: Results dictionary containing structure information.
-
-    Returns:
-        A Markdown-formatted string for the Structure section.
-    """
+    """Builds the project structure overview section."""
     structure = analyses.get("structure", {})
     size_stats = structure.get("size_stats", {})
     file_types = list(structure.get("file_types", {}).keys())
@@ -110,101 +118,73 @@ def _build_structure_section(analyses: Dict[str, Any]) -> str:
 
 
 def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
-    """Compiles the Critical Issues section, including security and technical debt.
-
-    Args:
-        analyses: Results dictionary containing issues, debt, and dependencies.
-
-    Returns:
-        A Markdown-formatted string for the Critical Issues section.
-    """
-    sections = ["\n## 🚨 CRITICAL ISSUES"]
+    """Compiles the Critical Issues section, including security and technical debt."""
+    lines = ["\n## 🚨 CRITICAL ISSUES"]
 
     # Security
     security = analyses.get("security", [])
     if security:
-        sections.append("\n### 🔒 Security Issues:")
+        lines.append("\n### 🔒 Security Issues:")
         for item in security[:3]:
-            sections.append(
-                f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})"
-            )
+            lines.append(f"- **{item['module']}**: {item['total_issues']} issues (Max: {item['max_severity'].upper()})")
 
     # Technical Debt
     debt = analyses.get("debt", [])
     if debt:
-        sections.append("\n### 🏗️ Critical Technical Debt:")
+        lines.append("\n### 🏗️ Critical Technical Debt:")
         high_debt = [d for d in debt if d.get("severity_score", 0) >= 4]
         for item in high_debt[:5]:
-            sections.append(
-                f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})"
-            )
+            lines.append(f"- **{item['module']}**: {item['total_issues']} issues (Score: {item['severity_score']})")
 
     # Circular Dependencies
     deps = analyses.get("dependencies", {})
     circular = deps.get("circular_dependencies", [])
     if circular:
-        sections.append("\n### 🔄 Circular Dependencies:")
+        lines.append("\n### 🔄 Circular Dependencies:")
         for cycle in circular[:3]:
-            sections.append(f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}")
+            lines.append(f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}")
 
-    return "\n".join(sections)
+    return "\n".join(lines)
 
 
 def _build_qgis_compliance_section(analyses: Dict[str, Any]) -> str:
-    """Builds the QGIS plugin standards compliance overview.
-
-    Args:
-        analyses: Results dictionary with QGIS compliance details.
-
-    Returns:
-        A Markdown-formatted string for the QGIS standards section.
-    """
+    """Builds the QGIS plugin standards compliance overview."""
     qgis = analyses.get("qgis_compliance", {})
     if not qgis:
         return ""
 
-    sections = ["\n## 📦 QGIS PLUGIN STANDARDS"]
-    sections.append(f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100")
+    lines = ["\n## 📦 QGIS PLUGIN STANDARDS"]
+    lines.append(f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100")
 
     mandatory = qgis.get("mandatory_files", {})
     missing = [f for f, exists in mandatory.get("files", {}).items() if not exists]
     if missing:
-        sections.append(f"- ❌ **Missing Files**: {', '.join(missing)}")
+        lines.append(f"- ❌ **Missing Files**: {', '.join(missing)}")
 
     arch = qgis.get("architecture", {})
     violations = arch.get("violations", [])
     if violations:
-        sections.append(f"- ⚠️ **Architecture**: {len(violations)} violations detected")
+        lines.append(f"- ⚠️ **Architecture**: {len(violations)} violations detected")
         for v in violations[:2]:
-            sections.append(f"  - {v['file']}: {v['type']}")
+            lines.append(f"  - {v['file']}: {v['type']}")
 
-    return "\n".join(sections)
+    return "\n".join(lines)
 
 
 def _build_recommendations_section(analyses: Dict[str, Any]) -> str:
-    """Constructs the recommendations and optimizations section.
-
-    Args:
-        analyses: Results dictionary containing optimization suggestions.
-
-    Returns:
-        A Markdown-formatted string for the Recommendations section.
-    """
+    """Constructs the recommendations and optimizations section."""
     optimizations = analyses.get("optimizations", [])
     if not optimizations:
         return ""
 
-    sections = ["\n## 💡 MAIN RECOMMENDATIONS"]
-    # Sort or filter by priority if available
+    lines = ["\n## 💡 MAIN RECOMMENDATIONS"]
     for opt in optimizations[:3]:
         module_path = opt.get("module", "Unknown")
-        sections.append(f"\n### {module_path}")
+        lines.append(f"\n### {module_path}")
         for suggestion in opt.get("suggestions", [])[:2]:
-            sections.append(f"- {suggestion.get('message', 'N/A')}")
+            lines.append(f"- {suggestion.get('message', 'N/A')}")
 
-    return "\n".join(sections)
-
-    return "\n".join(sections)
+    return "\n".join(lines)
 
 
 def _build_patterns_summary_section(analyses: Dict[str, Any]) -> str:
