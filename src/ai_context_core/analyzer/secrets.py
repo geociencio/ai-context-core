@@ -79,6 +79,19 @@ PATTERNS: List[Tuple[str, str, str]] = [
     ),
 ]
 
+IGNORED_KEYWORDS = [
+    "example",
+    "test",
+    "change_me",
+    "changeme",
+    "placeholder",
+    "dummy",
+    "sample",
+    "your_password",
+    "your_secret",
+    "todo",
+]
+
 
 def detect_secrets(content: str) -> List[Dict[str, Any]]:
     """Scans content for potential secrets using regex patterns.
@@ -102,6 +115,12 @@ def detect_secrets(content: str) -> List[Dict[str, Any]]:
 
                 # Get the matching code (masked)
                 code = match.group()
+
+                # Check for ignored keywords (case-insensitive)
+                code_lower = code.lower()
+                if any(ignored in code_lower for ignored in IGNORED_KEYWORDS):
+                    continue
+
                 masked_code = _mask_secret(code)
 
                 # Avoid reporting the pattern definition itself (self-check)

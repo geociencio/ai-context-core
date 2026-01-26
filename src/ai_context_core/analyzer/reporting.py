@@ -9,7 +9,10 @@ import time
 from typing import Dict, Any
 
 
-def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
+import string
+
+
+def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
     """Generates a Mermaid-formatted dependency graph for the top project modules.
 
     Args:
@@ -20,19 +23,46 @@ def generate_mermaid_graph(dependencies: Dict[str, Any]) -> str:
     """
     graph = ["graph TD"]
     import_graph = dependencies.get("import_graph", {})
+    if not import_graph:
+        return ""
+
+    # Calculate node scores (connections) to filter noisy graphs
     node_scores = {u: len(v) for u, v in import_graph.items()}
-    top_nodes = sorted(node_scores.items(), key=lambda x: x[1], reverse=True)[:15]
+    # Filter out likely external packages if any slipped through or low-value nodes
+    top_nodes = sorted(node_scores.items(), key=lambda x: x[1], reverse=True)[:20]
     top_node_names = {name for name, _ in top_nodes}
 
+    # Add edges
+    added_edges = set()
     for u, neighbors in import_graph.items():
-        if u in top_node_names:
-            u_short = u.split("/")[-1].replace(".py", "")
+        if u in top_node_names or any(v in top_node_names for v in neighbors):
+            u_short = u.split("/")[-1].replace(".py", "").replace("__init__", "init")
             for v in neighbors:
-                v_short = v.split(".")[-1]
-                if any(top_name in v for top_name in top_node_names):
-                    graph.append(f"    {u_short} --> {v_short}")
+                # Filter self-loops and internal implementation details if needed
+                if u == v:
+                    continue
 
-    return "\n".join(graph[:30])
+                v_short = v.split(".")[-1]
+                edge = f"{u_short}->{v_short}"
+
+                if edge not in added_edges:
+                    graph.append(f"    {u_short} --> {v_short}")
+                    added_edges.add(edge)
+
+    # Styling
+    graph.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
+    # Apply class to top nodes and ensure they are rendered
+    for name in top_node_names:
+        short = name.split("/")[-1].replace(".py", "").replace("__init__", "init")
+        graph.append(f"    {short}")  # Explicitly declare node
+        graph.append(f"    class {short} module;")
+
+    return "\n".join(graph)
+
+
+generate_mermaid_graph = (
+    generate_dependency_diagram  # Alias for backward compatibility if needed
+)
 
 
 class MarkdownBuilder:
@@ -68,16 +98,147 @@ class MarkdownBuilder:
         return "\n".join(self.lines)
 
 
+class HTMLBuilder:
+    """Helper class for building HTML documents using string.Template."""
+
+    CSS = """
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: #f4f6f9; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #2c3e50; margin-top: 30px; border-left: 4px solid #3498db; padding-left: 10px; }
+    h3 { color: #34495e; }
+    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .metric { display: inline-block; margin-right: 20px; font-weight: bold; }
+    .metric-value { color: #2980b9; }
+    ul { list-style-type: none; padding: 0; }
+    li { padding: 5px 0; border-bottom: 1px solid #eee; }
+    li:last-child { border-bottom: none; }
+    .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; color: white; display: inline-block; }
+    .badge-critical { background: #e74c3c; }
+    .badge-high { background: #e67e22; }
+    .badge-medium { background: #f1c40f; color: #333; }
+    .badge-low { background: #3498db; }
+    .mermaid { text-align: center; overflow-x: auto; background: white; padding: 20px; }
+    """
+
+    TEMPLATE = string.Template(
+        """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$title</title>
+    <style>$css</style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>$title</h1>
+    <div class="card">
+        <p><strong>Date:</strong> $date</p>
+        <p><strong>Version:</strong> 2.0 (Ai-Context-Core)</p>
+    </div>
+    $content
+</body>
+</html>
+    """
+    )
+
+    def __init__(self, title: str):
+        self.title = title
+        self.content_parts = []
+
+    def add_section(self, title: str, content: str):
+        """Adds a section wrapped in a card."""
+        self.content_parts.append(f'<div class="card"><h2>{title}</h2>{content}</div>')
+
+    def add_raw(self, html: str):
+        """Adds raw HTML."""
+        self.content_parts.append(html)
+
+    def build_list(self, items: list) -> str:
+        """Helper to build an HTML list."""
+        if not items:
+            return ""
+        lis = "".join(f"<li>{item}</li>" for item in items)
+        return f"<ul>{lis}</ul>"
+
+    def render(self) -> str:
+        """Renders final HTML."""
+        return self.TEMPLATE.substitute(
+            title=self.title,
+            css=self.CSS,
+            date=time.strftime("%Y-%m-%d %H:%M:%S"),
+            content="\n".join(self.content_parts),
+        )
+
+
 def generate_project_summary(
-    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+    analyses: Dict[str, Any],
+    output_path: pathlib.Path,
+    project_name: str,
+    format: str = "markdown",
 ) -> None:
-    """Generates an executive summary of the project in Markdown format.
+    """Generates an executive summary of the project.
 
     Args:
         analyses: Aggregated analysis results dictionary.
         output_path: File system path to write the report to.
         project_name: Human-readable name of the project.
+        format: 'markdown' or 'html'.
     """
+    if format == "html":
+        _generate_project_summary_html(analyses, output_path, project_name)
+    else:
+        _generate_project_summary_md(analyses, output_path, project_name)
+
+
+def _generate_project_summary_html(
+    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+):
+    builder = HTMLBuilder(f"PROJECT SUMMARY - {project_name}")
+
+    # Key Metrics
+    metrics = analyses.get("metrics", {})
+    m_html = f"""
+    <div class="metric">Quality Score: <span class="metric-value">{metrics.get("quality_score", 0)}/100</span></div>
+    <div class="metric">Lines of Code: <span class="metric-value">{metrics.get('total_lines_code', 0):,}</span></div>
+    <div class="metric">Modules: <span class="metric-value">{analyses.get('complexity', {}).get('total_modules', 0)}</span></div>
+    """
+    builder.add_section("📊 KEY METRICS", m_html)
+
+    # Issues
+    security = analyses.get("security", [])
+    if security:
+        sec_list = [
+            f"<strong>{i['module']}</strong>: {i['total_issues']} issues (Max: {i['max_severity']})"
+            for i in security[:5]
+        ]
+        builder.add_section("🚨 SECURITY ISSUES", builder.build_list(sec_list))
+
+    # Optimizations
+    opt = analyses.get("optimizations", [])
+    if opt:
+        opt_list = []
+        for o in opt[:5]:
+            msgs = [s.get("message", "") for s in o.get("suggestions", [])]
+            opt_list.append(f"<strong>{o.get('module')}</strong>: {'; '.join(msgs)}")
+        builder.add_section("💡 RECOMMENDATIONS", builder.build_list(opt_list))
+
+    # Dependency Graph
+    graph = generate_dependency_diagram(analyses.get("dependencies", {}))
+    if graph:
+        builder.add_section("🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>')
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(builder.render())
+
+
+def _generate_project_summary_md(
+    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+) -> None:
+    """Generates the Markdown summary (original implementation)."""
     builder = MarkdownBuilder(f"PROJECT SUMMARY - {project_name}")
 
     builder.add_text(_build_key_metrics_section(analyses))

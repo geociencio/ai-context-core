@@ -34,6 +34,17 @@ class TestSecrets(unittest.TestCase):
         issues = detect_secrets(content)
         self.assertEqual(len(issues), 0)
 
+    def test_ignore_placeholders(self):
+        # Should ignore common placeholders
+        content = 'password = "change_me_please"'
+        issues = detect_secrets(content)
+        self.assertEqual(len(issues), 0)
+
+    def test_ignore_examples(self):
+        content = 'api_key = "example_key_12345"'
+        issues = detect_secrets(content)
+        self.assertEqual(len(issues), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

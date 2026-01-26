@@ -21,7 +21,9 @@ from . import (
     dependencies,
     antipatterns,
     patterns,
+    patterns,
     git_analysis,
+    ai_recommendations,
 )
 from ..context.manager import AIContextManager
 
@@ -108,8 +110,11 @@ class ProjectAnalyzer:
             },
         }
 
-    def analyze(self) -> Dict[str, Any]:
+    def analyze(self, output_format: str = "markdown") -> Dict[str, Any]:
         """Executes the complete project analysis pipeline.
+
+        Args:
+            output_format: Format for the summary report ('markdown' or 'html').
 
         Returns:
             A dictionary containing aggregated analysis results, including metrics,
@@ -125,7 +130,7 @@ class ProjectAnalyzer:
         results = self._aggregate_results(analysis_data)
 
         # 3. Generate Outputs
-        self._generate_outputs(results)
+        self._generate_outputs(results, output_format)
 
         # 4. Save Cache
         fs_utils.save_cache(self.project_path, self.analysis_cache)
@@ -208,6 +213,32 @@ class ProjectAnalyzer:
         # Debt and suggestions
         tech_debt = issues.find_technical_debt(modules_data)
         optimization_suggestions = issues.find_optimizations(modules_data)
+
+        # Recommendations
+        ai_recommender = ai_recommendations.AIRecommender(self.config)
+        # We need a partial aggregation to pass to ai_recommender, but it runs on nearly-complete data
+        # so we'll construct the partial results to feed it
+        partial_results = {
+            "metrics": project_metrics,
+            "complexity": self._build_complexity_metadata(
+                modules_data, project_metrics, complexity_dist
+            ),
+            "dependencies": deps_data,
+            "structure": structure,
+        }
+
+        # Merge basic optimizations with AI recommendations
+        optimization_suggestions = issues.find_optimizations(modules_data)
+        ai_suggestions = ai_recommender.analyze_codebase(partial_results)
+
+        # Convert AI suggestions to compatible format if needed or append
+        # Currently optimizations list expects specific format {module, suggestions}
+        # AI suggestions are project level mostly, so we might need a new key or adapt
+        # For now, let's append them as a special "Project Level" module entry or similar
+        if ai_suggestions:
+            optimization_suggestions.insert(
+                0, {"module": "PROJECT_WIDE", "suggestions": ai_suggestions}
+            )
 
         # Specialized aggregations
         security_list = self._aggregate_security_issues(modules_data)
@@ -335,17 +366,22 @@ class ProjectAnalyzer:
 
         return aggregated
 
-    def _generate_outputs(self, results: Dict[str, Any]):
+    def _generate_outputs(
+        self, results: Dict[str, Any], output_format: str = "markdown"
+    ):
         """Generates markdown reports and JSON context files from the results.
 
         Args:
             results: The aggregated analysis results.
+            output_format: 'markdown' or 'html'.
         """
         try:
+            ext = ".html" if output_format == "html" else ".md"
             reporting.generate_project_summary(
                 results,
-                self.project_path / "PROJECT_SUMMARY.md",
+                self.project_path / f"PROJECT_SUMMARY{ext}",
                 self.project_path.name,
+                format=output_format,
             )
             reporting.generate_ai_context(
                 results, self.project_path / "AI_CONTEXT.md", self.project_path.name

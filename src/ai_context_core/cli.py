@@ -95,7 +95,14 @@ def init(profile: str, path: str):
     "--workers", "-w", default=None, type=int, help="Number of parallel workers"
 )
 @click.option("--no-cache", is_flag=True, help="Disable cache")
-def analyze(path: str, workers: Optional[int], no_cache: bool):
+@click.option(
+    "--format",
+    "-f",
+    type=click.Choice(["markdown", "html"], case_sensitive=False),
+    default="markdown",
+    help="Output format for the summary report",
+)
+def analyze(path: str, workers: Optional[int], no_cache: bool, format: str):
     """Runs project analysis and updates corporate/AI context.
 
     Executes the analytical pipeline to compute metrics, technical debt,
@@ -136,7 +143,7 @@ def analyze(path: str, workers: Optional[int], no_cache: bool):
     click.echo(f"🚀 Starting analysis for {project_path.name}...")
 
     try:
-        results = analyzer.analyze()
+        results = analyzer.analyze(output_format=format)
 
         metrics = results.get("metrics", {})
         quality = metrics.get("quality_score", 0)

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **HTML Reporting**: New `--format html` option to generate interactive project summaries.
+- **Mermaid Diagrams**: Visual dependency graphs integrated into Markdown and HTML reports.
+- **AI Recommendations**: Heuristic engine (`ai_recommendations.py`) for automated quality and maintenance advice.
+- **Secret Filtering**: Logic to ignore common placeholders ("change_me", "example") in security scans.
 - **Incremental Cache**: Implementation of persistent cache to bypass analysis of unchanged files (SHA-256).
 - **Testing Standards**: New agent skill and workflow to standardize testing with Pytest and Docker.
 - **Maintenance Index (MI)**: Comprehensive maintainability scoring for modules and project level.

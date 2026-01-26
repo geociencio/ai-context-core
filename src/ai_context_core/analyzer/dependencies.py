@@ -230,40 +230,67 @@ def _parse_dependency_files(
 
 
 def _build_import_graph(modules_data: List[Dict[str, Any]]) -> Dict[str, Set[str]]:
-    """Builds a directed graph representing internal imports between project modules.
-
-    Args:
-        modules_data: Raw analysis data from all project modules.
-
-    Returns:
-        A dictionary mapping source module paths to sets of target module paths.
-    """
+    """Builds a directed graph representing internal imports between project modules."""
     import_graph = {}
-    # Create valid target module names (dots instead of slashes)
-    module_names = {}
+
+    # 1. Map importable names to file paths
+    # e.g. "src/pkg/mod.py" -> "pkg.mod"
+    import_map = {}
+
     for mod in modules_data:
         path = mod.get("path", "")
-        if path:
-            # Map "pkg/sub/mod.py" -> "pkg.sub.mod"
-            canonical = path.replace(".py", "").replace("/", ".").replace("\\", ".")
-            module_names[canonical] = path
+        if not path:
+            continue
 
+        # Initialize node in graph
+        if path not in import_graph:
+            import_graph[path] = set()
+
+        # Generate candidate import names
+        # Standard: src/ai_context_core/cli.py -> ai_context_core.cli
+        clean_path = path.replace("\\", "/")
+        if clean_path.startswith("src/"):
+            clean_path = clean_path[4:]
+
+        importable = clean_path.replace(".py", "").replace("/", ".")
+        if importable.endswith(".__init__"):
+            importable = importable[:-9]
+
+        import_map[importable] = path
+
+    # 2. Resolve imports
     for module in modules_data:
-        module_path = module.get("path", "")
+        source_path = module.get("path", "")
         imports = module.get("imports", [])
 
-        if module_path:
-            if module_path not in import_graph:
-                import_graph[module_path] = set()
+        if not source_path:
+            continue
 
-            for imp in imports:
-                # Check if import refers to an internal project module
-                for canonical, target_path in module_names.items():
-                    if canonical in imp:
-                        import_graph[module_path].add(target_path)
-                        if target_path not in import_graph:
-                            import_graph[target_path] = set()
+        for imp in imports:
+            # Handle standard imports
+            # Check for exact match or parent module match (e.g. importing class from module)
+            target = None
+
+            # Direct match
+            if imp in import_map:
+                target = import_map[imp]
+
+            # Parent match (imp='pkg.mod.Class') -> matches 'pkg.mod'
+            if not target and "." in imp:
+                parts = imp.split(".")
+                # Try progressively shorter prefixes
+                for i in range(len(parts), 0, -1):
+                    prefix = ".".join(parts[:i])
+                    if prefix in import_map:
+                        target = import_map[prefix]
                         break
+
+            # If target found and different from self
+            if target and target != source_path:
+                import_graph[source_path].add(target)
+
+            # TODO: Handle relative imports (starting with .) better by using module's context
+
     return import_graph
 
 
