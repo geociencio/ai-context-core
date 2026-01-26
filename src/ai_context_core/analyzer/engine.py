@@ -12,7 +12,15 @@ import pathlib
 import json
 from typing import Dict, Any, List
 
-from . import ast_utils, fs_utils, metrics, issues, reporting, dependencies
+from . import (
+    ast_utils,
+    fs_utils,
+    metrics,
+    issues,
+    reporting,
+    dependencies,
+    antipatterns,
+)
 from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)
@@ -186,6 +194,53 @@ class ProjectAnalyzer:
             modules_data, str(self.project_path)
         )
 
+        # Merge AST security
+        for m in modules_data:
+            if m.get("ast_security"):
+                items = m["ast_security"]
+                existing = next(
+                    (x for x in security_list if x["module"] == m["path"]), None
+                )
+                if existing:
+                    existing["issues"].extend(items)
+                    existing["total_issues"] += len(items)
+                    # Simple severity update: if any new issue is high, upgrade existing
+                    current_max = existing["max_severity"]
+                    new_max = max(
+                        (i["severity"] for i in items),
+                        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
+                    )
+                    if {"high": 3, "medium": 2, "low": 1}[new_max] > {
+                        "high": 3,
+                        "medium": 2,
+                        "low": 1,
+                    }[current_max]:
+                        existing["max_severity"] = new_max
+                else:
+                    security_list.append(
+                        {
+                            "module": m["path"],
+                            "issues": items,
+                            "total_issues": len(items),
+                            "max_severity": max(
+                                (i["severity"] for i in items),
+                                key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
+                            ),
+                        }
+                    )
+
+        # Aggregate antipatterns
+        antipatterns_list = []
+        for m in modules_data:
+            if m.get("antipatterns"):
+                antipatterns_list.append(
+                    {
+                        "module": m["path"],
+                        "issues": m["antipatterns"],
+                        "total_issues": len(m["antipatterns"]),
+                    }
+                )
+
         return {
             "project_name": self.project_path.name,
             "timestamp": time.time(),
@@ -210,6 +265,7 @@ class ProjectAnalyzer:
             "debt": tech_debt,
             "optimizations": optimization_suggestions,
             "security": security_list,
+            "antipatterns": antipatterns_list,
             "entry_points": entry_points,
             "patterns": {},  # TODO: Extract design patterns detection
         }
@@ -285,6 +341,16 @@ class ProjectAnalyzer:
                 return {}
 
             tree = ast.parse(content)
+            entry_point_data = ast_utils.is_entry_point(tree)
+
+            # Detect antipatterns
+            detected_antipatterns = []
+            detected_antipatterns.extend(antipatterns.detect_god_object(tree))
+            detected_antipatterns.extend(antipatterns.detect_spaghetti_code(tree))
+            detected_antipatterns.extend(antipatterns.detect_magic_numbers(tree))
+            detected_antipatterns.extend(antipatterns.detect_dead_code(tree))
+
+            ast_security = issues.detect_ast_security_issues(tree)
 
             return {
                 "path": str(file_path.relative_to(self.project_path)),
@@ -295,9 +361,12 @@ class ProjectAnalyzer:
                 "classes": ast_utils.extract_classes(tree),
                 "functions": ast_utils.extract_functions(tree),
                 "docstrings": ast_utils.check_docstrings(tree),
-                "has_main": ast_utils.has_main_guard(tree),
+                "entry_point_info": entry_point_data,
+                "has_main": entry_point_data["is_entry_point"],
                 "type_hints": ast_utils.calculate_type_hint_coverage(tree),
                 "halstead": ast_utils.calculate_halstead_metrics(tree),
+                "antipatterns": detected_antipatterns,
+                "ast_security": ast_security,
                 "syntax_error": False,
             }
 

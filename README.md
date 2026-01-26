@@ -9,6 +9,10 @@ The central nervous system for your AI-assisted coding workflow.
     - `python-generic`: Standard Python support.
     - `qgis-plugin`: Specialized rules for QGIS plugin development.
 - **Workflow Automation**: Standardized scripts for session management.
+- **Advanced Analysis**:
+    - **Entry Point Detection**: Supports QGIS plugins, Click CLIs, Flask, and FastAPI apps.
+    - **Anti-Pattern Detection**: Identifies God Objects, Spaghetti Code, Magic Numbers, and Dead Code.
+    - **Security Audit**: Scans for vulnerabilities like SQL Injection, `eval/exec`, and insecure assertions.
 
 ## Installation
 

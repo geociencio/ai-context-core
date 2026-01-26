@@ -130,19 +130,27 @@ def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
     return docstrings
 
 
-def has_main_guard(tree: ast.AST) -> bool:
-    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
+def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
+    """Determines if the module is an entry point.
+
+    Checks for:
+    - Standard main guard: if __name__ == "__main__"
+    - QGIS Plugin: classFactory(iface) function
+    - Click CLI: @click.command decorator
+    - Flask/FastAPI: Route decorators (@app.route, @app.get, etc)
 
     Args:
         tree: The AST to analyze.
 
     Returns:
-        True if the guard is found, False otherwise.
+        A dictionary with 'is_entry_point' (bool) and 'type' (str or None).
     """
+    result = {"is_entry_point": False, "type": None}
+
     for node in ast.walk(tree):
+        # 1. Standard main guard
         if isinstance(node, ast.If):
             try:
-                # Verify condition __name__ == '__main__'
                 if (
                     isinstance(node.test, ast.Compare)
                     and isinstance(node.test.left, ast.Name)
@@ -153,10 +161,66 @@ def has_main_guard(tree: ast.AST) -> bool:
                             isinstance(comparator, ast.Constant)
                             and comparator.value == "__main__"
                         ):
-                            return True
+                            return {"is_entry_point": True, "type": "main_guard"}
             except Exception:
-                continue
-    return False
+                pass
+
+        # 2. Function definitions (QGIS)
+        if isinstance(node, ast.FunctionDef):
+            # QGIS classFactory
+            if node.name == "classFactory" and any(
+                arg.arg == "iface" for arg in node.args.args
+            ):
+                return {"is_entry_point": True, "type": "qgis_plugin"}
+
+            # Decorators (Click, Flask, FastAPI)
+            for decorator in node.decorator_list:
+                # Normalize decorator to the attribute/name being used
+                # e.g. @click.command -> Attribute
+                # e.g. @click.command() -> Call -> func is Attribute
+
+                check_node = decorator
+                if isinstance(decorator, ast.Call):
+                    check_node = decorator.func
+
+                # Check for Attribute (e.g. click.command, app.route)
+                if isinstance(check_node, ast.Attribute):
+                    # Click: @click.command or @click.group
+                    if (
+                        isinstance(check_node.value, ast.Name)
+                        and check_node.value.id == "click"
+                    ):
+                        if check_node.attr in ("command", "group"):
+                            return {"is_entry_point": True, "type": "click_cli"}
+
+                    # Flask: @app.route
+                    if check_node.attr == "route":
+                        return {"is_entry_point": True, "type": "flask_app"}
+
+                    # FastAPI: @app.get, @app.post, etc. (common HTTP verbs)
+                    if check_node.attr in ("get", "post", "put", "delete", "patch"):
+                        return {"is_entry_point": True, "type": "fastapi_app"}
+
+                # Check for Name (e.g. @cli, if cli is a Click group? Hard to know without context)
+                # But typically Click uses decorators on functions.
+                # Use specific known names if needed, but 'click.command' is standard.
+
+    return result
+
+
+def has_main_guard(tree: ast.AST) -> bool:
+    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
+
+    Deprecated: Use is_entry_point() instead.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        True if the guard is found, False otherwise.
+    """
+    result = is_entry_point(tree)
+    return result["is_entry_point"] and result["type"] == "main_guard"
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
