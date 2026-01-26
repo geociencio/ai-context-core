@@ -1,6 +1,6 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1769390783.2902775,
+  "timestamp": 1769390947.7497299,
   "metrics": {
     "total_size_kb": 100.89,
     "total_lines_code": 3196,
@@ -48,7 +48,7 @@
       "total_size_mb": 0.84,
       "python_files": 28,
       "python_size_mb": 0.19,
-      "avg_file_size_kb": 7.7,
+      "avg_file_size_kb": 7.71,
       "python_percentage": 22.78
     }
   },
@@ -133,15 +133,15 @@
     "import_graph": {
       "src/ai_context_core/__init__.py": [],
       ".agent/scripts/skill_sync.py": [],
-      "src/ai_context_core/cli.py": [],
-      "src/ai_context_core/config/loader.py": [],
       "src/ai_context_core/analyzer/engine.py": [],
       "src/ai_context_core/analyzer/dependencies.py": [],
       "src/ai_context_core/analyzer/metrics.py": [],
       "src/ai_context_core/analyzer/ast_utils.py": [],
-      "src/ai_context_core/context/manager.py": [],
+      "src/ai_context_core/cli.py": [],
+      "src/ai_context_core/config/loader.py": [],
       "src/ai_context_core/analyzer/fs_utils.py": [],
       "src/ai_context_core/analyzer/issues.py": [],
+      "src/ai_context_core/context/manager.py": [],
       "src/ai_context_core/analyzer/reporting.py": []
     },
     "circular_dependencies": [],
@@ -227,19 +227,6 @@
       "severity_score": 3
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high cyclomatic complexity (28)",
-          "value": 28
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 3
-    },
-    {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
@@ -266,6 +253,19 @@
       "severity_score": 3
     },
     {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (28)",
+          "value": 28
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 3
+    },
+    {
       "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
@@ -277,6 +277,19 @@
       ],
       "total_issues": 1,
       "severity_score": 3
+    },
+    {
+      "module": "src/ai_context_core/analyzer/engine.py",
+      "issues": [
+        {
+          "type": "moderate_complexity",
+          "severity": "medium",
+          "message": "High cyclomatic complexity (18)",
+          "value": 18
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 2
     },
     {
       "module": "src/ai_context_core/cli.py",
@@ -299,19 +312,6 @@
           "severity": "medium",
           "message": "High cyclomatic complexity (12)",
           "value": 12
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 2
-    },
-    {
-      "module": "src/ai_context_core/analyzer/engine.py",
-      "issues": [
-        {
-          "type": "moderate_complexity",
-          "severity": "medium",
-          "message": "High cyclomatic complexity (18)",
-          "value": 18
         }
       ],
       "total_issues": 1,
@@ -395,21 +395,6 @@
       ]
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
-      "suggestions": [
-        {
-          "type": "complexity_refactoring",
-          "priority": "high",
-          "message": "High complexity (28) with several functions. Consider breaking down large logic.",
-          "suggestions": [
-            "Extract methods from long functions",
-            "Use polymorphism instead of long if/else chains",
-            "Apply SOLID principles"
-          ]
-        }
-      ]
-    },
-    {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "suggestions": [
         {
@@ -453,6 +438,21 @@
           "suggestions": [
             "Split into multiple modules",
             "Extract classes to separate files"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (28) with several functions. Consider breaking down large logic.",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles"
           ]
         }
       ]
@@ -503,20 +503,6 @@
       "max_severity": "medium"
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
-      "issues": [
-        {
-          "pattern": "open(",
-          "description": "File opening without path validation",
-          "severity": "medium",
-          "line": 316,
-          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "medium"
-    },
-    {
       "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
@@ -525,6 +511,20 @@
           "severity": "medium",
           "line": 81,
           "code": "with open(path, \"rb\") as f:"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "medium"
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "pattern": "open(",
+          "description": "File opening without path validation",
+          "severity": "medium",
+          "line": 316,
+          "code": "with open(update_file, \"w\", encoding=\"utf-8\") as f:"
         }
       ],
       "total_issues": 1,

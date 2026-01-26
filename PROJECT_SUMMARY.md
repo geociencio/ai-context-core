@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-25 20:26:23
+Analysis Date: 2026-01-25 20:29:07
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -21,7 +21,7 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 ### 🔒 Security Issues:
 - **.agent/scripts/skill_sync.py**: 1 issues (Max: MEDIUM)
 - **src/ai_context_core/analyzer/engine.py**: 1 issues (Max: MEDIUM)
-- **src/ai_context_core/context/manager.py**: 1 issues (Max: MEDIUM)
+- **src/ai_context_core/analyzer/fs_utils.py**: 1 issues (Max: MEDIUM)
 
 ### 🏗️ Critical Technical Debt:
 - **.agent/scripts/skill_sync.py**: 3 issues (Score: 5)

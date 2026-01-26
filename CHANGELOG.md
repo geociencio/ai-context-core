@@ -25,6 +25,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **README**: Added comprehensive Docker usage section
 - **Session Reports**: Created structured session documentation in `docs/sessions/`
 - **Next Steps**: Implemented historical archiving system for development continuity
+- **Architecture Decision Records (ADR)**: Established ADR process with template and initial records
+  - Created `docs/adr/` directory with README and template
+  - ADR-0001: Decision to use ADRs for architecture decisions
+  - ADR-0002: Decision to implement 13 improvements roadmap in 4 phases
+- **Improvement Planning**: Comprehensive roadmap for ai-context-core enhancements
+  - Analysis report identifying 13 critical improvements
+  - Implementation plan with 4 phases (43-52 hours for phases 1-3)
+  - Executive summary with ROI analysis and success metrics
+  - Detailed task breakdown with checkboxes for tracking
+  - Documentation index for easy navigation
 
 
 ## [1.0.1] - 2026-01-22
