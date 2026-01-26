@@ -263,6 +263,8 @@ def generate_ai_context(
     context_lines.append("\n## 🏗️ DETECTED PATTERNS")
     _add_patterns_section(analyses, context_lines)
 
+    _add_antipatterns_section(analyses, context_lines)
+
     context_lines.append("\n## 📈 COMPLEXITY AND METRICS")
     context_lines.append(f"- **Total Modules**: {complexity.get('total_modules', 0)}")
     context_lines.append(f"- **Lines of Code**: {complexity.get('total_lines', 0):,}")
@@ -374,3 +376,20 @@ def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
         lines.append("```mermaid")
         lines.append(generate_mermaid_graph(dependencies))
         lines.append("```")
+
+
+def _add_antipatterns_section(analyses: Dict[str, Any], lines: list):
+    """Adds detected anti-patterns to the context report.
+
+    Args:
+        analyses: Analysis results containing antipatterns data.
+        lines: The list of context report lines to append to.
+    """
+    antipatterns = analyses.get("antipatterns", [])
+    if antipatterns:
+        lines.append("\n## ⚠️ DETECTED ANTI-PATTERNS")
+        for item in antipatterns[:5]:
+            module = item.get("module", "Unknown")
+            lines.append(f"- **{module}**")
+            for issue in item.get("issues", [])[:2]:
+                lines.append(f"  - {issue.get('message', 'N/A')}")

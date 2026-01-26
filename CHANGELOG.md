@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+### Added
+- **Core Analyzer**: New `is_entry_point` detection for QGIS, Click, Flask, and FastAPI apps.
+- **Anti-Patterns**: Created detection module for God Objects, Spaghetti Code, Magic Numbers, and Dead Code.
+- **Security**: Enhanced AST-based security scanning for asserts and SQL injections.
 - **Docker Support**: Multi-stage Dockerfile with development, test, and production images
 - **Docker Compose**: Services for development, testing, and linting
 - **Makefile Targets**: Added `docker-build`, `docker-test`, `docker-lint`, `docker-shell`, `docker-clean`

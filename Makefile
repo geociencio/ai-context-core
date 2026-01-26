@@ -39,14 +39,13 @@ docker-build:
 	docker build --target production -t ai-ctx:prod .
 
 docker-test:
-	docker compose run --rm test
+	docker run --rm -v $(CURDIR)/src:/app/src -v $(CURDIR)/tests:/app/tests -e PYTHONPATH=/app/src ai-ctx:test
 
 docker-lint:
-	docker compose run --rm lint
+	docker run --rm -v $(CURDIR)/src:/app/src -v $(CURDIR)/tests:/app/tests ai-ctx:dev sh -c "uv run ruff check . && uv run ruff format --check ."
 
 docker-shell:
-	docker compose run --rm dev /bin/bash
+	docker run --rm -it -v $(CURDIR)/src:/app/src -v $(CURDIR)/tests:/app/tests ai-ctx:dev /bin/bash
 
 docker-clean:
-	docker compose down -v
 	docker rmi -f ai-ctx:dev ai-ctx:test ai-ctx:prod 2>/dev/null || true

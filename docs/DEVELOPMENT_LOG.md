@@ -44,6 +44,7 @@
 - **CLI Fixes**: Corrected all workflow commands from `ai-ctx analyze` to `uv run python -m ai_context_core.cli analyze`
 - **Documentation**: Created 4 session reports in `docs/sessions/`
 - **Code Quality**: Formatted 11 files with black, all tests passing
+    - **Docker Fix**: Resolved `unknown command: docker compose` by refactoring `Makefile` to use standard `docker run` commands. Corrected volume mount permissions to allow writing to `src` (egg-info) and `tests` during execution. Verified with successful `make docker-test` and `make docker-lint`.
 
 ### Next Steps
 - Validate workflows in real usage

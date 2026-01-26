@@ -4,8 +4,78 @@ Includes rule-based detection for complexity hotspots, large modules,
 security patterns, and optimization opportunities.
 """
 
+import ast
 from typing import List, Dict, Any, Tuple
 from pathlib import Path
+
+# ... existing code ...
+
+
+def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects security issues using AST analysis.
+
+    Checks for:
+    - Assert usage
+    - Generic exception handlers
+    - SQL injection in f-strings
+    """
+    issues = []
+    for node in ast.walk(tree):
+        # 1. Assert checks
+        if isinstance(node, ast.Assert):
+            issues.append(
+                {
+                    "pattern": "assert",
+                    "description": "Use of assert in production code",
+                    "severity": "low",
+                    "line": node.lineno,
+                    "code": "assert ...",  # simplified
+                }
+            )
+
+        # 2. Generic Exception
+        if isinstance(node, ast.ExceptHandler):
+            if node.type is None:  # except:
+                issues.append(
+                    {
+                        "pattern": "except:",
+                        "description": "Generic exception handler (except:)",
+                        "severity": "medium",
+                        "line": node.lineno,
+                        "code": "except:",
+                    }
+                )
+            elif isinstance(node.type, ast.Name) and node.type.id == "Exception":
+                issues.append(
+                    {
+                        "pattern": "except Exception:",
+                        "description": "Too broad exception handler (except Exception:)",
+                        "severity": "low",
+                        "line": node.lineno,
+                        "code": "except Exception:",
+                    }
+                )
+
+        # 3. SQL Injection (f-strings with SELECT)
+        if isinstance(node, ast.JoinedStr):
+            text_parts = []
+            for value in node.values:
+                if isinstance(value, ast.Constant):
+                    text_parts.append(str(value.value).upper())
+
+            full_text = " ".join(text_parts)
+            if "SELECT" in full_text and "FROM" in full_text:
+                issues.append(
+                    {
+                        "pattern": "f-string SQL",
+                        "description": "Possible SQL injection in f-string",
+                        "severity": "high",
+                        "line": node.lineno,
+                        "code": "f'...SELECT...'",
+                    }
+                )
+
+    return issues
 
 
 def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

@@ -5,47 +5,47 @@ Basado en: [implementation_plan_improvements.md](file:///home/jmbernales/qgisplu
 ## Fase 1: Correcciones Críticas (11-15 horas)
 
 ### Mejora 1: Entry Points Detection (4-6h)
-- [ ] Analizar código actual de `ast_utils.py`
-- [ ] Implementar `is_entry_point()` con soporte para:
-  - [ ] QGIS `classFactory(iface)`
-  - [ ] Click `@click.command`
-  - [ ] Flask `@app.route`
-  - [ ] FastAPI `@app.get/post`
-- [ ] Refactorizar `has_main_guard()` como parte de `is_entry_point()`
-- [ ] Actualizar `engine.py` para usar nueva función
-- [ ] Crear `tests/test_entry_points.py`
-  - [ ] Test para QGIS plugin
-  - [ ] Test para Click CLI
-  - [ ] Test para Flask app
-  - [ ] Test para FastAPI app
-- [ ] Documentar en README.md
+- [x] Analizar código actual de `ast_utils.py`
+- [x] Implementar `is_entry_point()` con soporte para:
+  - [x] QGIS `classFactory(iface)`
+  - [x] Click `@click.command`
+  - [x] Flask `@app.route`
+  - [x] FastAPI `@app.get/post`
+- [x] Refactorizar `has_main_guard()` como parte de `is_entry_point()`
+- [x] Actualizar `engine.py` para usar nueva función
+- [x] Crear `tests/test_entry_points.py`
+  - [x] Test para QGIS plugin
+  - [x] Test para Click CLI
+  - [x] Test para Flask app
+  - [x] Test para FastAPI app
+- [x] Documentar en README.md
 
 ### Mejora 5: Anti-Patrones (4-5h)
-- [ ] Crear `src/ai_context_core/analyzer/antipatterns.py`
-- [ ] Implementar detectores:
-  - [ ] `detect_god_object()` - Clases con >20 métodos
-  - [ ] `detect_spaghetti_code()` - Funciones CC >25
-  - [ ] `detect_magic_numbers()` - Constantes hardcodeadas
-  - [ ] `detect_dead_code()` - Código nunca importado
-- [ ] Integrar en `engine.py`
-- [ ] Agregar sección "Anti-Patterns" en templates
-- [ ] Crear `tests/test_antipatterns.py`
-  - [ ] Test para God Object
-  - [ ] Test para Spaghetti Code
-  - [ ] Test para Magic Numbers
-  - [ ] Test para Dead Code
-- [ ] Actualizar `AI_CONTEXT.md` template
+- [x] Crear `src/ai_context_core/analyzer/antipatterns.py`
+- [x] Implementar detectores:
+  - [x] `detect_god_object()` - Clases con >20 métodos
+  - [x] `detect_spaghetti_code()` - Funciones CC >25
+  - [x] `detect_magic_numbers()` - Constantes hardcodeadas
+  - [x] `detect_dead_code()` - Código nunca importado
+- [x] Integrar en `engine.py`
+- [x] Agregar sección "Anti-Patterns" en templates
+- [x] Crear `tests/test_antipatterns.py`
+  - [x] Test para God Object
+  - [x] Test para Spaghetti Code
+  - [x] Test para Magic Numbers
+  - [x] Test para Dead Code
+- [x] Actualizar `AI_CONTEXT.md` template
 
 ### Mejora 6: Seguridad Mejorada (3-4h)
-- [ ] Modificar `src/ai_context_core/analyzer/issues.py`
-- [ ] Agregar detecciones:
-  - [ ] Llamadas peligrosas (`eval`, `exec`, `pickle.loads`, etc.)
-  - [ ] SQL injection (f-strings con SELECT)
-  - [ ] Excepciones genéricas (`except:`)
-  - [ ] `assert` en producción
-- [ ] Crear `tests/test_security_enhanced.py`
-  - [ ] Test para cada tipo de detección
-- [ ] Actualizar documentación de seguridad
+- [x] Modificar `src/ai_context_core/analyzer/issues.py`
+- [x] Agregar detecciones:
+  - [x] Llamadas peligrosas (`eval`, `exec`, `pickle.loads`, etc.)
+  - [x] SQL injection (f-strings con SELECT)
+  - [x] Excepciones genéricas (`except:`)
+  - [x] `assert` en producción
+- [x] Crear `tests/test_security_enhanced.py`
+  - [x] Test para cada tipo de detección
+- [x] Actualizar documentación de seguridad
 
 ---
 
