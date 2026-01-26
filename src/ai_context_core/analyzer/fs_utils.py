@@ -12,7 +12,9 @@ import subprocess
 import logging
 import hashlib
 import json
+import re
 from typing import List, Dict, Any, NamedTuple, Optional
+from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
@@ -27,19 +29,24 @@ class ProjectScanResult(NamedTuple):
 
 
 class LRUCache:
-    """Simple Least Recently Used (LRU) cache for file contents."""
+    """Least Recently Used (LRU) cache using OrderedDict for O(1) performance."""
 
     def __init__(self, maxsize: int = 256):
-        self.cache = {}
+        self.cache = OrderedDict()
         self.maxsize = maxsize
 
     def get(self, key: str) -> Any:
-        return self.cache.get(key)
+        if key not in self.cache:
+            return None
+        self.cache.move_to_end(key)
+        return self.cache[key]
 
     def set(self, key: str, value: Any):
-        if len(self.cache) >= self.maxsize:
-            self.cache.pop(next(iter(self.cache)))
+        if key in self.cache:
+            self.cache.move_to_end(key)
         self.cache[key] = value
+        if len(self.cache) > self.maxsize:
+            self.cache.popitem(last=False)
 
     def clear(self):
         self.cache.clear()
@@ -57,6 +64,18 @@ class IgnoreFilter:
     ):
         self.project_path = project_path
         self.patterns = self._load_patterns(extra_patterns)
+        self.regex = self._compile_patterns(self.patterns)
+
+    def _compile_patterns(self, patterns: List[str]) -> Optional[re.Pattern]:
+        """Compiles glob patterns into a single efficient Regex."""
+        if not patterns:
+            return None
+        regex_parts = []
+        for p in patterns:
+            # Convert glob to regex: escape dots, replace * with .*, etc.
+            part = fnmatch.translate(p.rstrip("/"))
+            regex_parts.append(part)
+        return re.compile("|".join(regex_parts))
 
     def _load_patterns(self, extra_patterns: Optional[List[str]]) -> List[str]:
         patterns = []
@@ -93,21 +112,16 @@ class IgnoreFilter:
         return patterns
 
     def is_ignored(self, path: pathlib.Path) -> bool:
-        """Checks if a path should be ignored based on set patterns."""
+        """Checks if a path should be ignored using optimized regex."""
+        if not self.regex:
+            return False
         try:
             rel_path = str(path.relative_to(self.project_path))
         except ValueError:
             rel_path = str(path)
 
-        for pattern in self.patterns:
-            clean_pattern = pattern.rstrip("/")
-            if (
-                fnmatch.fnmatch(rel_path, clean_pattern)
-                or fnmatch.fnmatch(path.name, clean_pattern)
-                or any(fnmatch.fnmatch(part, clean_pattern) for part in path.parts)
-            ):
-                return True
-        return False
+        # Match against relative path or just the filename
+        return bool(self.regex.match(rel_path) or self.regex.match(path.name))
 
 
 class ProjectScanner:
@@ -310,6 +324,63 @@ def calculate_file_hash(path: pathlib.Path) -> str:
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
     except Exception:
         return ""
+
+
+def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
+    """Parses and validates a QGIS plugin metadata.txt file."""
+    metadata_file = project_path / "metadata.txt"
+    res = {
+        "exists": False,
+        "valid": False,
+        "content": {},
+        "issues": [],
+        "compliance_score": 0,
+    }
+
+    if not metadata_file.exists():
+        res["issues"].append("Missing metadata.txt")
+        return res
+
+    res["exists"] = True
+    try:
+        content = metadata_file.read_text(encoding="utf-8")
+        import configparser
+
+        config = configparser.ConfigParser()
+        config.read_string("[general]\n" + content)
+        
+        # QGIS metadata usually has a [general] section, but some people omit the header
+        # adding a dummy header to ensure it parses if it's just key=value
+        if "general" in config:
+            metadata = dict(config["general"])
+        else:
+            metadata = {}
+
+        res["content"] = metadata
+        
+        # Mandatory fields for QGIS.org
+        mandatory = ["name", "description", "version", "qgisminimumversion", "author", "email"]
+        for field in mandatory:
+            if field not in metadata:
+                res["issues"].append(f"Missing mandatory field: {field}")
+        
+        # Recommended fields
+        recommended = ["repository", "tracker", "homepage", "category", "tags"]
+        for field in recommended:
+            if field not in metadata:
+                res["issues"].append(f"Missing recommended field: {field}")
+
+        if not res["issues"]:
+            res["valid"] = True
+            res["compliance_score"] = 100
+        else:
+            # Simple scoring: 100 - (10 per issue, max 100)
+            res["compliance_score"] = max(0, 100 - (len(res["issues"]) * 10))
+
+    except Exception as e:
+        res["issues"].append(f"Error parsing metadata.txt: {str(e)}")
+
+    return res
 
 
 def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:

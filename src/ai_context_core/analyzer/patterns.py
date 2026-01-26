@@ -15,26 +15,42 @@ class PatternDetector:
         self.confidence = 0
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Analyzes a node and returns detected pattern instances."""
+        """Analyzes a node and returns detected pattern instances.
+        Implemented for backward compatibility with individual detector calls.
+        """
+        if hasattr(self, "visit"):
+            self.visit(node)
+            return self.get_results(node)
         raise NotImplementedError
 
     def _add_evidence(self, msg: str, weight: int):
         self.evidence.append(msg)
         self.confidence += weight
 
+    def get_results(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Returns the results if confidence threshold is met."""
+        if self.confidence >= 50:
+            name = getattr(node, "name", "N/A")
+            return [
+                {
+                    "class": name,
+                    "confidence": min(self.confidence, 100),
+                    "evidence": self.evidence,
+                }
+            ]
+        return []
+
 
 class SingletonDetector(PatternDetector):
     """Detects Singleton pattern implementations."""
 
-    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        if not isinstance(node, ast.ClassDef):
-            return []
+    def visit(self, node: ast.AST):
         self.evidence, self.confidence = [], 0
-
+        if not isinstance(node, ast.ClassDef):
+            return
         for item in node.body:
             if isinstance(item, ast.FunctionDef) and item.name == "__new__":
                 self._add_evidence("Overrides __new__ to control instantiation", 60)
-
             if isinstance(item, ast.FunctionDef):
                 is_static = any(
                     isinstance(d, (ast.Name, ast.Attribute))
@@ -48,31 +64,12 @@ class SingletonDetector(PatternDetector):
                     k in item.name.lower()
                     for k in ("instance", "singleton", "get_inst")
                 ):
-                    self._add_evidence(
-                        f"Static/Class method '{item.name}' detected", 30
-                    )
-
+                    self._add_evidence(f"Static/Class method '{item.name}' detected", 30)
             if isinstance(item, (ast.Assign, ast.AnnAssign)):
-                targets = (
-                    item.targets if isinstance(item, ast.Assign) else [item.target]
-                )
+                targets = (item.targets if isinstance(item, ast.Assign) else [item.target])
                 for t in targets:
-                    if isinstance(t, ast.Name) and any(
-                        k in t.id.lower() for k in ("instance", "_inst")
-                    ):
-                        self._add_evidence(
-                            f"Static instance variable '{t.id}' found", 20
-                        )
-
-        if self.confidence >= 50:
-            return [
-                {
-                    "class": node.name,
-                    "confidence": min(self.confidence, 100),
-                    "evidence": self.evidence,
-                }
-            ]
-        return []
+                    if isinstance(t, ast.Name) and any(k in t.id.lower() for k in ("instance", "_inst")):
+                        self._add_evidence(f"Static instance variable '{t.id}' found", 20)
 
 
 class FactoryDetector(PatternDetector):
@@ -123,56 +120,81 @@ class ObserverDetector(PatternDetector):
     """Detects Observer pattern implementations."""
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        if not isinstance(node, ast.ClassDef):
-            return []
         self.evidence, self.confidence = [], 0
+        name = getattr(node, "name", "Module")
 
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef) and item.name == "__init__":
-                for sub in ast.walk(item):
-                    if isinstance(sub, ast.Assign):
-                        for t in sub.targets:
-                            if isinstance(t, ast.Attribute) and any(
-                                kw in t.attr.lower()
+        if isinstance(node, ast.ClassDef):
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef) and item.name == "__init__":
+                    for sub in ast.walk(item):
+                        if isinstance(sub, ast.Assign):
+                            for t in sub.targets:
+                                if isinstance(t, ast.Attribute) and any(
+                                    kw in t.attr.lower()
+                                    for kw in ("observers", "subscribers", "listeners")
+                                ):
+                                    self._add_evidence(
+                                        f"Collection '{t.attr}' initialized in __init__", 20
+                                    )
+                                    break
+                        if isinstance(sub, ast.Call):
+                            # Detection of signal connections in __init__
+                            try:
+                                func_name = ast.unparse(sub.func).lower()
+                                if ".connect" in func_name:
+                                    self._add_evidence(f"Signal connection detected: {func_name}", 10)
+                            except Exception:
+                                pass
+
+                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    m_low = item.name.lower()
+                    if any(
+                        kw in m_low
+                        for kw in (
+                            "attach",
+                            "detach",
+                            "subscribe",
+                            "unsubscribe",
+                            "register",
+                            "unregister",
+                        )
+                    ):
+                        self._add_evidence(f"Management method '{item.name}' detected", 15)
+                    if any(kw in m_low for kw in ("notify", "emit", "broadcast")):
+                        self._add_evidence(
+                            f"Notification method '{item.name}' detected", 15
+                        )
+                        for sub in ast.walk(item):
+                            if isinstance(sub, ast.For) and any(
+                                kw in ast.unparse(sub.iter).lower()
                                 for kw in ("observers", "subscribers", "listeners")
                             ):
                                 self._add_evidence(
-                                    f"Collection '{t.attr}' initialized in __init__", 20
+                                    "Notification method iterates over collection", 30
                                 )
                                 break
 
-            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                m_low = item.name.lower()
-                if any(
-                    kw in m_low
-                    for kw in (
-                        "attach",
-                        "detach",
-                        "subscribe",
-                        "unsubscribe",
-                        "register",
-                        "unregister",
-                    )
-                ):
-                    self._add_evidence(f"Management method '{item.name}' detected", 15)
-                if any(kw in m_low for kw in ("notify", "emit", "broadcast")):
-                    self._add_evidence(
-                        f"Notification method '{item.name}' detected", 15
-                    )
-                    for sub in ast.walk(item):
-                        if isinstance(sub, ast.For) and any(
-                            kw in ast.unparse(sub.iter).lower()
-                            for kw in ("observers", "subscribers", "listeners")
-                        ):
-                            self._add_evidence(
-                                "Notification method iterates over collection", 30
-                            )
-                            break
+        # Module level or class level pyqtSignal detection
+        if isinstance(node, (ast.ClassDef, ast.Module)):
+            signals_found = 0
+            for item in ast.iter_child_nodes(node):
+                if isinstance(item, (ast.Assign, ast.AnnAssign)):
+                    val = item.value if isinstance(item, ast.Assign) else item.value
+                    if val and isinstance(val, ast.Call):
+                        try:
+                            func_str = ast.unparse(val.func).lower()
+                            if "pyqtsignal" in func_str or "signal" in func_str:
+                                signals_found += 1
+                        except Exception:
+                            pass
+            
+            if signals_found > 0:
+                self._add_evidence(f"Detected {signals_found} signals (PyQt/Signals)", signals_found * 20)
 
         if self.confidence >= 50:
             return [
                 {
-                    "class": node.name,
+                    "class": name,
                     "confidence": min(self.confidence, 100),
                     "evidence": self.evidence,
                 }
@@ -296,25 +318,61 @@ class DecoratorDetector(PatternDetector):
         return res
 
 
-def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
-    """Analyzes an AST to detect common design patterns using specialized detectors."""
-    detectors = {
-        "Singleton": SingletonDetector(),
-        "Factory": FactoryDetector(),
-        "Observer": ObserverDetector(),
-        "Strategy": StrategyDetector(),
-        "Decorator": DecoratorDetector(),
-    }
-    results = {}
+class PatternsUnifiedVisitor(ast.NodeVisitor):
+    """Orchestrates pattern detection in a single AST pass."""
 
-    for node in ast.walk(tree):
-        for name, det in detectors.items():
+    def __init__(self):
+        self.detectors = {
+            "Singleton": SingletonDetector(),
+            "Factory": FactoryDetector(),
+            "Observer": ObserverDetector(),
+            "Strategy": StrategyDetector(),
+            "Decorator": DecoratorDetector(),
+        }
+        self.results = {}
+
+    def visit_ClassDef(self, node: ast.ClassDef):
+        for name, det in self.detectors.items():
+            if hasattr(det, "visit"):
+                det.visit(node)
+                found = det.get_results(node)
+            else:
+                found = det.detect(node)
+            
+            if found:
+                if name not in self.results:
+                    self.results[name] = []
+                self.results[name].extend(found)
+        self.generic_visit(node)
+
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        # Decorators or local patterns
+        for name, det in self.detectors.items():
+            if name == "Decorator":
+                found = det.detect(node)
+                if found:
+                    if name not in self.results:
+                        self.results[name] = []
+                    self.results[name].extend(found)
+        self.generic_visit(node)
+
+    def visit_Module(self, node: ast.Module):
+        # Module level patterns (e.g. PyQt signals at module level)
+        det = self.detectors.get("Observer")
+        if det:
             found = det.detect(node)
             if found:
-                if name not in results:
-                    results[name] = []
-                results[name].extend(found)
-    return results
+                if "Observer" not in self.results:
+                    self.results["Observer"] = []
+                self.results["Observer"].extend(found)
+        self.generic_visit(node)
+
+
+def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
+    """Analyzes an AST to detect common design patterns using a unified visitor."""
+    visitor = PatternsUnifiedVisitor()
+    visitor.visit(tree)
+    return visitor.results
 
 
 # --- Legacy Compatibility Wrappers ---

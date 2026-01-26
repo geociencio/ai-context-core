@@ -5,12 +5,11 @@ import pathlib
 import shutil
 import os
 import sys
-from typing import Optional, Dict, Any
+from typing import Optional
 from .analyzer.engine import ProjectAnalyzer
 from .config.loader import ConfigLoader, list_profiles
 import http.server
 import socketserver
-import threading
 import webbrowser
 
 
@@ -160,7 +159,10 @@ class CLIHandler:
                 click.echo("No patterns detected.")
             for name, occs in pats.items():
                 for o in occs:
-                    click.echo(f"- {name}: {o['class']} in {o['module']} ({o['confidence']}%)")
+                    class_name = o.get("class", o.get("name", "N/A"))
+                    module_path = o.get("module", "N/A")
+                    confidence = o.get("confidence", 0)
+                    click.echo(f"- {name}: {class_name} in {module_path} ({confidence}%)")
 
         elif category == "security":
             click.secho("🚨 SECURITY ISSUES", fg="red", bold=True)
@@ -169,7 +171,10 @@ class CLIHandler:
                 click.echo("No issues found.")
             for mod in sec:
                 for issue in mod.get("issues", []):
-                    click.echo(f"- [{issue['severity'].upper()}] {mod['module']}: {issue.get('message', issue.get('description'))}")
+                    severity = issue.get("severity", "unknown").upper()
+                    module_name = mod.get("module", "N/A")
+                    message = issue.get("message", issue.get("description", "No description"))
+                    click.echo(f"- [{severity}] {module_name}: {message}")
 
         elif category == "recommendations":
             click.secho("💡 AI RECOMMENDATIONS", fg="yellow", bold=True)
@@ -177,8 +182,10 @@ class CLIHandler:
             if not opts:
                 click.echo("No recommendations.")
             for o in opts:
+                module_name = o.get("module", "N/A")
                 for sug in o.get("suggestions", []):
-                    click.echo(f"- [{o['module']}] {sug.get('message')}")
+                    message = sug.get("message", "N/A")
+                    click.echo(f"- [{module_name}] {message}")
 
 
 @click.group()

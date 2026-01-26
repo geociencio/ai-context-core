@@ -23,26 +23,28 @@ Este workflow estandariza el proceso de liberación de una nueva versión de `ai
     ```
     > **Check**: El score debe ser alto (>90%) y los tests deben pasar (100%).
 
-2.  **Versionado (Bump Version)**:
-    Actualiza la versión en `pyproject.toml`.
-    *Reemplaza `NEW_VERSION` con la versión real (ej: 1.2.0).*
+2.  **Versionado y Nombramiento (Bump Version)**:
+    Actualiza la versión en `pyproject.toml` y define un título para el lanzamiento.
+    *Reemplaza `NEW_VERSION` con la versión real (ej: 2.5.0) y `VERSION_TITLE` (ej: Performance and GIS Edition).*
     ```bash
-    # Ejemplo manual o con sed si se confirma la versión
-    # sed -i 's/^version = "OLD"/version = "NEW"/' pyproject.toml
+    # sed -i 's/^version = "OLD"/version = "NEW_VERSION"/' pyproject.toml
     ```
 
-3.  **Actualización de Changelog**:
-    *   Mueve `[Unreleased]` a `[VERSION] - FECHA`.
-    *   Genera Release Notes en `docs/releases/notes/vVERSION.md`.
+3.  **Actualización de Documentos**:
+    *   **README.md**: Actualizar insignias de versión y secciones clave si hay nuevos features.
+    *   **Changelog**: 
+        - Mover `[Unreleased]` a `[NEW_VERSION] - FECHA - VERSION_TITLE`.
+        - Asegurar que cada sección (Added, Fixed, Optimized) tenga títulos descriptivos.
+    *   **Release Notes**: Generar `docs/releases/notes/vNEW_VERSION.md` con el título del release en el encabezado #1.
 
 4.  **Git Operations**:
     Etiqueta la versión en el control de versiones.
     ```bash
-    git add pyproject.toml CHANGELOG.md README.md
-    git commit -m "chore(release): prepare vVERSION"
-    git tag -a "vVERSION" -m "Release vVERSION"
+    git add pyproject.toml CHANGELOG.md README.md docs/
+    git commit -m "chore(release): prepare vNEW_VERSION - VERSION_TITLE"
+    git tag -a "vNEW_VERSION" -m "vNEW_VERSION - VERSION_TITLE"
     git push origin main
-    git push origin "vVERSION"
+    git push origin "vNEW_VERSION"
     ```
 
 5.  **Build & Distribution**:
@@ -54,8 +56,8 @@ Este workflow estandariza el proceso de liberación de una nueva versión de `ai
     ```
 
 6.  **GitHub Release**:
-    Crea el draft release.
+    Crea el draft release con el título oficial.
     ```bash
-    gh release create "vVERSION" --title "vVERSION" --notes-file docs/releases/notes/vVERSION.md --draft
-    gh release upload "vVERSION" dist/* --clobber
+    gh release create "vNEW_VERSION" --title "vNEW_VERSION - VERSION_TITLE" --notes-file docs/releases/notes/vNEW_VERSION.md --draft
+    gh release upload "vNEW_VERSION" dist/* --clobber
     ```

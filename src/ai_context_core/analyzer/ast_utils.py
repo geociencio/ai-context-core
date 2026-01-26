@@ -96,9 +96,7 @@ class EntryPointVisitor(ast.NodeVisitor):
             return
 
         # QGIS classFactory
-        if node.name == "classFactory" and any(
-            arg.arg == "iface" for arg in node.args.args
-        ):
+        if is_qgis_entry_point_node(node):
             self.result = {"is_entry_point": True, "type": "qgis_plugin"}
             return
 
@@ -163,6 +161,66 @@ class EntryPointVisitor(ast.NodeVisitor):
                     self.result = {"is_entry_point": True, "type": "flask_app"}
                 elif func.id == "FastAPI":
                     self.result = {"is_entry_point": True, "type": "fastapi_app"}
+
+
+class QGISComplianceVisitor(ast.NodeVisitor):
+    """Visitor to check for QGIS coding standards and best practices."""
+
+    def __init__(self):
+        self.results = {
+            "processing_framework": False,
+            "i18n_usage": {"tr": 0, "translate": 0, "total_strings": 0},
+            "gdal_import_style": "Correct",  # Correct, Legacy, or Missing
+            "qt_transition": {"pyqt5_imports": [], "pyqt6_imports": []},
+            "signals_slots": {"modern": 0, "legacy": 0},
+        }
+
+    def visit_Import(self, node: ast.Import):
+        for alias in node.names:
+            if alias.name == "gdal":
+                self.results["gdal_import_style"] = "Legacy"
+            if alias.name.startswith("PyQt5"):
+                self.results["qt_transition"]["pyqt5_imports"].append(alias.name)
+            if alias.name.startswith("PyQt6"):
+                self.results["qt_transition"]["pyqt6_imports"].append(alias.name)
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node: ast.ImportFrom):
+        if node.module == "osgeo" and any(a.name == "gdal" for a in node.names):
+            self.results["gdal_import_style"] = "Correct"
+        if node.module and node.module.startswith("PyQt5"):
+            self.results["qt_transition"]["pyqt5_imports"].append(node.module)
+        if node.module and node.module.startswith("PyQt6"):
+            self.results["qt_transition"]["pyqt6_imports"].append(node.module)
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node: ast.ClassDef):
+        # Check for Processing Framework
+        processing_bases = {"QgsProcessingAlgorithm", "QgsProcessingProvider"}
+        for base in node.bases:
+            base_name = extract_base_name(base)
+            if base_name in processing_bases:
+                self.results["processing_framework"] = True
+        self.generic_visit(node)
+
+    def visit_Call(self, node: ast.Call):
+        # Check for i18n: self.tr() or QCoreApplication.translate()
+        if isinstance(node.func, ast.Attribute) and node.func.attr == "tr":
+            self.results["i18n_usage"]["tr"] += 1
+        elif isinstance(node.func, ast.Attribute) and node.func.attr == "translate":
+            # Might be QCoreApplication.translate
+            self.results["i18n_usage"]["translate"] += 1
+        
+        # Check for legacy signals/slots (SIGNAL/SLOT macros)
+        if isinstance(node.func, ast.Name) and node.func.id in ("SIGNAL", "SLOT"):
+            self.results["signals_slots"]["legacy"] += 1
+        
+        self.generic_visit(node)
+
+    def visit_Constant(self, node: ast.Constant):
+        if isinstance(node.value, str) and len(node.value.strip()) > 1:
+            self.results["i18n_usage"]["total_strings"] += 1
+        self.generic_visit(node)
 
 
 class TypeHintVisitor(ast.NodeVisitor):
@@ -368,6 +426,15 @@ def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
     return visitor.docstrings
 
 
+def is_qgis_entry_point_node(node: ast.AST) -> bool:
+    """Checks if an AST node is a QGIS classFactory entry point."""
+    return (
+        isinstance(node, ast.FunctionDef)
+        and node.name == "classFactory"
+        and any(arg.arg == "iface" for arg in node.args.args)
+    )
+
+
 def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
     """Determines if the module is an entry point."""
     visitor = EntryPointVisitor()
@@ -473,3 +540,21 @@ def _apply_complexity_penalty(complexity: int, decision_lines: Set[int]) -> int:
         return int(complexity * 1.2)
 
     return complexity
+
+
+def check_qgis_compliance(tree: ast.AST) -> Dict[str, Any]:
+    """Runs a check for QGIS coding standards and best practices."""
+    visitor = QGISComplianceVisitor()
+    visitor.visit(tree)
+    return visitor.results
+
+
+def extract_base_name(node: ast.AST) -> str:
+    """Helper to extract the name of a base class from a node."""
+    if isinstance(node, ast.Name):
+        return node.id
+    elif isinstance(node, ast.Attribute):
+        return node.attr
+    elif isinstance(node, ast.Call):
+        return extract_base_name(node.func)
+    return "Unknown"

@@ -7,7 +7,11 @@ The central nervous system for your AI-assisted coding workflow.
 - **Context Management**: Keeps `.ai-context` files updated.
 - **Profiles**: 
     - `python-generic`: Standard Python support.
-    - `qgis-plugin`: Specialized rules for QGIS plugin development.
+    - `qgis-plugin`: Specialized rules for QGIS plugin development, including:
+        - **Processing Framework** validation.
+        - **i18n (self.tr)** coverage metrics.
+        - **Qt6/QGIS 4** transition audit.
+        - **metadata.txt** strict validation.
 - **Workflow Automation**: Standardized scripts for session management.
 - **Advanced Analysis**:
     - **Entry Point Detection**: Supports QGIS plugins, Click CLIs, Flask, and FastAPI apps.
@@ -19,8 +23,11 @@ The central nervous system for your AI-assisted coding workflow.
     - **Interactive HTML**: Generate interactive project summaries with `--format html`.
     - **Dependency Graphs**: Automated **Mermaid.js** diagrams integrated into reports.
 - **Optimization**:
-    - **Incremental Cache**: SHA-256 based file caching with `--no-cache` option to force full re-analysis.
-    - **AI Recommendations**: Heuristic-based actionable advice for code hygiene.
+    - **FastIgnore**: Ultra-fast file filtering using compiled Regex.
+    - **Smart Parallelism**: Dynamic switching between sequential and parallel execution based on project size.
+    - **Single-Pass AST**: Unified pattern detection for maximum performance.
+    - **Increment Cache**: SHA-256 based file caching with `--no-cache` option to force full re-analysis.
+- **AI Recommendations**: Heuristic-based actionable advice for code hygiene.
 
 ## Installation
 

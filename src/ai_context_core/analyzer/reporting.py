@@ -168,6 +168,7 @@ class SummaryGenerator:
             ("📦 QGIS STANDARDS", self._build_qgis()),
             ("💡 MAIN RECOMMENDATIONS", self._build_recommendations()),
             ("🏗️ DESIGN PATTERNS", self._build_patterns()),
+            ("📝 ARCHITECTURE NOTES", self._build_manual_notes()),
             ("🔄 GIT ANALYSIS", self._build_git()),
             ("📈 COMPLEXITY DISTRIBUTION", self._build_complexity()),
         ]
@@ -236,17 +237,34 @@ class SummaryGenerator:
         q = self.analyses.get("qgis_compliance", {})
         if not q:
             return ""
-        missing = [
-            f
-            for f, exists in q.get("mandatory_files", {}).get("files", {}).items()
-            if not exists
-        ]
-        arch_v = q.get("architecture", {}).get("violations", [])
         res = [f"- **Compliance Score**: {q.get('compliance_score', 0):.1f}/100"]
-        if missing:
-            res.append(f"- ❌ **Missing Files**: {', '.join(missing)}")
-        if arch_v:
-            res.append(f"- ⚠️ **Architecture**: {len(arch_v)} violations")
+        
+        if q.get("processing_framework_detected"):
+            res.append("- ✅ **Architecture**: Processing Framework detected")
+        else:
+            res.append("- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)")
+
+        i18n = q.get("i18n_stats", {})
+        if i18n.get("total_strings", 0) > 0:
+            cov = (i18n["total_tr"] / i18n["total_strings"]) * 100
+            res.append(f"- **i18n Coverage**: {cov:.1f}% ({i18n['total_tr']}/{i18n['total_strings']} strings)")
+        
+        qt = q.get("qt_transition", {})
+        if qt.get("pyqt5_count", 0) > 0:
+            res.append(f"- 🍎 **Qt6 Transition**: {qt['pyqt5_count']} PyQt5 imports (Action required for QGIS 4)")
+        
+        if q.get("gdal_style") == "Legacy":
+            res.append("- ⚠️ **GDAL Style**: Legacy imports detected (`import gdal`)")
+        
+        if q.get("legacy_signals", 0) > 0:
+            res.append(f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected")
+
+        issues = q.get("metadata", {}).get("issues", [])
+        if issues:
+            res.append("\n### 🚩 Metadata Issues:")
+            for issue in issues[:5]:
+                res.append(f"- {issue}")
+        
         return "\n".join(res)
 
     def _build_recommendations(self) -> str:
@@ -300,6 +318,13 @@ class SummaryGenerator:
             f"- {k}: {v} modules ({v/total*100:.1f}%)" for k, v in dist.items()
         )
 
+    def _build_manual_notes(self) -> str:
+        """Reads manual architecture notes from the project configuration."""
+        # This assumes the project_path is accessible or passed. 
+        # For now, let's try to find it via a common convention or expect it in analyses.
+        notes_content = self.analyses.get("manual_notes", "")
+        return notes_content
+
 
 def generate_project_summary(
     analyses: Dict[str, Any],
@@ -346,6 +371,7 @@ class AICtxGenerator:
         self.lines.append(f"\n{s.get('tree', 'N/A')[:1200]}\n")
 
         self._add_entry_points()
+        self._add_manual_notes()
         self._add_patterns()
         self._add_antipatterns()
 
@@ -381,6 +407,12 @@ class AICtxGenerator:
             self.lines.append(f"- `{p}`")
         if len(ep) > 10:
             self.lines.append(f"... and {len(ep) - 10} more")
+
+    def _add_manual_notes(self):
+        notes = self.analyses.get("manual_notes", "")
+        if notes:
+            self.lines.append("\n## 📝 MANUAL ARCHITECTURE NOTES")
+            self.lines.append(notes)
 
     def _add_patterns(self):
         pats = self.analyses.get("patterns", {})

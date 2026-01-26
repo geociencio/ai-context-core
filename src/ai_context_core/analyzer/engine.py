@@ -28,6 +28,8 @@ from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)
 
+PARALLEL_MIN_FILES = 5  # Minimum files to trigger multiprocessing overhead
+
 
 class ProjectAnalyzer:
     """Optimized and modular Python project analyzer."""
@@ -113,7 +115,23 @@ class ProjectAnalyzer:
                 "hotspots": git_analysis.get_git_hotspots(self.project_path),
                 "churn": git_analysis.get_git_churn(self.project_path),
             },
+            "manual_notes": self._read_manual_notes(),
+            "qgis_metadata": fs_utils.parse_qgis_metadata(self.project_path),
         }
+
+    def _read_manual_notes(self) -> str:
+        """Reads manual architecture notes if they exist."""
+        notes_path = self.project_path / ".ai-context" / "architecture_notes.md"
+        if not notes_path.exists():
+            # Try legacy or alternative name
+            notes_path = self.project_path / ".ai-context" / "project_brain.md"
+        
+        if notes_path.exists():
+            try:
+                return notes_path.read_text(encoding="utf-8")
+            except Exception as e:
+                logger.warning(f"Could not read manual notes: {e}")
+        return ""
 
     def _aggregate_all(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Final aggregation of all analysis data."""
@@ -125,7 +143,7 @@ class ProjectAnalyzer:
             entry_points,
             data["test_files_count"],
             self.config,
-            {"qgis_compliance": {}},
+            {"qgis_compliance": data.get("qgis_metadata", {})},
         )
         comp_dist = metrics.calculate_complexity_distribution(m_data)
 
@@ -145,6 +163,8 @@ class ProjectAnalyzer:
             "entry_points": entry_points,
             "patterns": self._aggregate_patterns(m_data),
             "git": data["git_data"],
+            "manual_notes": data.get("manual_notes", ""),
+            "qgis_compliance": self._aggregate_qgis_compliance(m_data, data.get("qgis_metadata", {})),
         }
         return results
 
@@ -251,8 +271,22 @@ class ProjectAnalyzer:
 
         if not to_analyze:
             return results
-        logger.info(f"Analyzing {len(to_analyze)} modules...")
 
+        # Optimization: Sequential execution for small projects
+        if len(to_analyze) < PARALLEL_MIN_FILES:
+            logger.info(f"Analyzing {len(to_analyze)} modules sequentially...")
+            for f in to_analyze:
+                data = self._analyze_single_module(f)
+                if data:
+                    results.append(data)
+                    self.analysis_cache[str(f.relative_to(self.project_path))] = {
+                        "hash": fs_utils.calculate_file_hash(f),
+                        "data": data,
+                        "timestamp": time.time(),
+                    }
+            return results
+
+        logger.info(f"Analyzing {len(to_analyze)} modules in parallel...")
         with concurrent.futures.ProcessPoolExecutor(
             max_workers=self.max_workers
         ) as exc:
@@ -274,6 +308,38 @@ class ProjectAnalyzer:
                     logger.error(f"Error analyzing {f}: {e}")
                     self.error_log[str(f)] = str(e)
         return results
+
+    def _aggregate_qgis_compliance(self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Aggregates QGIS-specific results from modules and metadata."""
+        agg = {
+            "metadata": metadata,
+            "processing_framework_detected": any(m.get("qgis_compliance", {}).get("processing_framework") for m in m_data),
+            "i18n_stats": {
+                "total_tr": sum(m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0) for m in m_data),
+                "total_strings": sum(m.get("qgis_compliance", {}).get("i18n_usage", {}).get("total_strings", 0) for m in m_data),
+            },
+            "gdal_style": "Correct" if all(m.get("qgis_compliance", {}).get("gdal_import_style") != "Legacy" for m in m_data) else "Legacy",
+            "qt_transition": {
+                "pyqt5_count": sum(len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt5_imports", [])) for m in m_data),
+                "pyqt6_count": sum(len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt6_imports", [])) for m in m_data),
+            },
+            "legacy_signals": sum(m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0) for m in m_data),
+        }
+        
+        # Calculate overall QGIS compliance score
+        score = metadata.get("compliance_score", 0) * 0.4
+        if agg["processing_framework_detected"]:
+            score += 20
+        if agg["i18n_stats"]["total_strings"] > 0:
+            i18n_ratio = agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
+            score += min(20, i18n_ratio * 40)
+        if agg["gdal_style"] == "Correct":
+            score += 10
+        if agg["qt_transition"]["pyqt5_count"] == 0:
+            score += 10
+        
+        agg["compliance_score"] = round(min(100, score), 1)
+        return agg
 
     def _analyze_single_module(self, file_path: pathlib.Path) -> Dict[str, Any]:
         try:
@@ -306,6 +372,7 @@ class ProjectAnalyzer:
                 "maintenance_index": metrics.calculate_maintenance_index(
                     halstead["volume"], complexity, line_count
                 ),
+                "qgis_compliance": ast_utils.check_qgis_compliance(tree),
                 "syntax_error": False,
             }
         except Exception as e:
