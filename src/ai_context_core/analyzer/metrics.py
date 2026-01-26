@@ -4,6 +4,7 @@ Defines the logic for calculating cyclomatic distribution, overall
 quality scores based on weights, and aggregated project metrics.
 """
 
+import math
 from typing import List, Dict, Any
 
 
@@ -37,6 +38,39 @@ def calculate_complexity_distribution(
             distribution["very_high (31+)"] += 1
 
     return distribution
+
+
+def calculate_maintenance_index(
+    halstead_volume: float, cyclomatic_complexity: int, lines_of_code: int
+) -> float:
+    """Calculates the Maintenance Index (MI) for a module.
+
+    Uses the SEI formula:
+    MI = 171 - 5.2 * ln(V) - 0.23 * (G) - 16.2 * ln(LOC)
+
+    Args:
+        halstead_volume: Halstead Volume (V).
+        cyclomatic_complexity: Cyclomatic Complexity (G).
+        lines_of_code: Lines of Code (LOC).
+
+    Returns:
+        The Maintenance Index, typically between 0 and 100 (though formula can go higher).
+    """
+    if halstead_volume <= 0 or lines_of_code <= 0:
+        return 100.0
+
+    # SEI formula
+    mi = (
+        171
+        - 5.2 * math.log(halstead_volume)
+        - 0.23 * cyclomatic_complexity
+        - 16.2 * math.log(lines_of_code)
+    )
+
+    # Normalize to 0-100 scale (Microsoft variation uses different normalization but SEI is the base)
+    normalized_mi = (mi * 100) / 171
+
+    return round(max(0, min(100, normalized_mi)), 2)
 
 
 def calculate_quality_score(
@@ -193,6 +227,14 @@ def calculate_project_metrics(
     type_hint_cov = [m.get("type_hints", {}).get("coverage", 100) for m in modules_data]
     i18n_scores = [m.get("i18n", {}).get("i18n_score", 100) for m in modules_data]
 
+    # Maintenance Index
+    mi_scores = [
+        m.get("maintenance_index", 100)
+        for m in modules_data
+        if not m.get("syntax_error")
+    ]
+    avg_mi = sum(mi_scores) / len(mi_scores) if mi_scores else 100
+
     return {
         "total_size_kb": round(total_size_kb, 2),
         "total_lines_code": total_lines,
@@ -214,6 +256,7 @@ def calculate_project_metrics(
         "test_files_count": test_files_count,
         "avg_complexity": round(avg_complexity, 2),
         "max_complexity": max(complexities) if complexities else 0,
+        "avg_maintenance_index": round(avg_mi, 2),
         "quality_score": calculate_quality_score(
             modules_data, config, context_patterns
         ),

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Maintenance Index (MI)**: Comprehensive maintainability scoring for modules and project level.
+- **Git Analysis**: Native integration to detect Hotspots and monitor Code Churn over time.
 - **Design Patterns**: New detection module supporting Singleton, Factory, Observer, Strategy, and Decorator patterns.
 - **Advanced Dependencies**: Implemented CBO (Coupling Between Objects) metrics and smart detection of unused imports.
 - **Multi-Framework**: Added support for Django (Settings, URLs, Applications), Flask, and FastAPI entry points.

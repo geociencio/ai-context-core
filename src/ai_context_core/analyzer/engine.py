@@ -21,6 +21,7 @@ from . import (
     dependencies,
     antipatterns,
     patterns,
+    git_analysis,
 )
 from ..context.manager import AIContextManager
 
@@ -154,11 +155,18 @@ class ProjectAnalyzer:
             self.project_path, self.exclusion_patterns
         )
 
+        # 5. Git Analysis
+        git_data = {
+            "hotspots": git_analysis.get_git_hotspots(self.project_path),
+            "churn": git_analysis.get_git_churn(self.project_path),
+        }
+
         return {
             "modules_data": modules_data,
             "deps_data": deps_data,
             "structure": structure,
             "test_files_count": test_files_count,
+            "git_data": git_data,
         }
 
     def _aggregate_results(self, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -174,6 +182,7 @@ class ProjectAnalyzer:
         deps_data = data["deps_data"]
         structure = data["structure"]
         test_files_count = data["test_files_count"]
+        git_data = data.get("git_data", {})
 
         entry_points = [m["path"] for m in modules_data if m.get("has_main")]
 
@@ -269,6 +278,7 @@ class ProjectAnalyzer:
             "antipatterns": antipatterns_list,
             "entry_points": entry_points,
             "patterns": self._aggregate_patterns(modules_data),
+            "git": git_data,
         }
 
     def _aggregate_patterns(self, modules_data: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -393,6 +403,11 @@ class ProjectAnalyzer:
                 "ast_security": ast_security,
                 "patterns": patterns.detect_patterns(tree),
                 "unused_imports": ast_utils.detect_unused_imports(tree),
+                "maintenance_index": metrics.calculate_maintenance_index(
+                    ast_utils.calculate_halstead_metrics(tree)["volume"],
+                    ast_utils.calculate_complexity(tree),
+                    len(content.splitlines()),
+                ),
                 "syntax_error": False,
             }
 

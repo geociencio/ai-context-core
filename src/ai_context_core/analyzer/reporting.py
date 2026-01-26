@@ -56,6 +56,7 @@ def generate_project_summary(
         _build_qgis_compliance_section(analyses),
         _build_recommendations_section(analyses),
         _build_patterns_summary_section(analyses),
+        _build_git_analysis_section(analyses),
         _build_complexity_dist_section(analyses),
     ]
 
@@ -82,6 +83,7 @@ def _build_key_metrics_section(analyses: Dict[str, Any]) -> str:
 - **Lines of Code**: {complexity.get("total_lines", 0):,}
 - **Total Size**: {size_stats.get("total_size_mb", 0):.1f} MB
 - **Average Complexity**: {complexity.get("average_complexity", 0):.1f}
+- **Avg Maintenance Index**: {metrics.get("avg_maintenance_index", 0):.1f}
 - **Docstring Coverage**: {metrics.get("docstring_coverage", 0):.1f}%
 - **Quality Score**: {metrics.get("quality_score", 0):.1f}/100
 - **Test Files**: {metrics.get("test_files_count", 0)}"""
@@ -206,16 +208,11 @@ def _build_recommendations_section(analyses: Dict[str, Any]) -> str:
 
     return "\n".join(sections)
 
+    return "\n".join(sections)
+
 
 def _build_patterns_summary_section(analyses: Dict[str, Any]) -> str:
-    """Builds the Summary section for detected design patterns.
-
-    Args:
-        analyses: Results dictionary containing patterns.
-
-    Returns:
-        A Markdown-formatted string for the Patterns section.
-    """
+    """Builds the Summary section for detected design patterns."""
     patterns = analyses.get("patterns", {})
     if not patterns:
         return ""
@@ -227,6 +224,33 @@ def _build_patterns_summary_section(analyses: Dict[str, Any]) -> str:
             sections.append(
                 f"- **{occ['class']}** in `{occ['module']}` (Confidence: {occ['confidence']}%)"
             )
+
+    return "\n".join(sections)
+
+
+def _build_git_analysis_section(analyses: Dict[str, Any]) -> str:
+    """Builds the Git analysis section (Hotspots and Churn)."""
+    git = analyses.get("git", {})
+    if not git:
+        return ""
+
+    sections = ["\n## 🔄 GIT ANALYSIS"]
+
+    # Churn
+    churn = git.get("churn", {})
+    if churn.get("available"):
+        sections.append(f"### Code Churn (last {churn.get('period_days')} days)")
+        sections.append(f"- **Files Changed**: {churn.get('files_changed')}")
+        sections.append(f"- **Additions**: +{churn.get('added')}")
+        sections.append(f"- **Deletions**: -{churn.get('deleted')}")
+        sections.append(f"- **Total Churn**: {churn.get('total_churn')}")
+
+    # Hotspots
+    hotspots = git.get("hotspots", [])
+    if hotspots:
+        sections.append("\n### 🔥 Hotspots (Frequently Changed Files)")
+        for hs in hotspots:
+            sections.append(f"- `{hs['path']}`: {hs['commits']} commits")
 
     return "\n".join(sections)
 
@@ -298,6 +322,9 @@ def generate_ai_context(
     context_lines.append(
         f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}"
     )
+    context_lines.append(
+        f"- **Avg Maintenance Index**: {complexity.get('avg_maintenance_index', 0) or analyses.get('metrics', {}).get('avg_maintenance_index', 0):.1f}"
+    )
 
     comp_mods = [m[0] for m in complexity.get("most_complex_modules", [])[:3]]
     context_lines.append(f"- **Most Complex Modules**: {', '.join(comp_mods)}")
@@ -310,6 +337,8 @@ def generate_ai_context(
     _add_dependency_insights_section(dependencies, context_lines)
 
     _add_dependency_graph_section(dependencies, context_lines)
+
+    _add_git_context_section(analyses, context_lines)
 
     context_lines.append("\n## 🔑 PROJECT KEYWORDS")
     file_types = list(structure.get("file_types", {}).keys())
@@ -446,3 +475,24 @@ def _add_antipatterns_section(analyses: Dict[str, Any], lines: list):
             lines.append(f"- **{module}**")
             for issue in item.get("issues", [])[:2]:
                 lines.append(f"  - {issue.get('message', 'N/A')}")
+
+
+def _add_git_context_section(analyses: Dict[str, Any], lines: list):
+    """Adds git context like hotspots and churn to the AI context."""
+    git = analyses.get("git", {})
+    if not git:
+        return
+
+    lines.append("\n## 🔄 GIT AND EVOLUTION")
+
+    # Hotspots are very useful for AI context
+    hotspots = git.get("hotspots", [])
+    if hotspots:
+        lines.append("### Top Hotspots (High change frequency):")
+        for hs in hotspots:
+            lines.append(f"- `{hs['path']}` ({hs['commits']} commits)")
+
+    churn = git.get("churn", {})
+    if churn.get("available"):
+        lines.append(f"### Recent Churn ({churn.get('period_days')} days):")
+        lines.append(f"- Total lines changed: {churn.get('total_churn')}")
