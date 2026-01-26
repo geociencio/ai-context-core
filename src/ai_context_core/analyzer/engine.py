@@ -198,42 +198,61 @@ class ProjectAnalyzer:
         # Debt and suggestions
         tech_debt = issues.find_technical_debt(modules_data)
         optimization_suggestions = issues.find_optimizations(modules_data)
+
+        # Specialized aggregations
+        security_list = self._aggregate_security_issues(modules_data)
+        antipatterns_list = self._aggregate_antipatterns(modules_data)
+
+        return {
+            "project_name": self.project_path.name,
+            "timestamp": time.time(),
+            "metrics": project_metrics,
+            "structure": structure,
+            "complexity": self._build_complexity_metadata(modules_data, project_metrics, complexity_dist),
+            "dependencies": deps_data,
+            "debt": tech_debt,
+            "optimizations": optimization_suggestions,
+            "security": security_list,
+            "antipatterns": antipatterns_list,
+            "entry_points": entry_points,
+            "patterns": self._aggregate_patterns(modules_data),
+            "git": git_data,
+        }
+
+    def _aggregate_security_issues(self, modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Aggregates security issues from all modules, merging basic and AST-based results."""
         security_list = issues.find_security_issues(modules_data, str(self.project_path))
 
-        # Merge AST security
-        for m in modules_data:
-            if m.get("ast_security"):
-                items = m["ast_security"]
-                existing = next((x for x in security_list if x["module"] == m["path"]), None)
-                if existing:
-                    existing["issues"].extend(items)
-                    existing["total_issues"] += len(items)
-                    # Simple severity update: if any new issue is high, upgrade existing
-                    current_max = existing["max_severity"]
-                    new_max = max(
-                        (i["severity"] for i in items),
-                        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
-                    )
-                    if {"high": 3, "medium": 2, "low": 1}[new_max] > {
-                        "high": 3,
-                        "medium": 2,
-                        "low": 1,
-                    }[current_max]:
-                        existing["max_severity"] = new_max
-                else:
-                    security_list.append(
-                        {
-                            "module": m["path"],
-                            "issues": items,
-                            "total_issues": len(items),
-                            "max_severity": max(
-                                (i["severity"] for i in items),
-                                key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
-                            ),
-                        }
-                    )
+        # Severity weights for comparison
+        severity_map = {"high": 3, "medium": 2, "low": 1}
 
-        # Aggregate antipatterns
+        for m in modules_data:
+            ast_items = m.get("ast_security", [])
+            if not ast_items:
+                continue
+
+            existing = next((x for x in security_list if x["module"] == m["path"]), None)
+            if existing:
+                existing["issues"].extend(ast_items)
+                existing["total_issues"] += len(ast_items)
+
+                # Update max severity if any new issue is higher
+                new_max = max(ast_items, key=lambda i: severity_map.get(i["severity"], 0))["severity"]
+                if severity_map.get(new_max, 0) > severity_map.get(existing["max_severity"], 0):
+                    existing["max_severity"] = new_max
+            else:
+                security_list.append(
+                    {
+                        "module": m["path"],
+                        "issues": ast_items,
+                        "total_issues": len(ast_items),
+                        "max_severity": max(ast_items, key=lambda i: severity_map.get(i["severity"], 0))["severity"],
+                    }
+                )
+        return security_list
+
+    def _aggregate_antipatterns(self, modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Aggregates detected anti-patterns from all modules."""
         antipatterns_list = []
         for m in modules_data:
             if m.get("antipatterns"):
@@ -244,33 +263,24 @@ class ProjectAnalyzer:
                         "total_issues": len(m["antipatterns"]),
                     }
                 )
+        return antipatterns_list
 
+    def _build_complexity_metadata(
+        self, modules_data: List[Dict[str, Any]], project_metrics: Dict[str, Any], complexity_dist: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Builds a structured dictionary for project complexity metadata."""
         return {
-            "project_name": self.project_path.name,
-            "timestamp": time.time(),
-            "metrics": project_metrics,
-            "structure": structure,
-            "complexity": {
-                "total_modules": len(modules_data),
-                "total_lines": project_metrics.get("total_lines_code", 0),
-                "total_functions": sum(len(m.get("functions", [])) for m in modules_data),
-                "total_classes": sum(len(m.get("classes", [])) for m in modules_data),
-                "average_complexity": project_metrics.get("avg_complexity", 0),
-                "complexity_distribution": complexity_dist,
-                "most_complex_modules": sorted(
-                    [(m["path"], m["complexity"]) for m in modules_data],
-                    key=lambda x: x[1],
-                    reverse=True,
-                )[:5],
-            },
-            "dependencies": deps_data,
-            "debt": tech_debt,
-            "optimizations": optimization_suggestions,
-            "security": security_list,
-            "antipatterns": antipatterns_list,
-            "entry_points": entry_points,
-            "patterns": self._aggregate_patterns(modules_data),
-            "git": git_data,
+            "total_modules": len(modules_data),
+            "total_lines": project_metrics.get("total_lines_code", 0),
+            "total_functions": sum(len(m.get("functions", [])) for m in modules_data),
+            "total_classes": sum(len(m.get("classes", [])) for m in modules_data),
+            "average_complexity": project_metrics.get("avg_complexity", 0),
+            "complexity_distribution": complexity_dist,
+            "most_complex_modules": sorted(
+                [(m["path"], m["complexity"]) for m in modules_data],
+                key=lambda x: x[1],
+                reverse=True,
+            )[:5],
         }
 
     def _aggregate_patterns(self, modules_data: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -360,21 +370,15 @@ class ProjectAnalyzer:
 
             tree = ast.parse(content)
             entry_point_data = ast_utils.is_entry_point(tree)
-
-            # Detect antipatterns
-            detected_antipatterns = []
-            detected_antipatterns.extend(antipatterns.detect_god_object(tree))
-            detected_antipatterns.extend(antipatterns.detect_spaghetti_code(tree))
-            detected_antipatterns.extend(antipatterns.detect_magic_numbers(tree))
-            detected_antipatterns.extend(antipatterns.detect_dead_code(tree))
-
-            ast_security = issues.detect_ast_security_issues(tree)
+            complexity = ast_utils.calculate_complexity(tree)
+            halstead = ast_utils.calculate_halstead_metrics(tree)
+            line_count = len(content.splitlines())
 
             return {
                 "path": str(file_path.relative_to(self.project_path)),
-                "lines": len(content.splitlines()),
+                "lines": line_count,
                 "file_size_kb": file_path.stat().st_size / 1024,
-                "complexity": ast_utils.calculate_complexity(tree),
+                "complexity": complexity,
                 "imports": ast_utils.extract_imports(tree),
                 "classes": ast_utils.extract_classes(tree),
                 "functions": ast_utils.extract_functions(tree),
@@ -382,28 +386,35 @@ class ProjectAnalyzer:
                 "entry_point_info": entry_point_data,
                 "has_main": entry_point_data["is_entry_point"],
                 "type_hints": ast_utils.calculate_type_hint_coverage(tree),
-                "halstead": ast_utils.calculate_halstead_metrics(tree),
-                "antipatterns": detected_antipatterns,
-                "ast_security": ast_security,
+                "halstead": halstead,
+                "antipatterns": self._detect_antipatterns(tree),
+                "ast_security": issues.detect_ast_security_issues(tree),
                 "patterns": patterns.detect_patterns(tree),
                 "unused_imports": ast_utils.detect_unused_imports(tree),
                 "maintenance_index": metrics.calculate_maintenance_index(
-                    ast_utils.calculate_halstead_metrics(tree)["volume"],
-                    ast_utils.calculate_complexity(tree),
-                    len(content.splitlines()),
+                    halstead["volume"], complexity, line_count
                 ),
                 "syntax_error": False,
             }
 
         except SyntaxError:
-            return {
-                "path": str(file_path.relative_to(self.project_path)),
-                "syntax_error": True,
-                "error": "SyntaxError",
-            }
+            return self._handle_analysis_error(file_path, "SyntaxError")
         except Exception as e:
-            return {
-                "path": str(file_path.relative_to(self.project_path)),
-                "syntax_error": True,
-                "error": str(e),
-            }
+            return self._handle_analysis_error(file_path, str(e))
+
+    def _detect_antipatterns(self, tree: ast.AST) -> List[Dict[str, Any]]:
+        """Detects all supported anti-patterns for a given module tree."""
+        detected = []
+        detected.extend(antipatterns.detect_god_object(tree))
+        detected.extend(antipatterns.detect_spaghetti_code(tree))
+        detected.extend(antipatterns.detect_magic_numbers(tree))
+        detected.extend(antipatterns.detect_dead_code(tree))
+        return detected
+
+    def _handle_analysis_error(self, file_path: pathlib.Path, error_msg: str) -> Dict[str, Any]:
+        """Standardizes error reporting for module analysis failures."""
+        return {
+            "path": str(file_path.relative_to(self.project_path)),
+            "syntax_error": True,
+            "error": error_msg,
+        }
