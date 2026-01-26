@@ -20,6 +20,7 @@ from . import (
     reporting,
     dependencies,
     antipatterns,
+    patterns,
 )
 from ..context.manager import AIContextManager
 
@@ -267,8 +268,31 @@ class ProjectAnalyzer:
             "security": security_list,
             "antipatterns": antipatterns_list,
             "entry_points": entry_points,
-            "patterns": {},  # TODO: Extract design patterns detection
+            "patterns": self._aggregate_patterns(modules_data),
         }
+
+    def _aggregate_patterns(self, modules_data: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Aggregates detected design patterns from all modules.
+
+        Args:
+            modules_data: List of analyzed module data.
+
+        Returns:
+            A dictionary of patterns grouped by type.
+        """
+        aggregated = {}
+        for m in modules_data:
+            module_patterns = m.get("patterns", {})
+            for pattern_name, results in module_patterns.items():
+                if pattern_name not in aggregated:
+                    aggregated[pattern_name] = []
+                
+                # 'results' is a list of occurrences (e.g., list of singletons in this module)
+                for res in results:
+                    res["module"] = m["path"]
+                    aggregated[pattern_name].append(res)
+        
+        return aggregated
 
     def _generate_outputs(self, results: Dict[str, Any]):
         """Generates markdown reports and JSON context files from the results.
@@ -367,6 +391,8 @@ class ProjectAnalyzer:
                 "halstead": ast_utils.calculate_halstead_metrics(tree),
                 "antipatterns": detected_antipatterns,
                 "ast_security": ast_security,
+                "patterns": patterns.detect_patterns(tree),
+                "unused_imports": ast_utils.detect_unused_imports(tree),
                 "syntax_error": False,
             }
 

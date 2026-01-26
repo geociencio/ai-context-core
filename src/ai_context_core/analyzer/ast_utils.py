@@ -175,10 +175,6 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
 
             # Decorators (Click, Flask, FastAPI)
             for decorator in node.decorator_list:
-                # Normalize decorator to the attribute/name being used
-                # e.g. @click.command -> Attribute
-                # e.g. @click.command() -> Call -> func is Attribute
-
                 check_node = decorator
                 if isinstance(decorator, ast.Call):
                     check_node = decorator.func
@@ -201,9 +197,31 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                     if check_node.attr in ("get", "post", "put", "delete", "patch"):
                         return {"is_entry_point": True, "type": "fastapi_app"}
 
-                # Check for Name (e.g. @cli, if cli is a Click group? Hard to know without context)
-                # But typically Click uses decorators on functions.
-                # Use specific known names if needed, but 'click.command' is standard.
+        # 3. Variable assignments (Django, Flask, FastAPI)
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    # Django wsgi/asgi application
+                    if target.id == "application":
+                        return {"is_entry_point": True, "type": "django_app"}
+                    
+                    # Django URL patterns
+                    if target.id == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
+                        return {"is_entry_point": True, "type": "django_urls"}
+
+                    # Django Settings
+                    if target.id == "INSTALLED_APPS" and isinstance(node.value, (ast.List, ast.Tuple)):
+                        return {"is_entry_point": True, "type": "django_settings"}
+
+                    # Explicit Flask/FastAPI instantiation (app = Flask(__name__) ...)
+                    if target.id == "app" or target.id == "application":
+                        if isinstance(node.value, ast.Call):
+                            call_node = node.value.func
+                            if isinstance(call_node, ast.Name):
+                                if call_node.id == "Flask":
+                                    return {"is_entry_point": True, "type": "flask_app"}
+                                if call_node.id == "FastAPI":
+                                    return {"is_entry_point": True, "type": "fastapi_app"}
 
     return result
 
@@ -332,6 +350,53 @@ def extract_imports(tree: ast.AST) -> List[str]:
             unique_imports.append(imp)
 
     return unique_imports
+
+
+def detect_unused_imports(tree: ast.AST) -> List[str]:
+    """Identifies imports that are not used anywhere in the module.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        A list of unused import strings (either module names or aliases).
+    """
+    imported_names = {}  # alias -> original_name
+    
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                # For 'import a.b.c', the name in namespace is 'a'
+                # For 'import a.b.c as x', the name in namespace is 'x'
+                name_in_scope = alias.asname or alias.name.split('.')[0]
+                imported_names[name_in_scope] = alias.name
+        elif isinstance(node, ast.ImportFrom):
+            # For from x import y, y is the name used in code
+            for alias in node.names:
+                name_in_scope = alias.asname or alias.name
+                imported_names[name_in_scope] = f"{node.module}.{alias.name}"
+
+    if not imported_names:
+        return []
+
+    used_names = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+            used_names.add(node.id)
+        elif isinstance(node, ast.Attribute):
+            # Recursively find the base Name in an Attribute chain (e.g., a.b.c)
+            curr = node.value
+            while isinstance(curr, ast.Attribute):
+                curr = curr.value
+            if isinstance(curr, ast.Name):
+                used_names.add(curr.id)
+
+    unused = [
+        name for alias, name in imported_names.items() 
+        if alias not in used_names and alias != "*"
+    ]
+    
+    return sorted(list(set(unused)))
 
 
 def calculate_complexity(tree: ast.AST) -> int:

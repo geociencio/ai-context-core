@@ -52,44 +52,41 @@ Basado en: [implementation_plan_improvements.md](file:///home/jmbernales/qgisplu
 ## Fase 2: Análisis Avanzado (19-22 horas)
 
 ### Mejora 2: Patrones de Diseño (8h)
-- [ ] Crear `src/ai_context_core/analyzer/patterns.py`
+- [x] Crear `src/ai_context_core/analyzer/patterns.py`
 - [ ] Implementar detectores de patrones:
-  - [ ] `detect_singleton()` - Confianza 90%
-  - [ ] `detect_factory()` - Confianza 70%
-  - [ ] `detect_observer_pattern()` - Confianza 85%
-  - [ ] `detect_strategy_pattern()` - Confianza 75%
-  - [ ] `detect_decorator_pattern()` - Confianza 80%
-- [ ] Integrar en `engine.py` (`_aggregate_results()`)
-- [ ] Reemplazar `"patterns": {}` con resultados reales
-- [ ] Crear `tests/test_patterns.py`
-  - [ ] Test para cada patrón
-  - [ ] Test para niveles de confianza
-- [ ] Crear `docs/PATTERNS_DETECTION.md`
+  - [x] `detect_singleton()` - Confianza 90%
+  - [x] `detect_factory()` - Confianza 70%
+  - [x] `detect_observer_pattern()` - Confianza 85%
+  - [x] `detect_strategy_pattern()` - Confianza 75%
+  - [x] `detect_decorator_pattern()` - Confianza 80%
+- [x] Integrar en `engine.py` (`_aggregate_results()`)
+- [x] Reemplazar `"patterns": {}` con resultados reales
+- [x] Crear `tests/test_patterns.py`
+  - [x] Test para cada patrón
+  - [x] Test para niveles de confianza
+- [x] Crear `docs/PATTERNS_DETECTION.md`
 
 ### Mejora 4: Dependencias Mejoradas (6-8h)
-- [ ] Modificar `src/ai_context_core/analyzer/dependencies.py`
-- [ ] Implementar funciones:
-  - [ ] `detect_circular_dependencies()` - Algoritmo de grafos
-  - [ ] `calculate_coupling_metrics()` - CBO
-  - [ ] `find_unused_imports()` - Análisis de referencias
-- [ ] Agregar métricas al reporte
-- [ ] Crear `tests/test_dependencies_advanced.py`
-  - [ ] Test para dependencias circulares
-  - [ ] Test para métricas de acoplamiento
-  - [ ] Test para imports no usados
-- [ ] Actualizar visualización de grafos en reportes
+- [x] Modificar `src/ai_context_core/analyzer/dependencies.py`
+- [x] Implementar funciones:
+  - [x] `detect_circular_dependencies()` - Algoritmo de grafos (Optimizado)
+  - [x] `calculate_coupling_metrics()` - CBO
+  - [x] `find_unused_imports()` - Análisis de referencias (en ast_utils)
+- [x] Agregar métricas al reporte
+- [x] Crear `tests/test_dependencies_advanced.py`
+- [x] Actualizar visualización de grafos en reportes (insights agregados)
 
 ### Mejora 10: Multi-Framework (5-6h)
-- [ ] Modificar `src/ai_context_core/analyzer/ast_utils.py`
-- [ ] Implementar `detect_framework_entry_points()`
-- [ ] Agregar soporte para:
-  - [ ] Django (`settings.py`, `INSTALLED_APPS`, `urlpatterns`)
-  - [ ] Flask (`@app.route`)
-  - [ ] FastAPI (`@app.get`, `@app.post`)
-  - [ ] Click (`@click.command`)
-- [ ] Integrar con detección de entry points
-- [ ] Crear tests para cada framework
-- [ ] Documentar frameworks soportados
+- [x] Modificar `src/ai_context_core/analyzer/ast_utils.py`
+- [x] Implementar `detect_framework_entry_points()` (Integrado en `is_entry_point`)
+- [x] Agregar soporte para:
+  - [x] Django (`settings.py`, `INSTALLED_APPS`, `urlpatterns`, `wsgi/asgi application`)
+  - [x] Flask (`@app.route`, `app = Flask(...)`)
+  - [x] FastAPI (`@app.get`, `@app.post`, `app = FastAPI(...)`)
+  - [x] Click (`@click.command`)
+- [x] Integrar con detección de entry points
+- [x] Crear tests para cada framework
+- [x] Documentar frameworks soportados
 
 ---
 
@@ -224,6 +221,6 @@ Basado en: [implementation_plan_improvements.md](file:///home/jmbernales/qgisplu
 
 ## Notas
 
-> **Prioridad Actual**: Comenzar con Fase 1 (Mejoras 1, 5, 6)
+> **Prioridad Actual**: Comenzar con Fase 2 (Mejoras 2, 4, 10)
 > 
-> **Próximo Paso**: Implementar detección de entry points para QGIS
+> **Próximo Paso**: Implementar detección de patrones de diseño en `src/ai_context_core/analyzer/patterns.py`

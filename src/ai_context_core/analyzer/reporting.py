@@ -55,6 +55,7 @@ def generate_project_summary(
         _build_critical_issues_section(analyses),
         _build_qgis_compliance_section(analyses),
         _build_recommendations_section(analyses),
+        _build_patterns_summary_section(analyses),
         _build_complexity_dist_section(analyses),
     ]
 
@@ -206,6 +207,30 @@ def _build_recommendations_section(analyses: Dict[str, Any]) -> str:
     return "\n".join(sections)
 
 
+def _build_patterns_summary_section(analyses: Dict[str, Any]) -> str:
+    """Builds the Summary section for detected design patterns.
+
+    Args:
+        analyses: Results dictionary containing patterns.
+
+    Returns:
+        A Markdown-formatted string for the Patterns section.
+    """
+    patterns = analyses.get("patterns", {})
+    if not patterns:
+        return ""
+
+    sections = ["\n## 🏗️ DESIGN PATTERNS"]
+    for name, occurrences in patterns.items():
+        sections.append(f"\n### {name}")
+        for occ in occurrences[:5]:
+            sections.append(
+                f"- **{occ['class']}** in `{occ['module']}` (Confidence: {occ['confidence']}%)"
+            )
+
+    return "\n".join(sections)
+
+
 def _build_complexity_dist_section(analyses: Dict[str, Any]) -> str:
     """Creates the complexity distribution breakdown.
 
@@ -282,6 +307,8 @@ def generate_ai_context(
 
     _add_optimizations_section(analyses, context_lines)
 
+    _add_dependency_insights_section(dependencies, context_lines)
+
     _add_dependency_graph_section(dependencies, context_lines)
 
     context_lines.append("\n## 🔑 PROJECT KEYWORDS")
@@ -300,17 +327,18 @@ def _add_patterns_section(analyses: Dict[str, Any], lines: list):
         lines: The list of context report lines to append to.
     """
     patterns = analyses.get("patterns", {})
-    detected = []
-    for name, data in patterns.items():
-        if isinstance(data, dict) and data.get("detected"):
-            detected.append(
-                f"- **{name.upper()}**: Detected (Confidence: {data.get('confidence', 0):.0%})"
-            )
-
-    if detected:
-        lines.extend(detected)
-    else:
+    if not patterns:
         lines.append("No clear design patterns detected.")
+        return
+
+    for name, occurrences in patterns.items():
+        lines.append(f"### {name}")
+        for occ in occurrences[:3]:
+            lines.append(
+                f"- **{occ['class']}** in `{occ['module']}` (Confidence: {occ['confidence']}%)"
+            )
+            for ev in occ.get("evidence", []):
+                lines.append(f"  - _Evidence: {ev}_")
 
 
 def _add_dependencies_section(dependencies: Dict[str, Any], lines: list):
@@ -352,6 +380,29 @@ def _add_optimizations_section(analyses: Dict[str, Any], lines: list):
                 lines.append(
                     f"- **{suggestion.get('type', 'Opt')}**: {suggestion.get('message', 'N/A')}"
                 )
+
+
+def _add_dependency_insights_section(dependencies: Dict[str, Any], lines: list):
+    """Adds advanced dependency insights like unused imports and coupling."""
+    unused = dependencies.get("unused_imports", {})
+    if unused:
+        lines.append("\n## ⚠️ UNUSED IMPORTS")
+        # Show top 5 modules with unused imports
+        for mod, items in list(unused.items())[:5]:
+            lines.append(f"- **{mod}**: {', '.join(items[:5])}")
+
+    coupling = dependencies.get("coupling_metrics", {})
+    if coupling:
+        high_coupling = sorted(
+            coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True
+        )[:5]
+        # Only show if CBO is significant
+        high_coupling = [item for item in high_coupling if item[1].get("cbo", 0) > 5]
+        
+        if high_coupling:
+            lines.append("\n## 🔗 HIGH COUPLING MODULES (CBO)")
+            for mod, m in high_coupling:
+                lines.append(f"- **{mod}**: CBO {m['cbo']} (In: {m['fan_in']}, Out: {m['fan_out']})")
 
 
 def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):

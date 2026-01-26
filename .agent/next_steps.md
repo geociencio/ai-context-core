@@ -4,12 +4,11 @@
 
 ## Estado Actual
 
-✅ **Fase 1 Completada**
-- **Entry Points**: Soporte para QGIS, Click, Flask, FastAPI implementado.
-- **Anti-Patrones**: Detección de God Object, Spaghetti Code, etc. activa.
-- **Seguridad**: Escaneo mejorado con AST.
-- **Validación**: 25/25 tests pasando (Coverage ~70%) ✅
-- **Docker**: Entorno de testing corregido y funcional.
+✅ **Fase 2 Completada**
+- **Entry Points**: Soporte ampliado para Django, Flask, FastAPI, Click.
+- **Patrones**: Singleton, Factory, Observer, Strategy, Decorator activos.
+- **Dependencias**: Cálculo de acoplamiento (CBO) y detección de imports no usados.
+- **Validación**: 40+ tests pasando (incluyendo nuevos de patrones y dependencias) ✅
 
 ## 🎯 Roadmap de Mejoras
 
@@ -19,47 +18,27 @@
 - [x] Seguridad Mejorada (AST-based, SQLi, Asserts)
 - [x] Corrección Docker Testing
 
-### Fase 2: Análisis Avanzado (19-22h) 🔥 ALTA PRIORIDAD (SIGUIENTE)
+### Fase 2: Análisis Avanzado (✅ COMPLETADO)
+- [x] Patrones de Diseño (Singleton, Factory, Observer, Strategy, Decorator)
+- [x] Dependencias Mejoradas (Acoplamiento CBO, Unused Imports)
+- [x] Multi-Framework (Django, Flask, FastAPI, Click)
 
-#### 4. Patrones de Diseño (8h)
-**Nuevo módulo**: `src/ai_context_core/analyzer/patterns.py`
-
-Detectar patrones:
-- Singleton (confianza 90%)
-- Factory (confianza 70%)
-- Observer (confianza 85%)
-- Strategy (confianza 75%)
-- Decorator (confianza 80%)
-
-#### 5. Dependencias Mejoradas (6-8h)
-**Ampliar**: `src/ai_context_core/analyzer/dependencies.py`
-
-Nuevas funcionalidades:
-- Detectar dependencias circulares
-- Calcular métricas de acoplamiento (CBO)
-- Identificar imports no utilizados
-
-#### 6. Multi-Framework (5-6h)
-**Ampliar**: `src/ai_context_core/analyzer/ast_utils.py`
-
-Soporte para:
-- Django (`settings.py`, `INSTALLED_APPS`)
-- Configuración explícita en frameworks
-
-### Fase 3: Métricas y Contexto (13-15h) ⚡ MEDIA PRIORIDAD
+### Fase 3: Métricas y Contexto (13-15h) ⚡ SIGUIENTE
 
 #### 7. Métricas Avanzadas (5-6h)
+**Ampliar**: `src/ai_context_core/analyzer/metrics.py`
 - Índice de Mantenibilidad (MI)
 - Deuda Técnica en Horas
+- Tendencia de Calidad (histórico)
 
 #### 8. Git Integration (6-7h)
+**Nuevo módulo**: `src/ai_context_core/analyzer/git_analysis.py`
 - Hotspots, Churn Rate, Ownership
 
 #### 9. Config Explícita (2h)
-- Definición manual de entry points
+- Definición manual de entry points en config.yaml
 
 ### Fase 4: Optimización (26-33h) 🟢 BAJA PRIORIDAD
-
 - Cache Incremental, Diagramas, IA Accionable
 
 ---
@@ -72,12 +51,13 @@ Soporte para:
 
 ## Próximos Pasos Inmediatos
 
-1.  **Merge Phase 1**: Fusionar rama `feature/phase1-improvements` a `main`.
-2.  **Iniciar Fase 2**: Crear rama `feature/phase2-advanced-analysis`.
-3.  **Implementar Patrones de Diseño**: Comenzar con `src/ai_context_core/analyzer/patterns.py`.
+1.  **Merge Phase 2**: Fusionar rama `feature/phase2-advanced-analysis` a `main`.
+2.  **Iniciar Fase 3**: Crear rama `feature/phase3-metrics-and-git`.
+3.  **Implementar Métricas Avanzadas**: Comenzar con el Índice de Mantenibilidad en `src/ai_context_core/analyzer/metrics.py`.
 
 ---
 
 ## Documentos de Referencia
+- [Design Patterns Guide](file:///home/jmbernales/qgispluginsdev/ai-context-core/docs/PATTERNS_DETECTION.md)
 - [Session Report Phase 1](file:///home/jmbernales/qgispluginsdev/ai-context-core/docs/sessions/session_2026-01-25_phase1_completion.md)
 - [Analysis Report](file:///home/jmbernales/qgispluginsdev/ai-context-core/docs/AiContextCore_Analysis_Report.md)

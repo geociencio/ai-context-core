@@ -75,6 +75,27 @@ def normal_function():
         self.assertFalse(result["is_entry_point"])
         self.assertIsNone(result["type"])
 
+    def test_django_wsgi(self):
+        code = "application = get_wsgi_application()"
+        tree = ast.parse(code)
+        result = ast_utils.is_entry_point(tree)
+        self.assertTrue(result["is_entry_point"])
+        self.assertEqual(result["type"], "django_app")
+
+    def test_django_settings(self):
+        code = "INSTALLED_APPS = ['django.contrib.admin']"
+        tree = ast.parse(code)
+        result = ast_utils.is_entry_point(tree)
+        self.assertTrue(result["is_entry_point"])
+        self.assertEqual(result["type"], "django_settings")
+
+    def test_django_urls(self):
+        code = "urlpatterns = [path('admin/', admin.site.urls)]"
+        tree = ast.parse(code)
+        result = ast_utils.is_entry_point(tree)
+        self.assertTrue(result["is_entry_point"])
+        self.assertEqual(result["type"], "django_urls")
+
 
 if __name__ == "__main__":
     unittest.main()

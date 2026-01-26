@@ -99,6 +99,38 @@ def count_connected_components(import_graph: Dict[str, Set[str]]) -> int:
     return count
 
 
+def calculate_coupling_metrics(import_graph: Dict[str, Set[str]]) -> Dict[str, Dict[str, int]]:
+    """Calculates Coupling Between Objects (CBO) metrics for each module.
+
+    Args:
+        import_graph: The project's internal import graph.
+
+    Returns:
+        A dictionary mapping module paths to their coupling scores (fan-in and fan-out).
+    """
+    metrics = {}
+    all_nodes = set(import_graph.keys())
+    for neighbors in import_graph.values():
+        all_nodes.update(neighbors)
+
+    fan_in = {node: 0 for node in all_nodes}
+    fan_out = {node: 0 for node in all_nodes}
+
+    for u, neighbors in import_graph.items():
+        fan_out[u] = len(neighbors)
+        for v in neighbors:
+            fan_in[v] += 1
+
+    for node in all_nodes:
+        metrics[node] = {
+            "fan_in": fan_in[node],
+            "fan_out": fan_out[node],
+            "cbo": fan_in[node] + fan_out[node]
+        }
+    
+    return metrics
+
+
 def analyze_dependencies(
     modules_data: List[Dict[str, Any]], project_path: Path, read_file_func: Callable
 ) -> Dict[str, Any]:
@@ -137,10 +169,18 @@ def analyze_dependencies(
     except Exception:
         pass
 
-    # 4. Calculate graph metrics
+    # 4. Calculate graph metrics and coupling
     dependencies["graph_metrics"] = _calculate_graph_metrics(import_graph)
+    dependencies["coupling_metrics"] = calculate_coupling_metrics(import_graph)
 
-    # 5. Classify imports
+    # 5. Collect unused imports from modules_data
+    unused_imports = {}
+    for mod in modules_data:
+        if mod.get("unused_imports"):
+            unused_imports[mod["path"]] = mod["unused_imports"]
+    dependencies["unused_imports"] = unused_imports
+
+    # 6. Classify imports
     all_imports = set()
     for module in modules_data:
         all_imports.update(module.get("imports", []))
