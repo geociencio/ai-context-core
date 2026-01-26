@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-25 22:21:36
+Analysis Date: 2026-01-25 22:22:49
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -35,12 +35,12 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 ### .agent/scripts/skill_sync.py
 - Very long functions (average 70.5 lines/function).
 
-### src/ai_context_core/analyzer/dependencies.py
-- High complexity (52) with several functions. Consider breaking down large logic.
-
 ### src/ai_context_core/analyzer/fs_utils.py
 - High complexity (52) with several functions. Consider breaking down large logic.
 - Module is quite large (462 lines)
+
+### src/ai_context_core/analyzer/dependencies.py
+- High complexity (52) with several functions. Consider breaking down large logic.
 
 ## 🏗️ DESIGN PATTERNS
 
@@ -49,15 +49,15 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 249
-- **Additions**: +18189
-- **Deletions**: -3517
-- **Total Churn**: 21706
+- **Files Changed**: 262
+- **Additions**: +19258
+- **Deletions**: -4044
+- **Total Churn**: 23302
 
 ### 🔥 Hotspots (Frequently Changed Files)
-- `src/ai_context_core/analyzer/reporting.py`: 9 commits
+- `src/ai_context_core/analyzer/reporting.py`: 10 commits
+- `src/ai_context_core/analyzer/engine.py`: 9 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 8 commits
-- `src/ai_context_core/analyzer/engine.py`: 8 commits
 - `src/ai_context_core/analyzer/dependencies.py`: 7 commits
 - `src/ai_context_core/analyzer/issues.py`: 7 commits
 
