@@ -35,6 +35,8 @@ Ejemplos:
 |:--|:-------|:-------|:------|
 | [0001](0001-use-adr-for-architecture-decisions.md) | Usar ADR para Decisiones Arquitectónicas | Aceptado | 2026-01-25 |
 | [0002](0002-implement-13-improvements-roadmap.md) | Implementar Roadmap de 13 Mejoras | Aceptado | 2026-01-25 |
+| [0003](0003-pattern-detection-scoring-strategy.md) | Estrategia de Scoring para Patrones | Aceptado | 2026-01-25 |
+| [0004](0004-multi-framework-entry-point-detection.md) | Detección Heterogénea de Entry Points | Aceptado | 2026-01-25 |
 
 ## Crear un Nuevo ADR
 
