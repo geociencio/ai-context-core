@@ -37,6 +37,7 @@
 | [commit-standards](file:///home/jmbernales/qgispluginsdev/ai-context-core/.agent/skills/commit-standards/SKILL.md) | Git commit message guidelines (Conventional Commits) | commit, git, pr, merge |
 | [project-context](file:///home/jmbernales/qgispluginsdev/ai-context-core/.agent/skills/project-context/SKILL.md) | Core knowledge about ai-context-core project | context, overview, about, project structure |
 | [tech-stack](file:///home/jmbernales/qgispluginsdev/ai-context-core/.agent/skills/tech-stack/SKILL.md) | Technology stack guidelines and requirements | python, uv, ruff, dependencies, install |
+| [testing-standards](file:///home/jmbernales/qgispluginsdev/ai-context-core/.agent/skills/testing-standards/SKILL.md) | Guidelines for ensuring code stability through automated testing using Pytest and Docker. | N/A |
 <!-- SKILLS_TABLE_END -->
 
 ## Workflows

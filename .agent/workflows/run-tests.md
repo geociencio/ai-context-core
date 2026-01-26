@@ -3,18 +3,19 @@ description: "Ejecuta la suite completa de pruebas unitarias para asegurar la es
 agent: QA Engineer
 skills:
   - tech-stack
+  - testing-standards
 ---
 
 # Workflow: Run Tests
 
-Este workflow ejecuta todas las pruebas unitarias disponibles en el proyecto.
+Este workflow ejecuta todas las pruebas unitarias disponibles en el proyecto, garantizando un entorno limpio mediante Docker.
 
-1.  **Ejecución de Tests**:
-    Usa `unittest` a través de `uv` para descubrir y correr las pruebas.
+1.  **Ejecución de Tests (Dockerizado)**:
+    Ejecuta el ciclo de pruebas completo, incluyendo linting y check de cobertura.
     // turbo
     ```bash
-    uv run python -m unittest discover tests
+    make docker-test
     ```
 
-> [!NOTE]
-> Si se requieren pruebas específicas de QGIS, este comando podría necesitar ajustes o un entorno Dockerizado (ver `Makefile` si existe).
+    > [!TIP]
+    > Si el usuario necesita correr solo un test específico localmente, puede usar `uv run pytest tests/test_mi_archivo.py`.
