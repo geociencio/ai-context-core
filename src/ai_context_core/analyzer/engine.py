@@ -151,9 +151,7 @@ class ProjectAnalyzer:
 
         # 4. Structure and Tests
         structure = fs_utils.analyze_structure(self.project_path, len(modules_data))
-        test_files_count = fs_utils.count_test_files(
-            self.project_path, self.exclusion_patterns
-        )
+        test_files_count = fs_utils.count_test_files(self.project_path, self.exclusion_patterns)
 
         # 5. Git Analysis
         git_data = {
@@ -200,17 +198,13 @@ class ProjectAnalyzer:
         # Debt and suggestions
         tech_debt = issues.find_technical_debt(modules_data)
         optimization_suggestions = issues.find_optimizations(modules_data)
-        security_list = issues.find_security_issues(
-            modules_data, str(self.project_path)
-        )
+        security_list = issues.find_security_issues(modules_data, str(self.project_path))
 
         # Merge AST security
         for m in modules_data:
             if m.get("ast_security"):
                 items = m["ast_security"]
-                existing = next(
-                    (x for x in security_list if x["module"] == m["path"]), None
-                )
+                existing = next((x for x in security_list if x["module"] == m["path"]), None)
                 if existing:
                     existing["issues"].extend(items)
                     existing["total_issues"] += len(items)
@@ -259,9 +253,7 @@ class ProjectAnalyzer:
             "complexity": {
                 "total_modules": len(modules_data),
                 "total_lines": project_metrics.get("total_lines_code", 0),
-                "total_functions": sum(
-                    len(m.get("functions", [])) for m in modules_data
-                ),
+                "total_functions": sum(len(m.get("functions", [])) for m in modules_data),
                 "total_classes": sum(len(m.get("classes", [])) for m in modules_data),
                 "average_complexity": project_metrics.get("avg_complexity", 0),
                 "complexity_distribution": complexity_dist,
@@ -321,17 +313,13 @@ class ProjectAnalyzer:
             )
 
             # Save full JSON
-            with open(
-                self.project_path / "project_context.json", "w", encoding="utf-8"
-            ) as f:
+            with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
 
         except Exception as e:
             logger.error(f"Error generating outputs: {e}")
 
-    def _analyze_modules_parallel(
-        self, files: List[pathlib.Path]
-    ) -> List[Dict[str, Any]]:
+    def _analyze_modules_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
         """Analyzes multiple modules in parallel using a process pool.
 
         Args:
@@ -341,12 +329,8 @@ class ProjectAnalyzer:
             A list of dictionaries, one per successfully analyzed module.
         """
         results = []
-        with concurrent.futures.ProcessPoolExecutor(
-            max_workers=self.max_workers
-        ) as executor:
-            future_to_file = {
-                executor.submit(self._analyze_single_module, f): f for f in files
-            }
+        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files}
 
             for future in concurrent.futures.as_completed(future_to_file):
                 f = future_to_file[future]

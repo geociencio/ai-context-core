@@ -145,9 +145,7 @@ def _build_critical_issues_section(analyses: Dict[str, Any]) -> str:
     if circular:
         sections.append("\n### 🔄 Circular Dependencies:")
         for cycle in circular[:3]:
-            sections.append(
-                f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}"
-            )
+            sections.append(f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}")
 
     return "\n".join(sections)
 
@@ -166,9 +164,7 @@ def _build_qgis_compliance_section(analyses: Dict[str, Any]) -> str:
         return ""
 
     sections = ["\n## 📦 QGIS PLUGIN STANDARDS"]
-    sections.append(
-        f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100"
-    )
+    sections.append(f"- **Compliance Score**: {qgis.get('compliance_score', 0):.1f}/100")
 
     mandatory = qgis.get("mandatory_files", {})
     missing = [f for f, exists in mandatory.get("files", {}).items() if not exists]
@@ -319,9 +315,7 @@ def generate_ai_context(
     context_lines.append(f"- **Lines of Code**: {complexity.get('total_lines', 0):,}")
     context_lines.append(f"- **Functions**: {complexity.get('total_functions', 0)}")
     context_lines.append(f"- **Classes**: {complexity.get('total_classes', 0)}")
-    context_lines.append(
-        f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}"
-    )
+    context_lines.append(f"- **Average Complexity**: {complexity.get('average_complexity', 0):.1f}")
     context_lines.append(
         f"- **Avg Maintenance Index**: {complexity.get('avg_maintenance_index', 0) or analyses.get('metrics', {}).get('avg_maintenance_index', 0):.1f}"
     )
@@ -385,9 +379,7 @@ def _add_dependencies_section(dependencies: Dict[str, Any], lines: list):
             base_packages[base] = base_packages.get(base, 0) + 1
 
         lines.append("\n### Third Party (most frequent):")
-        sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[
-            :15
-        ]
+        sorted_pkgs = sorted(base_packages.items(), key=lambda x: x[1], reverse=True)[:15]
         for package, count in sorted_pkgs:
             lines.append(f"- `{package}` ({count} imports)")
 
@@ -422,9 +414,7 @@ def _add_dependency_insights_section(dependencies: Dict[str, Any], lines: list):
 
     coupling = dependencies.get("coupling_metrics", {})
     if coupling:
-        high_coupling = sorted(
-            coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True
-        )[:5]
+        high_coupling = sorted(coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True)[:5]
         # Only show if CBO is significant
         high_coupling = [item for item in high_coupling if item[1].get("cbo", 0) > 5]
 
@@ -450,9 +440,7 @@ def _add_dependency_graph_section(dependencies: Dict[str, Any], lines: list):
         lines.append(f"- **Edges**: {metrics.get('edges', 0)}")
         lines.append(f"- **Density**: {metrics.get('density', 0):.3f}")
         lines.append(f"- **Acyclic Graph**: {'Yes' if metrics.get('is_dag') else 'No'}")
-        lines.append(
-            f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}"
-        )
+        lines.append(f"- **Connected Components**: {metrics.get('weakly_connected_components', 0)}")
 
         lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)")
         lines.append("```mermaid")

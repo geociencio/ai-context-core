@@ -8,9 +8,7 @@ import ast
 from typing import List, Dict, Any
 
 
-def detect_god_object(
-    tree: ast.AST, threshold_methods: int = 20
-) -> List[Dict[str, Any]]:
+def detect_god_object(tree: ast.AST, threshold_methods: int = 20) -> List[Dict[str, Any]]:
     """Detects 'God Object' classes with too many methods.
 
     Args:
@@ -23,9 +21,7 @@ def detect_god_object(
     issues = []
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
-            method_count = sum(
-                1 for item in node.body if isinstance(item, ast.FunctionDef)
-            )
+            method_count = sum(1 for item in node.body if isinstance(item, ast.FunctionDef))
             if method_count > threshold_methods:
                 issues.append(
                     {
@@ -39,9 +35,7 @@ def detect_god_object(
     return issues
 
 
-def detect_spaghetti_code(
-    tree: ast.AST, complexity_threshold: int = 25
-) -> List[Dict[str, Any]]:
+def detect_spaghetti_code(tree: ast.AST, complexity_threshold: int = 25) -> List[Dict[str, Any]]:
     """Detects 'Spaghetti Code' functions with high cyclomatic complexity.
 
     This relies on the complexity calculation from ast_utils, but since we don't prefer circular imports
@@ -76,9 +70,7 @@ def detect_spaghetti_code(
     return issues
 
 
-def detect_magic_numbers(
-    tree: ast.AST, threshold_occurrences: int = 3
-) -> List[Dict[str, Any]]:
+def detect_magic_numbers(tree: ast.AST, threshold_occurrences: int = 3) -> List[Dict[str, Any]]:
     """Detects 'Magic Numbers' usage (hardcoded numeric constants).
 
     Ignores 0, 1, -1 and power of 2 common values maybe?

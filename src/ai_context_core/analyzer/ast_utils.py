@@ -157,10 +157,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                     and node.test.left.id == "__name__"
                 ):
                     for comparator in node.test.comparators:
-                        if (
-                            isinstance(comparator, ast.Constant)
-                            and comparator.value == "__main__"
-                        ):
+                        if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
                             return {"is_entry_point": True, "type": "main_guard"}
             except Exception:
                 pass
@@ -168,9 +165,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
         # 2. Function definitions (QGIS)
         if isinstance(node, ast.FunctionDef):
             # QGIS classFactory
-            if node.name == "classFactory" and any(
-                arg.arg == "iface" for arg in node.args.args
-            ):
+            if node.name == "classFactory" and any(arg.arg == "iface" for arg in node.args.args):
                 return {"is_entry_point": True, "type": "qgis_plugin"}
 
             # Decorators (Click, Flask, FastAPI)
@@ -182,10 +177,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                 # Check for Attribute (e.g. click.command, app.route)
                 if isinstance(check_node, ast.Attribute):
                     # Click: @click.command or @click.group
-                    if (
-                        isinstance(check_node.value, ast.Name)
-                        and check_node.value.id == "click"
-                    ):
+                    if isinstance(check_node.value, ast.Name) and check_node.value.id == "click":
                         if check_node.attr in ("command", "group"):
                             return {"is_entry_point": True, "type": "click_cli"}
 
@@ -206,9 +198,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
                         return {"is_entry_point": True, "type": "django_app"}
 
                     # Django URL patterns
-                    if target.id == "urlpatterns" and isinstance(
-                        node.value, (ast.List, ast.Tuple)
-                    ):
+                    if target.id == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
                         return {"is_entry_point": True, "type": "django_urls"}
 
                     # Django Settings
@@ -399,9 +389,7 @@ def detect_unused_imports(tree: ast.AST) -> List[str]:
                 used_names.add(curr.id)
 
     unused = [
-        name
-        for alias, name in imported_names.items()
-        if alias not in used_names and alias != "*"
+        name for alias, name in imported_names.items() if alias not in used_names and alias != "*"
     ]
 
     return sorted(list(set(unused)))
@@ -442,9 +430,7 @@ def calculate_complexity(tree: ast.AST) -> int:
             complexity += len(node.values) - 1
 
         # Comprehensions
-        elif isinstance(
-            node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
-        ):
+        elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
             complexity += len(node.generators)
 
     # Penalty for highly dense logic (many decisions in few lines)

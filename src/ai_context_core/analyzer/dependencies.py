@@ -17,9 +17,7 @@ def count_edges(import_graph: Dict[str, Set[str]]) -> int:
     return sum(len(neighbors) for neighbors in import_graph.values())
 
 
-def find_simple_cycles(
-    import_graph: Dict[str, Set[str]], limit: int = 5
-) -> List[List[str]]:
+def find_simple_cycles(import_graph: Dict[str, Set[str]], limit: int = 5) -> List[List[str]]:
     """Detects simple cycles in the import graph using Depth First Search.
 
     Args:
@@ -193,9 +191,7 @@ def analyze_dependencies(
     return dependencies
 
 
-def _parse_dependency_files(
-    project_path: Path, read_file_func: Callable
-) -> Dict[str, str]:
+def _parse_dependency_files(project_path: Path, read_file_func: Callable) -> Dict[str, str]:
     """Reads content from common dependency files (e.g., requirements.txt, pyproject.toml).
 
     Args:

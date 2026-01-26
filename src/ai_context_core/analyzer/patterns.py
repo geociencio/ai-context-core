@@ -105,9 +105,7 @@ def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
                             and isinstance(dec.func, ast.Name)
                             and dec.func.id == "wraps"
                         ):
-                            evidence.append(
-                                "Uses @functools.wraps on the inner function"
-                            )
+                            evidence.append("Uses @functools.wraps on the inner function")
                             confidence += 40
                             break
 
@@ -139,9 +137,7 @@ def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
                         has_call_method = True
 
             if has_init_callable and has_call_method:
-                evidence.append(
-                    "Class implements both __init__ (taking an object) and __call__"
-                )
+                evidence.append("Class implements both __init__ (taking an object) and __call__")
                 confidence += 60
 
                 if confidence >= 50:
@@ -178,8 +174,7 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
             if any(
-                kw in node.name.lower()
-                for kw in ("strategy", "algorithm", "handler", "engine")
+                kw in node.name.lower() for kw in ("strategy", "algorithm", "handler", "engine")
             ):
                 potential_strategies.append(node.name)
 
@@ -191,7 +186,6 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
 
             # Check for strategy injection in __init__ or setter
             has_injection = False
-            stored_attr = None
             for item in node.body:
                 if isinstance(item, ast.FunctionDef) and (
                     item.name == "__init__" or "set_" in item.name
@@ -215,26 +209,21 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
                             # Try to find which attribute it's stored in
                             for sub in ast.walk(item):
                                 if isinstance(sub, ast.Assign) and any(
-                                    ast.unparse(t) == f"self.{arg.arg}"
-                                    or arg.arg in ast.unparse(t)
+                                    ast.unparse(t) == f"self.{arg.arg}" or arg.arg in ast.unparse(t)
                                     for t in sub.targets
                                 ):
-                                    stored_attr = arg.arg  # simplified
                                     break
                             break
 
             # Check for usage of stored strategy
             if has_injection:
-                has_usage = False
                 for item in node.body:
                     if isinstance(item, ast.FunctionDef) and item.name not in (
                         "__init__",
                         "set_",
                     ):
                         for sub in ast.walk(item):
-                            if isinstance(sub, ast.Call) and isinstance(
-                                sub.func, ast.Attribute
-                            ):
+                            if isinstance(sub, ast.Call) and isinstance(sub.func, ast.Attribute):
                                 if any(
                                     kw in ast.unparse(sub.func).lower()
                                     for kw in (
@@ -244,7 +233,6 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
                                         "handler",
                                     )
                                 ):
-                                    has_usage = True
                                     evidence.append(
                                         f"Strategy call detected in method '{item.name}': {ast.unparse(sub.func)}()"
                                     )
@@ -377,9 +365,7 @@ def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
                     evidence = []
 
                     if class_confidence > 0:
-                        evidence.append(
-                            f"Class '{node.name}' contains 'Factory' in its name"
-                        )
+                        evidence.append(f"Class '{node.name}' contains 'Factory' in its name")
 
                     # Check method name
                     method_name = item.name.lower()
@@ -394,9 +380,7 @@ def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
 
                     # Check if it returns an instantiation
                     for subnode in ast.walk(item):
-                        if isinstance(subnode, ast.Return) and isinstance(
-                            subnode.value, ast.Call
-                        ):
+                        if isinstance(subnode, ast.Return) and isinstance(subnode.value, ast.Call):
                             # Simple check: returns something initialized
                             confidence += 30
                             evidence.append(
@@ -450,10 +434,7 @@ def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
                 if isinstance(item, ast.FunctionDef):
                     # Check decorators for @classmethod or @staticmethod
                     is_class_or_static = any(
-                        (
-                            isinstance(dec, ast.Name)
-                            and dec.id in ("classmethod", "staticmethod")
-                        )
+                        (isinstance(dec, ast.Name) and dec.id in ("classmethod", "staticmethod"))
                         or (
                             isinstance(dec, ast.Attribute)
                             and dec.attr in ("classmethod", "staticmethod")
@@ -471,17 +452,12 @@ def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
             # 3. Check for static instance variable
             for item in node.body:
                 if isinstance(item, (ast.Assign, ast.AnnAssign)):
-                    targets = (
-                        item.targets if isinstance(item, ast.Assign) else [item.target]
-                    )
+                    targets = item.targets if isinstance(item, ast.Assign) else [item.target]
                     for target in targets:
                         if isinstance(target, ast.Name) and any(
-                            keyword in target.id.lower()
-                            for keyword in ("instance", "_inst")
+                            keyword in target.id.lower() for keyword in ("instance", "_inst")
                         ):
-                            evidence.append(
-                                f"Static instance variable '{target.id}' found"
-                            )
+                            evidence.append(f"Static instance variable '{target.id}' found")
                             confidence += 20
 
             if confidence >= 50:
