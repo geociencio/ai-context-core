@@ -28,9 +28,7 @@ class AIRecommender:
         recommendations = []
 
         # extracted for easier access
-        modules_data = analysis_results.get("complexity", {}).get(
-            "most_complex_modules", []
-        )
+        analysis_results.get("complexity", {}).get("most_complex_modules", [])
         metrics = analysis_results.get("metrics", {})
 
         # 1. Project-level Recommendations
@@ -84,7 +82,7 @@ class AIRecommender:
     ):
         """Checks testing ratios."""
         test_count = metrics.get("test_files_count", 0)
-        total_modules = metrics.get("entry_points_count", 0) + 5  # rough estimate base
+        _total_modules = metrics.get("entry_points_count", 0) + 5  # rough estimate base
         # Better: use actual module count from structure
         # skipping exact math for safety, just checking if explicit 0
         if test_count == 0:

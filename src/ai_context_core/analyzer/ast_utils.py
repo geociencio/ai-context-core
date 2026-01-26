@@ -6,197 +6,111 @@ type hint coverage, Halstead metrics, and imports from Python source code.
 
 import ast
 from collections import Counter
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Set
 
 
-HALSTEAD_OPERATORS = (
-    ast.Add,
-    ast.Sub,
-    ast.Mult,
-    ast.Div,
-    ast.Mod,
-    ast.Pow,
-    ast.LShift,
-    ast.RShift,
-    ast.BitOr,
-    ast.BitXor,
-    ast.BitAnd,
-    ast.FloorDiv,
-    ast.And,
-    ast.Or,
-    ast.Not,
-    ast.Invert,
-    ast.UAdd,
-    ast.USub,
-    ast.Eq,
-    ast.NotEq,
-    ast.Lt,
-    ast.LtE,
-    ast.Gt,
-    ast.GtE,
-    ast.Is,
-    ast.IsNot,
-    ast.In,
-    ast.NotIn,
-    ast.If,
-    ast.For,
-    ast.While,
-    ast.Try,
-    ast.With,
-    ast.FunctionDef,
-    ast.ClassDef,
-)
+class FunctionVisitor(ast.NodeVisitor):
+    """Visitor to extract function names and argument counts."""
+
+    def __init__(self):
+        self.functions = []
+
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        func_info = node.name
+        args_count = len(node.args.args)
+        if args_count > 0:
+            func_info = f"{func_info}({args_count} args)"
+        self.functions.append(func_info)
+        self.generic_visit(node)
 
 
-def extract_functions(tree: ast.AST) -> List[str]:
-    """Extracts function names and basic argument counts from an AST.
+class ClassVisitor(ast.NodeVisitor):
+    """Visitor to extract class names and inheritance infomation."""
 
-    Args:
-        tree: The AST to analyze.
+    def __init__(self):
+        self.classes = []
 
-    Returns:
-        A list of strings representing function names and their argument counts (e.g., "func(3 args)").
-    """
-    functions = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            func_info = node.name
-            # Extract arguments
-            args_count = len(node.args.args)
-            if args_count > 0:
-                func_info = f"{func_info}({args_count} args)"
-            functions.append(func_info)
-    return functions
+    def visit_ClassDef(self, node: ast.ClassDef):
+        bases = [self._get_base_name(base) for base in node.bases]
+        inheritance = f"({', '.join(bases)})" if bases else ""
+        self.classes.append(f"{node.name}{inheritance}")
+        self.generic_visit(node)
 
-
-def extract_classes(tree: ast.AST) -> List[str]:
-    """Extracts class names with inheritance information from an AST.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A list of strings representing class names and their bases (e.g., "ClassName(BaseClass)").
-    """
-    classes = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            # Include inheritance info
-            bases = [get_base_name(base) for base in node.bases]
-            inheritance = f"({', '.join(bases)})" if bases else ""
-            classes.append(f"{node.name}{inheritance}")
-    return classes
+    def _get_base_name(self, node: ast.AST) -> str:
+        if isinstance(node, ast.Name):
+            return node.id
+        elif isinstance(node, ast.Attribute):
+            return ast.unparse(node)
+        return "Unknown"
 
 
-def get_base_name(node: ast.AST) -> str:
-    """Retrieves the name of a base class from an AST node.
+class DocstringVisitor(ast.NodeVisitor):
+    """Visitor to check for docstring presence."""
 
-    Args:
-        node: The AST node representing the base class.
+    def __init__(self):
+        self.docstrings = {"module": False, "classes": {}, "functions": {}}
 
-    Returns:
-        The name of the base class as a string, or "Unknown" if it cannot be determined.
-    """
-    if isinstance(node, ast.Name):
-        return node.id
-    elif isinstance(node, ast.Attribute):
-        return ast.unparse(node)
-    return "Unknown"
+    def visit_Module(self, node: ast.Module):
+        self.docstrings["module"] = ast.get_docstring(node) is not None
+        self.generic_visit(node)
 
+    def visit_ClassDef(self, node: ast.ClassDef):
+        self.docstrings["classes"][node.name] = ast.get_docstring(node) is not None
+        self.generic_visit(node)
 
-def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
-    """Checks for the presence of docstrings in modules, classes, and functions.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A dictionary containing boolean values for module docstring presence and
-        nested dictionaries for classes and functions.
-    """
-    docstrings = {"module": False, "classes": {}, "functions": {}}
-
-    # Module docstring
-    if isinstance(tree, ast.Module):
-        docstrings["module"] = ast.get_docstring(tree) is not None
-
-    # Class and function docstrings
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            docstrings["classes"][node.name] = ast.get_docstring(node) is not None
-        elif isinstance(node, ast.FunctionDef):
-            docstrings["functions"][node.name] = ast.get_docstring(node) is not None
-
-    return docstrings
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        self.docstrings["functions"][node.name] = ast.get_docstring(node) is not None
+        self.generic_visit(node)
 
 
-def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
-    """Determines if the module is an entry point.
+class EntryPointVisitor(ast.NodeVisitor):
+    """Visitor to detect if a module is an entry point."""
 
-    Checks for:
-    - Standard main guard: if __name__ == "__main__"
-    - QGIS Plugin: classFactory(iface) function
-    - Click CLI: @click.command decorator
-    - Flask/FastAPI: Route decorators (@app.route, @app.get, etc)
-    - Django/Flask/FastAPI: Application/URL assignments
+    def __init__(self):
+        self.result = {"is_entry_point": False, "type": None}
 
-    Args:
-        tree: The AST to analyze.
+    def visit_If(self, node: ast.If):
+        if self.result["is_entry_point"]:
+            return
 
-    Returns:
-        A dictionary with 'is_entry_point' (bool) and 'type' (str or None).
-    """
-    for node in ast.walk(tree):
-        # 1. Standard main guard
-        if isinstance(node, ast.If):
-            check = _check_main_guard(node)
-            if check:
-                return check
+        # Check for if __name__ == "__main__":
+        try:
+            if (
+                isinstance(node.test, ast.Compare)
+                and isinstance(node.test.left, ast.Name)
+                and node.test.left.id == "__name__"
+            ):
+                for comparator in node.test.comparators:
+                    if (
+                        isinstance(comparator, ast.Constant)
+                        and comparator.value == "__main__"
+                    ):
+                        self.result = {"is_entry_point": True, "type": "main_guard"}
+                        return
+        except Exception:
+            pass
+        self.generic_visit(node)
 
-        # 2. Function definitions (QGIS, Click, Flask, FastAPI)
-        if isinstance(node, ast.FunctionDef):
-            check = _check_function_entry(node)
-            if check:
-                return check
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        if self.result["is_entry_point"]:
+            return
 
-        # 3. Variable assignments (Django, Flask, FastAPI)
-        if isinstance(node, ast.Assign):
-            check = _check_assignment_entry(node)
-            if check:
-                return check
-
-    return {"is_entry_point": False, "type": None}
-
-
-def _check_main_guard(node: ast.If) -> Dict[str, Any]:
-    """Checks if an If node represents a __main__ guard."""
-    try:
-        if (
-            isinstance(node.test, ast.Compare)
-            and isinstance(node.test.left, ast.Name)
-            and node.test.left.id == "__name__"
+        # QGIS classFactory
+        if node.name == "classFactory" and any(
+            arg.arg == "iface" for arg in node.args.args
         ):
-            for comparator in node.test.comparators:
-                if (
-                    isinstance(comparator, ast.Constant)
-                    and comparator.value == "__main__"
-                ):
-                    return {"is_entry_point": True, "type": "main_guard"}
-    except Exception:
-        pass
-    return {}
+            self.result = {"is_entry_point": True, "type": "qgis_plugin"}
+            return
 
+        # Check decorators
+        for decorator in node.decorator_list:
+            self._check_decorator(decorator)
+            if self.result["is_entry_point"]:
+                return
 
-def _check_function_entry(node: ast.FunctionDef) -> Dict[str, Any]:
-    """Checks function names and decorators for entry point signatures."""
-    # QGIS classFactory
-    if node.name == "classFactory" and any(
-        arg.arg == "iface" for arg in node.args.args
-    ):
-        return {"is_entry_point": True, "type": "qgis_plugin"}
+        self.generic_visit(node)
 
-    # Decorators (Click, Flask, FastAPI)
-    for decorator in node.decorator_list:
+    def _check_decorator(self, decorator: ast.AST):
         check_node = decorator
         if isinstance(decorator, ast.Call):
             check_node = decorator.func
@@ -207,44 +121,258 @@ def _check_function_entry(node: ast.FunctionDef) -> Dict[str, Any]:
             if (
                 isinstance(check_node.value, ast.Name)
                 and check_node.value.id == "click"
+                and attr in ("command", "group")
             ):
-                if attr in ("command", "group"):
-                    return {"is_entry_point": True, "type": "click_cli"}
+                self.result = {"is_entry_point": True, "type": "click_cli"}
             # Flask
-            if attr == "route":
-                return {"is_entry_point": True, "type": "flask_app"}
+            elif attr == "route":
+                self.result = {"is_entry_point": True, "type": "flask_app"}
             # FastAPI
-            if attr in ("get", "post", "put", "delete", "patch"):
-                return {"is_entry_point": True, "type": "fastapi_app"}
+            elif attr in ("get", "post", "put", "delete", "patch"):
+                self.result = {"is_entry_point": True, "type": "fastapi_app"}
 
-    return {}
+    def visit_Assign(self, node: ast.Assign):
+        if self.result["is_entry_point"]:
+            return
 
+        for target in node.targets:
+            if isinstance(target, ast.Name):
+                self._check_assignment(target.id, node.value)
+                if self.result["is_entry_point"]:
+                    return
+        self.generic_visit(node)
 
-def _check_assignment_entry(node: ast.Assign) -> Dict[str, Any]:
-    """Checks variable assignments for application entry points."""
-    for target in node.targets:
-        if not isinstance(target, ast.Name):
-            continue
-
-        tid = target.id
+    def _check_assignment(self, target_id: str, value_node: ast.AST):
         # Django
-        if tid == "application":
-            return {"is_entry_point": True, "type": "django_app"}
-        if tid == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
-            return {"is_entry_point": True, "type": "django_urls"}
-        if tid == "INSTALLED_APPS" and isinstance(node.value, (ast.List, ast.Tuple)):
-            return {"is_entry_point": True, "type": "django_settings"}
+        if target_id == "application":
+            self.result = {"is_entry_point": True, "type": "django_app"}
+        elif target_id == "urlpatterns" and isinstance(
+            value_node, (ast.List, ast.Tuple)
+        ):
+            self.result = {"is_entry_point": True, "type": "django_urls"}
+        elif target_id == "INSTALLED_APPS" and isinstance(
+            value_node, (ast.List, ast.Tuple)
+        ):
+            self.result = {"is_entry_point": True, "type": "django_settings"}
 
-        # Explicit Flask/FastAPI instantiation
-        if tid in ("app", "application") and isinstance(node.value, ast.Call):
-            func = node.value.func
+        # Flask/FastAPI instantiation i.e. app = Flask(__name__)
+        elif target_id in ("app", "application") and isinstance(value_node, ast.Call):
+            func = value_node.func
             if isinstance(func, ast.Name):
                 if func.id == "Flask":
-                    return {"is_entry_point": True, "type": "flask_app"}
-                if func.id == "FastAPI":
-                    return {"is_entry_point": True, "type": "fastapi_app"}
+                    self.result = {"is_entry_point": True, "type": "flask_app"}
+                elif func.id == "FastAPI":
+                    self.result = {"is_entry_point": True, "type": "fastapi_app"}
 
-    return {}
+
+class TypeHintVisitor(ast.NodeVisitor):
+    """Visitor to calculate type hint coverage."""
+
+    def __init__(self):
+        self.total_functions = 0
+        self.typed_functions = 0
+
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        self.total_functions += 1
+
+        has_return_type = node.returns is not None
+        args = [arg for arg in node.args.args if arg.arg not in ("self", "cls")]
+        total_args = len(args)
+        typed_args = sum(1 for arg in args if arg.annotation is not None)
+
+        if has_return_type and (total_args == 0 or total_args == typed_args):
+            self.typed_functions += 1
+
+        self.generic_visit(node)
+
+
+class HalsteadVisitor(ast.NodeVisitor):
+    """Visitor to calculate Halstead metrics."""
+
+    OPERATORS = (
+        ast.Add,
+        ast.Sub,
+        ast.Mult,
+        ast.Div,
+        ast.Mod,
+        ast.Pow,
+        ast.LShift,
+        ast.RShift,
+        ast.BitOr,
+        ast.BitXor,
+        ast.BitAnd,
+        ast.FloorDiv,
+        ast.And,
+        ast.Or,
+        ast.Not,
+        ast.Invert,
+        ast.UAdd,
+        ast.USub,
+        ast.Eq,
+        ast.NotEq,
+        ast.Lt,
+        ast.LtE,
+        ast.Gt,
+        ast.GtE,
+        ast.Is,
+        ast.IsNot,
+        ast.In,
+        ast.NotIn,
+        ast.If,
+        ast.For,
+        ast.While,
+        ast.Try,
+        ast.With,
+        ast.FunctionDef,
+        ast.ClassDef,
+    )
+
+    def __init__(self):
+        self.operators = Counter()
+        self.operands = Counter()
+
+    def visit(self, node: ast.AST):
+        """Override visit to check for operators and operands generically."""
+        if isinstance(node, self.OPERATORS):
+            self.operators[type(node).__name__] += 1
+        elif isinstance(node, ast.Name):
+            self.operands[node.id] += 1
+        elif isinstance(node, ast.Constant):
+            self.operands[str(node.value)] += 1
+        super().visit(node)
+
+
+class ImportVisitor(ast.NodeVisitor):
+    """Visitor to extract imports."""
+
+    def __init__(self):
+        self.imports = []
+        self.imported_names = {}  # alias_in_scope -> full_import_name
+        self.used_names = set()
+
+    def visit_Import(self, node: ast.Import):
+        for alias in node.names:
+            self.imports.append(alias.name)
+            name_in_scope = alias.asname or alias.name.split(".")[0]
+            self.imported_names[name_in_scope] = alias.name
+
+    def visit_ImportFrom(self, node: ast.ImportFrom):
+        module = node.module or ""
+        for alias in node.names:
+            if module:
+                full_name = f"{module}.{alias.name}"
+                self.imports.append(full_name)
+            else:
+                full_name = alias.name
+                self.imports.append(full_name)
+
+            name_in_scope = alias.asname or alias.name
+            self.imported_names[name_in_scope] = full_name
+
+    def visit_Name(self, node: ast.Name):
+        if isinstance(node.ctx, ast.Load):
+            self.used_names.add(node.id)
+
+    def visit_Attribute(self, node: ast.Attribute):
+        # Recursively find the base Name in an Attribute chain (e.g., a.b.c)
+        curr = node.value
+        while isinstance(curr, ast.Attribute):
+            curr = curr.value
+        if isinstance(curr, ast.Name):
+            self.used_names.add(curr.id)
+        self.generic_visit(node)
+
+
+class ComplexityVisitor(ast.NodeVisitor):
+    """Visitor to calculate cyclomatic complexity."""
+
+    def __init__(self):
+        self.complexity = 0
+        self.decision_lines = set()
+
+    def _add_decision(self, node):
+        self.complexity += 1
+        if hasattr(node, "lineno"):
+            self.decision_lines.add(node.lineno)
+
+    def visit_If(self, node: ast.If):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_While(self, node: ast.While):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_For(self, node: ast.For):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_AsyncFor(self, node: ast.AsyncFor):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_Try(self, node: ast.Try):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_AsyncWith(self, node: ast.AsyncWith):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_ExceptHandler(self, node: ast.ExceptHandler):
+        self._add_decision(node)
+        self.generic_visit(node)
+
+    def visit_BoolOp(self, node: ast.BoolOp):
+        self.complexity += len(node.values) - 1
+        self.generic_visit(node)
+
+    def visit_ListComp(self, node: ast.ListComp):
+        self.complexity += len(node.generators)
+        self.generic_visit(node)
+
+    def visit_SetComp(self, node: ast.SetComp):
+        self.complexity += len(node.generators)
+        self.generic_visit(node)
+
+    def visit_DictComp(self, node: ast.DictComp):
+        self.complexity += len(node.generators)
+        self.generic_visit(node)
+
+    def visit_GeneratorExp(self, node: ast.GeneratorExp):
+        self.complexity += len(node.generators)
+        self.generic_visit(node)
+
+
+# --- Public Interface Wrapper Functions ---
+
+
+def extract_functions(tree: ast.AST) -> List[str]:
+    """Extracts function names and basic argument counts from an AST."""
+    visitor = FunctionVisitor()
+    visitor.visit(tree)
+    return visitor.functions
+
+
+def extract_classes(tree: ast.AST) -> List[str]:
+    """Extracts class names with inheritance information from an AST."""
+    visitor = ClassVisitor()
+    visitor.visit(tree)
+    return visitor.classes
+
+
+def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
+    """Checks for the presence of docstrings in modules, classes, and functions."""
+    visitor = DocstringVisitor()
+    visitor.visit(tree)
+    return visitor.docstrings
+
+
+def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
+    """Determines if the module is an entry point."""
+    visitor = EntryPointVisitor()
+    visitor.visit(tree)
+    return visitor.result
 
 
 def has_main_guard(tree: ast.AST) -> bool:
@@ -254,63 +382,30 @@ def has_main_guard(tree: ast.AST) -> bool:
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates the percentage of functions with type hints.
+    """Calculates the percentage of functions with type hints."""
+    visitor = TypeHintVisitor()
+    visitor.visit(tree)
 
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A dictionary with total_functions, typed_functions, and coverage percentage.
-    """
-    total_items = 0
-    typed_items = 0
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            total_items += 1
-            # Check return type
-            has_return_type = node.returns is not None
-
-            # Check arguments (excluding self/cls)
-            args = [arg for arg in node.args.args if arg.arg not in ("self", "cls")]
-            total_args = len(args)
-            typed_args = sum(1 for arg in args if arg.annotation is not None)
-
-            if has_return_type and (total_args == 0 or total_args == typed_args):
-                typed_items += 1
+    total = visitor.total_functions
+    typed = visitor.typed_functions
+    coverage = (typed / total * 100) if total > 0 else 100.0
 
     return {
-        "total_functions": total_items,
-        "typed_functions": typed_items,
-        "coverage": (typed_items / total_items * 100) if total_items > 0 else 100.0,
+        "total_functions": total,
+        "typed_functions": typed,
+        "coverage": coverage,
     }
 
 
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates basic Halstead complexity metrics.
+    """Calculates basic Halstead complexity metrics."""
+    visitor = HalsteadVisitor()
+    visitor.visit(tree)
 
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A dictionary containing vocabulary, length, volume, difficulty, and effort.
-    """
-    operators = Counter()
-    operands = Counter()
-
-    for node in ast.walk(tree):
-        node_type = type(node).__name__
-        if isinstance(node, HALSTEAD_OPERATORS):
-            operators[node_type] += 1
-        elif isinstance(node, ast.Name):
-            operands[node.id] += 1
-        elif isinstance(node, ast.Constant):
-            operands[str(node.value)] += 1
-
-    n1 = len(operators)  # unique operators
-    n2 = len(operands)  # unique operands
-    N1 = sum(operators.values())  # total operators
-    N2 = sum(operands.values())  # total operands
+    n1 = len(visitor.operators)
+    n2 = len(visitor.operands)
+    N1 = sum(visitor.operators.values())
+    N2 = sum(visitor.operands.values())
 
     h_vocabulary = n1 + n2
     h_length = N1 + N2
@@ -332,130 +427,41 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
 
 
 def extract_imports(tree: ast.AST) -> List[str]:
-    """Extracts module imports in an optimized way.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A unique list of imported module names.
-    """
-    imports = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                imports.append(alias.name)
-        elif isinstance(node, ast.ImportFrom):
-            module = node.module or ""
-            for alias in node.names:
-                if module:
-                    imports.append(f"{module}.{alias.name}")
-                else:
-                    imports.append(alias.name)
+    """Extracts module imports in an optimized way."""
+    visitor = ImportVisitor()
+    visitor.visit(tree)
 
     # De-duplicate while maintaining order
     seen = set()
     unique_imports = []
-    for imp in imports:
+    for imp in visitor.imports:
         if imp not in seen:
             seen.add(imp)
             unique_imports.append(imp)
-
     return unique_imports
 
 
 def detect_unused_imports(tree: ast.AST) -> List[str]:
-    """Identifies imports that are not used anywhere in the module.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        A list of unused import strings (either module names or aliases).
-    """
-    imported_names = {}  # alias -> original_name
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                # For 'import a.b.c', the name in namespace is 'a'
-                # For 'import a.b.c as x', the name in namespace is 'x'
-                name_in_scope = alias.asname or alias.name.split(".")[0]
-                imported_names[name_in_scope] = alias.name
-        elif isinstance(node, ast.ImportFrom):
-            # For from x import y, y is the name used in code
-            for alias in node.names:
-                name_in_scope = alias.asname or alias.name
-                imported_names[name_in_scope] = f"{node.module}.{alias.name}"
-
-    if not imported_names:
-        return []
-
-    used_names = set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
-            used_names.add(node.id)
-        elif isinstance(node, ast.Attribute):
-            # Recursively find the base Name in an Attribute chain (e.g., a.b.c)
-            curr = node.value
-            while isinstance(curr, ast.Attribute):
-                curr = curr.value
-            if isinstance(curr, ast.Name):
-                used_names.add(curr.id)
+    """Identifies imports that are not used anywhere in the module."""
+    visitor = ImportVisitor()
+    visitor.visit(tree)
 
     unused = [
         name
-        for alias, name in imported_names.items()
-        if alias not in used_names and alias != "*"
+        for alias, name in visitor.imported_names.items()
+        if alias not in visitor.used_names and alias != "*"
     ]
-
     return sorted(list(set(unused)))
 
 
 def calculate_complexity(tree: ast.AST) -> int:
-    """Calculates optimized cyclomatic complexity.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        The calculated cyclomatic complexity as an integer.
-    """
-    complexity = 0
-    decision_lines = set()
-
-    for node in ast.walk(tree):
-        # Decision nodes
-        if isinstance(
-            node,
-            (
-                ast.If,
-                ast.While,
-                ast.For,
-                ast.Try,
-                ast.ExceptHandler,
-                ast.AsyncFor,
-                ast.AsyncWith,
-            ),
-        ):
-            complexity += 1
-            if hasattr(node, "lineno"):
-                decision_lines.add(node.lineno)
-
-        # Boolean operators
-        elif isinstance(node, ast.BoolOp):
-            complexity += len(node.values) - 1
-
-        # Comprehensions
-        elif isinstance(
-            node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
-        ):
-            complexity += len(node.generators)
-
-    return _apply_complexity_penalty(complexity, decision_lines)
+    """Calculates optimized cyclomatic complexity."""
+    visitor = ComplexityVisitor()
+    visitor.visit(tree)
+    return _apply_complexity_penalty(visitor.complexity, visitor.decision_lines)
 
 
-def _apply_complexity_penalty(complexity: int, decision_lines: set) -> int:
+def _apply_complexity_penalty(complexity: int, decision_lines: Set[int]) -> int:
     """Applies a penalty for highly dense logic (many decisions in few lines)."""
     if not decision_lines:
         return complexity

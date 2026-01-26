@@ -203,8 +203,8 @@ def _generate_project_summary_html(
     metrics = analyses.get("metrics", {})
     m_html = f"""
     <div class="metric">Quality Score: <span class="metric-value">{metrics.get("quality_score", 0)}/100</span></div>
-    <div class="metric">Lines of Code: <span class="metric-value">{metrics.get('total_lines_code', 0):,}</span></div>
-    <div class="metric">Modules: <span class="metric-value">{analyses.get('complexity', {}).get('total_modules', 0)}</span></div>
+    <div class="metric">Lines of Code: <span class="metric-value">{metrics.get("total_lines_code", 0):,}</span></div>
+    <div class="metric">Modules: <span class="metric-value">{analyses.get("complexity", {}).get("total_modules", 0)}</span></div>
     """
     builder.add_section("📊 KEY METRICS", m_html)
 

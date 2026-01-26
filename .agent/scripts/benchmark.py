@@ -1,8 +1,6 @@
 import cProfile
 import pstats
 import time
-import sys
-from pathlib import Path
 from io import StringIO
 from ai_context_core.cli import analyze
 

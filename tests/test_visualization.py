@@ -1,4 +1,3 @@
-import pytest
 import os
 from click.testing import CliRunner
 from ai_context_core.analyzer.reporting import generate_dependency_diagram, HTMLBuilder

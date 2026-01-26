@@ -3,7 +3,6 @@ from ai_context_core.analyzer.secrets import detect_secrets, _mask_secret
 
 
 class TestSecrets(unittest.TestCase):
-
     def test_mask_secret(self):
         self.assertEqual(_mask_secret("abcdef"), "ab**ef")
         self.assertEqual(_mask_secret("12345678"), "12****78")
