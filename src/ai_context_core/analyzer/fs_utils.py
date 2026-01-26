@@ -10,7 +10,9 @@ import fnmatch
 import mmap
 import subprocess
 import logging
-from typing import List, Dict, Any
+import hashlib
+import json
+from typing import List, Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -446,3 +448,57 @@ def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[st
         "file_types": count_file_types(project_path),
         "size_stats": calculate_size_stats(project_path),
     }
+
+
+def calculate_file_hash(path: pathlib.Path) -> str:
+    """Calculates the SHA-256 hash of a file's content.
+
+    Args:
+        path: Path to the file.
+
+    Returns:
+        The hex digest of the SHA-256 hash, or an empty string on error.
+    """
+    try:
+        content = read_file_fast(path)
+        if not content:
+            return ""
+        return hashlib.sha256(content.encode("utf-8")).hexdigest()
+    except Exception as e:
+        logger.warning(f"Error calculating hash for {path}: {e}")
+        return ""
+
+
+def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:
+    """Loads the analysis cache from disk.
+
+    Args:
+        project_path: Root directory of the project.
+
+    Returns:
+        A dictionary containing the cached data.
+    """
+    cache_file = project_path / ".ai_context_cache.json"
+    if not cache_file.exists():
+        return {}
+    try:
+        with open(cache_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        logger.warning(f"Error loading cache: {e}")
+        return {}
+
+
+def save_cache(project_path: pathlib.Path, cache_data: Dict[str, Any]):
+    """Saves the analysis cache to disk.
+
+    Args:
+        project_path: Root directory of the project.
+        cache_data: The cache data to save.
+    """
+    cache_file = project_path / ".ai_context_cache.json"
+    try:
+        with open(cache_file, "w", encoding="utf-8") as f:
+            json.dump(cache_data, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        logger.warning(f"Error saving cache: {e}")

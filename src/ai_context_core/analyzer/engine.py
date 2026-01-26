@@ -77,6 +77,7 @@ class ProjectAnalyzer:
         # Cache
         self.ast_cache = {}
         self.file_cache = {}
+        self.analysis_cache = fs_utils.load_cache(self.project_path)
 
         # State
         self.error_log = {}
@@ -125,6 +126,9 @@ class ProjectAnalyzer:
 
         # 3. Generate Outputs
         self._generate_outputs(results)
+
+        # 4. Save Cache
+        fs_utils.save_cache(self.project_path, self.analysis_cache)
 
         logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
         return results
@@ -330,7 +334,7 @@ class ProjectAnalyzer:
             logger.error(f"Error generating outputs: {e}")
 
     def _analyze_modules_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
-        """Analyzes multiple modules in parallel using a process pool.
+        """Analyzes multiple modules in parallel using a process pool with caching.
 
         Args:
             files: List of Python file paths to analyze.
@@ -339,8 +343,33 @@ class ProjectAnalyzer:
             A list of dictionaries, one per successfully analyzed module.
         """
         results = []
+        files_to_analyze = []
+        cached_results = []
+
+        # Check in-memory cache first to avoid subprocess overhead
+        for f in files:
+            rel_path = str(f.relative_to(self.project_path))
+            current_hash = fs_utils.calculate_file_hash(f)
+            
+            cached_entry = self.analysis_cache.get(rel_path)
+            if cached_entry and cached_entry.get("hash") == current_hash:
+                # Cache Hit
+                cached_results.append(cached_entry["data"])
+            else:
+                # Cache Miss
+                files_to_analyze.append(f)
+
+        if cached_results:
+            logger.info(f"Using cached results for {len(cached_results)} modules")
+            results.extend(cached_results)
+
+        if not files_to_analyze:
+            return results
+
+        logger.info(f"Analyzing {len(files_to_analyze)} modules...")
+        
         with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files}
+            future_to_file = {executor.submit(self._analyze_single_module, f): f for f in files_to_analyze}
 
             for future in concurrent.futures.as_completed(future_to_file):
                 f = future_to_file[future]
@@ -348,6 +377,17 @@ class ProjectAnalyzer:
                     data = future.result()
                     if data:
                         results.append(data)
+                        
+                        # Update cache
+                        rel_path = str(f.relative_to(self.project_path))
+                        # We need to re-calculate hash here or pass it if possible, 
+                        # but re-calc is safer to ensure it matches analyzed content
+                        current_hash = fs_utils.calculate_file_hash(f)
+                        self.analysis_cache[rel_path] = {
+                            "hash": current_hash,
+                            "data": data,
+                            "timestamp": time.time()
+                        }
                 except Exception as e:
                     logger.error(f"Error analyzing {f}: {e}")
                     self.error_log[str(f)] = str(e)

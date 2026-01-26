@@ -11,3 +11,4 @@ htmlcov/
 # Docker
 .docker/
 *.tar
+.ai_context_cache.json
