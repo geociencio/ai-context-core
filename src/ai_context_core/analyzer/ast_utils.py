@@ -138,6 +138,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
     - QGIS Plugin: classFactory(iface) function
     - Click CLI: @click.command decorator
     - Flask/FastAPI: Route decorators (@app.route, @app.get, etc)
+    - Django/Flask/FastAPI: Application/URL assignments
 
     Args:
         tree: The AST to analyze.
@@ -145,95 +146,101 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
     Returns:
         A dictionary with 'is_entry_point' (bool) and 'type' (str or None).
     """
-    result = {"is_entry_point": False, "type": None}
-
     for node in ast.walk(tree):
         # 1. Standard main guard
         if isinstance(node, ast.If):
-            try:
-                if (
-                    isinstance(node.test, ast.Compare)
-                    and isinstance(node.test.left, ast.Name)
-                    and node.test.left.id == "__name__"
-                ):
-                    for comparator in node.test.comparators:
-                        if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
-                            return {"is_entry_point": True, "type": "main_guard"}
-            except Exception:
-                pass
+            check = _check_main_guard(node)
+            if check:
+                return check
 
-        # 2. Function definitions (QGIS)
+        # 2. Function definitions (QGIS, Click, Flask, FastAPI)
         if isinstance(node, ast.FunctionDef):
-            # QGIS classFactory
-            if node.name == "classFactory" and any(arg.arg == "iface" for arg in node.args.args):
-                return {"is_entry_point": True, "type": "qgis_plugin"}
-
-            # Decorators (Click, Flask, FastAPI)
-            for decorator in node.decorator_list:
-                check_node = decorator
-                if isinstance(decorator, ast.Call):
-                    check_node = decorator.func
-
-                # Check for Attribute (e.g. click.command, app.route)
-                if isinstance(check_node, ast.Attribute):
-                    # Click: @click.command or @click.group
-                    if isinstance(check_node.value, ast.Name) and check_node.value.id == "click":
-                        if check_node.attr in ("command", "group"):
-                            return {"is_entry_point": True, "type": "click_cli"}
-
-                    # Flask: @app.route
-                    if check_node.attr == "route":
-                        return {"is_entry_point": True, "type": "flask_app"}
-
-                    # FastAPI: @app.get, @app.post, etc. (common HTTP verbs)
-                    if check_node.attr in ("get", "post", "put", "delete", "patch"):
-                        return {"is_entry_point": True, "type": "fastapi_app"}
+            check = _check_function_entry(node)
+            if check:
+                return check
 
         # 3. Variable assignments (Django, Flask, FastAPI)
         if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name):
-                    # Django wsgi/asgi application
-                    if target.id == "application":
-                        return {"is_entry_point": True, "type": "django_app"}
+            check = _check_assignment_entry(node)
+            if check:
+                return check
 
-                    # Django URL patterns
-                    if target.id == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
-                        return {"is_entry_point": True, "type": "django_urls"}
+    return {"is_entry_point": False, "type": None}
 
-                    # Django Settings
-                    if target.id == "INSTALLED_APPS" and isinstance(
-                        node.value, (ast.List, ast.Tuple)
-                    ):
-                        return {"is_entry_point": True, "type": "django_settings"}
 
-                    # Explicit Flask/FastAPI instantiation (app = Flask(__name__) ...)
-                    if target.id == "app" or target.id == "application":
-                        if isinstance(node.value, ast.Call):
-                            call_node = node.value.func
-                            if isinstance(call_node, ast.Name):
-                                if call_node.id == "Flask":
-                                    return {"is_entry_point": True, "type": "flask_app"}
-                                if call_node.id == "FastAPI":
-                                    return {
-                                        "is_entry_point": True,
-                                        "type": "fastapi_app",
-                                    }
+def _check_main_guard(node: ast.If) -> Dict[str, Any]:
+    """Checks if an If node represents a __main__ guard."""
+    try:
+        if (
+            isinstance(node.test, ast.Compare)
+            and isinstance(node.test.left, ast.Name)
+            and node.test.left.id == "__name__"
+        ):
+            for comparator in node.test.comparators:
+                if isinstance(comparator, ast.Constant) and comparator.value == "__main__":
+                    return {"is_entry_point": True, "type": "main_guard"}
+    except Exception:
+        pass
+    return {}
 
-    return result
+
+def _check_function_entry(node: ast.FunctionDef) -> Dict[str, Any]:
+    """Checks function names and decorators for entry point signatures."""
+    # QGIS classFactory
+    if node.name == "classFactory" and any(arg.arg == "iface" for arg in node.args.args):
+        return {"is_entry_point": True, "type": "qgis_plugin"}
+
+    # Decorators (Click, Flask, FastAPI)
+    for decorator in node.decorator_list:
+        check_node = decorator
+        if isinstance(decorator, ast.Call):
+            check_node = decorator.func
+
+        if isinstance(check_node, ast.Attribute):
+            attr = check_node.attr
+            # Click
+            if isinstance(check_node.value, ast.Name) and check_node.value.id == "click":
+                if attr in ("command", "group"):
+                    return {"is_entry_point": True, "type": "click_cli"}
+            # Flask
+            if attr == "route":
+                return {"is_entry_point": True, "type": "flask_app"}
+            # FastAPI
+            if attr in ("get", "post", "put", "delete", "patch"):
+                return {"is_entry_point": True, "type": "fastapi_app"}
+
+    return {}
+
+
+def _check_assignment_entry(node: ast.Assign) -> Dict[str, Any]:
+    """Checks variable assignments for application entry points."""
+    for target in node.targets:
+        if not isinstance(target, ast.Name):
+            continue
+
+        tid = target.id
+        # Django
+        if tid == "application":
+            return {"is_entry_point": True, "type": "django_app"}
+        if tid == "urlpatterns" and isinstance(node.value, (ast.List, ast.Tuple)):
+            return {"is_entry_point": True, "type": "django_urls"}
+        if tid == "INSTALLED_APPS" and isinstance(node.value, (ast.List, ast.Tuple)):
+            return {"is_entry_point": True, "type": "django_settings"}
+
+        # Explicit Flask/FastAPI instantiation
+        if tid in ("app", "application") and isinstance(node.value, ast.Call):
+            func = node.value.func
+            if isinstance(func, ast.Name):
+                if func.id == "Flask":
+                    return {"is_entry_point": True, "type": "flask_app"}
+                if func.id == "FastAPI":
+                    return {"is_entry_point": True, "type": "fastapi_app"}
+
+    return {}
 
 
 def has_main_guard(tree: ast.AST) -> bool:
-    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
-
-    Deprecated: Use is_entry_point() instead.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        True if the guard is found, False otherwise.
-    """
+    """Checks if the module contains the standard 'if __name__ == "__main__":' guard."""
     result = is_entry_point(tree)
     return result["is_entry_point"] and result["type"] == "main_guard"
 
@@ -433,10 +440,18 @@ def calculate_complexity(tree: ast.AST) -> int:
         elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
             complexity += len(node.generators)
 
-    # Penalty for highly dense logic (many decisions in few lines)
-    if decision_lines:
-        density = len(decision_lines) / (max(decision_lines) - min(decision_lines) + 1)
-        if density > 0.5:
-            complexity = int(complexity * 1.2)
+    return _apply_complexity_penalty(complexity, decision_lines)
+
+
+def _apply_complexity_penalty(complexity: int, decision_lines: set) -> int:
+    """Applies a penalty for highly dense logic (many decisions in few lines)."""
+    if not decision_lines:
+        return complexity
+
+    line_range = max(decision_lines) - min(decision_lines) + 1
+    density = len(decision_lines) / line_range
+
+    if density > 0.5:
+        return int(complexity * 1.2)
 
     return complexity
