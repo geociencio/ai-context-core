@@ -32,13 +32,14 @@ def is_git_repo(path: pathlib.Path) -> bool:
 
 
 def get_git_hotspots(
-    project_path: pathlib.Path, limit: int = 5
+    project_path: pathlib.Path, limit: int = 5, max_commits: int = 1000
 ) -> List[Dict[str, Any]]:
     """Identifies files with the most changes in the repository history.
 
     Args:
         project_path: Path to the project root.
         limit: Maximum number of hotspots to return.
+        max_commits: Maximum number of commits to analyze (default: 1000).
 
     Returns:
         A list of dictionaries with 'path' and 'commits' count.
@@ -48,8 +49,11 @@ def get_git_hotspots(
 
     try:
         # Use git log to get the number of times each file has been modified
+        # Limiting to last N commits improves performance on large repos
+        cmd = ["git", "log", f"-n {max_commits}", "--format=", "--name-only"]
+
         result = subprocess.run(
-            ["git", "log", "--format=", "--name-only"],
+            cmd,
             cwd=project_path,
             capture_output=True,
             text=True,

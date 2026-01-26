@@ -1,49 +1,26 @@
-# Próximos Pasos - ai-context-core
+# Next Steps: AI Context Core
 
-**Última actualización**: 2026-01-25
-**Sesión Actual**: Phase 3 (Métricas Avanzadas e Integración Git)
+## 🚀 Immediate Priorities (Next Session)
 
-## Estado Actual
+- [ ] **Fase 4: Optimización y Visualización (Backlog Restante)**
+  - Implementar generación de diagramas con Mermaid (`reporting.py`).
+  - Explorar integración con IA para recomendaciones accionables (`ai_recommendations.py`).
+  - Exportación de reportes a múltiples formatos (HTML/PDF).
 
-✅ **Fase 3 Completada**
-- **Mantenibilidad**: Índice de Mantenibilidad (MI) implementado en módulos y promedios globales.
-- **Git Analysis**: Detección de Hotspots (archivos frecuentes) y Churn Rate (30 días).
-- **Reportes**: Integración de nuevas métricas en `AI_CONTEXT.md` y `PROJECT_SUMMARY.md`.
-- **Estabilidad**: 46 tests pasando con cobertura del 71%.
+## 🐛 Known Issues / Technical Debt
 
-## 🎯 Roadmap de Mejoras
+- Actualizar `requirements.txt` / `pyproject.toml` si se agregan dependencias para gráficos (e.g. `matplotlib` o wrappers de Mermaid).
+- Evaluar impacto de `secrets.py` en falsos positivos durante uso real.
 
-### Fase 4: Optimización y Recomendaciones IA (26-33h) ⚡ SIGUIENTE
+## 💡 Future Ideas
 
-#### 10. Cache Incremental (6-8h)
-- Evitar re-analizar archivos sin cambios.
-- Persistencia de resultados intermedios.
+- **Plugin de VS Code**: Exponer el análisis y alertas de seguridad directamente en el editor.
+- **Pre-commit Hook**: Integrar `ai-context-core` como un hook local robusto.
 
-#### 11. Diagramas de Estructura (8-10h)
-- Generación de diagramas de clases/paquetes adicionales (Mermaid).
+## 🔄 Resume Command
 
-#### 12. Exportación Multiformato (4-5h)
-- Soporte para PDF, HTML y JSON extendido.
-
-#### 13. Recomendaciones IA Accionables (8-10h)
-- Sugerencias específicas de refactorización basadas en MI y patrones.
-
----
-
-## Comando para Retomar
+Para retomar el trabajo en la siguiente sesión:
 
 ```bash
 /inicia-sesion
 ```
-
-## Próximos Pasos Inmediatos
-
-1.  **Merge Phase 3**: Fusionar rama `feature/phase3-metrics-and-git` a `main`.
-2.  **Iniciar Fase 4**: Investigar estrategias de cache incremental para el analizador.
-3.  **Refactorización**: Atacar los Hotspots detectados (`reporting.py`, `ast_utils.py`) para mejorar su mantenibilidad.
-
----
-
-## Documentos de Referencia
-- [Phase 3 Walkthrough](file:///home/jmbernales/.gemini/antigravity/brain/a2bd1ed6-b994-4c92-b9ff-576161e327ad/walkthrough.md)
-- [Project Summary](file:///home/jmbernales/qgispluginsdev/ai-context-core/PROJECT_SUMMARY.md)

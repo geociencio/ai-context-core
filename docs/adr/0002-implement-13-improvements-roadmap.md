@@ -134,18 +134,26 @@ La priorización basada en impacto/esfuerzo asegura que las mejoras más crític
 - [x] Mejora 10: Multi-Framework (5-6h)
 - [x] Release: v1.2.0
 
-### Fase 3: Métricas y Contexto (13-15h)
-- [ ] Mejora 7: Métricas Avanzadas (5-6h)
-- [ ] Mejora 9: Git Integration (6-7h)
-- [ ] Mejora 3: Config Explícita (2h)
-- [ ] Release: v1.3.0
+### Fase 3: Métricas y Contexto (13-15h) - ✅ COMPLETADA
+- [x] Mejora 7: Métricas Avanzadas (5-6h)
+- [x] Mejora 9: Git Integration (6-7h)
+- [x] Mejora 3: Config Explícita (2h)
+- [x] Release: v1.3.0
 
-### Fase 4: Optimización (26-33h) - Backlog
-- [ ] Mejora 12: Cache Incremental (8-10h)
+### Fase 4: Optimización (26-33h) - 🚧 EN PROGRESO
+- [x] Mejora 12: Cache Incremental (8-10h)
 - [ ] Mejora 8: Diagramas Arquitectónicos (8-10h)
 - [ ] Mejora 11: Múltiples Formatos (6-8h)
 - [ ] Mejora 13: IA Accionable (12-15h)
 - [ ] Release: v2.0.0
+
+### Fase 5: Security Hardening (Prioridad) - ✅ COMPLETADA
+- [x] Detección de Secretos (TruffleHog patterns)
+- [x] Refuerzo de SQL Injection (AST avanzado)
+
+### Fase 6: Performance Profiling - ✅ COMPLETADA
+- [x] Profiling de repositorios grandes
+- [x] Optimización de `git_analysis.py`
 
 ## Validación
 

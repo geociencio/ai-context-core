@@ -1,67 +1,58 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1769400602.8798406,
+  "timestamp": 1769402317.4725196,
   "metrics": {
-    "total_size_kb": 151.55,
-    "total_lines_code": 4623,
-    "avg_module_size_kb": 10.1,
-    "avg_lines_per_module": 308.2,
-    "modules_with_docstrings": 13,
-    "modules_with_main_guard": 2,
+    "total_size_kb": 166.06,
+    "total_lines_code": 5051,
+    "avg_module_size_kb": 9.77,
+    "avg_lines_per_module": 297.12,
+    "modules_with_docstrings": 14,
+    "modules_with_main_guard": 3,
     "modules_with_syntax_errors": 0,
-    "docstring_coverage": 96.86,
-    "type_hint_coverage": 74.0,
+    "docstring_coverage": 95.18,
+    "type_hint_coverage": 71.24,
     "i18n_coverage": 100.0,
-    "entry_points_count": 2,
-    "test_files_count": 14,
-    "avg_complexity": 40.4,
+    "entry_points_count": 3,
+    "test_files_count": 15,
+    "avg_complexity": 38.29,
     "max_complexity": 115,
-    "avg_maintenance_index": 22.06,
-    "quality_score": 66.7
+    "avg_maintenance_index": 23.31,
+    "quality_score": 67.9
   },
   "structure": {
-    "tree": "./\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    CONTRIBUTING.md\n    ... (+11 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                antipatterns.py\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                git_analysis.py\n                issues.py\n                ... (+2 more)\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        PATTERNS_DETECTION.md\n        cierra-sesion-res.md\n        crea-commit-res.md\n        ... (+3 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_phase1_completion.md\n            session_2026-01-25_phase2_advanced_analysis.md\n            session_2026-01-25_phase3_metrics_git.md\n            ... (+1 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_dependencies_advanced.py\n        test_entry_points.py\n        ... (+5 more)\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py",
-    "modules_count": 15,
+    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    ... (+12 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                antipatterns.py\n                ast_utils.py\n                dependencies.py\n                engine.py\n                fs_utils.py\n                git_analysis.py\n                issues.py\n                ... (+3 more)\n            context/\n                manager.py\n            config/\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        PATTERNS_DETECTION.md\n        cierra-sesion-res.md\n        crea-commit-res.md\n        ... (+3 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            session_2026-01-25_phase2_advanced_analysis.md\n            ... (+2 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_dependencies_advanced.py\n        test_entry_points.py\n        ... (+6 more)\n    dist/\n        .gitignore\n        ai_context_core-1.0.0-py3-none-any.whl\n        ai_context_core-1.0.0.tar.gz\n        ai_context_core-1.0.1-py3-none-any.whl\n        ai_context_core-1.0.1.tar.gz\n    build/\n        lib/\n            ai_context_core/\n                __init__.py\n                cli.py\n                analyzer/\n                    ast_utils.py\n                    dependencies.py\n                    engine.py\n                    fs_utils.py\n                    issues.py\n                    metrics.py\n                    reporting.py\n                context/\n                    manager.py\n                config/\n                    defaults.yaml\n                    loader.py\n                templates/\n                    initial_prompt.md\n        bdist.linux-x86_64/\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py",
+    "modules_count": 17,
     "file_types": {
-      ".py": 915,
-      ".pyc": 219,
-      ".md": 67,
-      ".txt": 29,
-      ".sample": 14,
-      ".typed": 13,
-      ".yaml": 8,
-      ".whl": 7,
-      ".json": 6,
-      ".bat": 6,
-      ".exe": 6,
-      ".gz": 5,
-      ".yml": 3,
-      ".tag": 3,
-      ".pth": 3,
-      ".toml": 2,
-      ".lock": 2,
-      ".13": 2,
-      ".csh": 2,
-      ".fish": 2
+      ".md": 63,
+      ".py": 32,
+      ".yaml": 4,
+      ".json": 3,
+      ".yml": 2,
+      ".in": 1,
+      ".zip": 1,
+      ".toml": 1,
+      ".lock": 1,
+      ".prof": 1,
+      ".tag": 1
     },
     "size_stats": {
-      "total_files": 155,
-      "total_size_mb": 1.15,
-      "python_files": 39,
-      "python_size_mb": 0.26,
-      "avg_file_size_kb": 7.57,
-      "python_percentage": 22.35
+      "total_files": 129,
+      "total_size_mb": 0.85,
+      "python_files": 32,
+      "python_size_mb": 0.19,
+      "avg_file_size_kb": 6.73,
+      "python_percentage": 21.98
     }
   },
   "complexity": {
-    "total_modules": 15,
-    "total_lines": 4623,
-    "total_functions": 139,
-    "total_classes": 5,
-    "average_complexity": 40.4,
+    "total_modules": 17,
+    "total_lines": 5051,
+    "total_functions": 143,
+    "total_classes": 6,
+    "average_complexity": 38.29,
     "complexity_distribution": {
-      "low (0-5)": 1,
-      "medium (6-15)": 1,
+      "low (0-5)": 2,
+      "medium (6-15)": 2,
       "high (16-30)": 5,
       "very_high (31+)": 8
     },
@@ -76,15 +67,15 @@
       ],
       [
         "src/ai_context_core/analyzer/fs_utils.py",
-        60
+        74
+      ],
+      [
+        "src/ai_context_core/analyzer/issues.py",
+        65
       ],
       [
         "src/ai_context_core/analyzer/reporting.py",
         60
-      ],
-      [
-        "src/ai_context_core/analyzer/dependencies.py",
-        52
       ]
     ]
   },
@@ -110,16 +101,20 @@
       "typing.Callable",
       "typing.Dict",
       "typing.List",
+      "typing.NamedTuple",
       "typing.Optional",
       "typing.Set",
       "typing.Tuple"
     ],
     "third_party": [
+      "ai_context_core.cli.analyze",
       "analyzer.engine.ProjectAnalyzer",
       "antipatterns",
       "ast_utils",
       "ast_utils.calculate_complexity",
+      "cProfile",
       "click",
+      "click.testing.CliRunner",
       "config.loader.ConfigLoader",
       "config.loader.list_profiles",
       "context.manager.AIContextManager",
@@ -127,42 +122,92 @@
       "fnmatch",
       "fs_utils",
       "git_analysis",
+      "io.StringIO",
       "issues",
       "metrics",
       "mmap",
       "patterns",
+      "pstats",
       "reporting",
+      "secrets.detect_secrets",
       "yaml"
     ],
     "files": {
       "pyproject.toml": "[project]\nname = \"ai-context-core\"\nversion = \"1.0.1\"\ndescription = \"Core logic for AI-driven development context management\"\nreadme = \"README.md\"\nrequires-python = \">=3.9\"\nauthors = [\n    {name = \"Juan M. Bernales\", email = \"juanbernales@gmail.com\"}\n]\nlicense = {text = \"GPL-3.0-or-later\"}\nkeywords = [\"ai\", \"context\", \"llm\", \"analysis\", \"development-tools\", \"productivity\"]\nclassifiers = [\n    \"Development Status :: 4 - Beta\",\n    \"Intended Audience :: Developers\",\n    \"Topic :: Software Development :: Libraries :: Python Modules\",\n    \"License :: OSI Approved :: GNU General Public License v3 (GPLv3)\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.9\",\n    \"Programming Language :: Python :: 3.10\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Operating System :: OS Independent\",\n]\ndependencies = [\n    \"pyyaml>=6.0\",\n    \"click>=8.0\",\n    \"rich>=13.0\",\n]\n\n[project.urls]\nRepository = \"https://github.com/geociencio/ai-context-core\"\nIssues = \"https://github.com/geociencio/ai-context-core/issues\"\nDocumentation = \"https://github.com/geociencio/ai-context-core/blob/main/README.md\"\n\n[project.scripts]\nai-ctx = \"ai_context_core.cli:cli\"\n\n[build-system]\nrequires = [\"setuptools>=61.0\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[tool.setuptools.package-data]\n\"ai_context_core\" = [\"**/*.yaml\", \"**/*.json\", \"**/*.md\"]\n\n[tool.setuptools]\ninclude-package-data = true\n\n[tool.ruff]\nline-length = 100\ntarget-version = \"py39\"\n\n[dependency-groups]\ndev = [\n    \"pytest>=8.4.2\",\n    \"pytest-cov>=5.0.0\",\n    \"pre-commit>=3.7.1\",\n    \"ruff>=0.14.14\",\n]\n"
     },
     "import_graph": {
+      ".agent/scripts/skill_sync.py": [],
       "src/ai_context_core/__init__.py": [],
       "src/ai_context_core/analyzer/antipatterns.py": [],
-      "src/ai_context_core/analyzer/git_analysis.py": [],
-      ".agent/scripts/skill_sync.py": [],
+      "src/ai_context_core/analyzer/ast_utils.py": [],
       "src/ai_context_core/analyzer/dependencies.py": [],
       "src/ai_context_core/analyzer/metrics.py": [],
-      "src/ai_context_core/analyzer/issues.py": [],
-      "src/ai_context_core/analyzer/fs_utils.py": [],
-      "src/ai_context_core/analyzer/ast_utils.py": [],
-      "src/ai_context_core/config/loader.py": [],
-      "src/ai_context_core/cli.py": [],
       "src/ai_context_core/analyzer/patterns.py": [],
+      "src/ai_context_core/analyzer/reporting.py": [],
+      "src/ai_context_core/cli.py": [],
+      "src/ai_context_core/config/loader.py": [],
       "src/ai_context_core/context/manager.py": [],
+      ".agent/scripts/benchmark.py": [],
+      "src/ai_context_core/analyzer/secrets.py": [],
+      "src/ai_context_core/analyzer/git_analysis.py": [],
       "src/ai_context_core/analyzer/engine.py": [],
-      "src/ai_context_core/analyzer/reporting.py": []
+      "src/ai_context_core/analyzer/fs_utils.py": [],
+      "src/ai_context_core/analyzer/issues.py": []
     },
     "circular_dependencies": [],
     "graph_metrics": {
-      "nodes": 15,
+      "nodes": 17,
       "edges": 0,
       "density": 0.0,
       "is_dag": true,
-      "weakly_connected_components": 15
+      "weakly_connected_components": 17
     },
     "coupling_metrics": {
+      "src/ai_context_core/analyzer/dependencies.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      ".agent/scripts/benchmark.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/secrets.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipatterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/fs_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/engine.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
       "src/ai_context_core/analyzer/patterns.py": {
         "fan_in": 0,
         "fan_out": 0,
@@ -183,37 +228,12 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/antipatterns.py": {
+      ".agent/scripts/skill_sync.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/cli.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine.py": {
+      "src/ai_context_core/config/loader.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -223,25 +243,44 @@
         "fan_out": 0,
         "cbo": 0
       },
-      ".agent/scripts/skill_sync.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/dependencies.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/config/loader.py": {
+      "src/ai_context_core/cli.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       }
     },
-    "unused_imports": {}
+    "unused_imports": {
+      ".agent/scripts/benchmark.py": [
+        "pathlib.Path",
+        "sys"
+      ]
+    }
   },
   "debt": [
+    {
+      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (74)",
+          "value": 74
+        },
+        {
+          "type": "long_file",
+          "severity": "medium",
+          "message": "Long file (651 lines)",
+          "value": 651
+        },
+        {
+          "type": "classes_without_docstring",
+          "severity": "low",
+          "message": "1 classes without docstring"
+        }
+      ],
+      "total_issues": 3,
+      "severity_score": 6
+    },
     {
       "module": ".agent/scripts/skill_sync.py",
       "issues": [
@@ -294,33 +333,14 @@
         {
           "type": "high_complexity",
           "severity": "high",
-          "message": "Very high cyclomatic complexity (46)",
-          "value": 46
+          "message": "Very high cyclomatic complexity (65)",
+          "value": 65
         },
         {
           "type": "long_file",
           "severity": "medium",
-          "message": "Long file (521 lines)",
-          "value": 521
-        }
-      ],
-      "total_issues": 2,
-      "severity_score": 5
-    },
-    {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high cyclomatic complexity (60)",
-          "value": 60
-        },
-        {
-          "type": "long_file",
-          "severity": "medium",
-          "message": "Long file (518 lines)",
-          "value": 518
+          "message": "Long file (611 lines)",
+          "value": 611
         }
       ],
       "total_issues": 2,
@@ -345,19 +365,6 @@
       "severity_score": 4
     },
     {
-      "module": "src/ai_context_core/analyzer/metrics.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high cyclomatic complexity (32)",
-          "value": 32
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 3
-    },
-    {
       "module": "src/ai_context_core/analyzer/ast_utils.py",
       "issues": [
         {
@@ -365,6 +372,19 @@
           "severity": "high",
           "message": "Very high cyclomatic complexity (96)",
           "value": 96
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 3
+    },
+    {
+      "module": "src/ai_context_core/analyzer/metrics.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high cyclomatic complexity (32)",
+          "value": 32
         }
       ],
       "total_issues": 1,
@@ -423,13 +443,13 @@
       "severity_score": 2
     },
     {
-      "module": "src/ai_context_core/analyzer/git_analysis.py",
+      "module": "src/ai_context_core/cli.py",
       "issues": [
         {
           "type": "moderate_complexity",
           "severity": "medium",
-          "message": "High cyclomatic complexity (18)",
-          "value": 18
+          "message": "High cyclomatic complexity (16)",
+          "value": 16
         }
       ],
       "total_issues": 1,
@@ -449,13 +469,30 @@
       "severity_score": 2
     },
     {
-      "module": "src/ai_context_core/cli.py",
+      "module": ".agent/scripts/benchmark.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing module-level docstring"
+        },
+        {
+          "type": "functions_without_docstring",
+          "severity": "low",
+          "message": "1 functions without docstring"
+        }
+      ],
+      "total_issues": 2,
+      "severity_score": 2
+    },
+    {
+      "module": "src/ai_context_core/analyzer/git_analysis.py",
       "issues": [
         {
           "type": "moderate_complexity",
           "severity": "medium",
-          "message": "High cyclomatic complexity (16)",
-          "value": 16
+          "message": "High cyclomatic complexity (18)",
+          "value": 18
         }
       ],
       "total_issues": 1,
@@ -474,6 +511,30 @@
             "Refactor functions > 50 lines",
             "Extract common logic to helper functions",
             "Use comprehensions and generators"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (96) with several functions. Consider breaking down large logic.",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles"
+          ]
+        },
+        {
+          "type": "module_too_large",
+          "priority": "medium",
+          "message": "Module is quite large (469 lines)",
+          "suggestions": [
+            "Split into multiple modules",
+            "Extract classes to separate files"
           ]
         }
       ]
@@ -504,78 +565,6 @@
             "Refactor functions > 50 lines",
             "Extract common logic to helper functions",
             "Use comprehensions and generators"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "src/ai_context_core/analyzer/issues.py",
-      "suggestions": [
-        {
-          "type": "complexity_refactoring",
-          "priority": "high",
-          "message": "High complexity (46) with several functions. Consider breaking down large logic.",
-          "suggestions": [
-            "Extract methods from long functions",
-            "Use polymorphism instead of long if/else chains",
-            "Apply SOLID principles"
-          ]
-        },
-        {
-          "type": "module_too_large",
-          "priority": "medium",
-          "message": "Module is quite large (521 lines)",
-          "suggestions": [
-            "Split into multiple modules",
-            "Extract classes to separate files"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
-      "suggestions": [
-        {
-          "type": "complexity_refactoring",
-          "priority": "high",
-          "message": "High complexity (60) with several functions. Consider breaking down large logic.",
-          "suggestions": [
-            "Extract methods from long functions",
-            "Use polymorphism instead of long if/else chains",
-            "Apply SOLID principles"
-          ]
-        },
-        {
-          "type": "module_too_large",
-          "priority": "medium",
-          "message": "Module is quite large (518 lines)",
-          "suggestions": [
-            "Split into multiple modules",
-            "Extract classes to separate files"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "src/ai_context_core/analyzer/ast_utils.py",
-      "suggestions": [
-        {
-          "type": "complexity_refactoring",
-          "priority": "high",
-          "message": "High complexity (96) with several functions. Consider breaking down large logic.",
-          "suggestions": [
-            "Extract methods from long functions",
-            "Use polymorphism instead of long if/else chains",
-            "Apply SOLID principles"
-          ]
-        },
-        {
-          "type": "module_too_large",
-          "priority": "medium",
-          "message": "Module is quite large (469 lines)",
-          "suggestions": [
-            "Split into multiple modules",
-            "Extract classes to separate files"
           ]
         }
       ]
@@ -615,6 +604,30 @@
       ]
     },
     {
+      "module": "src/ai_context_core/analyzer/reporting.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (60) with several functions. Consider breaking down large logic.",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles"
+          ]
+        },
+        {
+          "type": "module_too_large",
+          "priority": "medium",
+          "message": "Module is quite large (487 lines)",
+          "suggestions": [
+            "Split into multiple modules",
+            "Extract classes to separate files"
+          ]
+        }
+      ]
+    },
+    {
       "module": "src/ai_context_core/context/manager.py",
       "suggestions": [
         {
@@ -625,6 +638,45 @@
             "Extract methods from long functions",
             "Use polymorphism instead of long if/else chains",
             "Apply SOLID principles"
+          ]
+        }
+      ]
+    },
+    {
+      "module": ".agent/scripts/benchmark.py",
+      "suggestions": [
+        {
+          "type": "functions_too_long",
+          "priority": "medium",
+          "message": "Very long functions (average 57.0 lines/function).",
+          "suggestions": [
+            "Refactor functions > 50 lines",
+            "Extract common logic to helper functions",
+            "Use comprehensions and generators"
+          ]
+        },
+        {
+          "type": "low_documentation_coverage",
+          "priority": "medium",
+          "message": "Low docstring coverage (0/1 functions).",
+          "suggestions": [
+            "Add docstrings to public methods and classes",
+            "Use Google or NumPy docstring formats"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "src/ai_context_core/analyzer/secrets.py",
+      "suggestions": [
+        {
+          "type": "functions_too_long",
+          "priority": "medium",
+          "message": "Very long functions (average 70.0 lines/function).",
+          "suggestions": [
+            "Refactor functions > 50 lines",
+            "Extract common logic to helper functions",
+            "Use comprehensions and generators"
           ]
         }
       ]
@@ -645,7 +697,7 @@
         {
           "type": "module_too_large",
           "priority": "medium",
-          "message": "Module is quite large (492 lines)",
+          "message": "Module is quite large (496 lines)",
           "suggestions": [
             "Split into multiple modules",
             "Extract classes to separate files"
@@ -654,12 +706,12 @@
       ]
     },
     {
-      "module": "src/ai_context_core/analyzer/reporting.py",
+      "module": "src/ai_context_core/analyzer/fs_utils.py",
       "suggestions": [
         {
           "type": "complexity_refactoring",
           "priority": "high",
-          "message": "High complexity (60) with several functions. Consider breaking down large logic.",
+          "message": "High complexity (74) with several functions. Consider breaking down large logic.",
           "suggestions": [
             "Extract methods from long functions",
             "Use polymorphism instead of long if/else chains",
@@ -669,7 +721,31 @@
         {
           "type": "module_too_large",
           "priority": "medium",
-          "message": "Module is quite large (487 lines)",
+          "message": "Module is quite large (651 lines)",
+          "suggestions": [
+            "Split into multiple modules",
+            "Extract classes to separate files"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "src/ai_context_core/analyzer/issues.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "High complexity (65) with several functions. Consider breaking down large logic.",
+          "suggestions": [
+            "Extract methods from long functions",
+            "Use polymorphism instead of long if/else chains",
+            "Apply SOLID principles"
+          ]
+        },
+        {
+          "type": "module_too_large",
+          "priority": "medium",
+          "message": "Module is quite large (611 lines)",
           "suggestions": [
             "Split into multiple modules",
             "Extract classes to separate files"
@@ -708,66 +784,17 @@
       "max_severity": "medium"
     },
     {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
           "pattern": "open(",
           "description": "File opening without path validation",
           "severity": "medium",
-          "line": 83,
-          "code": "with open(path, \"rb\") as f:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 98,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 277,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 481,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 501,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 517,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 127,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 429,
-          "code": "except Exception:"
+          "line": 92,
+          "code": "with open(output_path, \"w\", encoding=\"utf-8\") as f:"
         }
       ],
-      "total_issues": 8,
+      "total_issues": 1,
       "max_severity": "medium"
     },
     {
@@ -805,28 +832,28 @@
           "pattern": "open(",
           "description": "File opening without path validation",
           "severity": "medium",
-          "line": 351,
+          "line": 355,
           "code": "with open("
         },
         {
           "pattern": "except Exception:",
           "description": "Too broad exception handler (except Exception:)",
           "severity": "low",
-          "line": 356,
+          "line": 360,
           "code": "except Exception:"
         },
         {
           "pattern": "except Exception:",
           "description": "Too broad exception handler (except Exception:)",
           "severity": "low",
-          "line": 472,
+          "line": 476,
           "code": "except Exception:"
         },
         {
           "pattern": "except Exception:",
           "description": "Too broad exception handler (except Exception:)",
           "severity": "low",
-          "line": 421,
+          "line": 425,
           "code": "except Exception:"
         }
       ],
@@ -834,45 +861,80 @@
       "max_severity": "medium"
     },
     {
-      "module": "src/ai_context_core/analyzer/reporting.py",
+      "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
           "pattern": "open(",
           "description": "File opening without path validation",
           "severity": "medium",
           "line": 92,
-          "code": "with open(output_path, \"w\", encoding=\"utf-8\") as f:"
+          "code": "with open(path, \"rb\") as f:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 107,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 286,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 614,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 634,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 650,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 136,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 438,
+          "code": "except Exception:"
         }
       ],
-      "total_issues": 1,
+      "total_issues": 8,
       "max_severity": "medium"
     },
     {
-      "module": "src/ai_context_core/analyzer/git_analysis.py",
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
       "issues": [
         {
           "pattern": "except Exception:",
           "description": "Too broad exception handler (except Exception:)",
           "severity": "low",
-          "line": 30,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 67,
-          "code": "except Exception:"
-        },
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 118,
+          "line": 185,
           "code": "except Exception:"
         }
       ],
-      "total_issues": 3,
+      "total_issues": 1,
       "max_severity": "low"
     },
     {
@@ -904,48 +966,6 @@
       "max_severity": "low"
     },
     {
-      "module": "src/ai_context_core/analyzer/issues.py",
-      "issues": [
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 436,
-          "code": "except Exception:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "low"
-    },
-    {
-      "module": "src/ai_context_core/analyzer/ast_utils.py",
-      "issues": [
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 185,
-          "code": "except Exception:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "low"
-    },
-    {
-      "module": "src/ai_context_core/config/loader.py",
-      "issues": [
-        {
-          "pattern": "except Exception:",
-          "description": "Too broad exception handler (except Exception:)",
-          "severity": "low",
-          "line": 71,
-          "code": "except Exception:"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "low"
-    },
-    {
       "module": "src/ai_context_core/cli.py",
       "issues": [
         {
@@ -964,6 +984,76 @@
         }
       ],
       "total_issues": 2,
+      "max_severity": "low"
+    },
+    {
+      "module": "src/ai_context_core/config/loader.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 71,
+          "code": "except Exception:"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "low"
+    },
+    {
+      "module": ".agent/scripts/benchmark.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 33,
+          "code": "except Exception:"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "low"
+    },
+    {
+      "module": "src/ai_context_core/analyzer/git_analysis.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 30,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 71,
+          "code": "except Exception:"
+        },
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 122,
+          "code": "except Exception:"
+        }
+      ],
+      "total_issues": 3,
+      "max_severity": "low"
+    },
+    {
+      "module": "src/ai_context_core/analyzer/issues.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "description": "Too broad exception handler (except Exception:)",
+          "severity": "low",
+          "line": 524,
+          "code": "except Exception:"
+        }
+      ],
+      "total_issues": 1,
       "max_severity": "low"
     }
   ],
@@ -996,24 +1086,66 @@
       "total_issues": 3
     },
     {
-      "module": "src/ai_context_core/analyzer/git_analysis.py",
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
       "issues": [
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 5",
-          "line": 35,
-          "value": 5
+          "message": "Magic number detected: 0.5",
+          "line": 466,
+          "value": 0.5
         },
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 71,
-          "value": 30
+          "message": "Magic number detected: 100.0",
+          "line": 285,
+          "value": 100.0
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 328,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 329,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 330,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 100",
+          "line": 285,
+          "value": 100
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 320,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1.2",
+          "line": 467,
+          "value": 1.2
         }
       ],
-      "total_issues": 2
+      "total_issues": 8
     },
     {
       "module": "src/ai_context_core/analyzer/dependencies.py",
@@ -1294,380 +1426,6 @@
       "total_issues": 35
     },
     {
-      "module": "src/ai_context_core/analyzer/issues.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 134,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 800",
-          "line": 162,
-          "value": 800
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 0.5",
-          "line": 326,
-          "value": 0.5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 25",
-          "line": 348,
-          "value": 25
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 400",
-          "line": 373,
-          "value": 400
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 123,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 143,
-          "value": 10
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 500",
-          "line": 171,
-          "value": 500
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 251,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 15",
-          "line": 265,
-          "value": 15
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 5",
-          "line": 265,
-          "value": 5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 294,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 445,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 442,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 442,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 112,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 114,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 120",
-          "line": 517,
-          "value": 120
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 431,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 431,
-          "value": 2
-        }
-      ],
-      "total_issues": 20
-    },
-    {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 4",
-          "line": 284,
-          "value": 4
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 8",
-          "line": 284,
-          "value": 8
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 256",
-          "line": 28,
-          "value": 256
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 396,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 398,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 273,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 376,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 400,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 403,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 87,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 87,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1500",
-          "line": 276,
-          "value": 1500
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 396,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 396,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 398,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 398,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 400,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 403,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 516,
-          "value": 2
-        }
-      ],
-      "total_issues": 19
-    },
-    {
-      "module": "src/ai_context_core/analyzer/ast_utils.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 0.5",
-          "line": 466,
-          "value": 0.5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100.0",
-          "line": 285,
-          "value": 100.0
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 328,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 329,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 330,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 285,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 320,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1.2",
-          "line": 467,
-          "value": 1.2
-        }
-      ],
-      "total_issues": 8
-    },
-    {
-      "module": "src/ai_context_core/cli.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 40",
-          "line": 144,
-          "value": 40
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 40",
-          "line": 151,
-          "value": 40
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 80",
-          "line": 147,
-          "value": 80
-        }
-      ],
-      "total_issues": 3
-    },
-    {
       "module": "src/ai_context_core/analyzer/patterns.py",
       "issues": [
         {
@@ -1877,200 +1635,6 @@
       "total_issues": 29
     },
     {
-      "module": "src/ai_context_core/context/manager.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 4000",
-          "line": 71,
-          "value": 4000
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 4",
-          "line": 273,
-          "value": 4
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 0.8",
-          "line": 283,
-          "value": 0.8
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 259,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 99,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1000",
-          "line": 211,
-          "value": 1000
-        }
-      ],
-      "total_issues": 6
-    },
-    {
-      "module": "src/ai_context_core/analyzer/engine.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 239,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 239,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 65,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 93,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 94,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 15",
-          "line": 95,
-          "value": 15
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 5",
-          "line": 96,
-          "value": 5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 97,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 98,
-          "value": 10
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 100,
-          "value": 10
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 5",
-          "line": 103,
-          "value": 5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 15",
-          "line": 104,
-          "value": 15
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 25",
-          "line": 105,
-          "value": 25
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 200",
-          "line": 106,
-          "value": 200
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 500",
-          "line": 107,
-          "value": 500
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 4",
-          "line": 65,
-          "value": 4
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 99,
-          "value": 10
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 5",
-          "line": 308,
-          "value": 5
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 450,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 354,
-          "value": 2
-        }
-      ],
-      "total_issues": 20
-    },
-    {
       "module": "src/ai_context_core/analyzer/reporting.py",
       "issues": [
         {
@@ -2278,11 +1842,690 @@
         }
       ],
       "total_issues": 29
+    },
+    {
+      "module": "src/ai_context_core/cli.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 144,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 151,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 80",
+          "line": 147,
+          "value": 80
+        }
+      ],
+      "total_issues": 3
+    },
+    {
+      "module": "src/ai_context_core/context/manager.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4000",
+          "line": 71,
+          "value": 4000
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 273,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 0.8",
+          "line": 283,
+          "value": 0.8
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 259,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 99,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1000",
+          "line": 211,
+          "value": 1000
+        }
+      ],
+      "total_issues": 6
+    },
+    {
+      "module": ".agent/scripts/benchmark.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 46,
+          "value": 30
+        }
+      ],
+      "total_issues": 1
+    },
+    {
+      "module": "src/ai_context_core/analyzer/secrets.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 138,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 140,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 140,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 140,
+          "value": 2
+        }
+      ],
+      "total_issues": 4
+    },
+    {
+      "module": "src/ai_context_core/analyzer/git_analysis.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 35,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1000",
+          "line": 35,
+          "value": 1000
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 75,
+          "value": 30
+        }
+      ],
+      "total_issues": 3
+    },
+    {
+      "module": "src/ai_context_core/analyzer/engine.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 243,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 243,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 65,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 93,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 94,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 95,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 96,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 97,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 98,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 100,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 103,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 104,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 25",
+          "line": 105,
+          "value": 25
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 200",
+          "line": 106,
+          "value": 200
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 500",
+          "line": 107,
+          "value": 500
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 65,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 99,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 312,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 454,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 358,
+          "value": 2
+        }
+      ],
+      "total_issues": 20
+    },
+    {
+      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 293,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 8",
+          "line": 293,
+          "value": 8
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 256",
+          "line": 37,
+          "value": 256
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 405,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 407,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 542,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 544,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 282,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 385,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 409,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 412,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 546,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 551,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 96,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 96,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1500",
+          "line": 285,
+          "value": 1500
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 405,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 405,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 407,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 407,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 409,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 100",
+          "line": 412,
+          "value": 100
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 542,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 542,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 544,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 544,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 546,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 100",
+          "line": 551,
+          "value": 100
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 649,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 561,
+          "value": 20
+        }
+      ],
+      "total_issues": 30
+    },
+    {
+      "module": "src/ai_context_core/analyzer/issues.py",
+      "issues": [
+        {
+          "type": "spaghetti_code",
+          "severity": "high",
+          "message": "Function 'detect_ast_security_issues' is Spaghetti Code (Complexity: 30)",
+          "line": 15,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 213,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 800",
+          "line": 241,
+          "value": 800
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 0.5",
+          "line": 405,
+          "value": 0.5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 25",
+          "line": 427,
+          "value": 25
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 400",
+          "line": 452,
+          "value": 400
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 50",
+          "line": 202,
+          "value": 50
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 222,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 500",
+          "line": 250,
+          "value": 500
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 330,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 344,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 344,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 50",
+          "line": 373,
+          "value": 50
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 535,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 530,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 530,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 530,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 191,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 193,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 120",
+          "line": 607,
+          "value": 120
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 515,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 516,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 517,
+          "value": 2
+        }
+      ],
+      "total_issues": 23
     }
   ],
   "entry_points": [
     ".agent/scripts/skill_sync.py",
-    "src/ai_context_core/cli.py"
+    "src/ai_context_core/cli.py",
+    ".agent/scripts/benchmark.py"
   ],
   "patterns": {
     "Factory": [
@@ -2302,32 +2545,32 @@
     "hotspots": [
       {
         "path": "src/ai_context_core/analyzer/engine.py",
-        "commits": 12
+        "commits": 13
       },
       {
         "path": "src/ai_context_core/analyzer/reporting.py",
-        "commits": 12
+        "commits": 13
       },
       {
         "path": "src/ai_context_core/analyzer/ast_utils.py",
-        "commits": 10
+        "commits": 11
       },
       {
         "path": "src/ai_context_core/analyzer/dependencies.py",
-        "commits": 8
+        "commits": 9
       },
       {
         "path": "src/ai_context_core/analyzer/issues.py",
-        "commits": 8
+        "commits": 9
       }
     ],
     "churn": {
       "available": true,
       "period_days": 30,
-      "added": 20148,
-      "deleted": 4867,
-      "total_churn": 25015,
-      "files_changed": 289
+      "added": 21656,
+      "deleted": 6225,
+      "total_churn": 27881,
+      "files_changed": 310
     }
   }
 }

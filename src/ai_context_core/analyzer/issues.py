@@ -7,6 +7,7 @@ security patterns, and optimization opportunities.
 import ast
 from typing import List, Dict, Any, Tuple
 from pathlib import Path
+from .secrets import detect_secrets
 
 # ... existing code ...
 
@@ -29,7 +30,7 @@ def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
                     "description": "Use of assert in production code",
                     "severity": "low",
                     "line": node.lineno,
-                    "code": "assert ...",  # simplified
+                    "code": "assert ...",
                 }
             )
 
@@ -56,7 +57,7 @@ def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
                     }
                 )
 
-        # 3. SQL Injection (f-strings with SELECT)
+        # 3. SQL Injection (f-strings with SELECT) - General case
         if isinstance(node, ast.JoinedStr):
             text_parts = []
             for value in node.values:
@@ -74,6 +75,84 @@ def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
                         "code": "f'...SELECT...'",
                     }
                 )
+
+        # 4. Dangerous .execute() calls
+        if isinstance(node, ast.Call):
+            # Detect .execute(...)
+            if isinstance(node.func, ast.Attribute) and node.func.attr == "execute":
+                if not node.args:
+                    continue
+
+                first_arg = node.args[0]
+
+                # Case A: execute(f"...") -> Detected by rule #3 generally, but let's be specific if needed
+                # Actually, rule #3 catches the JoinedStr specifically.
+                # Let's add a specific rule for .execute with f-string if rule #3 doesn't cover all context context or we want higher severity/specificity.
+                # However, rule #3 is general. Let's look for .format() and %
+
+                # Case B: execute("...".format(...))
+                if (
+                    isinstance(first_arg, ast.Call)
+                    and isinstance(first_arg.func, ast.Attribute)
+                    and first_arg.func.attr == "format"
+                ):
+                    # Check if the string being formatted contains "SELECT"
+                    if isinstance(first_arg.func.value, ast.Constant) and isinstance(
+                        first_arg.func.value.value, str
+                    ):
+                        query_str = first_arg.func.value.value.upper()
+                        if "SELECT" in query_str:
+                            issues.append(
+                                {
+                                    "pattern": "SQL Injection (.format)",
+                                    "description": "Unsafe SQL query construction using .format() inside execute()",
+                                    "severity": "high",
+                                    "line": node.lineno,
+                                    "code": "execute('...{}'.format(...))",
+                                }
+                            )
+
+                # Case C: execute("..." % ...)
+                if isinstance(first_arg, ast.BinOp) and isinstance(
+                    first_arg.op, ast.Mod
+                ):
+                    if isinstance(first_arg.left, ast.Constant) and isinstance(
+                        first_arg.left.value, str
+                    ):
+                        query_str = first_arg.left.value.upper()
+                        if "SELECT" in query_str:
+                            issues.append(
+                                {
+                                    "pattern": "SQL Injection (%)",
+                                    "description": "Unsafe SQL query construction using % operator inside execute()",
+                                    "severity": "high",
+                                    "line": node.lineno,
+                                    "code": "execute('...' % ...)",
+                                }
+                            )
+
+                # Case D: execute(f"...")
+                # While Rule #3 catches JoinedStr, it might catch innocent f-strings.
+                # Explicitly checking for execute(f"...") allows us to say "This is definitely SQLi" associated with execute.
+                if isinstance(first_arg, ast.JoinedStr):
+                    # Re-check for SELECT/FROM or just assume execute(f"...") is bad practice generally if it has vars
+                    # But let's check content to be consistent with test expectations
+                    text_parts = []
+                    for value in first_arg.values:
+                        if isinstance(value, ast.Constant):
+                            text_parts.append(str(value.value).upper())
+
+                    full_text = " ".join(text_parts)
+                    if "SELECT" in full_text:  # simplified check
+                        issues.append(
+                            {
+                                "pattern": "SQL Injection (f-string)",
+                                "description": "Unsafe SQL query construction using f-string inside execute()",
+                                "severity": "critical",  # Bump severity for explicit execute usage
+                                "line": node.lineno,
+                                "code": "execute(f'...')",
+                            }
+                        )
 
     return issues
 
@@ -420,6 +499,10 @@ def find_security_issues(
 
             issues_found = _scan_file_for_issues(content, dangerous_patterns)
 
+            # Add secrets detection
+            secrets_found = detect_secrets(content)
+            issues_found.extend(secrets_found)
+
             if issues_found:
                 security_issues.append(
                     {
@@ -428,7 +511,12 @@ def find_security_issues(
                         "total_issues": len(issues_found),
                         "max_severity": max(
                             (i["severity"] for i in issues_found),
-                            key=lambda x: {"high": 3, "medium": 2, "low": 1}[x],
+                            key=lambda x: {
+                                "critical": 4,
+                                "high": 3,
+                                "medium": 2,
+                                "low": 1,
+                            }[x],
                         ),
                     }
                 )
@@ -439,7 +527,9 @@ def find_security_issues(
 
     # Sort results by severity
     security_issues.sort(
-        key=lambda x: {"high": 3, "medium": 2, "low": 1}[x["max_severity"]],
+        key=lambda x: {"critical": 4, "high": 3, "medium": 2, "low": 1}[
+            x["max_severity"]
+        ],
         reverse=True,
     )
     return security_issues[:20]

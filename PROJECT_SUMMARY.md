@@ -1,34 +1,34 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-25 23:10:02
+Analysis Date: 2026-01-25 23:38:37
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Total Modules**: 15
-- **Lines of Code**: 4,623
-- **Total Size**: 1.1 MB
-- **Average Complexity**: 40.4
-- **Avg Maintenance Index**: 22.1
-- **Docstring Coverage**: 96.9%
-- **Quality Score**: 66.7/100
-- **Test Files**: 14
+- **Total Modules**: 17
+- **Lines of Code**: 5,051
+- **Total Size**: 0.8 MB
+- **Average Complexity**: 38.3
+- **Avg Maintenance Index**: 23.3
+- **Docstring Coverage**: 95.2%
+- **Quality Score**: 67.9/100
+- **Test Files**: 15
 
 ## 📁 STRUCTURE
-- **Python Files**: 39
-- **Total Files**: 155
-- **Primary File Types**: .py, .pyc, .md, .txt, .sample
+- **Python Files**: 32
+- **Total Files**: 129
+- **Primary File Types**: .md, .py, .yaml, .json, .yml
 
 ## 🚨 CRITICAL ISSUES
 
 ### 🔒 Security Issues:
 - **.agent/scripts/skill_sync.py**: 3 issues (Max: MEDIUM)
-- **src/ai_context_core/analyzer/fs_utils.py**: 8 issues (Max: MEDIUM)
+- **src/ai_context_core/analyzer/reporting.py**: 1 issues (Max: MEDIUM)
 - **src/ai_context_core/context/manager.py**: 3 issues (Max: MEDIUM)
 
 ### 🏗️ Critical Technical Debt:
+- **src/ai_context_core/analyzer/fs_utils.py**: 3 issues (Score: 6)
 - **.agent/scripts/skill_sync.py**: 3 issues (Score: 5)
 - **src/ai_context_core/analyzer/dependencies.py**: 3 issues (Score: 5)
 - **src/ai_context_core/analyzer/issues.py**: 2 issues (Score: 5)
-- **src/ai_context_core/analyzer/fs_utils.py**: 2 issues (Score: 5)
 - **src/ai_context_core/analyzer/reporting.py**: 2 issues (Score: 4)
 
 
@@ -37,11 +37,12 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 ### .agent/scripts/skill_sync.py
 - Very long functions (average 70.5 lines/function).
 
+### src/ai_context_core/analyzer/ast_utils.py
+- High complexity (96) with several functions. Consider breaking down large logic.
+- Module is quite large (469 lines)
+
 ### src/ai_context_core/analyzer/dependencies.py
 - High complexity (52) with several functions. Consider breaking down large logic.
-
-### src/ai_context_core/analyzer/metrics.py
-- Very long functions (average 65.8 lines/function).
 
 ## 🏗️ DESIGN PATTERNS
 
@@ -50,20 +51,20 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 289
-- **Additions**: +20148
-- **Deletions**: -4867
-- **Total Churn**: 25015
+- **Files Changed**: 310
+- **Additions**: +21656
+- **Deletions**: -6225
+- **Total Churn**: 27881
 
 ### 🔥 Hotspots (Frequently Changed Files)
-- `src/ai_context_core/analyzer/engine.py`: 12 commits
-- `src/ai_context_core/analyzer/reporting.py`: 12 commits
-- `src/ai_context_core/analyzer/ast_utils.py`: 10 commits
-- `src/ai_context_core/analyzer/dependencies.py`: 8 commits
-- `src/ai_context_core/analyzer/issues.py`: 8 commits
+- `src/ai_context_core/analyzer/engine.py`: 13 commits
+- `src/ai_context_core/analyzer/reporting.py`: 13 commits
+- `src/ai_context_core/analyzer/ast_utils.py`: 11 commits
+- `src/ai_context_core/analyzer/dependencies.py`: 9 commits
+- `src/ai_context_core/analyzer/issues.py`: 9 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- low (0-5): 1 modules (6.7%)
-- medium (6-15): 1 modules (6.7%)
-- high (16-30): 5 modules (33.3%)
-- very_high (31+): 8 modules (53.3%)
+- low (0-5): 2 modules (11.8%)
+- medium (6-15): 2 modules (11.8%)
+- high (16-30): 5 modules (29.4%)
+- very_high (31+): 8 modules (47.1%)

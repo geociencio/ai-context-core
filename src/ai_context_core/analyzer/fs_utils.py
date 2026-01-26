@@ -12,7 +12,16 @@ import subprocess
 import logging
 import hashlib
 import json
-from typing import List, Dict, Any
+import json
+from typing import List, Dict, Any, NamedTuple
+
+
+class ProjectScanResult(NamedTuple):
+    python_files: List[pathlib.Path]
+    test_files_count: int
+    file_types: Dict[str, int]
+    size_stats: Dict[str, Any]
+
 
 logger = logging.getLogger(__name__)
 
@@ -429,6 +438,130 @@ def _accumulate_directory_stats(project_path: pathlib.Path) -> Dict[str, int]:
                     except Exception:
                         pass
     return stats
+
+
+def scan_project(
+    project_path: pathlib.Path, exclusion_patterns: List[str]
+) -> ProjectScanResult:
+    """Scans the project directory once to gather all necessary file info.
+
+    Replaces multiple standalone traversals (rglob/walk) with a single efficient pass.
+
+    Args:
+        project_path: Root directory to scan.
+        exclusion_patterns: List of patterns to ignore.
+
+    Returns:
+        A ProjectScanResult containing python files, test counts, and stats.
+    """
+    python_files = []
+    test_files_count = 0
+    file_types = {}
+
+    stats = {"total_files": 0, "total_size": 0, "python_files": 0, "python_size": 0}
+
+    match_cache = {}  # helper to cache pattern matching results if needed,
+    # simpler to just traverse and check.
+
+    common_exts = {
+        ".py",
+        ".txt",
+        ".md",
+        ".json",
+        ".yml",
+        ".yaml",
+        ".html",
+        ".css",
+        ".js",
+        ".xml",
+        ".csv",
+        ".sql",
+    }
+
+    # Use os.walk for efficiency
+    for root, dirs, files in os.walk(project_path):
+        # Calculate relative root for exclusion checking
+        rel_root = os.path.relpath(root, project_path)
+        if rel_root == ".":
+            rel_root = ""
+
+        # Modify dirs in-place to prune excluded directories
+        # This prevents descending into efficient ignored dirs like .git or venv
+        # But we need to check if the directory ITSELF matches an exclusion pattern
+
+        # Filter directories
+        i = 0
+        while i < len(dirs):
+            d = dirs[i]
+            d_rel_path = os.path.join(rel_root, d)
+            d_path = pathlib.Path(root) / d
+
+            # Basic hidden dir check (fast)
+            if d.startswith(".") and d != ".":  # e.g. .git
+                # Check if it's explicitly ignored by patterns, if not, usually we ignore dot-dirs
+                # logic in load_exclusion_patterns suggests we ignore .git, .venv etc by default.
+                pass
+
+            if _matches_exclusion_pattern(d_path, d_rel_path, exclusion_patterns):
+                del dirs[i]
+            else:
+                i += 1
+
+        for file in files:
+            file_path = os.path.join(root, file)
+            path_obj = pathlib.Path(file_path)
+            rel_path = os.path.join(rel_root, file)
+            size = 0
+            try:
+                size = os.path.getsize(file_path)
+            except OSError:
+                pass
+
+            # Check exclusions
+            if _matches_exclusion_pattern(path_obj, rel_path, exclusion_patterns):
+                continue
+
+            # 1. Stats accumulation
+            _process_entry(file, size, stats)
+
+            # 2. File Type Counting
+            ext = os.path.splitext(file)[1].lower()
+            if ext in common_exts or ext:
+                file_types[ext] = file_types.get(ext, 0) + 1
+
+            # 3. Python File Collection & Test Counting
+            if ext == ".py":
+                if is_test_file(path_obj):
+                    test_files_count += 1
+                else:
+                    python_files.append(path_obj)
+
+    # Post-process stats
+    final_size_stats = {
+        "total_files": stats["total_files"],
+        "total_size_mb": round(stats["total_size"] / (1024 * 1024), 2),
+        "python_files": stats["python_files"],
+        "python_size_mb": round(stats["python_size"] / (1024 * 1024), 2),
+        "avg_file_size_kb": (
+            round(stats["total_size"] / stats["total_files"] / 1024, 2)
+            if stats["total_files"] > 0
+            else 0
+        ),
+        "python_percentage": (
+            round(stats["python_size"] / stats["total_size"] * 100, 2)
+            if stats["total_size"] > 0
+            else 0
+        ),
+    }
+
+    return ProjectScanResult(
+        python_files=sorted(python_files),
+        test_files_count=test_files_count,
+        file_types=dict(
+            sorted(file_types.items(), key=lambda x: x[1], reverse=True)[:20]
+        ),
+        size_stats=final_size_stats,
+    )
 
 
 def _process_entry(filename: str, size: int, stats: Dict[str, int]):

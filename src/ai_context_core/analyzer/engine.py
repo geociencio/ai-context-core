@@ -139,10 +139,10 @@ class ProjectAnalyzer:
         Returns:
             A dictionary with intermediate analysis data (modules, deps, structure).
         """
-        # 1. Get files
-        python_files = fs_utils.get_python_files_filtered(
-            self.project_path, self.exclusion_patterns
-        )
+        # 1. Single-pass Project Scan (Performance Optimization)
+        # Replaces get_python_files, count_test_files, and stats gathering
+        scan_result = fs_utils.scan_project(self.project_path, self.exclusion_patterns)
+        python_files = scan_result.python_files
         logger.info(f"Found {len(python_files)} Python files")
 
         # 2. Parallel module analysis
@@ -154,10 +154,14 @@ class ProjectAnalyzer:
         )
 
         # 4. Structure and Tests
-        structure = fs_utils.analyze_structure(self.project_path, len(modules_data))
-        test_files_count = fs_utils.count_test_files(
-            self.project_path, self.exclusion_patterns
-        )
+        # We manually construct structure to avoid re-triggering scans in scan_structure
+        structure = {
+            "tree": fs_utils.generate_tree_optimized(self.project_path),
+            "modules_count": len(modules_data),
+            "file_types": scan_result.file_types,
+            "size_stats": scan_result.size_stats,
+        }
+        test_files_count = scan_result.test_files_count
 
         # 5. Git Analysis
         git_data = {
