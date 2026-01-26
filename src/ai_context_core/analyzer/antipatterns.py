@@ -8,162 +8,143 @@ import ast
 from typing import List, Dict, Any
 
 
+class AntiPatternDetector:
+    """Base class for anti-pattern detectors."""
+
+    def __init__(self):
+        self.issues = []
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Analyzes a node and returns detected issue instances."""
+        raise NotImplementedError
+
+    def _add_issue(self, type_id: str, severity: str, msg: str, line: int, value: Any):
+        self.issues.append(
+            {
+                "type": type_id,
+                "severity": severity,
+                "message": msg,
+                "line": line,
+                "value": value,
+            }
+        )
+
+
+class GodObjectDetector(AntiPatternDetector):
+    """Detects 'God Object' classes with too many methods."""
+
+    def __init__(self, threshold: int = 20):
+        super().__init__()
+        self.threshold = threshold
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.ClassDef):
+            return []
+        self.issues = []
+        count = sum(1 for i in node.body if isinstance(i, ast.FunctionDef))
+        if count > self.threshold:
+            self._add_issue(
+                "god_object",
+                "high",
+                f"Class '{node.name}' is a God Object ({count} methods)",
+                node.lineno,
+                count,
+            )
+        return self.issues
+
+
+class SpaghettiCodeDetector(AntiPatternDetector):
+    """Detects 'Spaghetti Code' functions with high cyclomatic complexity."""
+
+    def __init__(self, threshold: int = 25):
+        super().__init__()
+        self.threshold = threshold
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        if not isinstance(node, ast.FunctionDef):
+            return []
+        self.issues = []
+        from .ast_utils import calculate_complexity
+
+        cc = calculate_complexity(node)
+        if cc > self.threshold:
+            self._add_issue(
+                "spaghetti_code",
+                "high",
+                f"Function '{node.name}' is Spaghetti Code (CC: {cc})",
+                node.lineno,
+                cc,
+            )
+        return self.issues
+
+
+class MagicNumberDetector(AntiPatternDetector):
+    """Detects 'Magic Numbers' usage (hardcoded numeric constants)."""
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        self.issues = []
+        for n in ast.walk(node):
+            if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
+                if n.value not in (-1, 0, 1, 0.0, 1.0):
+                    self._add_issue(
+                        "magic_number",
+                        "low",
+                        f"Magic number detected: {n.value}",
+                        n.lineno,
+                        n.value,
+                    )
+        return self.issues
+
+
+class DeadCodeDetector(AntiPatternDetector):
+    """Detects local unreachable code (e.g. after return/raise)."""
+
+    def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        self.issues = []
+        if isinstance(node, (ast.FunctionDef, ast.Module)):
+            for i, child in enumerate(node.body):
+                if isinstance(child, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
+                    if i + 1 < len(node.body):
+                        self._add_issue(
+                            "dead_code",
+                            "medium",
+                            "Unreachable code detected",
+                            node.body[i + 1].lineno,
+                            1,
+                        )
+                        break
+        return self.issues
+
+
 def detect_god_object(
     tree: ast.AST, threshold_methods: int = 20
 ) -> List[Dict[str, Any]]:
-    """Detects 'God Object' classes with too many methods.
-
-    Args:
-        tree: The AST to analyze.
-        threshold_methods: Minimum number of methods to trigger detection.
-
-    Returns:
-        List of detected issues.
-    """
-    issues = []
+    det = GodObjectDetector(threshold_methods)
+    res = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            method_count = sum(
-                1 for item in node.body if isinstance(item, ast.FunctionDef)
-            )
-            if method_count > threshold_methods:
-                issues.append(
-                    {
-                        "type": "god_object",
-                        "severity": "high",
-                        "message": f"Class '{node.name}' is a God Object ({method_count} methods)",
-                        "line": node.lineno,
-                        "value": method_count,
-                    }
-                )
-    return issues
+        res.extend(det.detect(node))
+    return res
 
 
 def detect_spaghetti_code(
     tree: ast.AST, complexity_threshold: int = 25
 ) -> List[Dict[str, Any]]:
-    """Detects 'Spaghetti Code' functions with high cyclomatic complexity.
-
-    This relies on the complexity calculation from ast_utils, but since we don't prefer circular imports
-    or passing external complexity results, we might need a way to integrate this.
-    For now, we will rely on integration level to call this.
-    Alternatively, we can accept pre-calculated complexity list, or re-calculate.
-
-    Wait, to invoke this standalone, we need to calculate complexity.
-    To avoid duplication, we should import calculate_complexity from ast_utils.
-    """
-    # Import locally to avoid circular import if ast_utils imports this module (it shouldn't)
-    from .ast_utils import calculate_complexity
-
-    issues = []
+    det = SpaghettiCodeDetector(complexity_threshold)
+    res = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            # Extract subtree for function to calculate its complexity
-            # calculate_complexity input is an AST node (tree or function node)
-            # But the current implementation of calculate_complexity walks the tree.
-            # Passing the function node as 'tree' works.
-            cc = calculate_complexity(node)
-            if cc > complexity_threshold:
-                issues.append(
-                    {
-                        "type": "spaghetti_code",
-                        "severity": "high",
-                        "message": f"Function '{node.name}' is Spaghetti Code (Complexity: {cc})",
-                        "line": node.lineno,
-                        "value": cc,
-                    }
-                )
-    return issues
+        res.extend(det.detect(node))
+    return res
 
 
 def detect_magic_numbers(
     tree: ast.AST, threshold_occurrences: int = 3
 ) -> List[Dict[str, Any]]:
-    """Detects 'Magic Numbers' usage (hardcoded numeric constants).
-
-    Ignores 0, 1, -1 and power of 2 common values maybe?
-    For simplicity: ignore -1, 0, 1.
-    """
-    issues = []
-    # We might want to count occurrences per value to avoid noise?
-    # Or just flag every occurrence? Flagging every occurrence is noisy.
-    # The requirement says "Constantes hardcodeadas".
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
-            if node.value in [0, 1, -1, 0.0, 1.0]:
-                continue
-
-            # Check if it's assigned to a constant variable (UPPER_CASE) -> Acceptable
-            # It's hard to check parent context easily in ast.walk without parent pointers.
-            # So we'll produce a warning broadly for now or skip this detailed check.
-
-            # Actually, magic numbers usually refer to usage inside logic, not definitions.
-            # If it's inside a Call, BinOp, Compare, etc.
-
-            # Let's simple implementation first: Any number used, maybe filtering obvious ones.
-
-            issues.append(
-                {
-                    "type": "magic_number",
-                    "severity": "low",
-                    "message": f"Magic number detected: {node.value}",
-                    "line": node.lineno,
-                    "value": node.value,
-                }
-            )
-
-    # Filter to unique per line or something?
-    # Let's keep it simple.
-    return issues
+    return MagicNumberDetector().detect(tree)
 
 
 def detect_dead_code(tree: ast.AST) -> List[Dict[str, Any]]:
-    """Detects 'Dead Code' (e.g. code after return/raise).
-
-    This is simple unreachable code detection.
-    True 'dead code' (never imported/called) requires project-level analysis.
-    The requirement says "Dead Code (código nunca importado)".
-    This requires cross-file analysis which 'antipatterns.py' acting on a single tree cannot do alone
-    unless checks usage.
-
-    However, 'find_unused_imports' is in 'Dependency Improved' plan.
-    'Dead Code' here might refer to local unreachable code or unused variables/classes?
-
-    If strict "never imported", it's a project level check (engine level).
-    If local dead code (unreachable), it's AST level.
-
-    Task says: "[ ] `detect_dead_code()` - Código nunca importado"
-    So it implies finding files or symbols that are never imported.
-    This cannot be done in a single-file AST pass. It needs the full dependency graph.
-
-    So I will define the function here but it might need to accept the dependency graph or be called from engine with more context.
-    Or maybe I should implement Unreachable Code here?
-
-    Let's implement Unreachable Code (easier) AND Unused Imports (local).
-    But for "never imported" (global dead code), I need the usage graph.
-
-    Given the scope "Antipatterns module", I will implement `detect_dead_code` to accept `is_used` info or similar if possible.
-    But detecting unreachable code locally is also "Dead Code".
-
-    Let's implement local unreachable code for now.
-    """
-    issues = []
+    det = DeadCodeDetector()
+    res = []
     for node in ast.walk(tree):
-        if isinstance(node, (ast.FunctionDef, ast.Module)):
-            body = node.body
-            for i, child in enumerate(body):
-                if isinstance(child, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
-                    if i + 1 < len(body):
-                        # Statements after return/raise
-                        issues.append(
-                            {
-                                "type": "dead_code",
-                                "severity": "medium",
-                                "message": "Unreachable code detected after return/raise/break/continue",
-                                "line": body[i + 1].lineno,
-                                "value": 1,
-                            }
-                        )
-                        break  # Only report first unreachable block per scope
-    return issues
+        res.extend(det.detect(node))
+    return res

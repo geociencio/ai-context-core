@@ -1,24 +1,15 @@
-# Next Steps: AI Context Core
+# Next Steps - ai-context-core
 
-## 🚀 Immediate Priorities (Next Session)
+## Session Context
+- **Theme**: Modularization and Technical Debt Reduction (6 Phases)
+- **Status**: 100% core modules refactorized into class-based architecture.
+- **Metrics**: Quality Score 71.1, LOC reduced by ~1,400.
 
-- [ ] **Fase 5: Refinamiento y CI/CD**
-  - Configurar GitHub Actions para ejecutar `ai-ctx analyze` y publicar reportes HTML.
-  - Refinar heurísticas de `ai_recommendations.py` basadas en uso real.
+## Pending Tasks
+- [ ] Implement enhanced visualization (graphs/charts) in the HTML report.
+- [ ] Add more architectural pattern detectors (Dependency Injection, Proxy).
+- [ ] Improve testing coverage for the new class-based structures.
 
-## 🐛 Known Issues / Technical Debt
-
-- El gráfico de dependencias (Mermaid) muestra conexiones limitadas en proyectos con imports relativos complejos. Se ha mejorado la lógica, pero puede requerir más ajustes.
-
-## 💡 Future Ideas
-
-- **Modo Interactivo**: CLI interactivo con `questionary` o `rich` para explorar el contexto.
-- **Exportación PDF**: Explorar opciones ligeras si es muy solicitado (aunque HTML+Print funciona bien).
-
-## 🔄 Resume Command
-
-Para retomar el trabajo en la siguiente sesión:
-
-```bash
-/inicia-sesion
-```
+## How to Resume
+1. Run `@[/inicia-sesion]` to reload context.
+2. Run `uv run python -m ai_context_core.cli analyze` to verify baseline.

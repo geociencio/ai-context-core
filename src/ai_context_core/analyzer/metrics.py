@@ -8,256 +8,171 @@ import math
 from typing import List, Dict, Any
 
 
-def calculate_complexity_distribution(
-    modules_data: List[Dict[str, Any]],
-) -> Dict[str, int]:
-    """Calculates the distribution of cyclomatic complexity across modules.
+class MetricsCalculator:
+    """Namespace for core metric calculation algorithms."""
 
-    Args:
-        modules_data: List of module metrics dictionaries.
+    @staticmethod
+    def complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dict[str, int]:
+        dist = {
+            "low (0-5)": 0,
+            "medium (6-15)": 0,
+            "high (16-30)": 0,
+            "very_high (31+)": 0,
+        }
+        for m in modules_data:
+            c = m.get("complexity", 0)
+            if c <= 5:
+                dist["low (0-5)"] += 1
+            elif c <= 15:
+                dist["medium (6-15)"] += 1
+            elif c <= 30:
+                dist["high (16-30)"] += 1
+            else:
+                dist["very_high (31+)"] += 1
+        return dist
 
-    Returns:
-        A dictionary with complexity buckets (low, medium, high, very_high) and counts.
-    """
-    distribution = {
-        "low (0-5)": 0,
-        "medium (6-15)": 0,
-        "high (16-30)": 0,
-        "very_high (31+)": 0,
-    }
-
-    for module in modules_data:
-        complexity = module.get("complexity", 0)
-        if complexity <= 5:
-            distribution["low (0-5)"] += 1
-        elif complexity <= 15:
-            distribution["medium (6-15)"] += 1
-        elif complexity <= 30:
-            distribution["high (16-30)"] += 1
-        else:
-            distribution["very_high (31+)"] += 1
-
-    return distribution
-
-
-def calculate_maintenance_index(
-    halstead_volume: float, cyclomatic_complexity: int, lines_of_code: int
-) -> float:
-    """Calculates the Maintenance Index (MI) for a module.
-
-    Uses the SEI formula:
-    MI = 171 - 5.2 * ln(V) - 0.23 * (G) - 16.2 * ln(LOC)
-
-    Args:
-        halstead_volume: Halstead Volume (V).
-        cyclomatic_complexity: Cyclomatic Complexity (G).
-        lines_of_code: Lines of Code (LOC).
-
-    Returns:
-        The Maintenance Index, typically between 0 and 100 (though formula can go higher).
-    """
-    if halstead_volume <= 0 or lines_of_code <= 0:
-        return 100.0
-
-    # SEI formula
-    mi = (
-        171
-        - 5.2 * math.log(halstead_volume)
-        - 0.23 * cyclomatic_complexity
-        - 16.2 * math.log(lines_of_code)
-    )
-
-    # Normalize to 0-100 scale (Microsoft variation uses different normalization but SEI is the base)
-    normalized_mi = (mi * 100) / 171
-
-    return round(max(0, min(100, normalized_mi)), 2)
+    @staticmethod
+    def maintenance_index(v: float, g: int, loc: int) -> float:
+        if v <= 0 or loc <= 0:
+            return 100.0
+        mi = 171 - 5.2 * math.log(v) - 0.23 * g - 16.2 * math.log(loc)
+        return round(max(0, min(100, (mi * 100) / 171)), 2)
 
 
-def calculate_quality_score(
-    modules_data: List[Dict[str, Any]],
-    config: Dict[str, Any],
-    context_patterns: Dict[str, Any],
-) -> float:
-    """Calculates an overall quality score for the project based on weighted metrics.
+class ProjectScorer:
+    """Handles project quality score calculation using weighted metrics."""
 
-    Evaluates documentation, complexity, file size, and syntax correctness. It
-    also factors in QGIS compliance if applicable and penalizes for linter errors.
+    def __init__(self, config: Dict[str, Any]):
+        self.weights = config.get("quality_weights", {})
+        self.thresholds = config.get("thresholds", {})
 
-    Args:
-        modules_data: List of analyzed module dictionaries.
-        config: Configuration containing quality weights and thresholds.
-        context_patterns: Additional context data like QGIS compliance and linter info.
+    def calculate(
+        self, modules_data: List[Dict[str, Any]], ctx: Dict[str, Any]
+    ) -> float:
+        if not modules_data:
+            return 0.0
 
-    Returns:
-        A normalized quality score between 0 and 100.
-    """
-    if not modules_data:
-        return 0.0
+        max_mod_score = (
+            self.weights.get("docstrings", 0)
+            + self.weights.get("complexity_low", 0)
+            + self.weights.get("size_small", 0)
+            + self.weights.get("has_main", 0)
+            + self.weights.get("no_syntax_error", 0)
+        )
 
-    weights = config.get("quality_weights", {})
-    thresholds = config.get("thresholds", {})
+        total, max_total = 0.0, len(modules_data) * max_mod_score
+        for m in modules_data:
+            total += self._score_module(m)
 
-    # Calculate maximum possible score per module
-    max_module_score = (
-        weights.get("docstrings", 0)
-        + weights.get("complexity_low", 0)
-        + weights.get("size_small", 0)
-        + weights.get("has_main", 0)
-        + weights.get("no_syntax_error", 0)
-    )
+        score = (total / max_total * 100) if max_total > 0 else 0
 
-    total_score = 0.0
-    max_possible_total = len(modules_data) * max_module_score
+        # Factor QGIS
+        qgis_score = ctx.get("qgis_compliance", {}).get("compliance_score")
+        if qgis_score is not None:
+            score = (score * 0.7) + (qgis_score * 0.3)
 
-    for module in modules_data:
-        module_score = 0
+        # Factor Linter
+        linter = ctx.get("linter", {})
+        if linter.get("available"):
+            score = max(0, score - min(10, linter.get("errors", 0) * 0.5))
 
-        # Points for having docstrings
-        if module.get("docstrings", {}).get("module", False):
-            module_score += weights.get("docstrings", 0)
+        return round(score, 1)
 
-        # Points for low complexity
-        complexity = module.get("complexity", 0)
-        if complexity <= thresholds.get("complexity_low", 5):
-            module_score += weights.get("complexity_low", 0)
-        elif complexity <= thresholds.get("complexity_medium", 10):
-            module_score += weights.get("complexity_medium", 0)
-        elif complexity <= thresholds.get("complexity_high", 15):
-            module_score += weights.get("complexity_high", 0)
+    def _score_module(self, m: Dict[str, Any]) -> int:
+        s = 0
+        if m.get("docstrings", {}).get("module"):
+            s += self.weights.get("docstrings", 0)
 
-        # Points for adequate file size
-        lines = module.get("lines", 0)
-        if lines <= thresholds.get("size_small", 200):
-            module_score += weights.get("size_small", 0)
-        elif lines <= thresholds.get("size_medium", 400):
-            module_score += weights.get("size_medium", 0)
+        c = m.get("complexity", 0)
+        if c <= self.thresholds.get("complexity_low", 5):
+            s += self.weights.get("complexity_low", 0)
+        elif c <= self.thresholds.get("complexity_medium", 10):
+            s += self.weights.get("complexity_medium", 0)
+        elif c <= self.thresholds.get("complexity_high", 15):
+            s += self.weights.get("complexity_high", 0)
 
-        # Points for having a main guard
-        if module.get("has_main", False):
-            module_score += weights.get("has_main", 0)
+        lines = m.get("lines", 0)
+        if lines <= self.thresholds.get("size_small", 200):
+            s += self.weights.get("size_small", 0)
+        elif lines <= self.thresholds.get("size_medium", 400):
+            s += self.weights.get("size_medium", 0)
 
-        # Points for no syntax errors
-        if not module.get("syntax_error", False):
-            module_score += weights.get("no_syntax_error", 0)
-
-        total_score += module_score
-
-    # Normalize to percentage
-    final_score = (
-        (total_score / max_possible_total) * 100 if max_possible_total > 0 else 0
-    )
-
-    # Factor in QGIS compliance score if present
-    qgis_data = context_patterns.get("qgis_compliance", {})
-    qgis_score = qgis_data.get("compliance_score")
-
-    if qgis_score is not None:
-        # Final score is weighted: 70% Code Quality, 30% QGIS Standards
-        final_score = (final_score * 0.7) + (qgis_score * 0.3)
-
-    # Penalty for linter errors
-    linter_data = context_patterns.get("linter", {})
-    if linter_data.get("available"):
-        errors = linter_data.get("errors", 0)
-        # Penalize 0.5 points per error, max 10 points
-        penalty = min(10, errors * 0.5)
-        final_score = max(0, final_score - penalty)
-
-    return round(final_score, 1)
+        if m.get("has_main"):
+            s += self.weights.get("has_main", 0)
+        if not m.get("syntax_error"):
+            s += self.weights.get("no_syntax_error", 0)
+        return s
 
 
 def calculate_project_metrics(
     modules_data: List[Dict[str, Any]],
-    context_entry_points: List[str],
-    test_files_count: int,
+    entry_points: List[str],
+    tests_count: int,
     config: Dict[str, Any],
-    context_patterns: Dict[str, Any],
+    ctx: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """Calculates general project-level metrics from analyzed modules.
-
-    Args:
-        modules_data: List of module analysis objects.
-        context_entry_points: List of identified entry point paths.
-        test_files_count: Total count of test files in the project.
-        config: Metric weights and thresholds configuration.
-        context_patterns: Additional scoring data (QGIS, Linter).
-
-    Returns:
-        A dictionary containing aggregated metrics like totals, averages, and quality score.
-    """
+    """Calculates general project-level metrics from analyzed modules."""
     if not modules_data:
         return {}
 
-    total_size_kb = sum(m.get("file_size_kb", 0) for m in modules_data)
+    total_kb = sum(m.get("file_size_kb", 0) for m in modules_data)
     total_lines = sum(m.get("lines", 0) for m in modules_data)
 
-    # Calculate documentation coverage
-    total_doc_score = 0
-    total_symbols = 0
-
+    # Docs coverage
+    syms, d_score = 0, 0
     for m in modules_data:
-        m_docs = m.get("docstrings", {})
-        # Module docstring (binary)
-        total_symbols += 1
-        if m_docs.get("module", False):
-            total_doc_score += 1
+        docs = m.get("docstrings", {})
+        syms += 1 + len(docs.get("classes", {})) + len(docs.get("functions", {}))
+        if docs.get("module"):
+            d_score += 1
+        d_score += sum(1 for v in docs.get("classes", {}).values() if v)
+        d_score += sum(1 for v in docs.get("functions", {}).values() if v)
 
-        # Classes
-        classes = m_docs.get("classes", {})
-        total_symbols += len(classes)
-        total_doc_score += sum(1 for documented in classes.values() if documented)
-
-        # Functions
-        functions = m_docs.get("functions", {})
-        total_symbols += len(functions)
-        total_doc_score += sum(1 for documented in functions.values() if documented)
-
-    doc_coverage = (total_doc_score / total_symbols * 100) if total_symbols > 0 else 0
-
-    modules_with_main = sum(1 for m in modules_data if m.get("has_main", False))
-    modules_with_syntax_error = sum(
-        1 for m in modules_data if m.get("syntax_error", False)
-    )
-
-    # Complexity statistics
-    complexities = [m.get("complexity", 0) for m in modules_data]
-    avg_complexity = sum(complexities) / len(complexities) if complexities else 0
-
-    # Coverage metrics
-    type_hint_cov = [m.get("type_hints", {}).get("coverage", 100) for m in modules_data]
-    i18n_scores = [m.get("i18n", {}).get("i18n_score", 100) for m in modules_data]
-
-    # Maintenance Index
-    mi_scores = [
+    mi_list = [
         m.get("maintenance_index", 100)
         for m in modules_data
         if not m.get("syntax_error")
     ]
-    avg_mi = sum(mi_scores) / len(mi_scores) if mi_scores else 100
+    complexities = [m.get("complexity", 0) for m in modules_data]
+
+    scorer = ProjectScorer(config)
 
     return {
-        "total_size_kb": round(total_size_kb, 2),
+        "total_size_kb": round(total_kb, 2),
         "total_lines_code": total_lines,
-        "avg_module_size_kb": round(total_size_kb / len(modules_data), 2),
+        "avg_module_size_kb": round(total_kb / len(modules_data), 2),
         "avg_lines_per_module": round(total_lines / len(modules_data), 2),
-        "modules_with_docstrings": sum(
-            1 for m in modules_data if m.get("docstrings", {}).get("module", False)
+        "docstring_coverage": round(d_score / syms * 100, 2) if syms > 0 else 0,
+        "entry_points_count": len(entry_points),
+        "test_files_count": tests_count,
+        "avg_complexity": (
+            round(sum(complexities) / len(complexities), 2) if complexities else 0
         ),
-        "modules_with_main_guard": modules_with_main,
-        "modules_with_syntax_errors": modules_with_syntax_error,
-        "docstring_coverage": round(doc_coverage, 2),
-        "type_hint_coverage": (
-            round(sum(type_hint_cov) / len(modules_data), 2) if modules_data else 0
-        ),
-        "i18n_coverage": (
-            round(sum(i18n_scores) / len(modules_data), 2) if modules_data else 0
-        ),
-        "entry_points_count": len(context_entry_points),
-        "test_files_count": test_files_count,
-        "avg_complexity": round(avg_complexity, 2),
         "max_complexity": max(complexities) if complexities else 0,
-        "avg_maintenance_index": round(avg_mi, 2),
-        "quality_score": calculate_quality_score(
-            modules_data, config, context_patterns
+        "avg_maintenance_index": (
+            round(sum(mi_list) / len(mi_list), 2) if mi_list else 100
+        ),
+        "quality_score": scorer.calculate(modules_data, ctx),
+        "type_hint_coverage": round(
+            sum(m.get("type_hints", {}).get("coverage", 100) for m in modules_data)
+            / len(modules_data),
+            2,
         ),
     }
+
+
+# --- Legacy compatibility ---
+def calculate_complexity_distribution(
+    modules_data: List[Dict[str, Any]],
+) -> Dict[str, int]:
+    return MetricsCalculator.complexity_distribution(modules_data)
+
+
+def calculate_maintenance_index(v: float, g: int, loc: int) -> float:
+    return MetricsCalculator.maintenance_index(v, g, loc)
+
+
+def calculate_quality_score(
+    modules_data: List[Dict[str, Any]], config: Dict[str, Any], ctx: Dict[str, Any]
+) -> float:
+    return ProjectScorer(config).calculate(modules_data, ctx)

@@ -1,5 +1,11 @@
-
 # Changelog
+
+# DEVELOPMENT LOG
+
+## [2026-01-25] Modularización Completa y Reducción de Deuda Técnica
+- **Resumen**: Se completó la transformación del proyecto de una base procedimental a una arquitectura 100% modular basada en clases.
+- **Resultado**: El Quality Score se mantuvo sobre 71 y se eliminaron ~1,400 líneas de código duplicado. Los tests (65/65) están pasando en Docker.
+- **Contexto**: Este hito cierra el ciclo de limpieza profunda y prepara la base para visualizaciones avanzadas.
 
 All notable changes to this project will be documented in this file.
 
@@ -9,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Full Modularization**: Complete refactor of all 18 core modules into class-based, decoupled architectures across 6 phases.
+- **Improved Metrics Engine**: Centralized quality logic in `ProjectScorer`.
+- **Strategy Prompting**: Multi-model LLM support in `AIContextManager`.
 - **Final Modularization**: deep refactor of `reporting.py` and `patterns.py` into class-based section generators and detectors.
 - **Major Refactoring**: Deep refactor of `ast_utils.py`, `dependencies.py`, `fs_utils.py`, and `engine.py` to reduce complexity and improve modularity.
 - **HTML Reporting**: New `--format html` option to generate interactive project summaries.
