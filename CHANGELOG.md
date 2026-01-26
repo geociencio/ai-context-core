@@ -69,13 +69,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **CLI Robustness**: Fixed a critical `KeyError` in `ai-ctx patterns` and `ai-ctx security` caused by missing heuristic keys in the analyzer results.
 
+## [2.5.1] - 2026-01-26 - Bugfix Edition
+
+### Fixed
+- **KeyError 'class'**: Fixed a critical crash in `SummaryGenerator` and `AICtxGenerator` when processing patterns without a class name (e.g., module-level decorators). Added safe `.get()` access with fallbacks to name and module paths.
+
+## [Unreleased]
 ### Optimized
 - **FastIgnore Engine**: High-performance file filtering system using compiled Regex (linear speedup).
 - **Smart Parallelism**: Dynamic execution engine that chooses between sequential and parallel processing based on codebase size to eliminate IPC overhead.
 - **Single-Pass Pattern Detection**: Unified all architectural detectors into a single `ast.NodeVisitor` pass, reducing AST traversal overhead by ~60%.
 - **High-Efficiency Cache**: Refactor of `LRUCache` to use `OrderedDict`, achieving consistent $O(1)$ performance for eviction and lookups.
 
-## [Unreleased]
 
 ## [1.0.1] - 2026-01-22
 
