@@ -216,6 +216,14 @@ class TechnicalDebtScouter(IssueDetector):
 
 
 def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Find technical debt in project modules.
+
+    Args:
+        modules_data: List of analyzed module data
+
+    Returns:
+        List of technical debt items found in modules
+    """
     return TechnicalDebtScouter({}).scout(modules_data)
 
 
@@ -224,6 +232,14 @@ def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
 
 
 def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Find optimization opportunities in project modules.
+
+    Args:
+        modules_data: List of analyzed module data
+
+    Returns:
+        List of optimization suggestions for modules
+    """
     res = []
     for m in modules_data:
         sugs = []
@@ -255,12 +271,37 @@ def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any
 def find_security_issues(
     modules_data: List[Dict[str, Any]], project_path: str
 ) -> List[Dict[str, Any]]:
+    """Find security issues in project modules using string pattern matching.
+
+    Args:
+        modules_data: List of analyzed module data
+        project_path: Root path of the project
+
+    Returns:
+        List of security issues found in modules
+    """
     res = []
     base = pathlib.Path(project_path)
-    pats = [
-        ("ex" + "ec(", "exec() check", "high"),
-        ("ev" + "al(", "eval() check", "high"),
-        ("os" + ".sys" + "tem(", "system() check", "high"),
+    # Define dangerous patterns to search for
+    dangerous_patterns = [
+        ("exec(", "exec() usage - potential code injection", "high"),
+        ("eval(", "eval() usage - potential code injection", "high"),
+        ("os.system(", "os.system() usage - potential command injection", "high"),
+        (
+            "subprocess.call(",
+            "subprocess.call() with shell=True - potential command injection",
+            "high",
+        ),
+        (
+            "subprocess.Popen(",
+            "subprocess.Popen() with shell=True - potential command injection",
+            "high",
+        ),
+        (
+            "input(",
+            "input() usage - potential injection if used with eval/exec",
+            "medium",
+        ),
     ]
 
     for m in modules_data:
@@ -271,9 +312,23 @@ def find_security_issues(
             with open(base / path, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
             issues = []
-            for p, d, s in pats:
-                if p in content:
-                    issues.append({"pattern": p, "description": d, "severity": s})
+            for pattern, description, severity in dangerous_patterns:
+                if pattern in content:
+                    # Find line numbers where the pattern occurs
+                    lines = content.split("\n")
+                    found_lines = []
+                    for idx, line in enumerate(lines, 1):
+                        if pattern in line:
+                            found_lines.append(idx)
+
+                    issues.append(
+                        {
+                            "pattern": pattern,
+                            "description": description,
+                            "severity": severity,
+                            "lines": found_lines[:5],  # Limit to first 5 occurrences
+                        }
+                    )
             issues.extend(detect_secrets(content))
             if issues:
                 res.append(

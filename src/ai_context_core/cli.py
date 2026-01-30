@@ -65,7 +65,10 @@ class CLIHandler:
             profile_name=local_cfg.get("profile_name"), override_config=local_cfg
         )
         analyzer = ProjectAnalyzer(
-            project_path=str(proj), config=cfg, max_workers=workers, ignore_cache=no_cache
+            project_path=str(proj),
+            config=cfg,
+            max_workers=workers,
+            ignore_cache=no_cache,
         )
         click.echo(f"🚀 Analyzing {proj.name}...")
         try:
@@ -139,7 +142,9 @@ class CLIHandler:
         score = res.get("metrics", {}).get("quality_score", 0)
 
         if score < threshold:
-            click.secho(f"❌ Audit Failed: Score {score:.1f} is below {threshold}", fg="red")
+            click.secho(
+                f"❌ Audit Failed: Score {score:.1f} is below {threshold}", fg="red"
+            )
             sys.exit(1)
         else:
             click.secho(f"✅ Audit Passed: Score {score:.1f}", fg="green")
@@ -162,7 +167,9 @@ class CLIHandler:
                     class_name = o.get("class", o.get("name", "N/A"))
                     module_path = o.get("module", "N/A")
                     confidence = o.get("confidence", 0)
-                    click.echo(f"- {name}: {class_name} in {module_path} ({confidence}%)")
+                    click.echo(
+                        f"- {name}: {class_name} in {module_path} ({confidence}%)"
+                    )
 
         elif category == "security":
             click.secho("🚨 SECURITY ISSUES", fg="red", bold=True)
@@ -173,7 +180,9 @@ class CLIHandler:
                 for issue in mod.get("issues", []):
                     severity = issue.get("severity", "unknown").upper()
                     module_name = mod.get("module", "N/A")
-                    message = issue.get("message", issue.get("description", "No description"))
+                    message = issue.get(
+                        "message", issue.get("description", "No description")
+                    )
                     click.echo(f"- [{severity}] {module_name}: {message}")
 
         elif category == "recommendations":
@@ -232,7 +241,9 @@ def serve(port: int, open_browser: bool):
 
 @cli.command()
 @click.option("--path", default=".", help="Project path")
-@click.option("--threshold", "-t", default=70.0, type=float, help="Minimum Quality Score")
+@click.option(
+    "--threshold", "-t", default=70.0, type=float, help="Minimum Quality Score"
+)
 def audit(path: str, threshold: float):
     """Fails if Quality Score is below threshold."""
     CLIHandler.run_audit(path, threshold)

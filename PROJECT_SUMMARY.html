@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT SUMMARY - ai-context-core</title>
-    <style>
+<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>PROJECT SUMMARY - ai-context-core</title><style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: #f4f6f9; }
     h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
     h2 { color: #2c3e50; margin-top: 30px; border-left: 4px solid #3498db; padding-left: 10px; }
@@ -15,70 +9,47 @@
     ul { list-style-type: none; padding: 0; }
     li { padding: 5px 0; border-bottom: 1px solid #eee; }
     li:last-child { border-bottom: none; }
-    .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; color: white; display: inline-block; }
-    .badge-critical { background: #e74c3c; }
-    .badge-high { background: #e67e22; }
-    .badge-medium { background: #f1c40f; color: #333; }
-    .badge-low { background: #3498db; }
     .mermaid { text-align: center; overflow-x: auto; background: white; padding: 20px; }
-    </style>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
-    </script>
-</head>
-<body>
-    <h1>PROJECT SUMMARY - ai-context-core</h1>
-    <div class="card">
-        <p><strong>Date:</strong> 2026-01-25 23:57:49</p>
-        <p><strong>Version:</strong> 2.0 (Ai-Context-Core)</p>
-    </div>
-    <div class="card"><h2>📊 KEY METRICS</h2>
-    <div class="metric">Quality Score: <span class="metric-value">67.8/100</span></div>
-    <div class="metric">Lines of Code: <span class="metric-value">5,365</span></div>
-    <div class="metric">Modules: <span class="metric-value">18</span></div>
-    </div>
-<div class="card"><h2>🚨 SECURITY ISSUES</h2><ul><li><strong>.agent/scripts/skill_sync.py</strong>: 3 issues (Max: medium)</li><li><strong>src/ai_context_core/analyzer/engine.py</strong>: 4 issues (Max: medium)</li><li><strong>src/ai_context_core/analyzer/fs_utils.py</strong>: 8 issues (Max: medium)</li><li><strong>src/ai_context_core/analyzer/reporting.py</strong>: 1 issues (Max: medium)</li><li><strong>src/ai_context_core/context/manager.py</strong>: 3 issues (Max: medium)</li></ul></div>
-<div class="card"><h2>💡 RECOMMENDATIONS</h2><ul><li><strong>PROJECT_WIDE</strong>: Project Quality Score (67.8/100) has room for improvement. Target complexity reduction.</li><li><strong>.agent/scripts/benchmark.py</strong>: Very long functions (average 57.0 lines/function).; Low docstring coverage (0/1 functions).</li><li><strong>.agent/scripts/skill_sync.py</strong>: Very long functions (average 70.5 lines/function).</li><li><strong>src/ai_context_core/analyzer/ast_utils.py</strong>: High complexity (96) with several functions. Consider breaking down large logic.; Module is quite large (469 lines)</li><li><strong>src/ai_context_core/analyzer/engine.py</strong>: High complexity (35) with several functions. Consider breaking down large logic.; Module is quite large (529 lines)</li></ul></div>
+    </style><script type='module'>import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';mermaid.initialize({ startOnLoad: true });</script></head><body><h1>PROJECT SUMMARY - ai-context-core</h1><div class='card'><p><strong>Date:</strong> 2026-01-28 21:40:01</p><p><strong>Version:</strong> 2.0 (Ai-Context-Core)</p></div><div class="card"><h2>📊 KEY METRICS</h2>
+        <div class="metric">Quality Score: <span class="metric-value">48.4/100</span></div>
+        <div class="metric">Lines of Code: <span class="metric-value">4,218</span></div>
+        <div class="metric">Modules: <span class="metric-value">17</span></div>
+        </div>
+<div class="card"><h2>🚨 SECURITY ISSUES</h2><ul><li><strong>src/ai_context_core/analyzer/issues.py</strong>: 3 issues (Max: high)</li><li><strong>.agent/scripts/skill_sync.py</strong>: 2 issues (Max: low)</li><li><strong>src/ai_context_core/analyzer/ast_utils.py</strong>: 1 issues (Max: low)</li><li><strong>src/ai_context_core/analyzer/dependencies.py</strong>: 3 issues (Max: low)</li><li><strong>src/ai_context_core/analyzer/engine.py</strong>: 4 issues (Max: low)</li></ul></div>
+<div class="card"><h2>💡 RECOMMENDATIONS</h2><ul><li><strong>PROJECT_WIDE</strong>: Quality Score is low (48.4/100).; Low documentation coverage (47.46%).</li><li><strong>src/ai_context_core/analyzer/antipatterns.py</strong>: Consider breaking down large logic</li><li><strong>src/ai_context_core/analyzer/ast_utils.py</strong>: Consider breaking down large logic; Large module (560 lines)</li><li><strong>src/ai_context_core/analyzer/dependencies.py</strong>: Consider breaking down large logic</li><li><strong>src/ai_context_core/analyzer/engine.py</strong>: Consider breaking down large logic; Large module (410 lines)</li></ul></div>
 <div class="card"><h2>🕸️ DEPENDENCY GRAPH</h2><div class="mermaid">graph TD
-    benchmark --> py
     classDef module fill:#f9f,stroke:#333,stroke-width:2px;
-    git_analysis
-    class git_analysis module;
     manager
     class manager module;
-    secrets
-    class secrets module;
-    init
-    class init module;
-    antipatterns
-    class antipatterns module;
+    git_analysis
+    class git_analysis module;
     patterns
     class patterns module;
-    loader
-    class loader module;
-    ai_recommendations
-    class ai_recommendations module;
-    dependencies
-    class dependencies module;
     metrics
     class metrics module;
-    issues
-    class issues module;
-    reporting
-    class reporting module;
     engine
     class engine module;
+    antipatterns
+    class antipatterns module;
+    reporting
+    class reporting module;
+    loader
+    class loader module;
     ast_utils
     class ast_utils module;
-    fs_utils
-    class fs_utils module;
     skill_sync
     class skill_sync module;
+    init
+    class init module;
+    secrets
+    class secrets module;
+    fs_utils
+    class fs_utils module;
+    issues
+    class issues module;
+    dependencies
+    class dependencies module;
+    ai_recommendations
+    class ai_recommendations module;
     cli
-    class cli module;
-    benchmark
-    class benchmark module;</div></div>
-</body>
-</html>
-    
+    class cli module;</div></div></body></html>

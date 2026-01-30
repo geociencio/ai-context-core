@@ -348,7 +348,7 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
 
         config = configparser.ConfigParser()
         config.read_string("[general]\n" + content)
-        
+
         # QGIS metadata usually has a [general] section, but some people omit the header
         # adding a dummy header to ensure it parses if it's just key=value
         if "general" in config:
@@ -357,13 +357,20 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
             metadata = {}
 
         res["content"] = metadata
-        
+
         # Mandatory fields for QGIS.org
-        mandatory = ["name", "description", "version", "qgisminimumversion", "author", "email"]
+        mandatory = [
+            "name",
+            "description",
+            "version",
+            "qgisminimumversion",
+            "author",
+            "email",
+        ]
         for field in mandatory:
             if field not in metadata:
                 res["issues"].append(f"Missing mandatory field: {field}")
-        
+
         # Recommended fields
         recommended = ["repository", "tracker", "homepage", "category", "tags"]
         for field in recommended:

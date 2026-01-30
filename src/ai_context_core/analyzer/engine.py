@@ -24,11 +24,10 @@ from . import (
     git_analysis,
     ai_recommendations,
 )
+from .constants import PARALLEL_MIN_FILES
 from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)
-
-PARALLEL_MIN_FILES = 5  # Minimum files to trigger multiprocessing overhead
 
 
 class ProjectAnalyzer:
@@ -51,7 +50,9 @@ class ProjectAnalyzer:
             self.project_path, exclude_patterns
         )
         self.context_manager = AIContextManager(project_path)
-        self.analysis_cache = {} if ignore_cache else fs_utils.load_cache(self.project_path)
+        self.analysis_cache = (
+            {} if ignore_cache else fs_utils.load_cache(self.project_path)
+        )
         self.error_log = {}
 
     def _get_default_config(self) -> Dict[str, Any]:
@@ -125,7 +126,7 @@ class ProjectAnalyzer:
         if not notes_path.exists():
             # Try legacy or alternative name
             notes_path = self.project_path / ".ai-context" / "project_brain.md"
-        
+
         if notes_path.exists():
             try:
                 return notes_path.read_text(encoding="utf-8")
@@ -164,7 +165,9 @@ class ProjectAnalyzer:
             "patterns": self._aggregate_patterns(m_data),
             "git": data["git_data"],
             "manual_notes": data.get("manual_notes", ""),
-            "qgis_compliance": self._aggregate_qgis_compliance(m_data, data.get("qgis_metadata", {})),
+            "qgis_compliance": self._aggregate_qgis_compliance(
+                m_data, data.get("qgis_metadata", {})
+            ),
         }
         return results
 
@@ -309,35 +312,73 @@ class ProjectAnalyzer:
                     self.error_log[str(f)] = str(e)
         return results
 
-    def _aggregate_qgis_compliance(self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]) -> Dict[str, Any]:
+    def _aggregate_qgis_compliance(
+        self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Aggregates QGIS-specific results from modules and metadata."""
         agg = {
             "metadata": metadata,
-            "processing_framework_detected": any(m.get("qgis_compliance", {}).get("processing_framework") for m in m_data),
+            "processing_framework_detected": any(
+                m.get("qgis_compliance", {}).get("processing_framework") for m in m_data
+            ),
             "i18n_stats": {
-                "total_tr": sum(m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0) for m in m_data),
-                "total_strings": sum(m.get("qgis_compliance", {}).get("i18n_usage", {}).get("total_strings", 0) for m in m_data),
+                "total_tr": sum(
+                    m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
+                    for m in m_data
+                ),
+                "total_strings": sum(
+                    m.get("qgis_compliance", {})
+                    .get("i18n_usage", {})
+                    .get("total_strings", 0)
+                    for m in m_data
+                ),
             },
-            "gdal_style": "Correct" if all(m.get("qgis_compliance", {}).get("gdal_import_style") != "Legacy" for m in m_data) else "Legacy",
+            "gdal_style": (
+                "Correct"
+                if all(
+                    m.get("qgis_compliance", {}).get("gdal_import_style") != "Legacy"
+                    for m in m_data
+                )
+                else "Legacy"
+            ),
             "qt_transition": {
-                "pyqt5_count": sum(len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt5_imports", [])) for m in m_data),
-                "pyqt6_count": sum(len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt6_imports", [])) for m in m_data),
+                "pyqt5_count": sum(
+                    len(
+                        m.get("qgis_compliance", {})
+                        .get("qt_transition", {})
+                        .get("pyqt5_imports", [])
+                    )
+                    for m in m_data
+                ),
+                "pyqt6_count": sum(
+                    len(
+                        m.get("qgis_compliance", {})
+                        .get("qt_transition", {})
+                        .get("pyqt6_imports", [])
+                    )
+                    for m in m_data
+                ),
             },
-            "legacy_signals": sum(m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0) for m in m_data),
+            "legacy_signals": sum(
+                m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0)
+                for m in m_data
+            ),
         }
-        
+
         # Calculate overall QGIS compliance score
         score = metadata.get("compliance_score", 0) * 0.4
         if agg["processing_framework_detected"]:
             score += 20
         if agg["i18n_stats"]["total_strings"] > 0:
-            i18n_ratio = agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
+            i18n_ratio = (
+                agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
+            )
             score += min(20, i18n_ratio * 40)
         if agg["gdal_style"] == "Correct":
             score += 10
         if agg["qt_transition"]["pyqt5_count"] == 0:
             score += 10
-        
+
         agg["compliance_score"] = round(min(100, score), 1)
         return agg
 

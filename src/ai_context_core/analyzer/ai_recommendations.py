@@ -5,6 +5,14 @@ static analysis metrics, without requiring external LLM API calls.
 """
 
 from typing import Dict, Any, List
+from .constants import (
+    AI_RECOMMENDATION_QUALITY_LOW_THRESHOLD,
+    AI_RECOMMENDATION_QUALITY_MEDIUM_THRESHOLD,
+    DOCSTRING_COVERAGE_THRESHOLD,
+    VERY_HIGH_COMPLEXITY_THRESHOLD,
+    COMPLEXITY_REFACTORING_THRESHOLD,
+    MAINTENANCE_INDEX_THRESHOLD,
+)
 
 
 class RecommendationRule:
@@ -19,7 +27,7 @@ class QualityScoreRule(RecommendationRule):
 
     def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
         score = metrics.get("quality_score", 0)
-        if score < 50:
+        if score < AI_RECOMMENDATION_QUALITY_LOW_THRESHOLD:
             return [
                 {
                     "category": "Project Health",
@@ -27,7 +35,7 @@ class QualityScoreRule(RecommendationRule):
                     "message": f"Quality Score is low ({score}/100).",
                 }
             ]
-        if score < 70:
+        if score < AI_RECOMMENDATION_QUALITY_MEDIUM_THRESHOLD:
             return [
                 {
                     "category": "Project Health",
@@ -43,7 +51,7 @@ class DocumentationRule(RecommendationRule):
 
     def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
         cov = metrics.get("docstring_coverage", 0)
-        if cov < 50:
+        if cov < DOCSTRING_COVERAGE_THRESHOLD:
             return [
                 {
                     "category": "Documentation",
@@ -90,14 +98,14 @@ class AIRecommender:
         """Analyzes a single module for specific refactoring recommendations."""
         res = []
         cc = module_data.get("complexity", 0)
-        if cc > 30:
+        if cc > VERY_HIGH_COMPLEXITY_THRESHOLD:
             res.append(
                 {
                     "type": "refactoring",
                     "message": f"Critical Complexity ({cc}). Split this module.",
                 }
             )
-        elif cc > 15:
+        elif cc > COMPLEXITY_REFACTORING_THRESHOLD:
             res.append(
                 {
                     "type": "refactoring",
@@ -106,7 +114,7 @@ class AIRecommender:
             )
 
         mi = module_data.get("maintenance_index", 100)
-        if mi < 50:
+        if mi < MAINTENANCE_INDEX_THRESHOLD:
             res.append(
                 {"type": "maintenance", "message": f"Low Maintainability ({mi})."}
             )

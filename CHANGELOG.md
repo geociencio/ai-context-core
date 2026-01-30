@@ -69,17 +69,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **CLI Robustness**: Fixed a critical `KeyError` in `ai-ctx patterns` and `ai-ctx security` caused by missing heuristic keys in the analyzer results.
 
-## [2.5.1] - 2026-01-26 - Bugfix Edition
+## [2.5.2] - 2026-01-26 - Bugfix Real Release
 
 ### Fixed
-- **KeyError 'class'**: Fixed a critical crash in `SummaryGenerator` and `AICtxGenerator` when processing patterns without a class name (e.g., module-level decorators). Added safe `.get()` access with fallbacks to name and module paths.
+- **KeyError 'class'**: Fixed a critical crash in `SummaryGenerator` and `AICtxGenerator` when processing patterns without a class name. This fix was intended for v2.5.1 but was not correctly included in that release's code.
+
+## [2.5.1] - 2026-01-26 - Failed Release (Bugfix Edition)
+
+### Fixed
+- **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
 ## [Unreleased]
+### Refactored
+- **Modular Architecture**: Extracted 6 specialized modules from `analyzer` package (`complexity_visitor.py`, `import_visitor.py`, `html_builder.py`, `summary_generator.py`, `pattern_utils.py`, `constants.py`) reducing complexity in `reporting.py` (-267 lines, -30%) and `ast_utils.py` (-200 lines, -44%).
+- **Constants Centralization**: Eliminated magic numbers by centralizing 75 configuration constants across 11 categories (complexity, quality, security, QGIS, git, patterns, etc.).
+- **Backward Compatibility**: Added wrapper functions in `ast_utils.py` to preserve public API for `calculate_complexity()`, `extract_imports()`, and `detect_unused_imports()`.
+
+### Fixed
+- **DecoratorDetector**: Fixed `KeyError 'class'` by standardizing result structure to use `'class'` key consistently across all pattern detectors.
+
 ### Optimized
 - **FastIgnore Engine**: High-performance file filtering system using compiled Regex (linear speedup).
 - **Smart Parallelism**: Dynamic execution engine that chooses between sequential and parallel processing based on codebase size to eliminate IPC overhead.
 - **Single-Pass Pattern Detection**: Unified all architectural detectors into a single `ast.NodeVisitor` pass, reducing AST traversal overhead by ~60%.
 - **High-Efficiency Cache**: Refactor of `LRUCache` to use `OrderedDict`, achieving consistent $O(1)$ performance for eviction and lookups.
+
 
 
 ## [1.0.1] - 2026-01-22

@@ -6,7 +6,7 @@ type hint coverage, Halstead metrics, and imports from Python source code.
 
 import ast
 from collections import Counter
-from typing import Any, List, Dict, Set
+from typing import Any, List, Dict
 
 
 class FunctionVisitor(ast.NodeVisitor):
@@ -210,11 +210,11 @@ class QGISComplianceVisitor(ast.NodeVisitor):
         elif isinstance(node.func, ast.Attribute) and node.func.attr == "translate":
             # Might be QCoreApplication.translate
             self.results["i18n_usage"]["translate"] += 1
-        
+
         # Check for legacy signals/slots (SIGNAL/SLOT macros)
         if isinstance(node.func, ast.Name) and node.func.id in ("SIGNAL", "SLOT"):
             self.results["signals_slots"]["legacy"] += 1
-        
+
         self.generic_visit(node)
 
     def visit_Constant(self, node: ast.Constant):
@@ -341,93 +341,103 @@ class ImportVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-class ComplexityVisitor(ast.NodeVisitor):
-    """Visitor to calculate cyclomatic complexity."""
-
-    def __init__(self):
-        self.complexity = 0
-        self.decision_lines = set()
-
-    def _add_decision(self, node):
-        self.complexity += 1
-        if hasattr(node, "lineno"):
-            self.decision_lines.add(node.lineno)
-
-    def visit_If(self, node: ast.If):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_While(self, node: ast.While):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_For(self, node: ast.For):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_AsyncFor(self, node: ast.AsyncFor):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_Try(self, node: ast.Try):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_AsyncWith(self, node: ast.AsyncWith):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_ExceptHandler(self, node: ast.ExceptHandler):
-        self._add_decision(node)
-        self.generic_visit(node)
-
-    def visit_BoolOp(self, node: ast.BoolOp):
-        self.complexity += len(node.values) - 1
-        self.generic_visit(node)
-
-    def visit_ListComp(self, node: ast.ListComp):
-        self.complexity += len(node.generators)
-        self.generic_visit(node)
-
-    def visit_SetComp(self, node: ast.SetComp):
-        self.complexity += len(node.generators)
-        self.generic_visit(node)
-
-    def visit_DictComp(self, node: ast.DictComp):
-        self.complexity += len(node.generators)
-        self.generic_visit(node)
-
-    def visit_GeneratorExp(self, node: ast.GeneratorExp):
-        self.complexity += len(node.generators)
-        self.generic_visit(node)
-
-
 # --- Public Interface Wrapper Functions ---
 
 
+def extract_imports(tree: ast.AST) -> List[str]:
+    """Extracts module imports from an AST tree.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        List of unique imports
+    """
+    from .import_visitor import extract_imports as _extract_imports_impl
+
+    return _extract_imports_impl(tree)
+
+
+def detect_unused_imports(tree: ast.AST) -> List[str]:
+    """Identifies imports that are not used anywhere in the module.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        List of unused imports
+    """
+    from .import_visitor import detect_unused_imports as _detect_unused_imports_impl
+
+    return _detect_unused_imports_impl(tree)
+
+
+def calculate_complexity(tree: ast.AST) -> int:
+    """Calculates cyclomatic complexity of an AST tree.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        The cyclomatic complexity value
+    """
+    from .complexity_visitor import calculate_complexity as _calc_complexity
+
+    return _calc_complexity(tree)
+
+
+
 def extract_functions(tree: ast.AST) -> List[str]:
-    """Extracts function names and basic argument counts from an AST."""
+    """Extracts function names and basic argument counts from an AST.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        List of function names with argument counts
+    """
     visitor = FunctionVisitor()
     visitor.visit(tree)
     return visitor.functions
 
 
 def extract_classes(tree: ast.AST) -> List[str]:
-    """Extracts class names with inheritance information from an AST."""
+    """Extracts class names with inheritance information from an AST.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        List of class names with inheritance information
+    """
     visitor = ClassVisitor()
     visitor.visit(tree)
     return visitor.classes
 
 
 def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
-    """Checks for the presence of docstrings in modules, classes, and functions."""
+    """Checks for the presence of docstrings in modules, classes, and functions.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        Dictionary with docstring presence information
+    """
     visitor = DocstringVisitor()
     visitor.visit(tree)
     return visitor.docstrings
 
 
 def is_qgis_entry_point_node(node: ast.AST) -> bool:
-    """Checks if an AST node is a QGIS classFactory entry point."""
+    """Checks if an AST node is a QGIS classFactory entry point.
+
+    Args:
+        node: The AST node to check
+
+    Returns:
+        True if the node is a QGIS classFactory entry point, False otherwise
+    """
     return (
         isinstance(node, ast.FunctionDef)
         and node.name == "classFactory"
@@ -436,20 +446,41 @@ def is_qgis_entry_point_node(node: ast.AST) -> bool:
 
 
 def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
-    """Determines if the module is an entry point."""
+    """Determines if the module is an entry point.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        Dictionary with entry point information
+    """
     visitor = EntryPointVisitor()
     visitor.visit(tree)
     return visitor.result
 
 
 def has_main_guard(tree: ast.AST) -> bool:
-    """Checks if the module contains the standard 'if __name__ == "__main__":' guard."""
+    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        True if the module has a main guard, False otherwise
+    """
     result = is_entry_point(tree)
     return result["is_entry_point"] and result["type"] == "main_guard"
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates the percentage of functions with type hints."""
+    """Calculates the percentage of functions with type hints.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        Dictionary with type hint coverage statistics
+    """
     visitor = TypeHintVisitor()
     visitor.visit(tree)
 
@@ -465,7 +496,14 @@ def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
 
 
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates basic Halstead complexity metrics."""
+    """Calculates basic Halstead complexity metrics.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        Dictionary with Halstead complexity metrics
+    """
     visitor = HalsteadVisitor()
     visitor.visit(tree)
 
@@ -493,64 +531,29 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
     }
 
 
-def extract_imports(tree: ast.AST) -> List[str]:
-    """Extracts module imports in an optimized way."""
-    visitor = ImportVisitor()
-    visitor.visit(tree)
-
-    # De-duplicate while maintaining order
-    seen = set()
-    unique_imports = []
-    for imp in visitor.imports:
-        if imp not in seen:
-            seen.add(imp)
-            unique_imports.append(imp)
-    return unique_imports
-
-
-def detect_unused_imports(tree: ast.AST) -> List[str]:
-    """Identifies imports that are not used anywhere in the module."""
-    visitor = ImportVisitor()
-    visitor.visit(tree)
-
-    unused = [
-        name
-        for alias, name in visitor.imported_names.items()
-        if alias not in visitor.used_names and alias != "*"
-    ]
-    return sorted(list(set(unused)))
-
-
-def calculate_complexity(tree: ast.AST) -> int:
-    """Calculates optimized cyclomatic complexity."""
-    visitor = ComplexityVisitor()
-    visitor.visit(tree)
-    return _apply_complexity_penalty(visitor.complexity, visitor.decision_lines)
-
-
-def _apply_complexity_penalty(complexity: int, decision_lines: Set[int]) -> int:
-    """Applies a penalty for highly dense logic (many decisions in few lines)."""
-    if not decision_lines:
-        return complexity
-
-    line_range = max(decision_lines) - min(decision_lines) + 1
-    density = len(decision_lines) / line_range
-
-    if density > 0.5:
-        return int(complexity * 1.2)
-
-    return complexity
-
-
 def check_qgis_compliance(tree: ast.AST) -> Dict[str, Any]:
-    """Runs a check for QGIS coding standards and best practices."""
+    """Runs a check for QGIS coding standards and best practices.
+
+    Args:
+        tree: The AST tree to analyze
+
+    Returns:
+        Dictionary with QGIS compliance results
+    """
     visitor = QGISComplianceVisitor()
     visitor.visit(tree)
     return visitor.results
 
 
 def extract_base_name(node: ast.AST) -> str:
-    """Helper to extract the name of a base class from a node."""
+    """Helper to extract the name of a base class from a node.
+
+    Args:
+        node: The AST node to extract the name from
+
+    Returns:
+        The extracted name or 'Unknown' if extraction fails
+    """
     if isinstance(node, ast.Name):
         return node.id
     elif isinstance(node, ast.Attribute):

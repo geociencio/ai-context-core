@@ -132,7 +132,7 @@ def my_decorator(func):
         tree = ast.parse(code)
         results = detect_decorator(tree)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["name"], "my_decorator")
+        self.assertEqual(results[0]["class"], "my_decorator")
         # inner returns (50) + wraps (40) = 90
         self.assertEqual(results[0]["confidence"], 90)
 
@@ -149,7 +149,7 @@ class ClassDecorator:
         tree = ast.parse(code)
         results = detect_decorator(tree)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["name"], "ClassDecorator")
+        self.assertEqual(results[0]["class"], "ClassDecorator")
         # init+call = 60
         self.assertEqual(results[0]["confidence"], 60)
 

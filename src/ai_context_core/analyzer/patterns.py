@@ -5,6 +5,11 @@ Uses AST to identify common architectural patterns through a class-based detecti
 
 import ast
 from typing import Dict, List, Any
+from .constants import (
+    PATTERN_DETECTION_CONFIDENCE_THRESHOLD,
+    PATTERN_DETECTION_CONFIDENCE_HIGH,
+    PATTERN_DETECTION_CONFIDENCE_MAXIMUM,
+)
 
 
 class PatternDetector:
@@ -29,12 +34,14 @@ class PatternDetector:
 
     def get_results(self, node: ast.AST) -> List[Dict[str, Any]]:
         """Returns the results if confidence threshold is met."""
-        if self.confidence >= 50:
+        if self.confidence >= PATTERN_DETECTION_CONFIDENCE_THRESHOLD:
             name = getattr(node, "name", "N/A")
             return [
                 {
                     "class": name,
-                    "confidence": min(self.confidence, 100),
+                    "confidence": min(
+                        self.confidence, PATTERN_DETECTION_CONFIDENCE_MAXIMUM
+                    ),
                     "evidence": self.evidence,
                 }
             ]
@@ -64,12 +71,21 @@ class SingletonDetector(PatternDetector):
                     k in item.name.lower()
                     for k in ("instance", "singleton", "get_inst")
                 ):
-                    self._add_evidence(f"Static/Class method '{item.name}' detected", 30)
+                    self._add_evidence(
+                        f"Static/Class method '{item.name}' detected",
+                        PATTERN_DETECTION_CONFIDENCE_HIGH - 30,
+                    )
             if isinstance(item, (ast.Assign, ast.AnnAssign)):
-                targets = (item.targets if isinstance(item, ast.Assign) else [item.target])
+                targets = (
+                    item.targets if isinstance(item, ast.Assign) else [item.target]
+                )
                 for t in targets:
-                    if isinstance(t, ast.Name) and any(k in t.id.lower() for k in ("instance", "_inst")):
-                        self._add_evidence(f"Static instance variable '{t.id}' found", 20)
+                    if isinstance(t, ast.Name) and any(
+                        k in t.id.lower() for k in ("instance", "_inst")
+                    ):
+                        self._add_evidence(
+                            f"Static instance variable '{t.id}' found", 20
+                        )
 
 
 class FactoryDetector(PatternDetector):
@@ -104,12 +120,14 @@ class FactoryDetector(PatternDetector):
                         )
                         break
 
-                if self.confidence >= 60:
+                if self.confidence >= PATTERN_DETECTION_CONFIDENCE_HIGH:
                     res.append(
                         {
                             "class": node.name,
                             "method": item.name,
-                            "confidence": min(self.confidence, 100),
+                            "confidence": min(
+                                self.confidence, PATTERN_DETECTION_CONFIDENCE_MAXIMUM
+                            ),
                             "evidence": self.evidence,
                         }
                     )
@@ -134,7 +152,8 @@ class ObserverDetector(PatternDetector):
                                     for kw in ("observers", "subscribers", "listeners")
                                 ):
                                     self._add_evidence(
-                                        f"Collection '{t.attr}' initialized in __init__", 20
+                                        f"Collection '{t.attr}' initialized in __init__",
+                                        20,
                                     )
                                     break
                         if isinstance(sub, ast.Call):
@@ -142,7 +161,9 @@ class ObserverDetector(PatternDetector):
                             try:
                                 func_name = ast.unparse(sub.func).lower()
                                 if ".connect" in func_name:
-                                    self._add_evidence(f"Signal connection detected: {func_name}", 10)
+                                    self._add_evidence(
+                                        f"Signal connection detected: {func_name}", 10
+                                    )
                             except Exception:
                                 pass
 
@@ -159,7 +180,9 @@ class ObserverDetector(PatternDetector):
                             "unregister",
                         )
                     ):
-                        self._add_evidence(f"Management method '{item.name}' detected", 15)
+                        self._add_evidence(
+                            f"Management method '{item.name}' detected", 15
+                        )
                     if any(kw in m_low for kw in ("notify", "emit", "broadcast")):
                         self._add_evidence(
                             f"Notification method '{item.name}' detected", 15
@@ -187,9 +210,12 @@ class ObserverDetector(PatternDetector):
                                 signals_found += 1
                         except Exception:
                             pass
-            
+
             if signals_found > 0:
-                self._add_evidence(f"Detected {signals_found} signals (PyQt/Signals)", signals_found * 20)
+                self._add_evidence(
+                    f"Detected {signals_found} signals (PyQt/Signals)",
+                    signals_found * 20,
+                )
 
         if self.confidence >= 50:
             return [
@@ -294,7 +320,7 @@ class DecoratorDetector(PatternDetector):
             if self.confidence >= 50:
                 res.append(
                     {
-                        "name": node.name,
+                        "class": node.name,
                         "type": "function",
                         "confidence": min(self.confidence, 100),
                         "evidence": self.evidence,
@@ -309,7 +335,7 @@ class DecoratorDetector(PatternDetector):
             if self.confidence >= 50:
                 res.append(
                     {
-                        "name": node.name,
+                        "class": node.name,
                         "type": "class",
                         "confidence": min(self.confidence, 100),
                         "evidence": self.evidence,
@@ -338,7 +364,7 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
                 found = det.get_results(node)
             else:
                 found = det.detect(node)
-            
+
             if found:
                 if name not in self.results:
                     self.results[name] = []
