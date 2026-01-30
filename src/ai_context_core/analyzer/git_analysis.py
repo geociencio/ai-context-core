@@ -92,3 +92,13 @@ def get_git_hotspots(
 
 def get_git_churn(project_path: pathlib.Path, days: int = 30) -> Dict[str, Any]:
     return GitAnalyzer(project_path).get_churn(days)
+
+
+def analyze_git_evolution(project_path: pathlib.Path) -> Dict[str, Any]:
+    """Performs a full evolution analysis using git history."""
+    analyzer = GitAnalyzer(project_path)
+    return {
+        "hotspots": analyzer.get_hotspots(),
+        "churn": analyzer.get_churn(),
+        "is_repo": analyzer.is_repo(),
+    }

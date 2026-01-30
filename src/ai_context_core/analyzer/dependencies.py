@@ -443,3 +443,29 @@ def calculate_coupling_metrics(
 ) -> Dict[str, Dict[str, int]]:
     """Calculate coupling metrics (Legacy wrapper)."""
     return GraphMetricsCalculator(import_graph).calculate_coupling_metrics()
+
+
+class DependencyAnalyzer:
+    """Legacy wrapper for dependency analysis."""
+
+    def __init__(self, project_path: Path):
+        self.project_path = project_path
+
+    def build_graph(self, modules_data: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Build the dependency graph for the project."""
+
+        def _read_file(p):
+            return p.read_text(errors="ignore")
+
+        return analyze_dependencies(modules_data, self.project_path, _read_file)
+
+
+def detect_unused_imports_in_project(
+    modules_data: List[Dict[str, Any]],
+) -> Dict[str, List[str]]:
+    """Collects unused imports across all modules."""
+    unused = {}
+    for mod in modules_data:
+        if mod.get("unused_imports"):
+            unused[mod["path"]] = mod["unused_imports"]
+    return unused

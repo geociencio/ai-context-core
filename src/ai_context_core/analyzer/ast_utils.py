@@ -9,7 +9,26 @@ This module is now a deprecated facade. Please import from the specific submodul
 
 import ast
 
-# Re-export symbols for backward compatibility
+# Re-exports for backward compatibility
+from .ast_visitors import (  # noqa: F401
+    extract_functions,
+    extract_classes,
+    check_docstrings,
+    extract_imports,
+    detect_unused_imports,
+)
+from .ast_metrics import (  # noqa: F401
+    calculate_complexity,
+    calculate_halstead_metrics,
+    calculate_type_hint_coverage,
+)
+from .ast_entry_points import (  # noqa: F401
+    is_entry_point,
+    has_main_guard,
+)
+from .ast_qgis import (  # noqa: F401
+    check_qgis_compliance,
+)
 
 
 def extract_base_name(node: ast.AST) -> str:

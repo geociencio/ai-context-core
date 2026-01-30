@@ -119,3 +119,11 @@ class AIRecommender:
                 {"type": "maintenance", "message": f"Low Maintainability ({mi})."}
             )
         return res
+
+
+def generate_recommendations(
+    modules_data: List[Dict[str, Any]], project_metrics: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+    """Legacy wrapper for generating AI recommendations."""
+    recommender = AIRecommender()
+    return recommender.analyze_codebase({"metrics": project_metrics})

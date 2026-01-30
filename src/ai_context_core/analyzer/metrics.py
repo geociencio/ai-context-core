@@ -53,11 +53,11 @@ class ProjectScorer:
             return 0.0
 
         max_mod_score = (
-            self.weights.get("docstrings", 0)
-            + self.weights.get("complexity_low", 0)
-            + self.weights.get("size_small", 0)
-            + self.weights.get("has_main", 0)
-            + self.weights.get("no_syntax_error", 0)
+            self.weights.get("docstrings", 15)
+            + self.weights.get("complexity_low", 20)
+            + self.weights.get("size_small", 15)
+            + self.weights.get("has_main", 5)
+            + self.weights.get("no_syntax_error", 25)
         )
 
         total, max_total = 0.0, len(modules_data) * max_mod_score

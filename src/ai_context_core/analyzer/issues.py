@@ -15,23 +15,8 @@ from .checkers import BaseChecker
 from .checkers.security_checker import SecurityChecker
 from .checkers.tech_debt_checker import TechDebtChecker
 from .checkers.optimization_checker import OptimizationChecker
-
-# For backward compatibility, expose the ASTSecurityDetector class
-# This is physically located here or imported from checkers if we moved it.
-# In the refactoring plan, ASTSecurityDetector logic is inside SecurityChecker.
-# However, to avoid breaking imports, we can define a proxy or keep the class.
-# Given the previous step, ASTSecurityDetector was in issues.py.
-# To cleanly separate, we should have moved ASTSecurityDetector to a utils file or inside the checker.
-# For now, let's keep ASTSecurityDetector as a standalone class here for compatibility,
-# but make it use the new logic if possible, or just keep it as legacy.
-# BETTER APPROACH: Re-implement ASTSecurityDetector here as a wrapper or keep it as is
-# but mark as part of the new system.
-# ACTUALLY: The plan was "Migrar detectores existentes a clases individuales".
-# So ASTSecurityDetector logic is now in SecurityChecker.
-# We will alias it or re-define it to delegate if needed, or better yet,
-# since this is an internal class, we might just keep it for now if external code uses it.
-# Let's keep a minimal version or alias.
 from .secrets import detect_secrets
+from .ast_security import ASTSecurityDetector  # noqa: F401
 
 
 class IssueDetector:
@@ -66,12 +51,12 @@ class CheckerRegistry:
             # Instantiate checker with configuration matching the interface
             checker = checker_cls(config)
 
-            issues = checker.check(module_info)
-            if issues:
+            issues_found = checker.check(module_info)
+            if issues_found:
                 cat = checker.get_category()
                 if cat not in results:
                     results[cat] = []
-                results[cat].extend(issues)
+                results[cat].extend(issues_found)
         return results
 
 
@@ -90,18 +75,18 @@ def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, An
     res = []
     checker = TechDebtChecker({})
     for m in modules_data:
-        issues = checker.check(m)
-        if issues:
+        issues_found = checker.check(m)
+        if issues_found:
             # Calculate simplified score for legacy compatibility
             score = sum(
                 3 if i["severity"] == "high" else 2 if i["severity"] == "medium" else 1
-                for i in issues
+                for i in issues_found
             )
             res.append(
                 {
                     "module": m["path"],
-                    "issues": issues,
-                    "total_issues": len(issues),
+                    "issues": issues_found,
+                    "total_issues": len(issues_found),
                     "severity_score": score,
                 }
             )
@@ -123,13 +108,6 @@ def find_secrets(
     modules_data: List[Dict[str, Any]], project_path: str
 ) -> List[Dict[str, Any]]:
     """Scan project modules for exposed secrets."""
-    # We can use the SecurityChecker mechanism or keep this standalone as per plan
-    # The SecurityChecker also implements secret detection if content is passed.
-    # To avoid logic duplication, we can use the checker, but we need to read files here.
-
-    # Or keep the implementation I just added in the previous step, which is fine for now
-    # to minimize risk.
-
     res = []
     base = pathlib.Path(project_path)
     for m in modules_data:
@@ -139,11 +117,11 @@ def find_secrets(
         try:
             with open(base / path, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
-            issues = detect_secrets(content)
-            if issues:
+            issues_found = detect_secrets(content)
+            if issues_found:
                 severities = {"critical": 4, "high": 3, "medium": 2, "low": 1}
                 max_sev_score = max(
-                    (severities.get(i.get("severity", "low"), 0) for i in issues),
+                    (severities.get(i.get("severity", "low"), 0) for i in issues_found),
                     default=0,
                 )
                 max_sev_label = next(
@@ -153,8 +131,8 @@ def find_secrets(
                 res.append(
                     {
                         "module": path,
-                        "issues": issues,
-                        "total_issues": len(issues),
+                        "issues": issues_found,
+                        "total_issues": len(issues_found),
                         "max_severity": max_sev_label,
                     }
                 )

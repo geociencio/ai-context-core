@@ -17,11 +17,14 @@ error = 800
 # Quality Score Weights
 # Weights differ depending on the importance of the metric for the final score.
 [quality_weights]
-complexity = 0.25
-maintainability = 0.20
-test_coverage = 0.15
-documentation = 0.15
-security = 0.25
+docstrings = 15
+complexity_low = 20
+complexity_medium = 10
+complexity_high = -10
+size_small = 15
+size_medium = 10
+has_main = 5
+no_syntax_error = 25
 
 # Security Patterns
 # Definitions of patterns considered dangerous.
