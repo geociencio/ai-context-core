@@ -1,6 +1,6 @@
 """Detección de Código Muerto (unreachable code)."""
 
-"""Dead code detector implementation."""
+
 
 import ast
 from typing import List, Dict, Any

@@ -1,0 +1,148 @@
+{
+  "project_name": "secinterp",
+  "metrics": {},
+  "complexity": {
+    "total_modules": 0,
+    "total_lines": 0,
+    "total_physical_lines": 0,
+    "total_functions": 0,
+    "total_classes": 0,
+    "average_complexity": 0,
+    "avg_maintenance_index": 0,
+    "most_complex_modules": []
+  },
+  "modules": [],
+  "dependencies": {
+    "internal": [],
+    "external": [],
+    "third_party": [],
+    "files": {},
+    "import_graph": {},
+    "circular_dependencies": [],
+    "graph_metrics": {
+      "nodes": 0,
+      "edges": 0,
+      "density": 0,
+      "is_dag": true,
+      "weakly_connected_components": 0
+    },
+    "coupling_metrics": {},
+    "unused_imports": {}
+  },
+  "security": [],
+  "qgis_compliance": {
+    "metadata": {
+      "exists": true,
+      "valid": true,
+      "content": {
+        "name": "Sec Interp",
+        "qgisminimumversion": "3.0",
+        "description": "Data extraction for geological interpretation",
+        "version": "2.9.0",
+        "author": "Juan M Bernales",
+        "email": "juanbernales@gmail.com",
+        "about": "Data extraction from DEM, geological outcrops and structural points, for geological interpretation",
+        "tracker": "https://github.com/geociencio/sec_interp/issues",
+        "repository": "https://github.com/geociencio/sec_interp",
+        "hasprocessingprovider": "no",
+        "changelog": "\n2.9.0 (2026-01-28)\n* Quality Sprint - Redundancy Consolidation:\n- Core: Unified detached data flow across all core services (Geology, Structure, Drillhole).\n- Core: Centralized section setup in 'prepare_profile_context' utility.\n- Core: Robust geometry handling (replaced .clone() with constructor for QGIS compatibility).\n- Environment: Stabilized Docker/PYTHONPATH and standardized package-prefixed imports.\n- Quality: 100% Success in Phase 3 test suite (206 tests passing).\n2.8.0 (2026-01-25)\n* Debt Reduction & UI Improvements:\n- Core: Full Core-QGIS Architectural Decoupling using WKT/DTO pattern.\n- Core: Improved thread-safety for background tasks.\n- UI: Added legend visibility toggle with project/global persistence.\n- Infrastructure: Enhanced geometric mocks (azimuth support).\n- Documentation: Fixed API docs Sphinx build.\n\n2.7.0 (2026-01-18)\n* Operational Excellence & Documentation:\n- Infrastructure: Dockerized QA environment (100% tests passing).\n- Documentation: Automated Sphinx docs & Clean HTML.\n- Architecture: 3-Level Robust Validation & Dialog Managers.\n- Features: Enhanced 3D Export (PolygonZ) & Sidebar UI.\n- i18n: Full English/Spanish support.\n\n2.6.0 (2026-01-09)\n* Infrastructure & DevOps:\n- CI/CD: Fully dockerized pipeline using official QGIS image.\n- Optimization: CC <= 5 in 3D Exporter.\n* Stability & Quality:\n- Resolved mock pollution in GUI tests.\n- Project-wide code formatting (black).\n- Added performance benchmarks.\n* Internationalization:\n- Translated Measure tool and default namings.\n* GUI & Validation:\n- Unified validation logic and UI completion checks.\n\n2.5.0 (2026-01-03)\n* Major Features:\n- 3D Interpretation Export: Export 2D interpretations as real 3D Shapefiles (PolygonZ).\n- Settings Page: New sidebar page to manage plugin configurations.\n* Improvements & Stability:\n- Overhauled Data Persistence: Robust restoration with multi-scope support and layer name fallback.\n- Proactive Auto-save: Parameters are remembered immediately on Preview or dialog Accept.\n- Quality Assurance: Project-wide Ruff activation and legacy validation fix.\n- Forced Disk Sync: Immediate configuration writing for increased reliability.\n- Fixed Geology Preview Rendering error.\n\n2.4.0 (2025-12-31)\n* Major Features:\n- Internationalization System: 5 languages (ES, FR, DE, RU, PT_BR) with auto-locale detection.\n- Interpretation Tool: Interactive feature digitizing on profile with smart snapping and auto-styling.\n* Architecture & Refactoring:\n- Complete Core Refactoring (Phases 1-6): DI, Exceptions, CacheManager, Async, Validation.\n- GUI Decomposition: Split main dialog into specialized managers.\n* Infrastructure:\n- Migrated to 'uv' for dependency management (uv.lock).\n- Centralized configuration in pyproject.toml.\n- Pre-commit hooks and Strict Linting (100% QGIS Compliance).\n* Critical Fixes:\n- Stability improvements in Preview rendering and I18n loading.\n\n2.3.0 (2025-12-25)\n* Enhanced Multi-Point Measurement Tool:\n- Support for polyline tracing with unlimited measurement points\n- Dedicated \"Finalize\" button for explicit measurement completion\n- Comprehensive metrics: Total 3D distance, Horizontal distance, Elevation change, Average slope\n- Persistent visual feedback with green vertex markers and measurement lines\n- Auto-reset on new measurement for improved workflow\n* Structural Improvement Plan - Major Architectural Refactoring:\n- Phase 1 - Architectural Decoupling:\n* Extracted DialogToolManager for map tool encapsulation\n* Centralized preview logic in PreviewManager\n* Eliminated PyQt dependencies from core/validation (enum-based FieldType)\n- Phase 2 - Complexity Reduction:\n* Modularized geometry.py into extraction/processing/filtering sub-packages\n* Refactored DrillholeService with extracted private methods\n* Implemented adaptive LOD (Level of Detail) for topography\n- Phase 3 - Performance Optimization:\n* Robust cache with hash-based invalidation in PreviewManager\n* Spatial indexing (QgsSpatialIndex) for drillhole filtering\n* Improved rendering performance (84ms for 6km sections)\n- Phase 4 - Documentation:\n* Created ARCHITECTURE.md (unified technical documentation)\n* Created DEVELOPMENT_GUIDE.md (developer onboarding)\n* Improved docstring coverage to 75.9%\n* Code Quality Improvements:\n- Quality score increased from 71.1 to 74.4 (+4.6%)\n- Fixed all critical lint errors (imports, typing, complexity)\n- Removed deprecated typing imports (Dict/List → dict/list)\n- Improved error handling with logger.exception\n* Critical Bug Fixes:\n- Fixed ModuleNotFoundError for geometry_utils sub-package\n- Resolved NameError for Optional in profile_service.py\n- Fixed AttributeError in measure_tool (DialogToolManager access)\n- Corrected TypeError in create_buffer_geometry signature\n- Fixed UnboundLocalError in PreviewManager cache handling\n- Added CRS transformation support in spatial filtering\n- Implemented field validation for drillhole processing\n- Fixed geology disappearing on subsequent preview clicks (cache persistence)\n- Fixed drillholes not rendering (missing return statement in _generate_drillholes)\n- Added diagnostic logging for drillhole trace generation\n\n2.2.0 (2025-12-22)\n* Major Refactoring & Architecture:\n- Moved main SecInterp class to plugin root (sec_interp_plugin.py).\n- Modularized validation into core/validation/ package.\n- Fragmented SecInterpDialog into specialized managers.\n* Documentation & Optimization:\n- Translated 100% of documentation (ARCHITECTURE.md) to English.\n- Optimized Help System (removed source code views/redundant raw sources).\n- Slimmed ZIP package by 70% uncompressed through advanced exclusions.\n* Features & UX:\n- Restored visual workflow images to User Guide.\n- Fixed toolbar icon loading and Axis/Grid alignment.\n\n2.1.0 (2025-12-17)\n* Major Feature: Snap-Enabled Measurement Tool\n- Iterative vertex snapping using QgsPointLocator (Avoids project pollution)\n- Performance optimized with locator caching\n* AI Workflow & Reliability:\n- Unicode normalization (NFD) for robust keyword matching (accents support)\n- Direct integration of AI_CONTEXT and Project Brain in prompts\n* Fixes:\n- Resolved QgsSnappingConfig AttributeError (QgsTolerance.Pixels)\n- Eliminated scratch layer warnings\n\n2.0 (2025-12-14)\n* Major Feature: Drillhole Data Handling\n- 3D Projection of drillhole traces onto 2D profile sections\n- Auto-calculation of total depths and handling of vertical holes without survey\n- Visualization of geological intervals along drillhole traces\n* Drillhole Data Export:\n- Export drillhole traces to Shapefile (drillhole_traces.shp)\n- Export interval data with attributes to Shapefile (drillhole_intervals.shp)\n* Major UI Refactoring & Enhancements:\n- New specialized Drillhole Input Page\n- Enhanced Preview System with dedicated persistent rendering for all data types\n- Fixed critical rendering bugs (zoom persistence, async updates)\n* Architecture:\n- Implemented DrillholeService for encapsulated logic\n- Refactored ProfileController to orchestrate multiple data services\n- Unified export logic with extensible Exporter pattern\n\n1.1 (2025-12-12)\n* Performance & Optimization:\n- Implemented asynchronous parallel processing for geological generation\n- Integrated Performance Monitor (RAM & Execution Time tracking)\n- Added non-blocking UI during heavy calculations\n* Preview System Enhancements:\n- Implemented Adaptive Level of Detail (LOD) for high-performance rendering\n- Added Dynamic Zoom-based LOD (details increase as you zoom in)\n- Added Measurement Tool (Distance and Slope/Gradient)\n- Improved CRS handling and fixed blank rendering issues\n* Architecture & Fixes:\n- Refactored services to use Command Pattern for parallel execution\n- Fixed structure projection consistency\n- Resolved \"No valid layers to render\" warnings\n- Fixed Dip Scale Factor application\n\n\n1.0 (2025-12-08)\n* Refactoring & Architecture:\n- Split monolithic modules (algorithms.py, main_dialog.py) into focused components\n- Modularized exporters ecosystem\n- Implemented spatial indexing and native QGIS algorithms for performance\n* Quality Assurance:\n- Added comprehensive type hinting across modules\n- Enhanced test infrastructure with pytest and QGIS support\n- Implemented security fixes (path traversal protection)\n* Major UI Refactoring - Plugin Manager Style:\n- Redesigned main dialog with sidebar navigation (QListWidget + QStackedWidget)\n- Replaced absolute positioning with responsive layouts (QVBoxLayout, QHBoxLayout, QSplitter)\n- Integrated native QGIS theme icons for sidebar items\n- Improved preview/results area proportions with better vertical space management\n- Fixed legend rendering and resizing issues\n* Code Quality Improvements:\n- Extracted LegendWidget to separate module (gui/legend_widget.py)\n- Refactored preview_profile_handler with helper methods and early returns\n- Refactored export_preview with dedicated methods per format (PNG, JPG, SVG, PDF)\n- Applied SOLID principles throughout main dialog class\n* Documentation:\n- Added COMMIT_GUIDELINES.md for standardized commit messages\n- Added RELEASE_PROCESS.md with version release workflow\n- Added drilllogs_research.md with future integration requirements\n\n0.3 (2025-12-03)\n* Major Refactoring - Modular Project Structure:\n- Reorganized codebase into core/, gui/, resources/ packages\n- Improved code maintainability and scalability\n- Better separation of concerns (business logic, UI, resources)\n* Quality Improvements:\n- Achieved Pylint score 10/10\n- Specific exception handling throughout codebase\n- Comprehensive code documentation\n- Configured .pylintrc for consistent code quality\n* Testing & CI/CD:\n- Added pytest infrastructure with QGIS support\n- Created initial unit tests (3 tests passing)\n- Configured GitHub Actions for automated testing\n- Test configuration in tests/conftest.py\n* Build System:\n- Updated Makefile for new structure\n- Refactored deploy.sh for modular deployment\n- Organized build scripts in scripts/ directory\n* Documentation:\n- Added REFACTORING_PR.md with detailed changes\n- Improved project documentation structure\n- Added implementation plans for future features\n\n0.2 (2025-11-30)\n* Major UI Overhaul - Native QGIS Widget Integration:\n- Replaced standard Qt ComboBoxes with QgsMapLayerComboBox for automatic layer population\n- Integrated QgsRasterBandComboBox for intelligent raster band selection\n- Added QgsFileWidget for native file/directory browsing with QGIS integration\n- Eliminated manual layer population code - widgets auto-sync with QGIS project\n- Improved user experience with native QGIS look and feel\n* UI Enhancements:\n- Collapsible results panel (QgsCollapsibleGroupBox) for better space management\n- Read-only results field to prevent accidental edits\n- Fixed Qt enum syntax for better cross-version compatibility\n* New Features:\n- Flexible parsers for geological structural measurements (dip/strike formats)\n- Comprehensive logging system integrated with QGIS Message Panel\n- Enhanced validation logic for QgsMapLayer objects\n* Code Quality:\n- Removed 200+ lines of manual widget population code\n- Cleaner architecture leveraging QGIS native capabilities\n\n0.1 (Initial Release)\n- DEM topographic profile extraction\n- Geological outcrop data extraction\n- Structural point data extraction\n- Interactive preview visualization",
+        "tags": "geology, mining, cross-section, borehole, drillhole, exploration, topography, profile, interpretation, dem, interpolation, digitizing, snapping, structural geology, subsurface, visualization",
+        "homepage": "https://geociencio.github.io/sec_interp_docs/",
+        "icon": "icon.png",
+        "experimental": "False",
+        "deprecated": "False",
+        "category": "Vector",
+        "server": "False"
+      },
+      "issues": [],
+      "compliance_score": 100
+    },
+    "processing_framework_detected": false,
+    "i18n_stats": {
+      "total_tr": 0,
+      "total_strings": 0
+    },
+    "gdal_style": "Correct",
+    "qt_transition": {
+      "pyqt5_count": 0,
+      "pyqt6_count": 0
+    },
+    "legacy_signals": 0,
+    "compliance_score": 60.0
+  },
+  "optimizations": [],
+  "recommendations": [
+    {
+      "category": "Project Health",
+      "priority": "Critical",
+      "message": "Quality Score is low (0/100)."
+    },
+    {
+      "category": "Documentation",
+      "priority": "high",
+      "message": "Increase docstring coverage (current: 0%)"
+    },
+    {
+      "category": "Testing",
+      "priority": "Critical",
+      "message": "No test files detected. Initialize a test suite immediately."
+    },
+    {
+      "category": "Type Hints",
+      "priority": "medium",
+      "message": "Improve type hint coverage (current: 0%)"
+    }
+  ],
+  "git": {
+    "hotspots": [
+      {
+        "path": "src/ai_context_core/analyzer/engine.py",
+        "commits": 24
+      },
+      {
+        "path": "src/ai_context_core/analyzer/ast_utils.py",
+        "commits": 19
+      },
+      {
+        "path": "src/ai_context_core/analyzer/reporting.py",
+        "commits": 19
+      },
+      {
+        "path": "src/ai_context_core/analyzer/issues.py",
+        "commits": 17
+      },
+      {
+        "path": "src/ai_context_core/cli.py",
+        "commits": 15
+      }
+    ],
+    "churn": {
+      "available": true,
+      "period_days": 30,
+      "added": 49787,
+      "deleted": 25693,
+      "total_churn": 75480,
+      "files_changed": 579
+    },
+    "is_repo": true
+  },
+  "timestamp": 1769763613.2341127,
+  "structure": {
+    "tree": "./\n    .ai_context_cache.json\n    AI_CONTEXT.md\n    PROJECT_SUMMARY.md\n    ai_ctx_bug_report.md\n    metadata.txt\n    project_context.json",
+    "modules_count": 0,
+    "file_types": {
+      ".md": 3,
+      ".json": 2,
+      ".txt": 1
+    },
+    "size_stats": {
+      "total_files": 6,
+      "total_size_mb": 0.03,
+      "python_files": 0,
+      "python_size_mb": 0.0,
+      "avg_file_size_kb": 5.34,
+      "python_percentage": 0.0
+    }
+  },
+  "manual_notes": ""
+}

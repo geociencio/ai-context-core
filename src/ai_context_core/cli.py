@@ -396,9 +396,12 @@ class CLIHandler:
         # Metadata validation
         if metadata.get("valid"):
             click.secho("\n✅ metadata.txt is valid", fg="green")
-            click.echo(f"Plugin Name: {metadata.get('name', 'N/A')}")
-            click.echo(f"Version: {metadata.get('version', 'N/A')}")
-            click.echo(f"QGIS Min Version: {metadata.get('qgisMinimumVersion', 'N/A')}")
+            content = metadata.get("content", {})
+            click.echo(f"Plugin Name: {content.get('name', 'N/A')}")
+            click.echo(f"Version: {content.get('version', 'N/A')}")
+            click.echo(
+                f"QGIS Min Version: {content.get('qgisminimumversion', 'N/A')}"
+            )
         else:
             click.secho("\n❌ metadata.txt validation failed", fg="red")
             for err in metadata.get("errors", []):

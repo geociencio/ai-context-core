@@ -273,14 +273,14 @@ def calculate_sloc(tree: ast.AST, content: str) -> int:
 
             if not is_docstring:
                 # Count lines that contain at least one non-comment, non-docstring token
-                for l in range(start_line, end_line + 1):
-                    lines_with_code.add(l)
+                for line_idx in range(start_line, end_line + 1):
+                    lines_with_code.add(line_idx)
 
         sloc_count = len(lines_with_code)
     except Exception:
         # Fallback to a simpler line count if tokenization fails
         # (e.g., due to encoding issues or partial files)
-        lines = [l.strip() for l in content.splitlines()]
-        sloc_count = len([l for l in lines if l and not l.startswith("#")])
+        lines = [line.strip() for line in content.splitlines()]
+        sloc_count = len([line for line in lines if line and not line.startswith("#")])
 
     return sloc_count

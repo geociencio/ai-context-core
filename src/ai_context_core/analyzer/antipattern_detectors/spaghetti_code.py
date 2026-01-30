@@ -1,6 +1,6 @@
 """Detección de 'Spaghetti Code' (alta complejidad ciclomática)."""
 
-"""Spaghetti code detector implementation."""
+
 
 import ast
 from typing import List, Dict, Any

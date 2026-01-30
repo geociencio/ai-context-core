@@ -1,6 +1,5 @@
 """Registry and base classes for issue checkers."""
 
-import ast
 from typing import List, Dict, Any
 
 

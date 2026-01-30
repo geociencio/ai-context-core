@@ -1,6 +1,6 @@
 """Detección de 'Magic Numbers' (constantes numéricas arbitrarias)."""
 
-"""Magic number detector implementation."""
+
 
 import ast
 from typing import List, Dict, Any

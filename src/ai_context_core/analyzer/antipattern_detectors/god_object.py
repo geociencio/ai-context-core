@@ -1,6 +1,6 @@
 """Detección de clases 'God Object' (con demasiados métodos)."""
 
-"""God Object detector implementation."""
+
 
 import ast
 from typing import List, Dict, Any

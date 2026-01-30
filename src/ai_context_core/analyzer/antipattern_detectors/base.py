@@ -1,6 +1,6 @@
 """Base classes for anti-pattern detection."""
 
-"""Base class for anti-pattern detectors."""
+
 
 import ast
 from typing import List, Dict, Any
