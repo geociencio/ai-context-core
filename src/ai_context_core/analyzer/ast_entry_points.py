@@ -9,9 +9,15 @@ class EntryPointVisitor(ast.NodeVisitor):
     """Visitor to detect if a module is an entry point."""
 
     def __init__(self):
+        """Initialize the entry point visitor."""
         self.result = {"is_entry_point": False, "type": None}
 
     def visit_If(self, node: ast.If):
+        """Visits an if-block to check for the __main__ guard.
+
+        Args:
+            node: The If node.
+        """
         if self.result["is_entry_point"]:
             return
 
@@ -34,6 +40,11 @@ class EntryPointVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
+        """Visits a function definition to check for framework entry points.
+
+        Args:
+            node: The FunctionDef node.
+        """
         if self.result["is_entry_point"]:
             return
 
@@ -51,6 +62,11 @@ class EntryPointVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _check_decorator(self, decorator: ast.AST):
+        """Internal helper to check if a decorator indicates an entry point.
+
+        Args:
+            decorator: The decorator node to check.
+        """
         check_node = decorator
         if isinstance(decorator, ast.Call):
             check_node = decorator.func
@@ -72,6 +88,11 @@ class EntryPointVisitor(ast.NodeVisitor):
                 self.result = {"is_entry_point": True, "type": "fastapi_app"}
 
     def visit_Assign(self, node: ast.Assign):
+        """Visits an assignment node to check for special framework variables.
+
+        Args:
+            node: The Assign node.
+        """
         if self.result["is_entry_point"]:
             return
 
@@ -83,6 +104,12 @@ class EntryPointVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _check_assignment(self, target_id: str, value_node: ast.AST):
+        """Internal helper to check if an assignment defines a framework entry point.
+
+        Args:
+            target_id: The name of the variable being assigned to.
+            value_node: The value node of the assignment.
+        """
         # Django
         if target_id == "application":
             self.result = {"is_entry_point": True, "type": "django_app"}
@@ -106,7 +133,16 @@ class EntryPointVisitor(ast.NodeVisitor):
 
 
 def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
-    """Determines if the module is an entry point."""
+    """Analyzes a module to determine if it acts as an entry point.
+
+    Checks for __main__ guards and common CLI or QGIS plugin entry points.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        Dictionary with is_entry_point (bool) and entry_point_type (str).
+    """
     visitor = EntryPointVisitor()
     visitor.visit(tree)
     return visitor.result

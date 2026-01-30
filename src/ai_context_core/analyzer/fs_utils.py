@@ -31,16 +31,35 @@ class LRUCache:
     """Least Recently Used (LRU) cache using OrderedDict for O(1) performance."""
 
     def __init__(self, maxsize: int = 256):
+        """Initialize the LRU cache.
+
+        Args:
+            maxsize: Maximum number of items in the cache.
+        """
         self.cache = OrderedDict()
         self.maxsize = maxsize
 
     def get(self, key: str) -> Any:
+        """Retrieves an item from the cache and moves it to the end (MRU).
+
+        Args:
+            key: The cache key.
+
+        Returns:
+            The cached value or None if not present.
+        """
         if key not in self.cache:
             return None
         self.cache.move_to_end(key)
         return self.cache[key]
 
     def set(self, key: str, value: Any):
+        """Adds or updates an item in the cache.
+
+        Args:
+            key: The cache key.
+            value: The value to store.
+        """
         if key in self.cache:
             self.cache.move_to_end(key)
         self.cache[key] = value
@@ -48,6 +67,7 @@ class LRUCache:
             self.cache.popitem(last=False)
 
     def clear(self):
+        """Clears the cache."""
         self.cache.clear()
 
 
@@ -74,6 +94,12 @@ class ProjectScanner:
     }
 
     def __init__(self, project_path: pathlib.Path, ignore_filter: IgnoreFilter):
+        """Initialize the scanner.
+
+        Args:
+            project_path: Path to the project root.
+            ignore_filter: Filter for ignoring files and directories.
+        """
         self.project_path = project_path
         self.ignore_filter = ignore_filter
         self.stats = {
@@ -115,6 +141,13 @@ class ProjectScanner:
         )
 
     def _process_file(self, root: str, rel_root: str, file: str):
+        """Internal helper to process a single file during scan.
+
+        Args:
+            root: Root path.
+            rel_root: Relative root path.
+            file: Filename.
+        """
         file_path = os.path.join(root, file)
         path_obj = pathlib.Path(file_path)
 
@@ -146,6 +179,11 @@ class ProjectScanner:
                 self.python_files.append(path_obj)
 
     def _finalize_stats(self) -> Dict[str, Any]:
+        """Aggregates raw scan data into final project statistics.
+
+        Returns:
+            Dictionary with formatted statistics (sizes, percentages).
+        """
         ts = self.stats["total_size"]
         ps = self.stats["python_size"]
         tf = self.stats["total_files"]
@@ -187,7 +225,14 @@ def read_file_fast(path: pathlib.Path) -> str:
 
 
 def is_test_file(path: pathlib.Path) -> bool:
-    """Heuristically determines if a given file is a test file."""
+    """Heuristically determines if a given file is a test file.
+
+    Args:
+        path: Path to the file.
+
+    Returns:
+        True if the file is likely a test file.
+    """
     filename = path.name.lower()
     test_patterns = ["test_", "_test", "spec_", "_spec", "conftest"]
     return (
@@ -247,7 +292,14 @@ def _generate_tree_fallback(project_path: pathlib.Path) -> str:
 
 
 def calculate_file_hash(path: pathlib.Path) -> str:
-    """Calculates the SHA-256 hash of a file's content."""
+    """Calculates the SHA-256 hash of a file's content.
+
+    Args:
+        path: Path to the file.
+
+    Returns:
+        HEX string of the SHA-256 hash.
+    """
     try:
         content = read_file_fast(path)
         if not content:
@@ -258,7 +310,14 @@ def calculate_file_hash(path: pathlib.Path) -> str:
 
 
 def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
-    """Parses and validates a QGIS plugin metadata.txt file."""
+    """Parses and validates a QGIS plugin metadata.txt file.
+
+    Args:
+        project_path: Path to the project root.
+
+    Returns:
+        Dictionary with parsed metadata, issues, and compliance score.
+    """
     metadata_file = project_path / "metadata.txt"
     res = {
         "exists": False,
@@ -277,8 +336,9 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
         content = metadata_file.read_text(encoding="utf-8")
         import configparser
 
-        config = configparser.ConfigParser()
-        config.read_string("[general]\n" + content)
+        config = configparser.ConfigParser(strict=False)
+        # Strip to avoid issues with empty lines at start or BOM
+        config.read_string("[general]\n" + content.strip())
 
         # QGIS metadata usually has a [general] section, but some people omit the header
         # adding a dummy header to ensure it parses if it's just key=value
@@ -322,7 +382,14 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
 
 
 def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:
-    """Loads the analysis cache from disk."""
+    """Loads the analysis cache from disk.
+
+    Args:
+        project_path: Path to the project root.
+
+    Returns:
+        Cached analysis data or empty dict.
+    """
     cache_file = project_path / ".ai_context_cache.json"
     if not cache_file.exists():
         return {}
@@ -334,7 +401,12 @@ def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:
 
 
 def save_cache(project_path: pathlib.Path, cache_data: Dict[str, Any]):
-    """Saves the analysis cache to disk."""
+    """Saves the analysis cache to disk.
+
+    Args:
+        project_path: Path to the project root.
+        cache_data: The analysis data to serialize.
+    """
     cache_file = project_path / ".ai_context_cache.json"
     try:
         with open(cache_file, "w", encoding="utf-8") as f:
@@ -349,24 +421,67 @@ def save_cache(project_path: pathlib.Path, cache_data: Dict[str, Any]):
 def load_exclusion_patterns(
     project_path: pathlib.Path, extra: List[str] = None
 ) -> List[str]:
+    """Loads exclusion patterns using IgnoreFilter.
+
+    Args:
+        project_path: Path to the project root.
+        extra: Additional patterns to include.
+
+    Returns:
+        List of compiled or raw exclusion patterns.
+    """
     return IgnoreFilter(project_path, extra).patterns
 
 
 def scan_project(project_path: pathlib.Path, patterns: List[str]) -> ProjectScanResult:
+    """Scans the project for files and statistics.
+
+    Args:
+        project_path: Path to the project root.
+        patterns: Exclusion patterns.
+
+    Returns:
+        Combined scan results.
+    """
     filt = IgnoreFilter(project_path, extra_patterns=patterns)
     scanner = ProjectScanner(project_path, filt)
     return scanner.scan()
 
 
 def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
+    """Counts files by extension in the project.
+
+    Args:
+        project_path: Path to the project root.
+
+    Returns:
+        Dictionary of extension counts.
+    """
     return scan_project(project_path, []).file_types
 
 
 def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
+    """Calculates project size statistics.
+
+    Args:
+        project_path: Path to the project root.
+
+    Returns:
+        Statistics about file sizes and counts.
+    """
     return scan_project(project_path, []).size_stats
 
 
 def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[str, Any]:
+    """Analyzes and returns the project structure and statistics.
+
+    Args:
+        project_path: Path to the project root.
+        modules_count: Number of modules discovered.
+
+    Returns:
+        Consolidated structure analysis.
+    """
     filt = IgnoreFilter(project_path)
     scanner = ProjectScanner(project_path, filt)
     res = scanner.scan()

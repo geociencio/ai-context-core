@@ -10,6 +10,11 @@ class SecurityChecker(BaseChecker):
     """Checks for security vulnerabilities and secrets."""
 
     def __init__(self, config: Dict[str, Any] = None):
+        """Initialize the security checker.
+
+        Args:
+            config: Optional configuration dictionary.
+        """
         super().__init__(config)
 
     def get_category(self) -> str:

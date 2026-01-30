@@ -1,3 +1,5 @@
+"""Singleton pattern detector implementation."""
+
 import ast
 from ..constants import PATTERN_DETECTION_CONFIDENCE_HIGH
 from .base import PatternDetector
@@ -7,6 +9,11 @@ class SingletonDetector(PatternDetector):
     """Detects Singleton pattern implementations."""
 
     def visit(self, node: ast.AST):
+        """Analyzes a node to find Singleton pattern evidence.
+
+        Args:
+            node: The AST node to analyze.
+        """
         self.evidence, self.confidence = [], 0
         if not isinstance(node, ast.ClassDef):
             return

@@ -21,6 +21,7 @@ from .ast_metrics import (  # noqa: F401
     calculate_complexity,
     calculate_halstead_metrics,
     calculate_type_hint_coverage,
+    calculate_sloc,
 )
 from .ast_entry_points import (  # noqa: F401
     is_entry_point,

@@ -16,6 +16,12 @@ class ResultsAggregator:
     """Aggregates and post-processes analysis results from multiple modules."""
 
     def __init__(self, project_path: pathlib.Path, config: Dict[str, Any]):
+        """Initialize the aggregator.
+
+        Args:
+            project_path: Path to the project root.
+            config: Configuration dictionary for metrics and thresholds.
+        """
         self.project_path = project_path
         self.config = config
 
@@ -26,8 +32,17 @@ class ResultsAggregator:
         git_data: Dict[str, Any],
         qgis_metadata: Dict[str, Any],
     ) -> Dict[str, Any]:
-        """Performs a full aggregation of module data and project-level metrics."""
+        """Performs a full aggregation of module data and project-level metrics.
 
+        Args:
+            m_data: List of individual module analysis results.
+            graph_data: Global dependency graph information.
+            git_data: Evolution and churn data from git.
+            qgis_metadata: Metadata from metadata.txt if available.
+
+        Returns:
+            A post-processed results dictionary ready for reporting.
+        """
         # Filter out modules with syntax errors for metric calculations
         valid_modules = [m for m in m_data if not m.get("syntax_error")]
 
@@ -59,10 +74,12 @@ class ResultsAggregator:
         # Complexity aggregation (for backward compatibility)
         complexity_agg = {
             "total_modules": len(valid_modules),
-            "total_lines": project_metrics.get("total_lines", 0),
+            "total_lines": project_metrics.get("total_lines_code", 0),
+            "total_physical_lines": project_metrics.get("total_physical_lines", 0),
             "total_functions": project_metrics.get("total_functions", 0),
             "total_classes": project_metrics.get("total_classes", 0),
             "average_complexity": project_metrics.get("average_complexity", 0),
+            "avg_maintenance_index": project_metrics.get("avg_maintenance_index", 0),
             "most_complex_modules": sorted(
                 [(m["path"], m.get("complexity", 0)) for m in valid_modules],
                 key=lambda x: x[1],
@@ -90,7 +107,15 @@ class ResultsAggregator:
     def _aggregate_qgis_compliance(
         self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Aggregate QGIS-specific results from modules and metadata."""
+        """Aggregate QGIS-specific results from modules and metadata.
+
+        Args:
+            m_data: List of module analysis results.
+            metadata: Parsed metadata.txt content.
+
+        Returns:
+            Dictionary with aggregated QGIS compliance metrics.
+        """
         agg = {
             "metadata": metadata,
             "processing_framework_detected": any(

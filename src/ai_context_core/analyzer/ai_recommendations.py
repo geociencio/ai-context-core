@@ -19,6 +19,14 @@ class RecommendationRule:
     """Base class for smart recommendation rules."""
 
     def check(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Analyzes data and returns recommendations.
+
+        Args:
+            data: Data to check (metrics or module data).
+
+        Returns:
+            List of recommendations.
+        """
         raise NotImplementedError
 
 
@@ -26,6 +34,14 @@ class QualityScoreRule(RecommendationRule):
     """Checks overall project quality score."""
 
     def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for quality score issues.
+
+        Args:
+            metrics: Project-level metrics.
+
+        Returns:
+            Recommendations based on quality score.
+        """
         score = metrics.get("quality_score", 0)
         if score < AI_RECOMMENDATION_QUALITY_LOW_THRESHOLD:
             return [
@@ -50,13 +66,45 @@ class DocumentationRule(RecommendationRule):
     """Checks documentation coverage."""
 
     def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for documentation opportunities.
+
+        Args:
+            metrics: Project metrics.
+
+        Returns:
+            List of recommendations.
+        """
         cov = metrics.get("docstring_coverage", 0)
-        if cov < DOCSTRING_COVERAGE_THRESHOLD:
+        if cov < 80:
             return [
                 {
                     "category": "Documentation",
-                    "priority": "Medium",
-                    "message": f"Low documentation coverage ({cov}%).",
+                    "priority": "high" if cov < 50 else "medium",
+                    "message": f"Increase docstring coverage (current: {cov}%)",
+                }
+            ]
+        return []
+
+
+class TypeHintRule(RecommendationRule):
+    """Checks for type hinting coverage."""
+
+    def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for type hinting opportunities.
+
+        Args:
+            metrics: Project metrics.
+
+        Returns:
+            List of recommendations.
+        """
+        cov = metrics.get("type_hint_coverage", 0)
+        if cov < 70:
+            return [
+                {
+                    "category": "Type Hints",
+                    "priority": "medium",
+                    "message": f"Improve type hint coverage (current: {cov}%)",
                 }
             ]
         return []
@@ -66,6 +114,14 @@ class TestingStatusRule(RecommendationRule):
     """Checks for presence of tests."""
 
     def check(self, metrics: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for test file presence.
+
+        Args:
+            metrics: Project metrics.
+
+        Returns:
+            List of recommendations.
+        """
         if metrics.get("test_files_count", 0) == 0:
             return [
                 {
@@ -81,8 +137,22 @@ class AIRecommender:
     """Heuristic-based recommendation engine."""
 
     def __init__(self, config: Dict[str, Any] = None):
+        """Initialize the AI recommender with optional config.
+
+        Args:
+            config: Configuration dictionary.
+        """
         self.config = config or {}
-        self.rules = [QualityScoreRule(), DocumentationRule(), TestingStatusRule()]
+        # Assuming TypeHintRule is a new rule and QualityScoreRule can take config
+        # The original rules were QualityScoreRule(), DocumentationRule(), TestingStatusRule()
+        # The provided change seems to want to replace them with a new set.
+        # I will interpret the provided change as replacing the list of rules.
+        self.rules = [
+            QualityScoreRule(),
+            DocumentationRule(),
+            TestingStatusRule(),
+            TypeHintRule(),
+        ]
 
     def analyze_codebase(
         self, analysis_results: Dict[str, Any]

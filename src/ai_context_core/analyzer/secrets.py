@@ -40,9 +40,18 @@ class SecretScanner:
     """Dectects sensitive information using regular expressions."""
 
     def __init__(self):
+        """Initialize the secret scanner with compiled regex patterns."""
         self.rules = [(re.compile(p), desc, sev) for p, desc, sev in PATTERNS]
 
     def scan(self, content: str) -> List[Dict[str, Any]]:
+        """Scans the given content for exposed secrets.
+
+        Args:
+            content: The string content to analyze.
+
+        Returns:
+            List of detected secret issues.
+        """
         issues = []
         lines = content.splitlines()
         for regex, desc, sev in self.rules:
@@ -69,10 +78,18 @@ class SecretScanner:
                 )
         return issues
 
-    def _mask(self, val: str) -> str:
-        if len(val) <= 4:
-            return "*" * len(val)
-        return f"{val[:2]}{'*' * (len(val) - 4)}{val[-2:]}"
+    def _mask(self, secret: str) -> str:
+        """Masks a secret for safe display.
+
+        Args:
+            secret: The secret string to mask.
+
+        Returns:
+            The masked secret.
+        """
+        if len(secret) <= 4:
+            return "****"
+        return secret[:2] + "*" * (len(secret) - 4) + secret[-2:]
 
 
 def detect_secrets(content: str) -> List[Dict[str, Any]]:

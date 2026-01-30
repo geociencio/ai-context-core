@@ -1,3 +1,5 @@
+"""Observer pattern detector implementation."""
+
 import ast
 from typing import Dict, List, Any
 from .base import PatternDetector
@@ -7,6 +9,14 @@ class ObserverDetector(PatternDetector):
     """Detects Observer pattern implementations."""
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Detects Observer pattern implementations in a node.
+
+        Args:
+            node: The AST node to analyze.
+
+        Returns:
+            List of detected observer instances.
+        """
         self.evidence, self.confidence = [], 0
         name = getattr(node, "name", "Module")
 

@@ -8,59 +8,122 @@ class ComplexityVisitor(ast.NodeVisitor):
     """Visitor to calculate cyclomatic complexity."""
 
     def __init__(self):
-        self.complexity = 0
+        """Initialize the visitor. Base complexity starts at 1."""
+        self.complexity = 1
         self.decision_lines = set()
 
     def _add_decision(self, node):
+        """Increments complexity and records the decision line.
+
+        Args:
+            node: The AST node representing a decision point.
+        """
         self.complexity += 1
         if hasattr(node, "lineno"):
             self.decision_lines.add(node.lineno)
 
     def visit_If(self, node: ast.If):
+        """Visits an if-statement.
+
+        Args:
+            node: The If node.
+        """
         self._add_decision(node)
         self.generic_visit(node)
 
     def visit_While(self, node: ast.While):
+        """Visits a while-loop.
+
+        Args:
+            node: The While node.
+        """
         self._add_decision(node)
         self.generic_visit(node)
 
     def visit_For(self, node: ast.For):
+        """Visits a for-loop.
+
+        Args:
+            node: The For node.
+        """
         self._add_decision(node)
         self.generic_visit(node)
 
     def visit_AsyncFor(self, node: ast.AsyncFor):
+        """Visits an async for-loop.
+
+        Args:
+            node: The AsyncFor node.
+        """
         self._add_decision(node)
         self.generic_visit(node)
 
     def visit_Try(self, node: ast.Try):
-        self._add_decision(node)
+        """Visits a try-except block.
+
+        Args:
+            node: The Try node.
+        """
+        self.generic_visit(node)
         self.generic_visit(node)
 
     def visit_AsyncWith(self, node: ast.AsyncWith):
-        self._add_decision(node)
+        """Visits an async with-statement.
+
+        Args:
+            node: The AsyncWith node.
+        """
+        self.generic_visit(node)
         self.generic_visit(node)
 
     def visit_ExceptHandler(self, node: ast.ExceptHandler):
+        """Visits an except handler.
+
+        Args:
+            node: The ExceptHandler node.
+        """
         self._add_decision(node)
         self.generic_visit(node)
 
     def visit_BoolOp(self, node: ast.BoolOp):
+        """Visits a boolean operation (and/or).
+
+        Args:
+            node: The BoolOp node.
+        """
         self.complexity += len(node.values) - 1
         self.generic_visit(node)
 
     def visit_ListComp(self, node: ast.ListComp):
-        self.complexity += len(node.generators)
+        """Visits a list comprehension.
+
+        Args:
+            node: The ListComp node.
+        """
+        for gen in node.generators:
+            self._add_decision(gen)
         self.generic_visit(node)
 
     def visit_SetComp(self, node: ast.SetComp):
+        """Visits a set comprehension.
+
+        Args:
+            node: The SetComp node.
+        """
         self.complexity += len(node.generators)
         self.generic_visit(node)
 
     def visit_DictComp(self, node: ast.DictComp):
+        """Visits a dictionary comprehension.
+
+        Args:
+            node: The DictComp node.
+        """
         self.complexity += len(node.generators)
         self.generic_visit(node)
 
     def visit_GeneratorExp(self, node: ast.GeneratorExp):
+        """Visits a generator expression."""
         self.complexity += len(node.generators)
         self.generic_visit(node)
 

@@ -1,3 +1,5 @@
+"""Strategy pattern detector implementation."""
+
 import ast
 from typing import Dict, List, Any
 from .base import PatternDetector
@@ -7,6 +9,14 @@ class StrategyDetector(PatternDetector):
     """Detects Strategy pattern implementations."""
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Detects Strategy pattern implementations in a node.
+
+        Args:
+            node: The AST node to analyze.
+
+        Returns:
+            List of detected strategy instances.
+        """
         if not isinstance(node, ast.ClassDef):
             return []
         self.evidence, self.confidence = [], 0

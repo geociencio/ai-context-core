@@ -8,6 +8,14 @@ class IssueDetector:
     """Base class for issue detection rules."""
 
     def detect(self, **kwargs) -> List[Dict[str, Any]]:
+        """Analyzes a node or tree and returns detected issues.
+
+        Args:
+            **kwargs: Implementation-specific arguments (usually 'tree' or 'node').
+
+        Returns:
+            A list of detected security issues.
+        """
         raise NotImplementedError
 
 
@@ -33,6 +41,17 @@ class ASTSecurityDetector(IssueDetector):
         )
 
     def detect(self, tree: ast.AST) -> List[Dict[str, Any]]:
+        """Analyzes an AST for common security vulnerabilities.
+
+        Checks for dangerous function calls (eval, exec), insecure subprocess usage,
+        and potential SQL injection patterns.
+
+        Args:
+            tree: The AST to analyze.
+
+        Returns:
+            List of detected security issues with line numbers and severity.
+        """
         issues = []
         for node in ast.walk(tree):
             if isinstance(node, ast.Assert):
@@ -215,5 +234,12 @@ class ASTSecurityDetector(IssueDetector):
 
 
 def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
-    """Legacy wrapper for AST security detection."""
+    """Legacy wrapper for AST security detection.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected security issues.
+    """
     return ASTSecurityDetector({}).detect(tree)

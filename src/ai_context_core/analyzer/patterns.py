@@ -17,6 +17,7 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
     """Orchestrates pattern detection in a single AST pass."""
 
     def __init__(self):
+        """Initialize the unified visitor with selective detectors."""
         self.detectors = {
             "Singleton": SingletonDetector(),
             "Factory": FactoryDetector(),
@@ -27,6 +28,11 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
         self.results = {}
 
     def visit_ClassDef(self, node: ast.ClassDef):
+        """Visits a class definition to detect patterns.
+
+        Args:
+            node: The ClassDef node.
+        """
         for name, det in self.detectors.items():
             if hasattr(det, "visit"):
                 det.visit(node)
@@ -41,6 +47,12 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
+        """Visits a function definition to detect patterns.
+
+        Args:
+            node: The FunctionDef node.
+        """
+        self.generic_visit(node)
         # Decorators or local patterns
         for name, det in self.detectors.items():
             if name == "Decorator":
@@ -49,9 +61,13 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
                     if name not in self.results:
                         self.results[name] = []
                     self.results[name].extend(found)
-        self.generic_visit(node)
 
     def visit_Module(self, node: ast.Module):
+        """Visits a module to detect global patterns.
+
+        Args:
+            node: The Module node.
+        """
         # Module level patterns (e.g. PyQt signals at module level)
         det = self.detectors.get("Observer")
         if det:
@@ -74,6 +90,14 @@ def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
 
 
 def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects Singleton pattern occurrences.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected singleton instances.
+    """
     det = SingletonDetector()
     res = []
     for node in ast.walk(tree):
@@ -82,6 +106,14 @@ def detect_singleton(tree: ast.AST) -> List[Dict[str, Any]]:
 
 
 def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects Factory pattern occurrences.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected factory instances.
+    """
     det = FactoryDetector()
     res = []
     for node in ast.walk(tree):
@@ -90,6 +122,14 @@ def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
 
 
 def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects Observer pattern occurrences.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected observer instances.
+    """
     det = ObserverDetector()
     res = []
     for node in ast.walk(tree):
@@ -98,6 +138,14 @@ def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
 
 
 def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects Strategy pattern in the AST.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected strategy instances.
+    """
     det = StrategyDetector()
     res = []
     for node in ast.walk(tree):
@@ -106,6 +154,14 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
 
 
 def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects Decorator pattern in the AST.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected decorator instances.
+    """
     det = DecoratorDetector()
     res = []
     for node in ast.walk(tree):

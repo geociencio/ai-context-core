@@ -23,6 +23,14 @@ class IssueDetector:
     """Base class for issue detection rules (Legacy)."""
 
     def detect(self, **kwargs) -> List[Dict[str, Any]]:
+        """Static analysis tool for identifying issues.
+
+        Args:
+            **kwargs: Analysis-specific arguments.
+
+        Returns:
+            List of detected issues.
+        """
         raise NotImplementedError
 
 
@@ -40,12 +48,26 @@ class CheckerRegistry:
 
     @classmethod
     def register(cls, checker_cls: Type[BaseChecker]):
+        """Registers a new checker class.
+
+        Args:
+            checker_cls: The checker class to register.
+        """
         cls._checkers.append(checker_cls)
 
     @classmethod
     def run_all(
         cls, module_info: Dict[str, Any], config: Dict[str, Any] = None
     ) -> Dict[str, List[Dict[str, Any]]]:
+        """Runs all registered checkers on the given module.
+
+        Args:
+            module_info: Analyzed module data.
+            config: Optional configuration.
+
+        Returns:
+            Dictionary mapping category to list of found issues.
+        """
         results = {}
         for checker_cls in cls._checkers:
             # Instantiate checker with configuration matching the interface
@@ -154,8 +176,19 @@ def find_security_issues(
     return find_secrets(modules_data, project_path)
 
 
-def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
-    """Legacy function to detect AST security issues."""
+def detect(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Detects security issues in the AST.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        List of detected security issues.
+    """
     from .ast_security import detect_ast_security_issues as _detect_ast_security
 
     return _detect_ast_security(tree)
+
+
+# Alias for backward compatibility (used in tests)
+detect_ast_security_issues = detect

@@ -1,30 +1,31 @@
-"""Base interface for issue checkers."""
+"""Registry and base classes for issue checkers."""
 
+import ast
 from typing import List, Dict, Any
 
 
 class BaseChecker:
-    """Abstract base class for all issue checkers."""
+    """Base class for all issue checkers."""
 
-    def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Run the check on the module.
+    def __init__(self, config: Dict[str, Any] = None):
+        """Initialize the checker.
 
         Args:
-            module_info: Dictionary containing module analysis data
+            config: Optional configuration dictionary.
+        """
+        self.config = config or {}
+
+    def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Performs the check on the module data.
+
+        Args:
+            module_info: Analyzed module data.
 
         Returns:
-            List of detected issues
+            List of found issues.
         """
         raise NotImplementedError
 
     def get_category(self) -> str:
-        """Return the category of issues this checker detects."""
+        """Returns the category name for this checker."""
         raise NotImplementedError
-
-    def __init__(self, config: Dict[str, Any] = None):
-        """Initialize checker with configuration."""
-        self.config = config or {}
-
-    def get_default_config(self) -> Dict[str, Any]:
-        """Return default configuration for this checker."""
-        return {}

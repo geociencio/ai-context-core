@@ -18,6 +18,12 @@ class CLIHandler:
 
     @staticmethod
     def initialize_project(path: str, profile: str):
+        """Sets up the initial project structure and configuration.
+
+        Args:
+            path: Target project path.
+            profile: Configuration profile to use.
+        """
         proj = pathlib.Path(path).resolve()
         ai_ctx, agent_wf = proj / ".ai-context", proj / ".agent" / "workflows"
         click.echo(f"🔄 Initializing {proj} with '{profile}'...")
@@ -49,6 +55,14 @@ class CLIHandler:
 
     @staticmethod
     def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool):
+        """Executes the full project analysis pipeline.
+
+        Args:
+            path: Project path to analyze.
+            workers: Number of parallel workers.
+            format: Output format ('markdown' or 'html').
+            no_cache: Whether to bypass analysis cache.
+        """
         proj = pathlib.Path(path).resolve()
         loader = ConfigLoader()
         local_cfg_path = proj / ".ai-context" / "config.yaml"
@@ -133,6 +147,12 @@ class CLIHandler:
 
     @staticmethod
     def run_audit(path: str, threshold: float):
+        """Performs a security and quality audit, exits with error if below threshold.
+
+        Args:
+            path: Project path.
+            threshold: Minimum acceptable Quality Score.
+        """
         proj = pathlib.Path(path).resolve()
         loader = ConfigLoader()
         cfg = loader.load_config()

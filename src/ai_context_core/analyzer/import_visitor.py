@@ -8,17 +8,28 @@ class ImportVisitor(ast.NodeVisitor):
     """Visitor to extract imports."""
 
     def __init__(self):
+        """Initialize the ImportVisitor with empty collections."""
         self.imports = []
         self.imported_names = {}  # alias_in_scope -> full_import_name
         self.used_names = set()
 
     def visit_Import(self, node: ast.Import):
+        """Visits an import node and records imported modules.
+
+        Args:
+            node: The Import node.
+        """
         for alias in node.names:
             self.imports.append(alias.name)
             name_in_scope = alias.asname or alias.name.split(".")[0]
             self.imported_names[name_in_scope] = alias.name
 
     def visit_ImportFrom(self, node: ast.ImportFrom):
+        """Visits an import-from node and records fully qualified names.
+
+        Args:
+            node: The ImportFrom node.
+        """
         module = node.module or ""
         for alias in node.names:
             if module:
@@ -32,10 +43,20 @@ class ImportVisitor(ast.NodeVisitor):
             self.imported_names[name_in_scope] = full_name
 
     def visit_Name(self, node: ast.Name):
+        """Visits a Name node and records it as used if it's being loaded.
+
+        Args:
+            node: The Name node.
+        """
         if isinstance(node.ctx, ast.Load):
             self.used_names.add(node.id)
 
     def visit_Attribute(self, node: ast.Attribute):
+        """Visits an Attribute node and records the base Name as used.
+
+        Args:
+            node: The Attribute node.
+        """
         # Recursively find the base Name in an Attribute chain (e.g., a.b.c)
         curr = node.value
         while isinstance(curr, ast.Attribute):

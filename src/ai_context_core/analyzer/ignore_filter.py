@@ -1,4 +1,7 @@
+"""Logic for filtering and ignoring files based on patterns during project scan."""
+
 import pathlib
+
 import fnmatch
 import re
 from typing import List, Optional
@@ -10,6 +13,12 @@ class IgnoreFilter:
     def __init__(
         self, project_path: pathlib.Path, extra_patterns: Optional[List[str]] = None
     ):
+        """Initialize the filter.
+
+        Args:
+            project_path: Path to the project root.
+            extra_patterns: Optional list of additional patterns to ignore.
+        """
         self.project_path = project_path
         self.patterns = self._load_patterns(extra_patterns)
         self.regex = self._compile_patterns(self.patterns)
@@ -26,6 +35,14 @@ class IgnoreFilter:
         return re.compile("|".join(regex_parts))
 
     def _load_patterns(self, extra_patterns: Optional[List[str]]) -> List[str]:
+        """Loads ignore patterns from .analyzerignore or returns defaults.
+
+        Args:
+            extra_patterns: Patterns provided via CLI or config.
+
+        Returns:
+            A list of glob patterns.
+        """
         patterns = []
         ignore_file = self.project_path / ".analyzerignore"
         if ignore_file.exists():

@@ -9,10 +9,16 @@ class TypeHintVisitor(ast.NodeVisitor):
     """Visitor to calculate type hint coverage."""
 
     def __init__(self):
+        """Initialize the visitor."""
         self.total_functions = 0
         self.typed_functions = 0
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
+        """Visits a function definition to check for type hints.
+
+        Args:
+            node: The FunctionDef node.
+        """
         self.total_functions += 1
 
         has_return_type = node.returns is not None
@@ -68,6 +74,7 @@ class HalsteadVisitor(ast.NodeVisitor):
     )
 
     def __init__(self):
+        """Initialize the visitor counters."""
         self.operators = Counter()
         self.operands = Counter()
 
@@ -83,7 +90,16 @@ class HalsteadVisitor(ast.NodeVisitor):
 
 
 def calculate_complexity(tree: ast.AST) -> int:
-    """Calculates cyclomatic complexity of an AST tree."""
+    """Calculates cyclomatic complexity of an AST tree.
+
+    Delegates to ComplexityVisitor for detailed branching analysis.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        Cyclomatic complexity value.
+    """
     # Note: Using import from complexity_visitor if available, otherwise implementing simple
     # logic here or assuming it was imported.
     # For now, let's implement a simple direct visitor or re-use existing logic.
@@ -100,6 +116,14 @@ def calculate_complexity(tree: ast.AST) -> int:
 
 
 def _simple_complexity(tree: ast.AST) -> int:
+    """Fallback complexity calculation using simple node walking.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        Rough cyclomatic complexity.
+    """
     complexity = 1
     for node in ast.walk(tree):
         if isinstance(
@@ -121,7 +145,14 @@ def _simple_complexity(tree: ast.AST) -> int:
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates the percentage of functions with type hints."""
+    """Calculates the percentage of functions with type hints.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        Dictionary with total_functions, typed_functions, and coverage.
+    """
     visitor = TypeHintVisitor()
     visitor.visit(tree)
 
@@ -137,7 +168,16 @@ def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
 
 
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
-    """Calculates basic Halstead complexity metrics."""
+    """Calculates basic Halstead complexity metrics.
+
+    Computes vocabulary, length, volume, difficulty, and effort.
+
+    Args:
+        tree: The AST to analyze.
+
+    Returns:
+        Dictionary of Halstead metrics.
+    """
     visitor = HalsteadVisitor()
     visitor.visit(tree)
 
@@ -163,3 +203,84 @@ def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
         "difficulty": round(h_difficulty, 2),
         "effort": round(h_effort, 2),
     }
+
+
+def calculate_sloc(tree: ast.AST, content: str) -> int:
+    """Calculates Source Lines of Code (SLOC).
+
+    Excludes:
+    - Blank lines
+    - Comment-only lines
+    - Docstrings (module, class, and function level)
+
+    Args:
+        tree: The AST of the module.
+        content: The raw source code string.
+
+    Returns:
+        The count of real source lines of code.
+    """
+    import io
+    import tokenize
+
+    # 1. Identify docstring ranges using AST
+    docstring_ranges = []
+    for node in ast.walk(tree):
+        if isinstance(
+            node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
+        ):
+            doc = ast.get_docstring(node, clean=False)
+            if doc is not None:
+                # We need to find the Expr node that contains the docstring to get its range
+                # In Python 3.8+, Expr nodes have lineno/end_lineno
+                body = node.body
+                if (
+                    body
+                    and isinstance(body[0], ast.Expr)
+                    and isinstance(body[0].value, (ast.Constant, ast.Str))
+                ):
+                    doc_node = body[0]
+                    if hasattr(doc_node, "lineno") and hasattr(doc_node, "end_lineno"):
+                        docstring_ranges.append((doc_node.lineno, doc_node.end_lineno))
+
+    # 2. Use tokenize to iterate through lines and filter
+    sloc_count = 0
+    lines_with_code = set()
+
+    try:
+        tokens = tokenize.generate_tokens(io.StringIO(content).readline)
+        for tok in tokens:
+            start_line = tok.start[0]
+            end_line = tok.end[0]
+
+            # Skip comments and blank lines
+            if tok.type in (
+                tokenize.COMMENT,
+                tokenize.NL,
+                tokenize.NEWLINE,
+                tokenize.INDENT,
+                tokenize.DEDENT,
+                tokenize.ENDMARKER,
+            ):
+                continue
+
+            # Check if this token is within a docstring range
+            is_docstring = False
+            for dr in docstring_ranges:
+                if dr[0] <= start_line <= dr[1]:
+                    is_docstring = True
+                    break
+
+            if not is_docstring:
+                # Count lines that contain at least one non-comment, non-docstring token
+                for l in range(start_line, end_line + 1):
+                    lines_with_code.add(l)
+
+        sloc_count = len(lines_with_code)
+    except Exception:
+        # Fallback to a simpler line count if tokenization fails
+        # (e.g., due to encoding issues or partial files)
+        lines = [l.strip() for l in content.splitlines()]
+        sloc_count = len([l for l in lines if l and not l.startswith("#")])
+
+    return sloc_count

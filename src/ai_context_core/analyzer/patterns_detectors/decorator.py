@@ -1,3 +1,5 @@
+"""Decorator pattern detector implementation."""
+
 import ast
 from typing import Dict, List, Any
 from .base import PatternDetector
@@ -7,6 +9,14 @@ class DecoratorDetector(PatternDetector):
     """Detects Decorator pattern implementations."""
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
+        """Detects Decorator pattern implementations in a node.
+
+        Args:
+            node: The AST node to analyze.
+
+        Returns:
+            List of detected decorator instances.
+        """
         res = []
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             self.evidence, self.confidence = [], 0

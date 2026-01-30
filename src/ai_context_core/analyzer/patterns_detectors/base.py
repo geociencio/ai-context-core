@@ -1,3 +1,5 @@
+"""Base class for design pattern detectors."""
+
 import ast
 from typing import Dict, List, Any
 from ..constants import (
@@ -10,6 +12,7 @@ class PatternDetector:
     """Base class for design pattern detectors."""
 
     def __init__(self):
+        """Initialize the pattern detector with empty evidence and zero confidence."""
         self.evidence = []
         self.confidence = 0
 
@@ -23,6 +26,12 @@ class PatternDetector:
         raise NotImplementedError
 
     def _add_evidence(self, msg: str, weight: int):
+        """Adds evidence of a pattern and increases confidence.
+
+        Args:
+            msg: Description of the evidence found.
+            weight: Confidence weight to add.
+        """
         self.evidence.append(msg)
         self.confidence += weight
 

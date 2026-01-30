@@ -43,9 +43,17 @@ def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
 
 
 class MarkdownBuilder:
-    """Helper class for building Markdown documents."""
+    """Helper class for building Markdown documents.
+
+    Maintains a list of lines and provides methods to add sections and headers.
+    """
 
     def __init__(self, title: str):
+        """Initialize the builder with a document title.
+
+        Args:
+            title: The main title of the document.
+        """
         self.lines = [
             f"# {title}",
             f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}",
@@ -54,11 +62,23 @@ class MarkdownBuilder:
         ]
 
     def add_section(self, title: str, content: str, level: int = 2):
+        """Adds a section with a header and content.
+
+        Args:
+            title: Section title.
+            content: Section markdown content.
+            level: Markdown header level (1-6).
+        """
         self.lines.append(f"{'#' * level} {title}")
         self.lines.append(content)
         self.lines.append("")
 
     def build(self) -> str:
+        """Constructs the final Markdown document.
+
+        Returns:
+            The complete Markdown content as a string.
+        """
         return "\n".join(self.lines)
 
 
@@ -89,9 +109,19 @@ def generate_ai_context(
 
 
 class AICtxGenerator:
-    """Generator for AI Context documents."""
+    """Generator for AI Context documents.
+
+    Formats project analysis data into a structured Markdown file optimized
+    for LLM consumption.
+    """
 
     def __init__(self, analyses: Dict[str, Any], project_name: str):
+        """Initialize the generator.
+
+        Args:
+            analyses: Dictionary containing all analysis results.
+            project_name: Name of the project.
+        """
         self.analyses = analyses
         self.project_name = project_name
         self.lines = [
@@ -101,6 +131,11 @@ class AICtxGenerator:
         ]
 
     def build(self) -> str:
+        """Constructs the full AI Context document.
+
+        Returns:
+            The complete Markdown content as a string.
+        """
         s = self.analyses.get("structure", {})
         c = self.analyses.get("complexity", {})
         m = self.analyses.get("metrics", {})
@@ -115,7 +150,10 @@ class AICtxGenerator:
 
         self.lines.append("\n## 📈 COMPLEXITY AND METRICS")
         self.lines.append(f"- **Total Modules**: {c.get('total_modules', 0)}")
-        self.lines.append(f"- **Lines of Code**: {c.get('total_lines', 0):,}")
+        self.lines.append(f"- **Source Lines (SLOC)**: {c.get('total_lines', 0):,}")
+        self.lines.append(
+            f"- **Total Physical Lines**: {c.get('total_physical_lines', 0) or m.get('total_physical_lines', 0):,}"
+        )
         self.lines.append(f"- **Functions**: {c.get('total_functions', 0)}")
         self.lines.append(f"- **Classes**: {c.get('total_classes', 0)}")
         self.lines.append(
@@ -139,6 +177,7 @@ class AICtxGenerator:
         return "\n".join(self.lines)
 
     def _add_entry_points(self):
+        """Adds entry points section to the report."""
         ep = self.analyses.get("entry_points", [])
         self.lines.append("## 🎯 ENTRY POINTS")
         for p in ep[:10]:
@@ -147,12 +186,14 @@ class AICtxGenerator:
             self.lines.append(f"... and {len(ep) - 10} more")
 
     def _add_manual_notes(self):
+        """Adds manual architecture notes to the report."""
         notes = self.analyses.get("manual_notes", "")
         if notes:
             self.lines.append("\n## 📝 MANUAL ARCHITECTURE NOTES")
             self.lines.append(notes)
 
     def _add_patterns(self):
+        """Adds detected patterns section to the report."""
         pats = self.analyses.get("patterns", {})
         self.lines.append("\n## 🏗️ DETECTED PATTERNS")
         if not pats:
@@ -168,6 +209,7 @@ class AICtxGenerator:
                     self.lines.append(f"  - _Evidence: {ev}_")
 
     def _add_antipatterns(self):
+        """Adds detected antipatterns section to the report."""
         ap = self.analyses.get("antipatterns", [])
         if not ap:
             return
@@ -178,6 +220,7 @@ class AICtxGenerator:
                 self.lines.append(f"  - {issue.get('message', 'N/A')}")
 
     def _add_dependencies(self):
+        """Adds dependency analysis and graphs to the report."""
         deps = self.analyses.get("dependencies", {})
         self.lines.append("\n## 🔗 PRIMARY DEPENDENCIES")
         tp = deps.get("third_party", [])
@@ -220,6 +263,7 @@ class AICtxGenerator:
             self.lines.append("```")
 
     def _add_optimizations(self):
+        """Adds optimization recommendations section to the report."""
         opts = self.analyses.get("optimizations", [])
         if not opts:
             return
@@ -232,6 +276,7 @@ class AICtxGenerator:
                 )
 
     def _add_git(self):
+        """Adds git evolution and hotspots section to the report."""
         git = self.analyses.get("git", {})
         if not git:
             return

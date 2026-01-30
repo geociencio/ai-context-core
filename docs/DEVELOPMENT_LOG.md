@@ -1,5 +1,26 @@
 # Development Log
 
+## [2026-01-30] SLOC Engine & Metadata Fix - COMPLETADA
+**TEMA**: Precisión de Métricas y GIS 🇲🇽
+- **SLOC Engine**: Implementado conteo de líneas de código real (Source Lines of Code) excluyendo docstrings y comentarios. 📈
+- **Docstring Coverage**: Alcanzado el **95.0%** de cobertura en módulos core. 📚
+- **QGIS Fix**: Corregido bug en el parser de `metadata.txt` que causaba errores en algunos plugins. 🛠️
+- **Quality Score**: Elevado a **62.1/100**. 🏆
+
+## [2.1.3] - 2026-01-30 - SLOC Engine & Metadata Fix
+
+### Added
+- **SLOC Engine**: New `calculate_sloc` function in `ast_metrics` to accurately count code excluding docstrings/comments.
+- **Reporting**: Reports now display both "Source Lines (SLOC)" and "Total Physical Lines".
+
+### Fixed
+- **QGIS Metadata**: Resolved `configparser` error when `metadata.txt` already contained a `[general]` header (implemented `strict=False`).
+- **Security Tests**: Restored `issues.detect_ast_security_issues` alias for backward compatibility with test suites.
+- **AI Recommendations**: Standardized result dictionary keys (`category`) to prevent `KeyError` in visualizers.
+
+### Changed
+- **Quality Metrics**: `Maintenance Index` now uses SLOC instead of raw line count for better accuracy.
+- **Docstring Coverage**: Major documentation push reaching 95% coverage across core analyzer components.
 ## [2026-01-30] Engine Optimization & Metrics Alignment - COMPLETADA
 **TEMA**: Modularización y Calidad 🚀
 

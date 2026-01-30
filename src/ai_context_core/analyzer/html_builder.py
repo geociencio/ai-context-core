@@ -32,18 +32,42 @@ class HTMLBuilder:
     )
 
     def __init__(self, title: str):
+        """Initialize the builder.
+
+        Args:
+            title: The title of the HTML document.
+        """
         self.title = title
         self.content_parts = []
 
     def add_section(self, title: str, content: str):
+        """Adds a section to the HTML document.
+
+        Args:
+            title: Section title.
+            content: HTML content for the section.
+        """
         self.content_parts.append(f'<div class="card"><h2>{title}</h2>{content}</div>')
 
     def build_list(self, items: List[str]) -> str:
+        """Constructs an HTML unordered list from a list of strings.
+
+        Args:
+            items: List of strings to format.
+
+        Returns:
+            HTML string representing the list.
+        """
         if not items:
             return ""
         return "<ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>"
 
     def render(self) -> str:
+        """Renders the HTML document.
+
+        Returns:
+            Complete HTML string.
+        """
         return self.TEMPLATE.substitute(
             title=self.title,
             css=self.CSS,

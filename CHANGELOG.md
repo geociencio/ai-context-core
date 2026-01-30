@@ -12,6 +12,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2026-01-30 - SLOC Engine & Metadata Fix
+
+### Added
+- **SLOC Engine**: New `calculate_sloc` function in `ast_metrics` to accurately count code excluding docstrings/comments.
+- **Reporting**: Reports now display both "Source Lines (SLOC)" and "Total Physical Lines".
+
+### Fixed
+- **QGIS Metadata**: Resolved `configparser` error when `metadata.txt` already contained a `[general]` header (implemented `strict=False`).
+- **Security Tests**: Restored `issues.detect_ast_security_issues` alias for backward compatibility with test suites.
+- **AI Recommendations**: Standardized result dictionary keys (`category`) to prevent `KeyError` in visualizers.
+
+### Changed
+- **Quality Metrics**: `Maintenance Index` now uses SLOC instead of raw line count for better accuracy.
+- **Docstring Coverage**: Major documentation push reaching 95% coverage across core analyzer components.
+
 ## [2.1.2] - 2026-01-30 - Engine Liquidity & Quality Peak
 
 ### Added

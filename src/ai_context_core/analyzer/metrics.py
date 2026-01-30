@@ -13,6 +13,14 @@ class MetricsCalculator:
 
     @staticmethod
     def complexity_distribution(modules_data: List[Dict[str, Any]]) -> Dict[str, int]:
+        """Calculates the distribution of cyclomatic complexity across modules.
+
+        Args:
+            modules_data: List of module analysis results.
+
+        Returns:
+            Dictionary with counts for low, medium, high, and very high complexity.
+        """
         dist = {
             "low (0-5)": 0,
             "medium (6-15)": 0,
@@ -33,6 +41,16 @@ class MetricsCalculator:
 
     @staticmethod
     def maintenance_index(v: float, g: int, loc: int) -> float:
+        """Calculates the Maintenance Index (MI) for a module.
+
+        Args:
+            v: Halstead Volume.
+            g: Cyclomatic Complexity.
+            loc: Lines of Code.
+
+        Returns:
+            A normalized score between 0 and 100.
+        """
         if v <= 0 or loc <= 0:
             return 100.0
         mi = 171 - 5.2 * math.log(v) - 0.23 * g - 16.2 * math.log(loc)
@@ -43,12 +61,26 @@ class ProjectScorer:
     """Handles project quality score calculation using weighted metrics."""
 
     def __init__(self, config: Dict[str, Any]):
+        """Initialize the scorer with configuration.
+
+        Args:
+            config: Configuration dictionary containing weights and thresholds.
+        """
         self.weights = config.get("quality_weights", {})
         self.thresholds = config.get("thresholds", {})
 
     def calculate(
         self, modules_data: List[Dict[str, Any]], ctx: Dict[str, Any]
     ) -> float:
+        """Calculates the overall project quality score.
+
+        Args:
+            modules_data: List of analyzed modules.
+            ctx: Global analysis context (QGIS, Linter, etc.).
+
+        Returns:
+            Final quality score (0.0 - 100.0).
+        """
         if not modules_data:
             return 0.0
 
@@ -79,6 +111,14 @@ class ProjectScorer:
         return round(score, 1)
 
     def _score_module(self, m: Dict[str, Any]) -> int:
+        """Scores an individual module based on quality indicators.
+
+        Args:
+            m: Module analysis data.
+
+        Returns:
+            Weighted quality score for the module.
+        """
         s = 0
         if m.get("docstrings", {}).get("module"):
             s += self.weights.get("docstrings", 0)
@@ -91,7 +131,7 @@ class ProjectScorer:
         elif c <= self.thresholds.get("complexity_high", 15):
             s += self.weights.get("complexity_high", 0)
 
-        lines = m.get("lines", 0)
+        lines = m.get("sloc", m.get("lines", 0))
         if lines <= self.thresholds.get("size_small", 200):
             s += self.weights.get("size_small", 0)
         elif lines <= self.thresholds.get("size_medium", 400):
@@ -111,12 +151,25 @@ def calculate_project_metrics(
     config: Dict[str, Any],
     ctx: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """Calculates general project-level metrics from analyzed modules."""
+    """Calculates general project-level metrics from analyzed modules.
+
+    Args:
+        modules_data: List of analyzed modules.
+        entry_points: List of discovered entry point paths.
+        tests_count: Number of test files found.
+        config: Analysis configuration.
+        ctx: Global context data.
+
+    Returns:
+        Dictionary of aggregated metrics.
+    """
     if not modules_data:
         return {}
 
     total_kb = sum(m.get("file_size_kb", 0) for m in modules_data)
-    total_lines = sum(m.get("lines", 0) for m in modules_data)
+    total_lines = sum(m.get("sloc", m.get("lines", 0)) for m in modules_data)
+    total_functions = sum(len(m.get("functions", [])) for m in modules_data)
+    total_classes = sum(len(m.get("classes", [])) for m in modules_data)
 
     # Docs coverage
     syms, d_score = 0, 0
@@ -140,12 +193,15 @@ def calculate_project_metrics(
     return {
         "total_size_kb": round(total_kb, 2),
         "total_lines_code": total_lines,
+        "total_physical_lines": sum(m.get("lines", 0) for m in modules_data),
+        "total_functions": total_functions,
+        "total_classes": total_classes,
         "avg_module_size_kb": round(total_kb / len(modules_data), 2),
         "avg_lines_per_module": round(total_lines / len(modules_data), 2),
         "docstring_coverage": round(d_score / syms * 100, 2) if syms > 0 else 0,
         "entry_points_count": len(entry_points),
         "test_files_count": tests_count,
-        "avg_complexity": (
+        "average_complexity": (
             round(sum(complexities) / len(complexities), 2) if complexities else 0
         ),
         "max_complexity": max(complexities) if complexities else 0,
@@ -162,17 +218,44 @@ def calculate_project_metrics(
 
 
 # --- Legacy compatibility ---
-def calculate_complexity_distribution(
-    modules_data: List[Dict[str, Any]],
-) -> Dict[str, int]:
-    return MetricsCalculator.complexity_distribution(modules_data)
+def calculate_complexity_distribution(modules: List[Dict[str, Any]]) -> Dict[str, int]:
+    """Categorizes modules by their cyclomatic complexity.
+
+    Args:
+        modules: List of module analysis results.
+
+    Returns:
+        Dictionary with counts for Low, Medium, High, and Critical complexity.
+    """
+    return MetricsCalculator.complexity_distribution(modules)
 
 
 def calculate_maintenance_index(v: float, g: int, loc: int) -> float:
+    """Calculates the maintenance index for a module.
+
+    Args:
+        v: Halstead volume.
+        g: Cyclomatic complexity.
+        loc: Lines of code.
+
+    Returns:
+        Calculated maintenance index (0-100).
+    """
     return MetricsCalculator.maintenance_index(v, g, loc)
 
 
 def calculate_quality_score(
-    modules_data: List[Dict[str, Any]], config: Dict[str, Any], ctx: Dict[str, Any]
+    m_data: List[Dict[str, Any]], config: Dict[str, Any], project_ctx: Dict[str, Any]
 ) -> float:
-    return ProjectScorer(config).calculate(modules_data, ctx)
+    """Calculates the overall project quality score.
+
+    Args:
+        m_data: Module data list.
+        config: Analysis configuration.
+        project_ctx: Project context.
+
+    Returns:
+        The calculated quality score (0-100).
+    """
+    scorer = ProjectScorer(config)
+    return scorer.calculate(m_data, project_ctx)
