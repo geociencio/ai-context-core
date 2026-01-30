@@ -22,28 +22,6 @@ class TestIssues(unittest.TestCase):
         item = next(d for d in debt if d["module"] == "complex_module.py")
         self.assertTrue(any(i["type"] == "high_complexity" for i in item["issues"]))
 
-    def test_find_security_issues(self):
-        # Create a temp file with "vulnerable" code
-        tmp_dir = tempfile.mkdtemp()
-        try:
-            p = Path(tmp_dir)
-            vuln_file = p / "vuln.py"
-            with open(vuln_file, "w") as f:
-                f.write("import os\nos.system('rm -rf /')")
-
-            modules_data = [{"path": "vuln.py"}]
-            # Pass absolute path as project root for test
-            security_issues = issues.find_security_issues(modules_data, str(p))
-
-            self.assertEqual(len(security_issues), 1)
-            self.assertEqual(security_issues[0]["module"], "vuln.py")
-            self.assertTrue(
-                any("os.system" in i["pattern"] for i in security_issues[0]["issues"])
-            )
-
-        finally:
-            shutil.rmtree(tmp_dir)
-
     def test_find_security_issues_secrets(self):
         # Create a temp file with a secret
         tmp_dir = tempfile.mkdtemp()

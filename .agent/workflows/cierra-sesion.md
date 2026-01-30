@@ -24,7 +24,9 @@ Este workflow asegura un cierre limpio y documentado del trabajo realizado.
     
     Verifica que no rompimos nada crítico antes de irnos.
     
-    *Opción A (Docker - Recomendado):*
+    Verifica que no rompimos nada crítico antes de irnos.
+    
+    *Opción A (Docker - Final Check):*
     // turbo
     ```bash
     make docker-test
@@ -32,9 +34,9 @@ Este workflow asegura un cierre limpio y documentado del trabajo realizado.
     
     *Opción B (Local):*
     ```bash
-    uv run python -m unittest discover tests
+    uv run pytest tests/ -v
     ```
-
+    
 3.  **Actualización de Memoria (Logs & Roadmap)**:
     
     🤖 **Agent Action**: Validar que todos los archivos críticos están actualizados.
@@ -50,10 +52,11 @@ Este workflow asegura un cierre limpio y documentado del trabajo realizado.
     
     🤖 **Agent Action**: Actualizar AI_CONTEXT.md y validar que next_steps.md es claro.
     
-    Actualiza las métricas y la memoria de largo plazo del proyecto.
+    Actualiza las métricas y la memoria de largo plazo del proyecto. Valida calidad antes de cerrar.
     // turbo
     ```bash
-    uv run python -m ai_context_core.cli analyze && cat .agent/next_steps.md
+    uv run ai-ctx audit --threshold 50
+    uv run ai-ctx analyze && cat .agent/next_steps.md
     ```
 
 5.  **Commit de Cierre**:

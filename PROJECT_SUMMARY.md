@@ -1,76 +1,74 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-26 02:38:43
+Analysis Date: 2026-01-30 00:31:04
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Total Modules**: 17
-- **Lines of Code**: 4,218
-- **Total Size**: 0.8 MB
-- **Average Complexity**: 39.3
-- **Avg Maintenance Index**: 24.1
-- **Docstring Coverage**: 47.5%
-- **Quality Score**: 48.4/100
-- **Test Files**: 16
+- **Total Modules**: 33
+- **Lines of Code**: 5,033
+- **Total Size**: 0.9 MB
+- **Average Complexity**: 22.5
+- **Avg Maintenance Index**: 34.7
+- **Docstring Coverage**: 55.9%
+- **Quality Score**: 54.9/100
+- **Test Files**: 18
 
 ## 📁 STRUCTURE
-- **Python Files**: 33
-- **Total Files**: 138
+- **Python Files**: 51
+- **Total Files**: 164
 - **Primary File Types**: .md, .py, .yaml, .json, .yml
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
-- **src/ai_context_core/analyzer/issues.py**: 3 issues (Max: HIGH)
 - **.agent/scripts/skill_sync.py**: 2 issues (Max: LOW)
-- **src/ai_context_core/analyzer/ast_utils.py**: 1 issues (Max: LOW)
+- **src/ai_context_core/analyzer/fs_utils.py**: 7 issues (Max: LOW)
+- **src/ai_context_core/analyzer/git_analysis.py**: 3 issues (Max: LOW)
 
 ### 🏗️ Critical Technical Debt:
-- **src/ai_context_core/analyzer/ast_utils.py**: 2 issues (Score: 5)
-- **src/ai_context_core/analyzer/reporting.py**: 2 issues (Score: 5)
+- **src/ai_context_core/analyzer/engine.py**: 2 issues (Score: 5)
 - **.agent/scripts/skill_sync.py**: 2 issues (Score: 4)
-- **src/ai_context_core/analyzer/dependencies.py**: 2 issues (Score: 4)
+- **src/ai_context_core/analyzer/ast_qgis.py**: 2 issues (Score: 4)
 
 ## 📦 QGIS STANDARDS
 - **Compliance Score**: 20.0/100
 - ⚠️ **Architecture**: No Processing Algorithms found (Recommended)
-- **i18n Coverage**: 0.0% (0/1726 strings)
+- **i18n Coverage**: 0.0% (0/1893 strings)
 
 ### 🚩 Metadata Issues:
 - Missing metadata.txt
 
 ## 💡 MAIN RECOMMENDATIONS
 ### PROJECT_WIDE
-- Quality Score is low (48.4/100).
-- Low documentation coverage (47.46%).
+- Quality Score (54.9/100) has room for improvement.
 ### src/ai_context_core/analyzer/antipatterns.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/ast_utils.py
+### src/ai_context_core/analyzer/fs_utils.py
 - Consider breaking down large logic
-- Large module (560 lines)
+- Large module (447 lines)
 
 ## 🏗️ DESIGN PATTERNS
 ### Factory
-- **SummaryGenerator** in `src/ai_context_core/analyzer/reporting.py` (70%)
-- **SummaryGenerator** in `src/ai_context_core/analyzer/reporting.py` (70%)
-- **SummaryGenerator** in `src/ai_context_core/analyzer/reporting.py` (70%)
-- **SummaryGenerator** in `src/ai_context_core/analyzer/reporting.py` (70%)
-- **SummaryGenerator** in `src/ai_context_core/analyzer/reporting.py` (70%)
+- **SummaryGenerator** in `src/ai_context_core/analyzer/summary_generator.py` (70%)
+- **SummaryGenerator** in `src/ai_context_core/analyzer/summary_generator.py` (70%)
+- **SummaryGenerator** in `src/ai_context_core/analyzer/summary_generator.py` (70%)
+- **SummaryGenerator** in `src/ai_context_core/analyzer/summary_generator.py` (70%)
+- **SummaryGenerator** in `src/ai_context_core/analyzer/summary_generator.py` (70%)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 388
-- **Additions**: +30157
-- **Deletions**: -14921
-- **Total Churn**: 45078
+- **Files Changed**: 431
+- **Additions**: +33496
+- **Deletions**: -17208
+- **Total Churn**: 50704
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 17 commits
-- `src/ai_context_core/analyzer/reporting.py`: 16 commits
-- `src/ai_context_core/analyzer/ast_utils.py`: 12 commits
-- `src/ai_context_core/cli.py`: 11 commits
-- `src/ai_context_core/analyzer/issues.py`: 11 commits
+- `src/ai_context_core/analyzer/engine.py`: 19 commits
+- `src/ai_context_core/analyzer/reporting.py`: 18 commits
+- `src/ai_context_core/analyzer/ast_utils.py`: 14 commits
+- `src/ai_context_core/cli.py`: 13 commits
+- `src/ai_context_core/analyzer/fs_utils.py`: 12 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- low (0-5): 1 modules (5.9%)
-- medium (6-15): 3 modules (17.6%)
-- high (16-30): 5 modules (29.4%)
-- very_high (31+): 8 modules (47.1%)
+- low (0-5): 10 modules (30.3%)
+- medium (6-15): 8 modules (24.2%)
+- high (16-30): 6 modules (18.2%)
+- very_high (31+): 9 modules (27.3%)

@@ -23,7 +23,6 @@ Este workflow es el estándar de oro para guardar cambios. No solo hace commit, 
     // turbo
     ```bash
     uv run ruff check --fix .
-    uv run ruff format .
     uv run black .
     ```
 
@@ -40,7 +39,8 @@ Este workflow es el estándar de oro para guardar cambios. No solo hace commit, 
     Registra el impacto de los cambios en el Cerebro del Proyecto antes de guardar.
     // turbo
     ```bash
-    uv run python -m ai_context_core.cli analyze
+    uv run ai-ctx audit --threshold 50
+    uv run ai-ctx analyze
     ```
     
     🤖 **Agent Action**: Analizar métricas de calidad y alertar si:

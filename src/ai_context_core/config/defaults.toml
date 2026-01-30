@@ -1,0 +1,38 @@
+# AI-Context-Core Configuration Defaults
+
+# Quality Thresholds
+# These values determine when an issue is flagged as a warning or error.
+[quality_thresholds.complexity]
+warning = 10
+error = 15
+
+[quality_thresholds.maintainability]
+warning = 65
+error = 50
+
+[quality_thresholds.lines]
+warning = 400
+error = 800
+
+# Quality Score Weights
+# Weights differ depending on the importance of the metric for the final score.
+[quality_weights]
+complexity = 0.25
+maintainability = 0.20
+test_coverage = 0.15
+documentation = 0.15
+security = 0.25
+
+# Security Patterns
+# Definitions of patterns considered dangerous.
+[security_patterns]
+dangerous_functions = ["exec", "eval", "__import__", "input"]
+dangerous_modules = ["pickle", "marshal", "telnetlib"]
+sql_injection_indicators = ["execute(", "executemany("]
+
+# Analysis Configuration
+[analysis]
+parallel_workers = "auto"
+cache_enabled = true
+# Maximum file size to analyze in MB
+max_file_size_mb = 10

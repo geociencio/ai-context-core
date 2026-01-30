@@ -50,15 +50,17 @@ Este workflow optimiza el inicio del desarrollo asegurando un entorno sincroniza
     
     Verifica que el código base esté estable antes de empezar a trabajar.
     
-    *Opción A (Docker - Recomendado):*
+    Verifica que el código base esté estable antes de empezar a trabajar.
+    
+    *Opción A (Docker - Robusto):*
     // turbo
     ```bash
     make docker-test
     ```
     
-    *Opción B (Local):*
+    *Opción B (Local - Rápido):*
     ```bash
-    uv run python -m unittest discover tests
+    uv run pytest tests/ -v
     ```
     
     🤖 **Agent Action**: Si hay fallos en tests:

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-and-audit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras --dev
+
+    - name: Run Tests
+      run: |
+        uv run pytest tests/ -v --cov=src/ai_context_core --cov-report=term-missing
+
+    - name: Audit Quality Score
+      run: |
+        # Threshold set to 50 based on initial analysis (current score ~55)
+        # Increase this value as project quality improves
+        uv run ai-ctx audit --threshold 50

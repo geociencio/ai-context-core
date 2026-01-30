@@ -30,6 +30,91 @@ from ..context.manager import AIContextManager
 logger = logging.getLogger(__name__)
 
 
+try:
+    import tomllib
+except ImportError:
+    try:
+        import tomli as tomllib
+    except ImportError:
+        tomllib = None
+
+
+def load_config(root_path: pathlib.Path) -> Dict[str, Any]:
+    """Load configuration from defaults.toml and optional project overrides.
+
+    Adheres to zero-dependency policy by using stdlib tomllib (Py3.11+)
+    or optional tomli. If neither is available, falls back to hardcoded defaults.
+
+    Args:
+        root_path: Project root path to look for override config.
+
+    Return:
+        Merged configuration dictionary.
+
+    """
+    # Load defaults from package
+    default_config = {}
+    if tomllib:
+        try:
+            defaults_path = (
+                pathlib.Path(__file__).parent / ".." / "config" / "defaults.toml"
+            )
+            if defaults_path.exists():
+                with open(defaults_path, "rb") as f:
+                    default_config = tomllib.load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load defaults.toml: {e}")
+
+    if not default_config:
+        # Fallback if TOML parsing fails or fails to load
+        return _get_hardcoded_defaults()
+
+    # Load overrides from project
+    override_config = {}
+    if tomllib:
+        try:
+            project_config_path = root_path / ".ai-context" / "config.toml"
+            if project_config_path.exists():
+                with open(project_config_path, "rb") as f:
+                    override_config = tomllib.load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load project config.toml: {e}")
+
+    # Merge configs (shallow merge for now, or recursive if needed)
+    # Simple recursive merge for top-level keys
+    final_config = default_config.copy()
+    for section, values in override_config.items():
+        if isinstance(values, dict) and section in final_config:
+            final_config[section].update(values)
+        else:
+            final_config[section] = values
+
+    return final_config
+
+
+def _get_hardcoded_defaults() -> Dict[str, Any]:
+    """Return fallback hardcoded configuration."""
+    return {
+        "quality_weights": {
+            "docstrings": 30,
+            "complexity_low": 20,
+            "size_small": 15,
+            "has_main": 5,
+            "no_syntax_error": 30,
+            "complexity_medium": 10,
+            "complexity_high": -10,
+            "size_medium": 10,
+        },
+        "thresholds": {
+            "complexity_low": 5,
+            "complexity_medium": 15,
+            "complexity_high": 25,
+            "size_small": 200,
+            "size_medium": 500,
+        },
+    }
+
+
 class ProjectAnalyzer:
     """Optimized and modular Python project analyzer."""
 
@@ -41,11 +126,14 @@ class ProjectAnalyzer:
         exclude_patterns: Optional[List[str]] = None,
         ignore_cache: bool = False,
     ):
+        """Initialize the analyzer with project settings."""
         self.project_path = pathlib.Path(project_path).resolve()
         self.max_workers = max_workers or (
             2 * (4 if hasattr(time, "get_clock_info") else 1)
         )
-        self.config = config or self._get_default_config()
+        # Load config from file if not provided explicitly
+        self.config = config or load_config(self.project_path)
+
         self.exclusion_patterns = fs_utils.load_exclusion_patterns(
             self.project_path, exclude_patterns
         )
@@ -56,29 +144,19 @@ class ProjectAnalyzer:
         self.error_log = {}
 
     def _get_default_config(self) -> Dict[str, Any]:
-        """Returns default configuration values for metrics and thresholds."""
-        return {
-            "quality_weights": {
-                "docstrings": 30,
-                "complexity_low": 20,
-                "size_small": 15,
-                "has_main": 5,
-                "no_syntax_error": 30,
-                "complexity_medium": 10,
-                "complexity_high": -10,
-                "size_medium": 10,
-            },
-            "thresholds": {
-                "complexity_low": 5,
-                "complexity_medium": 15,
-                "complexity_high": 25,
-                "size_small": 200,
-                "size_medium": 500,
-            },
-        }
+        """Return default configuration. Deprecated: Use load_config."""
+        return _get_hardcoded_defaults()
 
     def analyze(self, output_format: str = "markdown") -> Dict[str, Any]:
-        """Executes the complete project analysis pipeline."""
+        """Execute the complete project analysis pipeline.
+
+        Args:
+            output_format: Output format ('markdown' or 'html').
+
+        Returns:
+            Dictionary containing full analysis results.
+
+        """
         start_time = time.time()
         logger.info(f"Starting analysis for {self.project_path}")
 
@@ -96,7 +174,7 @@ class ProjectAnalyzer:
         return results
 
     def _execute_pipeline(self) -> Dict[str, Any]:
-        """Runs the sequential analysis steps."""
+        """Run the sequential analysis steps."""
         scan_res = fs_utils.scan_project(self.project_path, self.exclusion_patterns)
         modules_data = self._analyze_modules_parallel(scan_res.python_files)
 
@@ -121,7 +199,7 @@ class ProjectAnalyzer:
         }
 
     def _read_manual_notes(self) -> str:
-        """Reads manual architecture notes if they exist."""
+        """Read manual architecture notes if they exist."""
         notes_path = self.project_path / ".ai-context" / "architecture_notes.md"
         if not notes_path.exists():
             # Try legacy or alternative name
@@ -135,7 +213,7 @@ class ProjectAnalyzer:
         return ""
 
     def _aggregate_all(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Final aggregation of all analysis data."""
+        """Aggregate all analysis data into final results."""
         m_data = data["modules_data"]
         entry_points = [m["path"] for m in m_data if m.get("has_main")]
 
@@ -174,6 +252,7 @@ class ProjectAnalyzer:
     def _get_optimizations(
         self, m_data, data, metrics_val, comp_dist
     ) -> List[Dict[str, Any]]:
+        """Identify optimization opportunities."""
         suggestions = issues.find_optimizations(m_data)
         recommender = ai_recommendations.AIRecommender(self.config)
 
@@ -190,6 +269,7 @@ class ProjectAnalyzer:
         return suggestions
 
     def _build_complexity_meta(self, m_data, metrics_val, dist) -> Dict[str, Any]:
+        """Build metadata regarding project complexity."""
         return {
             "total_modules": len(m_data),
             "total_lines": metrics_val.get("total_lines_code", 0),
@@ -205,6 +285,7 @@ class ProjectAnalyzer:
         }
 
     def _aggregate_security(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Aggregate security issues from all modules."""
         sec_list = issues.find_security_issues(m_data, str(self.project_path))
         sev_map = {"high": 3, "medium": 2, "low": 1}
 
@@ -238,6 +319,7 @@ class ProjectAnalyzer:
     def _aggregate_antipatterns(
         self, m_data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
+        """Aggregate detected antipatterns."""
         return [
             {
                 "module": m["path"],
@@ -249,6 +331,7 @@ class ProjectAnalyzer:
         ]
 
     def _aggregate_patterns(self, m_data: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Aggregate detected design patterns."""
         aggregated = {}
         for m in m_data:
             for p_name, occurrences in m.get("patterns", {}).items():
@@ -262,6 +345,7 @@ class ProjectAnalyzer:
     def _analyze_modules_parallel(
         self, files: List[pathlib.Path]
     ) -> List[Dict[str, Any]]:
+        """Analyze modules in parallel using process pool."""
         results, to_analyze = [], []
         for f in files:
             rel = str(f.relative_to(self.project_path))
@@ -315,7 +399,7 @@ class ProjectAnalyzer:
     def _aggregate_qgis_compliance(
         self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Aggregates QGIS-specific results from modules and metadata."""
+        """Aggregate QGIS-specific results from modules and metadata."""
         agg = {
             "metadata": metadata,
             "processing_framework_detected": any(
@@ -383,6 +467,7 @@ class ProjectAnalyzer:
         return agg
 
     def _analyze_single_module(self, file_path: pathlib.Path) -> Dict[str, Any]:
+        """Analyze a single module's content and metrics."""
         try:
             content = fs_utils.read_file_fast(file_path)
             if not content:
@@ -424,6 +509,7 @@ class ProjectAnalyzer:
             }
 
     def _detect_antipatterns(self, tree: ast.AST) -> List[Dict[str, Any]]:
+        """Run all antipattern detectors on the AST."""
         return (
             antipatterns.detect_god_object(tree)
             + antipatterns.detect_spaghetti_code(tree)
@@ -432,6 +518,7 @@ class ProjectAnalyzer:
         )
 
     def _generate_outputs(self, results: Dict[str, Any], fmt: str):
+        """Generate final report files based on analysis results."""
         try:
             ext = ".html" if fmt == "html" else ".md"
             reporting.generate_project_summary(

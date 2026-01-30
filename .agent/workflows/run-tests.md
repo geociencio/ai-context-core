@@ -8,14 +8,25 @@ skills:
 
 # Workflow: Run Tests
 
-Este workflow ejecuta todas las pruebas unitarias disponibles en el proyecto, garantizando un entorno limpio mediante Docker.
+Este workflow ejecuta todas las pruebas unitarias disponibles en el proyecto, garantizando un entorno reproducible mediante uv.
 
-1.  **Ejecución de Tests (Dockerizado)**:
-    Ejecuta el ciclo de pruebas completo, incluyendo linting y check de cobertura.
+1.  **Ejecución de Tests**:
+    
+    *Opción A: Entorno Aislado (Docker - Recomendado)*
+    Garantiza que funciona en un entorno limpio sin contaminación local.
     // turbo
     ```bash
     make docker-test
     ```
 
+    *Opción B: Entorno Local (uv - Rápido)*
+    Para iteraciones rápidas durante el desarrollo.
+    ```bash
+    uv run pytest tests/ -v --cov=src/ai_context_core
+    ```
+
     > [!TIP]
-    > Si el usuario necesita correr solo un test específico localmente, puede usar `uv run pytest tests/test_mi_archivo.py`.
+    > Parametros útiles:
+    > - `-k "pattern"`: Ejecuta solo tests que coincidan con el patrón.
+    > - `-x`: Detiene la ejecución al primer fallo.
+    > - `--pdb`: Entra en el debugger al fallar.
