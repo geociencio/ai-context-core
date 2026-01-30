@@ -8,6 +8,11 @@ class TechDebtChecker(BaseChecker):
     """Checks for technical debt indicators like complexity and size."""
 
     def __init__(self, config: Dict[str, Any] = None):
+        """Initializes the technical debt checker.
+
+        Args:
+            config: Configuration dictionary for thresholds.
+        """
         config = config or {}
         # Load thresholds from config, fallback to safe defaults if missing
         self.thresholds = config.get("thresholds", {})
@@ -47,9 +52,24 @@ class TechDebtChecker(BaseChecker):
             pass
 
     def get_category(self) -> str:
+        """Returns the category of issues this checker detects.
+
+        Returns:
+            String identifier for the category ("technical_debt").
+        """
         return "technical_debt"
 
     def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for technical debt indicators.
+
+        Analyzes complexity, file length, and documentation coverage.
+
+        Args:
+            module_info: Dictionary containing module analysis data.
+
+        Returns:
+            List of detected technical debt issues.
+        """
         issues = []
         issues = []
         # path = module_info.get("path", "") - unused

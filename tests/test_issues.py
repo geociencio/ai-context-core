@@ -33,7 +33,7 @@ class TestIssues(unittest.TestCase):
 
             modules_data = [{"path": "secrets.py"}]
             # Pass absolute path as project root for test
-            security_issues = issues.find_security_issues(modules_data, str(p))
+            security_issues = issues.find_secrets(modules_data, str(p))
 
             self.assertEqual(len(security_issues), 1)
             self.assertEqual(security_issues[0]["module"], "secrets.py")

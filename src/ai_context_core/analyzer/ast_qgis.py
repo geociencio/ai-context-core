@@ -1,7 +1,7 @@
+"""QGIS specific compliance and pattern detection."""
+
 import ast
 from typing import Dict, Any
-
-"""QGIS specific AST analysis."""
 
 
 class QGISComplianceVisitor(ast.NodeVisitor):

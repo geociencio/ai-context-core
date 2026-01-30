@@ -32,7 +32,6 @@ from .checkers.optimization_checker import OptimizationChecker
 # since this is an internal class, we might just keep it for now if external code uses it.
 # Let's keep a minimal version or alias.
 from .secrets import detect_secrets
-from .ast_security import ASTSecurityDetector
 
 
 class IssueDetector:

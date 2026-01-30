@@ -6,15 +6,14 @@ project structure generation (tree view) with LRU caching.
 
 import os
 import pathlib
-import fnmatch
 import mmap
 import subprocess
 import logging
 import hashlib
 import json
-import re
-from typing import List, Dict, Any, NamedTuple, Optional
+from typing import List, Dict, Any, NamedTuple
 from collections import OrderedDict
+from .ignore_filter import IgnoreFilter
 
 logger = logging.getLogger(__name__)
 
@@ -54,74 +53,6 @@ class LRUCache:
 
 # Global cache instance
 file_cache = LRUCache()
-
-
-class IgnoreFilter:
-    """Handles logic for filtering files and directories based on exclusion patterns."""
-
-    def __init__(
-        self, project_path: pathlib.Path, extra_patterns: Optional[List[str]] = None
-    ):
-        self.project_path = project_path
-        self.patterns = self._load_patterns(extra_patterns)
-        self.regex = self._compile_patterns(self.patterns)
-
-    def _compile_patterns(self, patterns: List[str]) -> Optional[re.Pattern]:
-        """Compiles glob patterns into a single efficient Regex."""
-        if not patterns:
-            return None
-        regex_parts = []
-        for p in patterns:
-            # Convert glob to regex: escape dots, replace * with .*, etc.
-            part = fnmatch.translate(p.rstrip("/"))
-            regex_parts.append(part)
-        return re.compile("|".join(regex_parts))
-
-    def _load_patterns(self, extra_patterns: Optional[List[str]]) -> List[str]:
-        patterns = []
-        ignore_file = self.project_path / ".analyzerignore"
-        if ignore_file.exists():
-            try:
-                with open(ignore_file, encoding="utf-8") as f:
-                    patterns = [
-                        line.strip()
-                        for line in f
-                        if line.strip() and not line.startswith("#")
-                    ]
-            except Exception:
-                pass
-
-        if not patterns:
-            patterns = [
-                "__pycache__",
-                ".git",
-                ".venv",
-                "venv",
-                "env",
-                ".tox",
-                ".pytest_cache",
-                ".mypy_cache",
-                ".coverage",
-                "build",
-                "dist",
-                "*.egg-info",
-            ]
-
-        if extra_patterns:
-            patterns.extend(extra_patterns)
-        return patterns
-
-    def is_ignored(self, path: pathlib.Path) -> bool:
-        """Checks if a path should be ignored using optimized regex."""
-        if not self.regex:
-            return False
-        try:
-            rel_path = str(path.relative_to(self.project_path))
-        except ValueError:
-            rel_path = str(path)
-
-        # Match against relative path or just the filename
-        return bool(self.regex.match(rel_path) or self.regex.match(path.name))
 
 
 class ProjectScanner:

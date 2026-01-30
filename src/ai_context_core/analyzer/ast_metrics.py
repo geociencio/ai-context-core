@@ -1,4 +1,4 @@
-"""Code metrics calculation using AST analysis."""
+"""Metrics calculation for Python AST (Complexity, Halstead, Type Hints)."""
 
 import ast
 from collections import Counter

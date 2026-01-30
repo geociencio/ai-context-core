@@ -1,4 +1,4 @@
-"""Entry point detection for Python modules."""
+"""Entry point detection for various frameworks (QGIS, Click, Flask, FastAPI)."""
 
 import ast
 from typing import Dict, Any

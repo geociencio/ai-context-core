@@ -1,26 +1,26 @@
 {
   "project_name": "ai-context-core",
-  "timestamp": 1769753548.611307,
+  "timestamp": 1769754344.3047752,
   "metrics": {
-    "total_size_kb": 107.76,
-    "total_lines_code": 3216,
-    "avg_module_size_kb": 3.37,
-    "avg_lines_per_module": 100.5,
-    "docstring_coverage": 46.19,
+    "total_size_kb": 102.71,
+    "total_lines_code": 2996,
+    "avg_module_size_kb": 2.63,
+    "avg_lines_per_module": 76.82,
+    "docstring_coverage": 48.21,
     "entry_points_count": 2,
     "test_files_count": 19,
-    "avg_complexity": 14.44,
-    "max_complexity": 113,
-    "avg_maintenance_index": 35.64,
-    "quality_score": 44.7,
-    "type_hint_coverage": 77.91
+    "avg_complexity": 9.28,
+    "max_complexity": 65,
+    "avg_maintenance_index": 37.3,
+    "quality_score": 41.9,
+    "type_hint_coverage": 80.51
   },
   "structure": {
-    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    ANALYSIS_REPORT.md\n    ... (+14 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ai_recommendations.py\n                antipatterns.py\n                ast_entry_points.py\n                ast_metrics.py\n                ast_qgis.py\n                ast_security.py\n                ast_utils.py\n                ... (+15 more)\n                checkers/\n                    __init__.py\n                    optimization_checker.py\n                    security_checker.py\n                    tech_debt_checker.py\n            context/\n                manager.py\n            config/\n                defaults.toml\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        CONFIGURATION.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        OPTIMIZATION_IMPLEMENTATION_PLAN.md\n        OPTIMIZATION_RECOMMENDATIONS.md\n        ... (+8 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n                v2.1.1.md\n                v2.5.0.md\n                v2.5.1.md\n                v2.5.2.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_modularization_cycle.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            ... (+6 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            0005-optimization-refactoring-strategy.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_config.py\n        test_dependencies_advanced.py\n        ... (+9 more)\n        fixtures/\n            false_positives.py\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py\n    dist/\n        .gitignore\n        ai_context_core-2.5.2-py3-none-any.whl\n        ai_context_core-2.5.2.tar.gz",
-    "modules_count": 32,
+    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    ANALYSIS_REPORT.md\n    ... (+14 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                ai_recommendations.py\n                antipatterns.py\n                ast_entry_points.py\n                ast_metrics.py\n                ast_qgis.py\n                ast_security.py\n                ast_utils.py\n                ... (+16 more)\n                checkers/\n                    __init__.py\n                    optimization_checker.py\n                    security_checker.py\n                    tech_debt_checker.py\n                patterns_detectors/\n                    __init__.py\n                    base.py\n                    decorator.py\n                    factory.py\n                    observer.py\n                    singleton.py\n                    strategy.py\n            context/\n                manager.py\n            config/\n                defaults.toml\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        CONFIGURATION.md\n        DEVELOPMENT_LOG.md\n        INDEX_IMPROVEMENTS.md\n        OPTIMIZATION_IMPLEMENTATION_PLAN.md\n        OPTIMIZATION_RECOMMENDATIONS.md\n        ... (+8 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n                v2.1.1.md\n                v2.5.0.md\n                v2.5.1.md\n                v2.5.2.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_modularization_cycle.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            ... (+6 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            0005-optimization-refactoring-strategy.md\n            README.md\n            template.md\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_config.py\n        test_dependencies_advanced.py\n        ... (+9 more)\n        fixtures/\n            false_positives.py\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py\n    dist/\n        .gitignore\n        ai_context_core-2.5.2-py3-none-any.whl\n        ai_context_core-2.5.2.tar.gz",
+    "modules_count": 39,
     "file_types": {
       ".md": 77,
-      ".py": 51,
+      ".py": 59,
       ".yaml": 4,
       ".yml": 3,
       ".json": 3,
@@ -33,34 +33,30 @@
       ".tag": 1
     },
     "size_stats": {
-      "total_files": 169,
-      "total_size_mb": 0.93,
-      "python_files": 51,
-      "python_size_mb": 0.2,
-      "avg_file_size_kb": 5.64,
-      "python_percentage": 22.01
+      "total_files": 178,
+      "total_size_mb": 0.95,
+      "python_files": 59,
+      "python_size_mb": 0.21,
+      "avg_file_size_kb": 5.47,
+      "python_percentage": 21.79
     }
   },
   "complexity": {
-    "total_modules": 32,
-    "total_lines": 3216,
-    "total_functions": 185,
-    "total_classes": 40,
-    "average_complexity": 14.44,
+    "total_modules": 39,
+    "total_lines": 2996,
+    "total_functions": 167,
+    "total_classes": 32,
+    "average_complexity": 9.28,
     "complexity_distribution": {
-      "low (0-5)": 17,
+      "low (0-5)": 24,
       "medium (6-15)": 5,
-      "high (16-30)": 5,
-      "very_high (31+)": 5
+      "high (16-30)": 6,
+      "very_high (31+)": 4
     },
     "most_complex_modules": [
       [
-        "src/ai_context_core/analyzer/patterns.py",
-        113
-      ],
-      [
-        "src/ai_context_core/analyzer/fs_utils.py",
-        63
+        "src/ai_context_core/analyzer/engine.py",
+        65
       ],
       [
         "src/ai_context_core/analyzer/reporting.py",
@@ -73,6 +69,10 @@
       [
         "src/ai_context_core/cli.py",
         35
+      ],
+      [
+        "src/ai_context_core/analyzer/metrics.py",
+        28
       ]
     ]
   },
@@ -81,15 +81,11 @@
     "external": [
       "ast",
       "collections.Counter",
-      "collections.OrderedDict",
-      "configparser",
-      "fnmatch",
-      "hashlib",
+      "concurrent.futures",
       "http.server",
       "json",
       "logging",
       "math",
-      "mmap",
       "os",
       "pathlib",
       "pathlib.Path",
@@ -101,36 +97,23 @@
       "subprocess",
       "sys",
       "time",
+      "tomllib",
       "typing.Any",
       "typing.Dict",
       "typing.List",
-      "typing.NamedTuple",
       "typing.Optional",
       "typing.Set",
       "typing.Tuple",
-      "typing.Type",
-      "warnings",
       "webbrowser"
     ],
     "third_party": [
+      "BaseChecker",
+      "ai_recommendations",
       "analyzer.engine.ProjectAnalyzer",
-      "ast_entry_points.is_entry_point",
-      "ast_metrics.calculate_complexity",
-      "ast_metrics.calculate_halstead_metrics",
-      "ast_metrics.calculate_type_hint_coverage",
-      "ast_qgis.check_qgis_compliance",
+      "antipatterns",
       "ast_security.ASTSecurityDetector",
-      "ast_security.detect_ast_security_issues",
+      "ast_utils",
       "ast_utils.calculate_complexity",
-      "ast_visitors.check_docstrings",
-      "ast_visitors.detect_unused_imports",
-      "ast_visitors.extract_classes",
-      "ast_visitors.extract_functions",
-      "ast_visitors.extract_imports",
-      "checkers.BaseChecker",
-      "checkers.optimization_checker.OptimizationChecker",
-      "checkers.security_checker.SecurityChecker",
-      "checkers.tech_debt_checker.TechDebtChecker",
       "click",
       "config.loader.ConfigLoader",
       "config.loader.list_profiles",
@@ -141,14 +124,28 @@
       "constants.COMPLEXITY_REFACTORING_THRESHOLD",
       "constants.DOCSTRING_COVERAGE_THRESHOLD",
       "constants.MAINTENANCE_INDEX_THRESHOLD",
-      "constants.PATTERN_DETECTION_CONFIDENCE_HIGH",
+      "constants.PARALLEL_MIN_FILES",
       "constants.PATTERN_DETECTION_CONFIDENCE_MAXIMUM",
       "constants.PATTERN_DETECTION_CONFIDENCE_THRESHOLD",
       "constants.VERY_HIGH_COMPLEXITY_THRESHOLD",
+      "context.manager.AIContextManager",
+      "dependencies",
+      "fs_utils",
+      "git_analysis",
       "html_builder.HTMLBuilder",
+      "issues",
+      "metrics",
+      "patterns",
+      "patterns_detectors.decorator.DecoratorDetector",
+      "patterns_detectors.factory.FactoryDetector",
+      "patterns_detectors.observer.ObserverDetector",
+      "patterns_detectors.singleton.SingletonDetector",
+      "patterns_detectors.strategy.StrategyDetector",
+      "reporting",
       "reporting.MarkdownBuilder",
       "reporting.generate_dependency_diagram",
       "summary_generator.SummaryGenerator",
+      "tomli",
       "yaml"
     ],
     "files": {
@@ -159,10 +156,6 @@
       "src/ai_context_core/__init__.py": [],
       "src/ai_context_core/analyzer/ai_recommendations.py": [],
       "src/ai_context_core/analyzer/antipatterns.py": [],
-      "src/ai_context_core/analyzer/ast_entry_points.py": [],
-      "src/ai_context_core/analyzer/ast_metrics.py": [],
-      "src/ai_context_core/analyzer/ast_qgis.py": [],
-      "src/ai_context_core/analyzer/ast_security.py": [],
       "src/ai_context_core/analyzer/ast_utils.py": [],
       "src/ai_context_core/analyzer/ast_visitors.py": [],
       "src/ai_context_core/analyzer/checkers/__init__.py": [],
@@ -173,7 +166,6 @@
       "src/ai_context_core/analyzer/constants.py": [],
       "src/ai_context_core/analyzer/dependencies.py": [],
       "src/ai_context_core/analyzer/engine.py": [],
-      "src/ai_context_core/analyzer/fs_utils.py": [],
       "src/ai_context_core/analyzer/git_analysis.py": [],
       "src/ai_context_core/analyzer/html_builder.py": [],
       "src/ai_context_core/analyzer/import_visitor.py": [],
@@ -186,123 +178,30 @@
       "src/ai_context_core/analyzer/summary_generator.py": [],
       "src/ai_context_core/cli.py": [],
       "src/ai_context_core/config/loader.py": [],
-      "src/ai_context_core/context/manager.py": []
+      "src/ai_context_core/context/manager.py": [],
+      "src/ai_context_core/analyzer/ast_entry_points.py": [],
+      "src/ai_context_core/analyzer/ast_metrics.py": [],
+      "src/ai_context_core/analyzer/ast_qgis.py": [],
+      "src/ai_context_core/analyzer/ignore_filter.py": [],
+      "src/ai_context_core/analyzer/ast_security.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/factory.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/decorator.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/base.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/observer.py": [],
+      "src/ai_context_core/analyzer/fs_utils.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/singleton.py": [],
+      "src/ai_context_core/analyzer/patterns_detectors/strategy.py": []
     },
     "circular_dependencies": [],
     "graph_metrics": {
-      "nodes": 32,
+      "nodes": 39,
       "edges": 0,
       "density": 0.0,
       "is_dag": true,
-      "weakly_connected_components": 32
+      "weakly_connected_components": 39
     },
     "coupling_metrics": {
-      "src/ai_context_core/analyzer/pattern_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/reporting.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/checkers/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipatterns.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/secrets.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/dependencies.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ai_recommendations.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/import_visitor.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/checkers/security_checker.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/git_analysis.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_metrics.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_qgis.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      ".agent/scripts/skill_sync.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_security.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/checkers/tech_debt_checker.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/manager.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/config/loader.py": {
+      "src/ai_context_core/cli.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -312,32 +211,12 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/__init__.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/observer.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_entry_points.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/constants.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/summary_generator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/cli.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/complexity_visitor.py": {
+      "src/ai_context_core/analyzer/ast_utils.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -347,7 +226,132 @@
         "fan_out": 0,
         "cbo": 0
       },
+      "src/ai_context_core/analyzer/ai_recommendations.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/factory.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_metrics.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/tech_debt_checker.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/constants.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/complexity_visitor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipatterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      ".agent/scripts/skill_sync.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/dependencies.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/secrets.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/summary_generator.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
       "src/ai_context_core/analyzer/checkers/optimization_checker.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/config/loader.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/manager.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_entry_points.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/strategy.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/import_visitor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/reporting.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/decorator.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ignore_filter.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/fs_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/security_checker.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -356,27 +360,65 @@
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
+      },
+      "src/ai_context_core/analyzer/pattern_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_qgis.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_security.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/git_analysis.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/engine.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
       }
     },
-    "unused_imports": {
-      "src/ai_context_core/analyzer/ast_utils.py": [
-        "ast_visitors.extract_functions",
-        "ast_visitors.extract_classes",
-        "ast_visitors.check_docstrings",
-        "ast_visitors.extract_imports",
-        "ast_visitors.detect_unused_imports",
-        "ast_metrics.calculate_complexity",
-        "ast_metrics.calculate_halstead_metrics",
-        "ast_metrics.calculate_type_hint_coverage",
-        "ast_entry_points.is_entry_point",
-        "ast_qgis.check_qgis_compliance"
-      ],
-      "src/ai_context_core/analyzer/issues.py": [
-        "ast_security.ASTSecurityDetector"
-      ]
-    }
+    "unused_imports": {}
   },
   "debt": [
+    {
+      "module": "src/ai_context_core/analyzer/engine.py",
+      "issues": [
+        {
+          "type": "high_complexity",
+          "severity": "high",
+          "message": "Very high complexity (65)",
+          "line": 1
+        },
+        {
+          "type": "long_file",
+          "severity": "medium",
+          "message": "Long file (539 lines)",
+          "line": 1
+        }
+      ],
+      "total_issues": 2,
+      "severity_score": 5
+    },
     {
       "module": ".agent/scripts/skill_sync.py",
       "issues": [
@@ -397,38 +439,12 @@
       "severity_score": 4
     },
     {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high complexity (63)",
-          "line": 1
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 3
-    },
-    {
       "module": "src/ai_context_core/analyzer/metrics.py",
       "issues": [
         {
           "type": "high_complexity",
           "severity": "high",
           "message": "Very high complexity (28)",
-          "line": 1
-        }
-      ],
-      "total_issues": 1,
-      "severity_score": 3
-    },
-    {
-      "module": "src/ai_context_core/analyzer/patterns.py",
-      "issues": [
-        {
-          "type": "high_complexity",
-          "severity": "high",
-          "message": "Very high complexity (113)",
           "line": 1
         }
       ],
@@ -527,12 +543,12 @@
       "severity_score": 2
     },
     {
-      "module": "src/ai_context_core/analyzer/issues.py",
+      "module": "src/ai_context_core/analyzer/patterns.py",
       "issues": [
         {
           "type": "moderate_complexity",
           "severity": "medium",
-          "message": "High complexity (15)",
+          "message": "High complexity (16)",
           "line": 1
         }
       ],
@@ -551,6 +567,71 @@
       ],
       "total_issues": 1,
       "severity_score": 2
+    },
+    {
+      "module": "src/ai_context_core/analyzer/ast_utils.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
+    },
+    {
+      "module": "src/ai_context_core/analyzer/ast_visitors.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
+    },
+    {
+      "module": "src/ai_context_core/analyzer/checkers/__init__.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
+    },
+    {
+      "module": "src/ai_context_core/analyzer/dependencies.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
+    },
+    {
+      "module": "src/ai_context_core/analyzer/issues.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
     },
     {
       "module": "src/ai_context_core/analyzer/ast_entry_points.py",
@@ -592,6 +673,19 @@
       "severity_score": 1
     },
     {
+      "module": "src/ai_context_core/analyzer/ignore_filter.py",
+      "issues": [
+        {
+          "type": "missing_module_docstring",
+          "severity": "low",
+          "message": "Missing docstring",
+          "line": 1
+        }
+      ],
+      "total_issues": 1,
+      "severity_score": 1
+    },
+    {
       "module": "src/ai_context_core/analyzer/ast_security.py",
       "issues": [
         {
@@ -605,7 +699,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/ast_visitors.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/factory.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -618,7 +712,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/checkers/__init__.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/decorator.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -631,7 +725,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/checkers/optimization_checker.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/base.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -644,7 +738,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/checkers/security_checker.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/observer.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -657,7 +751,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/checkers/tech_debt_checker.py",
+      "module": "src/ai_context_core/analyzer/fs_utils.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -670,7 +764,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/dependencies.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/singleton.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -683,7 +777,7 @@
       "severity_score": 1
     },
     {
-      "module": "src/ai_context_core/analyzer/engine.py",
+      "module": "src/ai_context_core/analyzer/patterns_detectors/strategy.py",
       "issues": [
         {
           "type": "missing_module_docstring",
@@ -703,12 +797,12 @@
         {
           "category": "Project Health",
           "priority": "Critical",
-          "message": "Quality Score is low (44.7/100)."
+          "message": "Quality Score is low (41.9/100)."
         },
         {
           "category": "Documentation",
           "priority": "Medium",
-          "message": "Low documentation coverage (46.19%)."
+          "message": "Low documentation coverage (48.21%)."
         }
       ]
     },
@@ -724,7 +818,7 @@
       ]
     },
     {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "module": "src/ai_context_core/analyzer/engine.py",
       "suggestions": [
         {
           "type": "complexity_refactoring",
@@ -735,7 +829,7 @@
         {
           "type": "module_too_large",
           "priority": "medium",
-          "message": "Large module (447 lines)",
+          "message": "Large module (539 lines)",
           "severity": "low"
         }
       ]
@@ -769,12 +863,6 @@
           "type": "complexity_refactoring",
           "priority": "high",
           "message": "Consider breaking down large logic",
-          "severity": "low"
-        },
-        {
-          "type": "module_too_large",
-          "priority": "medium",
-          "message": "Large module (444 lines)",
           "severity": "low"
         }
       ]
@@ -845,52 +933,46 @@
       "max_severity": "low"
     },
     {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "module": "src/ai_context_core/analyzer/engine.py",
       "issues": [
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 253,
+          "line": 65,
           "description": "Too broad exception handler"
         },
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 290,
+          "line": 80,
           "description": "Too broad exception handler"
         },
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 325,
+          "line": 505,
           "description": "Too broad exception handler"
         },
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 387,
+          "line": 538,
           "description": "Too broad exception handler"
         },
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 401,
+          "line": 211,
           "description": "Too broad exception handler"
         },
         {
           "pattern": "except Exception:",
           "severity": "low",
-          "line": 411,
-          "description": "Too broad exception handler"
-        },
-        {
-          "pattern": "except Exception:",
-          "severity": "low",
-          "line": 91,
+          "line": 395,
           "description": "Too broad exception handler"
         }
       ],
-      "total_issues": 7,
+      "total_issues": 6,
       "max_severity": "low"
     },
     {
@@ -916,38 +998,6 @@
         }
       ],
       "total_issues": 3,
-      "max_severity": "low"
-    },
-    {
-      "module": "src/ai_context_core/analyzer/issues.py",
-      "issues": [
-        {
-          "pattern": "except Exception:",
-          "severity": "low",
-          "line": 162,
-          "description": "Too broad exception handler"
-        }
-      ],
-      "total_issues": 1,
-      "max_severity": "low"
-    },
-    {
-      "module": "src/ai_context_core/analyzer/patterns.py",
-      "issues": [
-        {
-          "pattern": "except Exception:",
-          "severity": "low",
-          "line": 211,
-          "description": "Too broad exception handler"
-        },
-        {
-          "pattern": "except Exception:",
-          "severity": "low",
-          "line": 167,
-          "description": "Too broad exception handler"
-        }
-      ],
-      "total_issues": 2,
       "max_severity": "low"
     },
     {
@@ -1062,6 +1112,109 @@
         }
       ],
       "total_issues": 5
+    },
+    {
+      "module": "src/ai_context_core/analyzer/checkers/optimization_checker.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 34,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 400",
+          "line": 35,
+          "value": 400
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 39,
+          "value": 5
+        }
+      ],
+      "total_issues": 3
+    },
+    {
+      "module": "src/ai_context_core/analyzer/checkers/tech_debt_checker.py",
+      "issues": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 29,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 30,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 800",
+          "line": 31,
+          "value": 800
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 500",
+          "line": 32,
+          "value": 500
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 39,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 40,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 23,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 23,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 500",
+          "line": 24,
+          "value": 500
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 800",
+          "line": 24,
+          "value": 800
+        }
+      ],
+      "total_issues": 10
     },
     {
       "module": "src/ai_context_core/analyzer/constants.py",
@@ -1322,185 +1475,206 @@
       "total_issues": 36
     },
     {
-      "module": "src/ai_context_core/analyzer/fs_utils.py",
+      "module": "src/ai_context_core/analyzer/engine.py",
       "issues": [
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 256",
-          "line": 34,
-          "value": 256
+          "message": "Magic number detected: 30",
+          "line": 99,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 100,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 101,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 102,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 103,
+          "value": 30
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 104,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 106,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 109,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 110,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 25",
+          "line": 111,
+          "value": 25
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 200",
+          "line": 112,
+          "value": 200
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 500",
+          "line": 113,
+          "value": 500
         },
         {
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 4",
-          "line": 300,
+          "line": 291,
           "value": 4
         },
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 382,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 224,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 226,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
           "message": "Magic number detected: 3",
-          "line": 285,
+          "line": 291,
           "value": 3
         },
         {
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 2",
-          "line": 227,
+          "line": 291,
           "value": 2
         },
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 228,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 245,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 245,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1500",
-          "line": 289,
-          "value": 1500
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 8",
-          "line": 310,
-          "value": 8
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 7",
-          "line": 311,
-          "value": 7
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 8",
-          "line": 311,
-          "value": 8
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 385,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 410,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 224,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 224,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 226,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 226,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 1024",
-          "line": 227,
-          "value": 1024
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 228,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 385,
-          "value": 10
+          "message": "Magic number detected: 0.4",
+          "line": 454,
+          "value": 0.4
         },
         {
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 20",
-          "line": 181,
+          "line": 456,
           "value": 20
         },
         {
           "type": "magic_number",
           "severity": "low",
-          "message": "Magic number detected: 8",
-          "line": 312,
-          "value": 8
+          "message": "Magic number detected: 10",
+          "line": 463,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 465,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 105,
+          "value": 10
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 132,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 461,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 100",
+          "line": 467,
+          "value": 100
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 4",
+          "line": 132,
+          "value": 4
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 284,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 461,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 1024",
+          "line": 485,
+          "value": 1024
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 537,
+          "value": 2
         }
       ],
-      "total_issues": 25
+      "total_issues": 28
     },
     {
       "module": "src/ai_context_core/analyzer/git_analysis.py",
@@ -1549,68 +1723,6 @@
         }
       ],
       "total_issues": 6
-    },
-    {
-      "module": "src/ai_context_core/analyzer/issues.py",
-      "issues": [
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 109,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 120,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 174,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 4",
-          "line": 145,
-          "value": 4
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 145,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 145,
-          "value": 2
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 3",
-          "line": 98,
-          "value": 3
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 2",
-          "line": 98,
-          "value": 2
-        }
-      ],
-      "total_issues": 8
     },
     {
       "module": "src/ai_context_core/analyzer/metrics.py",
@@ -1848,194 +1960,6 @@
         }
       ],
       "total_issues": 33
-    },
-    {
-      "module": "src/ai_context_core/analyzer/patterns.py",
-      "issues": [
-        {
-          "type": "spaghetti_code",
-          "severity": "high",
-          "message": "Function 'detect' is Spaghetti Code (CC: 34)",
-          "line": 140,
-          "value": 34
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 98,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 220,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 275,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 320,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 60",
-          "line": 60,
-          "value": 60
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 335,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 40",
-          "line": 113,
-          "value": 40
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 217,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 224,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 279,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 50",
-          "line": 309,
-          "value": 50
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 60",
-          "line": 334,
-          "value": 60
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 76,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 87,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 119,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 15",
-          "line": 184,
-          "value": 15
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 15",
-          "line": 188,
-          "value": 15
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 251,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 40",
-          "line": 319,
-          "value": 40
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 325,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 100",
-          "line": 340,
-          "value": 100
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 30",
-          "line": 196,
-          "value": 30
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 40",
-          "line": 271,
-          "value": 40
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 20",
-          "line": 156,
-          "value": 20
-        },
-        {
-          "type": "magic_number",
-          "severity": "low",
-          "message": "Magic number detected: 10",
-          "line": 165,
-          "value": 10
-        }
-      ],
-      "total_issues": 26
     },
     {
       "module": "src/ai_context_core/analyzer/reporting.py",
@@ -2486,7 +2410,7 @@
     "hotspots": [
       {
         "path": "src/ai_context_core/analyzer/engine.py",
-        "commits": 20
+        "commits": 21
       },
       {
         "path": "src/ai_context_core/analyzer/reporting.py",
@@ -2494,11 +2418,11 @@
       },
       {
         "path": "src/ai_context_core/analyzer/ast_utils.py",
-        "commits": 15
+        "commits": 16
       },
       {
         "path": "src/ai_context_core/analyzer/issues.py",
-        "commits": 13
+        "commits": 14
       },
       {
         "path": "src/ai_context_core/cli.py",
@@ -2508,10 +2432,10 @@
     "churn": {
       "available": true,
       "period_days": 30,
-      "added": 37316,
-      "deleted": 19233,
-      "total_churn": 56549,
-      "files_changed": 468
+      "added": 38236,
+      "deleted": 20222,
+      "total_churn": 58458,
+      "files_changed": 480
     }
   },
   "manual_notes": "",
@@ -2528,7 +2452,7 @@
     "processing_framework_detected": false,
     "i18n_stats": {
       "total_tr": 0,
-      "total_strings": 1173
+      "total_strings": 1223
     },
     "gdal_style": "Correct",
     "qt_transition": {

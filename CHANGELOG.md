@@ -81,6 +81,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- New `patterns_detectors/` package for modular design pattern detection.
+- `ignore_filter.py` module extracted from `fs_utils.py` for better separation of concerns.
+
+### Changed
+- Refactored `patterns.py` into a facade to reduce cyclomatic complexity hotspots.
+- Optimized `ProjectScanner` in `fs_utils.py` and improved file system traversal.
+- Replaced deprecated `find_security_issues` with modernized `find_secrets` and AST-based checks.
+- Enforced Google-style docstrings across core analyzer components.
+### Added
 - **Configuration**: Unit tests for config system and full documentation in `docs/CONFIGURATION.md`.
 - **CI/CD**: GitHub Actions workflow for automated testing and quality auditing.
 - **Workflows**: Optimized local workflows (`inicia-sesion`, `cierra-sesion`) with hybrid Docker/uv support.

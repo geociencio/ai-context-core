@@ -286,8 +286,9 @@ class ProjectAnalyzer:
 
     def _aggregate_security(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Aggregate security issues from all modules."""
-        sec_list = issues.find_security_issues(m_data, str(self.project_path))
-        sev_map = {"high": 3, "medium": 2, "low": 1}
+        # Use new find_secrets instead of deprecated find_security_issues
+        sec_list = issues.find_secrets(m_data, str(self.project_path))
+        sev_map = {"critical": 4, "high": 3, "medium": 2, "low": 1}
 
         for m in m_data:
             ast_sec = m.get("ast_security", [])

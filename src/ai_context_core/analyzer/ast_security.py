@@ -1,4 +1,4 @@
-"""AST Security Analysis."""
+"""Security vulnerability detection using AST analysis."""
 
 import ast
 from typing import List, Dict, Any

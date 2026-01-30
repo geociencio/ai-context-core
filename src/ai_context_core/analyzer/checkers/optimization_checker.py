@@ -8,9 +8,25 @@ class OptimizationChecker(BaseChecker):
     """Checks for optimization opportunities."""
 
     def get_category(self) -> str:
+        """Returns the category of issues this checker detects.
+
+        Returns:
+            String identifier for the category ("optimization").
+        """
         return "optimization"
 
     def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for code optimization opportunities.
+
+        Analyzes cyclomatic complexity and module length to suggest
+        potential refactorings.
+
+        Args:
+            module_info: Dictionary containing module analysis metrics.
+
+        Returns:
+            List of optimization suggestions.
+        """
         suggestions = []
 
         # Get thresholds from config (injected via BaseChecker)

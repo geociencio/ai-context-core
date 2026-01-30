@@ -13,9 +13,24 @@ class SecurityChecker(BaseChecker):
         super().__init__(config)
 
     def get_category(self) -> str:
+        """Returns the category of issues this checker detects.
+
+        Returns:
+            String identifier for the category ("security").
+        """
         return "security"
 
     def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Checks for security vulnerabilities and exposed secrets.
+
+        Performs AST-based security analysis and content-based secret detection.
+
+        Args:
+            module_info: Dictionary containing module analysis data and optional content.
+
+        Returns:
+            List of detected security issues and secrets.
+        """
         issues = []
         issues = []
         # path = module_info.get("path", "") - unused
