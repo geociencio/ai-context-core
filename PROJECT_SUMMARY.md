@@ -1,21 +1,21 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-01-30 00:31:04
+Analysis Date: 2026-01-30 01:12:28
 Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Total Modules**: 33
-- **Lines of Code**: 5,033
+- **Total Modules**: 32
+- **Lines of Code**: 3,216
 - **Total Size**: 0.9 MB
-- **Average Complexity**: 22.5
-- **Avg Maintenance Index**: 34.7
-- **Docstring Coverage**: 55.9%
-- **Quality Score**: 54.9/100
-- **Test Files**: 18
+- **Average Complexity**: 14.4
+- **Avg Maintenance Index**: 35.6
+- **Docstring Coverage**: 46.2%
+- **Quality Score**: 44.7/100
+- **Test Files**: 19
 
 ## 📁 STRUCTURE
 - **Python Files**: 51
-- **Total Files**: 164
-- **Primary File Types**: .md, .py, .yaml, .json, .yml
+- **Total Files**: 169
+- **Primary File Types**: .md, .py, .yaml, .yml, .json
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
@@ -24,21 +24,20 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 - **src/ai_context_core/analyzer/git_analysis.py**: 3 issues (Max: LOW)
 
 ### 🏗️ Critical Technical Debt:
-- **src/ai_context_core/analyzer/engine.py**: 2 issues (Score: 5)
 - **.agent/scripts/skill_sync.py**: 2 issues (Score: 4)
-- **src/ai_context_core/analyzer/ast_qgis.py**: 2 issues (Score: 4)
 
 ## 📦 QGIS STANDARDS
 - **Compliance Score**: 20.0/100
 - ⚠️ **Architecture**: No Processing Algorithms found (Recommended)
-- **i18n Coverage**: 0.0% (0/1893 strings)
+- **i18n Coverage**: 0.0% (0/1173 strings)
 
 ### 🚩 Metadata Issues:
 - Missing metadata.txt
 
 ## 💡 MAIN RECOMMENDATIONS
 ### PROJECT_WIDE
-- Quality Score (54.9/100) has room for improvement.
+- Quality Score is low (44.7/100).
+- Low documentation coverage (46.19%).
 ### src/ai_context_core/analyzer/antipatterns.py
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/fs_utils.py
@@ -55,20 +54,20 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 431
-- **Additions**: +33496
-- **Deletions**: -17208
-- **Total Churn**: 50704
+- **Files Changed**: 468
+- **Additions**: +37316
+- **Deletions**: -19233
+- **Total Churn**: 56549
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 19 commits
+- `src/ai_context_core/analyzer/engine.py`: 20 commits
 - `src/ai_context_core/analyzer/reporting.py`: 18 commits
-- `src/ai_context_core/analyzer/ast_utils.py`: 14 commits
+- `src/ai_context_core/analyzer/ast_utils.py`: 15 commits
+- `src/ai_context_core/analyzer/issues.py`: 13 commits
 - `src/ai_context_core/cli.py`: 13 commits
-- `src/ai_context_core/analyzer/fs_utils.py`: 12 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- low (0-5): 10 modules (30.3%)
-- medium (6-15): 8 modules (24.2%)
-- high (16-30): 6 modules (18.2%)
-- very_high (31+): 9 modules (27.3%)
+- low (0-5): 17 modules (53.1%)
+- medium (6-15): 5 modules (15.6%)
+- high (16-30): 5 modules (15.6%)
+- very_high (31+): 5 modules (15.6%)

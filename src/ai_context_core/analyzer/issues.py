@@ -6,6 +6,7 @@ security patterns, and optimization opportunities.
 This module now uses a plugin-based system with Checkers.
 """
 
+import ast
 import pathlib
 import warnings
 from typing import List, Dict, Any, Type
@@ -31,6 +32,7 @@ from .checkers.optimization_checker import OptimizationChecker
 # since this is an internal class, we might just keep it for now if external code uses it.
 # Let's keep a minimal version or alias.
 from .secrets import detect_secrets
+from .ast_security import ASTSecurityDetector
 
 
 class IssueDetector:
@@ -173,3 +175,10 @@ def find_security_issues(
     )
     # Redirect to secrets detection as a best-effort fallback for existing consumers
     return find_secrets(modules_data, project_path)
+
+
+def detect_ast_security_issues(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Legacy function to detect AST security issues."""
+    from .ast_security import detect_ast_security_issues as _detect_ast_security
+
+    return _detect_ast_security(tree)

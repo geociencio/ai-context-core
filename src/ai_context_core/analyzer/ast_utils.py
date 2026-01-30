@@ -8,6 +8,20 @@ This module is now a deprecated facade. Please import from the specific submodul
 """
 
 import ast
+from .ast_visitors import (
+    extract_functions,
+    extract_classes,
+    check_docstrings,
+    extract_imports,
+    detect_unused_imports,
+)
+from .ast_metrics import (
+    calculate_complexity,
+    calculate_halstead_metrics,
+    calculate_type_hint_coverage,
+)
+from .ast_entry_points import is_entry_point
+from .ast_qgis import check_qgis_compliance
 
 # Re-export symbols for backward compatibility
 

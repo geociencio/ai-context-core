@@ -80,6 +80,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
 ## [Unreleased]
+### Added
+- **Configuration**: Unit tests for config system and full documentation in `docs/CONFIGURATION.md`.
+- **CI/CD**: GitHub Actions workflow for automated testing and quality auditing.
+- **Workflows**: Optimized local workflows (`inicia-sesion`, `cierra-sesion`) with hybrid Docker/uv support.
+
+### Fixed
+- **Engine**: Resolved `KeyError: complexity` in summary generation for errored files.
+- **Linting**: Fixed import order and unused variables across `analyzer` modules.
+- **Clean Code**: Removed legacy garbage content from `dependencies.py`.
+
 ### Refactored
 - **Modular Architecture**: Extracted 6 specialized modules from `analyzer` package (`complexity_visitor.py`, `import_visitor.py`, `html_builder.py`, `summary_generator.py`, `pattern_utils.py`, `constants.py`) reducing complexity in `reporting.py` (-267 lines, -30%) and `ast_utils.py` (-200 lines, -44%).
 - **Constants Centralization**: Eliminated magic numbers by centralizing 75 configuration constants across 11 categories (complexity, quality, security, QGIS, git, patterns, etc.).

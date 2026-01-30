@@ -278,7 +278,7 @@ class ProjectAnalyzer:
             "average_complexity": metrics_val.get("avg_complexity", 0),
             "complexity_distribution": dist,
             "most_complex_modules": sorted(
-                [(m["path"], m["complexity"]) for m in m_data],
+                [(m["path"], m.get("complexity", 0)) for m in m_data],
                 key=lambda x: x[1],
                 reverse=True,
             )[:5],
