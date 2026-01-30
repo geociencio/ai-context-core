@@ -1,5 +1,6 @@
 import unittest
 import pathlib
+from unittest.mock import patch
 from ai_context_core.analyzer.git_analysis import (
     is_git_repo,
     get_git_hotspots,
@@ -12,13 +13,15 @@ class TestGitAnalysis(unittest.TestCase):
         self.project_path = pathlib.Path(__file__).parent.parent.resolve()
 
     def test_is_git_repo(self):
-        # We check both cases to be robust
-        if (self.project_path / ".git").exists():
+        # Test positive case (is a repo)
+        with patch("ai_context_core.analyzer.git_analysis.GitRunner.run") as mock_run:
+            mock_run.return_value = "true\n"
             self.assertTrue(is_git_repo(self.project_path))
-        else:
-            self.assertFalse(is_git_repo(self.project_path))
-        # A random temp directory should not be a git repo
-        self.assertFalse(is_git_repo(pathlib.Path("/tmp")))
+
+        # Test negative case (is not a repo)
+        with patch("ai_context_core.analyzer.git_analysis.GitRunner.run") as mock_run:
+            mock_run.return_value = None
+            self.assertFalse(is_git_repo(pathlib.Path("/tmp")))
 
     def test_get_git_hotspots(self):
         hotspots = get_git_hotspots(self.project_path, limit=3)

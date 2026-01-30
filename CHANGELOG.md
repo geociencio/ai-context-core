@@ -12,6 +12,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-01-30 - CLI Expansion & Enhanced Analysis
+
+### Added
+- **5 New CLI Commands**:
+  - `ai-ctx deps`: Dependency analysis (unused imports, cycles, coupling metrics)
+  - `ai-ctx git`: Git evolution tracking (hotspots, code churn)
+  - `ai-ctx stats`: Quick project statistics with formatted tables
+  - `ai-ctx qgis`: QGIS plugin compliance validation
+  - `ai-ctx clean`: Cache and artifact cleanup utility
+- **Rich Table Formatting**: Terminal output now uses `rich` library for beautiful formatted tables
+- **Dependency Analysis Features**:
+  - Import graph with cycle detection
+  - Unused imports identification across the project
+  - Coupling Between Objects (CBO) metrics
+  - Graph density and DAG validation
+- **Git Evolution Tracking**:
+  - Hotspots analysis (most frequently modified files)
+  - Code churn metrics (lines added/deleted over time periods)
+
+### Changed
+- **README.md**: Completely reorganized with 5 feature subsections and expanded comparison table
+- **Feature Documentation**: Added comprehensive documentation for all 14 CLI commands
+- **Comparison Table**: Expanded to include 6 tools (repo2txt, code2prompt, aider, radon, pylint) with 13 characteristics
+- **CLI Organization**: Commands now grouped into Core, Analysis, Specialized, and CI/CD categories
+
+### Fixed
+- **Git Repository Detection**: Fixed `GitAnalyzer.is_repo()` false positives by changing `check=False` to `check=True`
+- **Test Robustness**: Improved `test_is_git_repo` using mocking for environment independence
+
+### Breaking Changes
+- **Major Version Bump**: Significant CLI expansion warrants v3.0.0
+- All existing commands remain backward compatible
+
+
 ## [2.1.3] - 2026-01-30 - SLOC Engine & Metadata Fix
 
 ### Added

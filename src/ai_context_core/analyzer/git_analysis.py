@@ -116,7 +116,7 @@ class GitAnalyzer:
         Returns:
             True if it's a valid git repository, False otherwise.
         """
-        out = self.runner.run(["rev-parse", "--is-inside-work-tree"], check=False)
+        out = self.runner.run(["rev-parse", "--is-inside-work-tree"], check=True)
         return out is not None
 
     def get_hotspots(

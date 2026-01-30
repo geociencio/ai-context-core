@@ -1,6 +1,6 @@
 [project]
 name = "ai-context-core"
-version = "2.5.2"
+version = "3.0.0"
 description = "Core logic for AI-driven development context management"
 readme = "README.md"
 requires-python = ">=3.9"
