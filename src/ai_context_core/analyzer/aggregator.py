@@ -124,6 +124,9 @@ class ResultsAggregator:
             "i18n_stats": {
                 "total_tr": sum(
                     m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
+                    + m.get("qgis_compliance", {})
+                    .get("i18n_usage", {})
+                    .get("translate", 0)
                     for m in m_data
                 ),
                 "total_strings": sum(

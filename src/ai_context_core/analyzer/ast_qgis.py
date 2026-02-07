@@ -16,6 +16,19 @@ class QGISComplianceVisitor(ast.NodeVisitor):
             "qt_transition": {"pyqt5_imports": [], "pyqt6_imports": []},
             "signals_slots": {"legacy": 0, "modern": 0},
         }
+        self._in_ignored_call = False
+        self._ignored_functions = {
+            "debug",
+            "info",
+            "warning",
+            "error",
+            "critical",
+            "log",  # Loggers
+            "Exception",
+            "ValueError",
+            "TypeError",
+            "RuntimeError",  # Exceptions
+        }
 
     def visit_Import(self, node: ast.Import):
         """Visits an import node and checks for legacy GDAL or PyQt imports.
@@ -104,6 +117,17 @@ class QGISComplianceVisitor(ast.NodeVisitor):
         Args:
             node: The Call node.
         """
+        # Detect if we should ignore strings inside this call
+        func_name = ""
+        if isinstance(node.func, ast.Name):
+            func_name = node.func.id
+        elif isinstance(node.func, ast.Attribute):
+            func_name = node.func.attr
+
+        old_ignored = self._in_ignored_call
+        if func_name in self._ignored_functions:
+            self._in_ignored_call = True
+
         # Check for i18n: self.tr() or QCoreApplication.translate()
         if isinstance(node.func, ast.Attribute):
             if node.func.attr == "tr":
@@ -117,6 +141,7 @@ class QGISComplianceVisitor(ast.NodeVisitor):
             self.results["signals_slots"]["legacy"] += 1
 
         self.generic_visit(node)
+        self._in_ignored_call = old_ignored
 
     def visit_Constant(self, node: ast.Constant):
         """Visits a constant node to count potential i18n strings.
@@ -124,17 +149,24 @@ class QGISComplianceVisitor(ast.NodeVisitor):
         Args:
             node: The Constant node.
         """
-        if isinstance(node.value, str) and len(node.value.strip()) > 1:
-            # Check if this string looks like an internal path, ID, or key
-            val = node.value.strip()
-            # Heuristic: strings with spaces are usually translatable,
-            # while underscored/camelcased strings without spaces are often IDs.
+        if not isinstance(node.value, str) or len(node.value.strip()) <= 1:
+            return
+
+        if self._in_ignored_call:
+            return
+
+        val = node.value.strip()
+
+        # Filter out common technical strings
+        is_path = val.startswith(("/", "./", "../")) or "\\" in val
+        is_url = val.startswith(("http://", "https://", "ftp://"))
+        is_placeholder = val.replace("{}", "").replace("%s", "").strip() == ""
+
+        if not (is_path or is_url or is_placeholder):
+            # Heuristic: strings with spaces or punctuation are usually translatable.
             if " " in val or any(c in val for c in ".,!?;"):
                 self.results["i18n_usage"]["total_strings"] += 1
-            # But let's keep it simple for now and just rely on docstring exclusion
-            # which is the biggest source of noise.
-            # actually, if I want to be conservative:
-            # self.results["i18n_usage"]["total_strings"] += 1
+
         self.generic_visit(node)
 
 

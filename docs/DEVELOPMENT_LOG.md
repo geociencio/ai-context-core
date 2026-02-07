@@ -1,5 +1,11 @@
 # Development Log
 
+## [2026-02-07] Precision i18n & Heuristic Refinement (v3.0.3) - COMPLETADA
+**TEMA**: Calidad y Precisión QGIS 🌍
+- **i18n Aggregation**: Soporte para `translate()` junto a `tr()`. 🔄
+- **Heurísticas**: Filtrado robusto de loggers, excepciones, paths y URLs en el conteo de strings. 🛡️
+- **Validación**: Nueva suite de tests para cumplimiento QGIS. ✅
+
 ## [2026-02-07] Python 3.14 Compatibility & Logic Fixes (v3.0.2) - COMPLETADA
 **TEMA**: Estabilidad y Estándares Modernos 🐍
 - **Python 3.14**: Fix para `ast.Str` (eliminado en 3.14), ahora usa `ast.Constant`. 🐍

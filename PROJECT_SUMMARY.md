@@ -1,26 +1,27 @@
-# PROJECT SUMMARY - ai-context-cor----------------------------------------
-🏆 Quality Score: 62.6/100
-📊 Lines: 4,106
-💡 Opts: 16
-----------------------------------------
-✅ Completed.
-*Total Physical Lines**: 6,853
+# PROJECT SUMMARY - ai-context-core
+Analysis Date: 2026-02-07 10:36:26
+Analyzer Version: 2.0 (Ai-Context-Core)
+
+## 📊 KEY METRICS
+- **Total Modules**: 48
+- **Source Lines (SLOC)**: 4,138
+- **Total Physical Lines**: 6,888
 - **Total Size**: 1.2 MB
-- **Average Complexity**: 18.2
-- **Avg Maintenance Index**: 42.6
+- **Average Complexity**: 18.4
+- **Avg Maintenance Index**: 42.5
 - **Docstring Coverage**: 96.2%
 - **Quality Score**: 62.6/100
 - **Test Files**: 0
 
 ## 📁 STRUCTURE
-- **Python Files**: 68
-- **Total Files**: 210
+- **Python Files**: 69
+- **Total Files**: 214
 - **Primary File Types**: .md, .py, .json, .yaml, .yml
 
 ## 📦 QGIS STANDARDS
 - **Compliance Score**: 20.0/100
 - ⚠️ **Architecture**: No Processing Algorithms found (Recommended)
-- **i18n Coverage**: 0.0% (0/1858 strings)
+- **i18n Coverage**: 0.1% (1/1773 strings)
 
 ### 🚩 Metadata Issues:
 - Missing metadata.txt
@@ -35,10 +36,10 @@
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 633
-- **Additions**: +51525
-- **Deletions**: -26169
-- **Total Churn**: 77694
+- **Files Changed**: 637
+- **Additions**: +51570
+- **Deletions**: -26192
+- **Total Churn**: 77762
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 24 commits

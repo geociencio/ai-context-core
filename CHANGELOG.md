@@ -12,6 +12,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.3] - 2026-02-07 - i18n Precision & Heuristic Refinement
+
+### Added
+- **QGIS Compliance Tests**: New unit tests for i18n aggregation and heuristic validation (`tests/test_qgis_compliance.py`).
+
+### Fixed
+- **i18n Aggregation**: Now correctly sums both `tr()` and `translate()` calls in QGIS compliance analysis.
+- **i18n Heuristics**: 
+    - Dramatically reduced false positives in string counting by ignoring logger calls (`debug`, `info`, etc.) and common exceptions (`ValueError`, `TypeError`, etc.).
+    - Improved filtering of technical strings like paths, URLs, and pure placeholders (`{}`).
+    - Excluded single-character strings from the translatable count.
+
 ## [3.0.2] - 2026-02-07 - Python 3.14 Compatibility & Analyzer Logic Fixes
 
 ### Added
