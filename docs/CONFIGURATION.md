@@ -1,96 +1,96 @@
-# Guía de Configuración
+# Configuration Guide
 
-`ai-context-core` permite una configuración flexible mediante archivos TOML, siguiendo una política de "Zero External Dependencies" para la carga de configuración.
+`ai-context-core` allows flexible configuration via TOML files, following a "Zero External Dependencies" policy for configuration loading.
 
-## Jerarquía de Configuración
+## Configuration Hierarchy
 
-La herramienta carga la configuración en el siguiente orden de prioridad (de menor a mayor):
+The tool loads configuration in the following order of priority (from lowest to highest):
 
-1.  **Defaults del Sistema**: Valores por defecto compilados en `src/ai_context_core/config/defaults.toml`.
-2.  **Configuración del Proyecto**: Archivo `.ai-context/config.toml` en la raíz de tu proyecto.
-3.  **Configuración de Perfil**: Archivos `.yaml` en `.ai-context/config.yaml` (Legacy/Transición).
+1.  **System Defaults**: Default values compiled in `src/ai_context_core/config/defaults.toml`.
+2.  **Project Configuration**: `.ai-context/config.toml` file in your project root.
+3.  **Profile Configuration**: `.yaml` files in `.ai-context/config.yaml` (Legacy/Transition).
 
 > [!TIP]
-> Se recomienda usar `.ai-context/config.toml` para todas las nuevas configuraciones.
+> It is recommended to use `.ai-context/config.toml` for all new configurations.
 
-## Opciones Disponibles
+## Available Options
 
-### 1. Umbrales de Calidad (`quality_thresholds`)
+### 1. Quality Thresholds (`quality_thresholds`)
 
-Definen los límites para considerar métricas como advertencias o errores.
+They define the limits for considering metrics as warnings or errors.
 
 ```toml
 [quality_thresholds.complexity]
-warning = 10  # Alerta si complejidad ciclomática > 10
-error = 15    # Falla si complejidad > 15
+warning = 10  # Alert if cyclomatic complexity > 10
+error = 15    # Fail if complexity > 15
 
 [quality_thresholds.maintainability]
-warning = 65  # Alerta si MI < 65
-error = 50    # Falla si MI < 50
+warning = 65  # Alert if MI < 65
+error = 50    # Fail if MI < 50
 
 [quality_thresholds.lines]
-warning = 400 # Alerta si archivo > 400 líneas
-error = 800   # Falla si archivo > 800 líneas
+warning = 400 # Alert if file > 400 lines
+error = 800   # Fail if file > 800 lines
 ```
 
-### 2. Pesos de Puntuación (`quality_weights`)
+### 2. Scoring Weights (`quality_weights`)
 
-Determinan cómo se calcula el "Quality Score" final (0-100). La suma debe ser 1.0 (aprox).
+They determine how the final "Quality Score" (0-100) is calculated. The sum should be approx 1.0.
 
 ```toml
 [quality_weights]
-complexity = 0.25       # 25% Complejidad Ciclomática
-maintainability = 0.20  # 20% Índice de Mantenibilidad
-test_coverage = 0.15    # 15% Cobertura de Tests
-documentation = 0.15    # 15% Calidad de Docstrings
-security = 0.25         # 25% Ausencia de Vuln. de Seguridad
+complexity = 0.25       # 25% Cyclomatic Complexity
+maintainability = 0.20  # 20% Maintainability Index
+test_coverage = 0.15    # 15% Test Coverage
+documentation = 0.15    # 15% Docstring Quality
+security = 0.25         # 25% Absence of Security Vulnerabilities
 ```
 
-### 3. Patrones de Seguridad (`security_patterns`)
+### 3. Security Patterns (`security_patterns`)
 
-Define qué funciones y módulos son considerados peligrosos por el escáner AST.
+Defines which functions and modules are considered dangerous by the AST scanner.
 
 ```toml
 [security_patterns]
-# Funciones que ejecutan código dinámico o comandos del sistema
+# Functions that execute dynamic code or system commands
 dangerous_functions = ["exec", "eval", "__import__", "input"]
 
-# Módulos conocidos por deserialización insegura o protocolos vulnerables
+# Modules known for insecure deserialization or vulnerable protocols
 dangerous_modules = ["pickle", "marshal", "telnetlib"]
 
-# Patrones de string que sugieren SQL Injection
+# String patterns suggesting SQL Injection
 sql_injection_indicators = ["execute(", "executemany("]
 ```
 
-### 4. Configuración de Análisis (`analysis`)
+### 4. Analysis Configuration (`analysis`)
 
-Parámetros técnicos del motor de análisis para optimizar el rendimiento.
+Technical parameters of the analysis engine to optimize performance.
 
 ```toml
 [analysis]
-parallel_workers = "auto"  # "auto" usa cores*2, o un entero específico
-parallel_batch_size = 10   # Agrupa archivos en lotes para reducir overhead de IPC
-cache_enabled = true       # Usa caché persistente (.ai_context_cache.json)
-incremental = true         # Comprobación ultra-rápida vía mtime/size antes de hashing
-max_file_size_mb = 10      # Ignora archivos mayores a este límite
+parallel_workers = "auto"  # "auto" uses cores*2, or a specific integer
+parallel_batch_size = 10   # Groups files in batches to reduce IPC overhead
+cache_enabled = true       # Uses persistent cache (.ai_context_cache.json)
+incremental = true         # Ultra-fast checking via mtime/size before hashing
+max_file_size_mb = 10      # Ignores files larger than this limit
 ```
 
 > [!NOTE]
-> El análisis incremental permite que ejecuciones subsecuentes sean casi instantáneas si los archivos no han cambiado físicamente.
+> Incremental analysis allows subsequent runs to be near-instant if files haven't physically changed.
 
-## Ejemplo de Personalización
+## Customization Example
 
-Crea un archivo `.ai-context/config.toml` para hacer el análisis más estricto:
+Create a `.ai-context/config.toml` file to make the analysis stricter:
 
 ```toml
 # .ai-context/config.toml
 
 [quality_thresholds.complexity]
-warning = 5  # Demasiado estricto, alerta con cualquier lógica compleja
+warning = 5  # Very strict, alert with any complex logic
 error = 10
 
 [quality_weights]
-# Priorizar seguridad sobre todo lo demás
+# Prioritize security above everything else
 security = 0.50
 complexity = 0.20
 maintainability = 0.10
