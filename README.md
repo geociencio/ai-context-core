@@ -7,7 +7,7 @@ The central nervous system for your AI-assisted coding workflow.
 ### Core Capabilities
 - **Project Analysis**: Deep AST analysis for Python projects with SLOC calculation (excluding comments/docstrings).
 - **Context Management**: Keeps `.ai-context` files updated for AI-assisted development.
-- **14 CLI Commands**: Comprehensive toolset for analysis, inspection, and maintenance.
+- **20+ CLI Commands**: Comprehensive toolset for analysis, inspection, and maintenance.
 - **Profiles**: 
     - `python-generic`: Standard Python support.
     - `qgis-plugin`: Specialized rules for QGIS plugin development, including:
@@ -39,13 +39,15 @@ The central nervous system for your AI-assisted coding workflow.
 - **Interactive HTML**: Generate interactive project summaries with `--format html`.
 - **Dependency Graphs**: Automated **Mermaid.js** diagrams integrated into reports.
 - **Quick Stats**: Terminal-based formatted tables using `rich` for rapid insights.
-- **Multiple Formats**: Markdown, HTML, and JSON outputs.
+- **Multiple Formats**: Markdown, HTML, and JSON outputs for specialized data extraction.
+- **Visual Analytics**: Direct terminal visualization of hotspots, churn, and architectural priorities.
 
 ### Performance & Optimization
 - **FastIgnore**: Ultra-fast file filtering using compiled Regex.
 - **Smart Parallelism**: Dynamic switching between sequential and parallel execution based on project size.
 - **Single-Pass AST**: Unified pattern detection for maximum performance.
-- **Incremental Cache**: SHA-256 based file caching with `--no-cache` option to force full re-analysis.
+- **Incremental Cache**: Hybrid `mtime` and SHA-256 based file caching with `--no-cache` option.
+- **Batch Processing**: Task batching in parallel mode to minimize inter-process communication overhead.
 
 ### Workflow Integration
 - **CI/CD Ready**: `audit` command with configurable quality thresholds and exit codes.
@@ -97,10 +99,10 @@ Initializes the `.ai-context` structure in your project. It creates configuratio
 #### `ai-ctx analyze`
 Runs the complete analysis pipeline. Generates `AI_CONTEXT.md`, `PROJECT_SUMMARY.md/html`, and `project_context.json`.
 - **Options**:
-    - `--format html`: Generates an interactive HTML report.
-    - `--no-cache`: Forces a full re-analysis of all files.
-    - `--workers <n>`: Number of parallel workers for analysis.
-- **Usage**: `ai-ctx analyze --format html`
+    - `--format json`: Generates a machine-readable JSON analysis for CI/CD integration.
+    - `--no-cache`: Forces a full re-analysis, ignoring incremental metadata.
+    - `--workers <n>`: Override automatic parallel worker calculation.
+- **Usage**: `ai-ctx analyze --format json > report.json`
 
 #### `ai-ctx profiles`
 Lists all available configuration profiles.
@@ -207,6 +209,37 @@ Cleans cache and generated artifacts from the project directory.
     ai-ctx clean --dry-run  # Preview
     ai-ctx clean            # Actually delete
     ```
+
+---
+
+### Maintenance & Exploration Commands
+
+#### `ai-ctx doctor`
+Environmental diagnostics utility. Checks Python compatibility, configuration consistency, and project structure alignment.
+- **Usage**: `ai-ctx doctor --path .`
+
+#### `ai-ctx fix`
+Automated remediation for common issues.
+- **Fixes**: Missing `__init__.py` files, linting errors (via Ruff), and version synchronization.
+- **Options**: `--sync-version` (Aligns `__init__.py` with `pyproject.toml`)
+- **Usage**: `ai-ctx fix --sync-version`
+
+#### `ai-ctx graph`
+Architectural visualization tool. Exports the project's internal dependency model to a Mermaid-formatted file.
+- **Usage**: `ai-ctx graph --output ARC.mmd`
+
+#### `ai-ctx compare <file1> <file2>`
+Regression tracking utility. Compares two JSON reports and highlights deltas in quality, complexity, and security metrics.
+- **Usage**: `ai-ctx compare base.json current.json`
+
+#### `ai-ctx scaffold <pattern>`
+Design pattern generator. Bootstraps standards-compliant code templates for architectural patterns.
+- **Supported**: Strategy, Observer (more coming soon).
+- **Usage**: `ai-ctx scaffold strategy -o my_strategy.py`
+
+#### `ai-ctx roadmap`
+Technical debt prioritization engine. Calculates a "Refactor Score" based on (Code Complexity × Churn Frequency) to identify high-risk hotspots.
+- **Usage**: `ai-ctx roadmap`
 
 ## Comparison with Other Tools
 
