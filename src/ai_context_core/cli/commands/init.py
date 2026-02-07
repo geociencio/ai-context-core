@@ -3,7 +3,7 @@
 import pathlib
 import shutil
 import click
-from ..config.loader import ConfigLoader
+from ai_context_core.config.loader import ConfigLoader
 
 
 def initialize_project(path: str, profile: str):

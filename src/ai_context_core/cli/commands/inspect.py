@@ -3,8 +3,8 @@
 import pathlib
 import sys
 import click
-from ..analyzer.engine_components.worker import AnalysisWorker
-from ..config.loader import ConfigLoader
+from ai_context_core.analyzer.engine_components.worker import AnalysisWorker
+from ai_context_core.config.loader import ConfigLoader
 
 
 def inspect_file(file_path: str):

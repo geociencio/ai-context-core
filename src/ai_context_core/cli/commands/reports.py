@@ -1,7 +1,7 @@
 """Filter and report commands for the CLI (patterns, security, help-me)."""
 
 import click
-from ai_context_core.commands import report
+from . import report
 
 
 @click.command(name="patterns")

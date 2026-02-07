@@ -3,7 +3,7 @@
 import click
 import sys
 from pathlib import Path
-from ai_context_core.commands import analyze, qgis
+from . import analyze, qgis
 from ai_context_core.analyzer import gis_utils
 
 

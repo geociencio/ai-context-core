@@ -2,7 +2,7 @@
 
 import click
 from typing import Optional
-from ai_context_core.commands import analyze, inspect
+from . import analyze, inspect
 
 
 @click.command(name="analyze")

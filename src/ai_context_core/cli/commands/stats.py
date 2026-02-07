@@ -4,8 +4,8 @@ import pathlib
 import click
 from rich.console import Console
 from rich.table import Table
-from ..analyzer.engine import ProjectAnalyzer
-from ..config.loader import ConfigLoader
+from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.config.loader import ConfigLoader
 
 
 def show_quick_stats(path: str):

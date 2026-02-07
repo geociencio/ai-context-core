@@ -1,7 +1,7 @@
 """Maintenance commands for the CLI (doctor, fix, graph, compare, scaffold, roadmap)."""
 
 import click
-from ai_context_core.commands import doctor, fix, graph, compare, scaffold, roadmap
+from . import doctor, fix, graph, compare, scaffold, roadmap
 
 
 @click.group(name="maintenance")

@@ -5,8 +5,8 @@ import os
 import sys
 import click
 from typing import Optional
-from ..analyzer.engine import ProjectAnalyzer
-from ..config.loader import ConfigLoader
+from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.config.loader import ConfigLoader
 
 
 def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool):

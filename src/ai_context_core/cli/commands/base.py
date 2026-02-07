@@ -1,7 +1,7 @@
 """Base commands for the CLI (init, stats, clean, serve, profiles)."""
 
 import click
-from ai_context_core.commands import init, stats, clean, serve
+from . import init, stats, clean, serve
 from ai_context_core.config.loader import list_profiles
 
 

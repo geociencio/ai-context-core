@@ -13,7 +13,7 @@ except ImportError:
     sys.exit("Rich is required for interactive mode. Please install it.")
 
 
-from ai_context_core.commands import analyze
+from .commands import analyze
 
 console = Console()
 
@@ -131,8 +131,7 @@ def run_qgis_flow():
     # To be implemented fully when python API is exposed.
     console.print("[italic]Launching QGIS compliance check...[/italic]")
     try:
-        # Dynamic import to avoid circular issues if any
-        from ai_context_core.commands import qgis
+        from .commands import qgis
 
         qgis.check_compliance(path, 70.0)  # Default threshold
     except ImportError:

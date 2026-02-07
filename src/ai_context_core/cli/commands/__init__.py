@@ -4,7 +4,7 @@ from .base import init_cmd, stats_cmd, clean_cmd, serve_cmd, profiles_cmd
 from .analysis import analyze_cmd, audit_cmd, inspect_cmd
 from .reports import patterns_cmd, security_cmd, help_me_cmd
 from .specialized import deps_cmd, git_cmd, qgis_cmd
-from .interactive import interactive_cmd
+from ..interactive import interactive_cmd
 from .workflows import full_scan_cmd
 from .maintenance import (
     doctor_cmd,

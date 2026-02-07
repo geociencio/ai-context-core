@@ -2,9 +2,9 @@
 
 import pathlib
 import click
-from ..analyzer.engine import ProjectAnalyzer
-from ..analyzer.reporting import generate_dependency_diagram
-from ..config.loader import ConfigLoader
+from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.analyzer.reporting import generate_dependency_diagram
+from ai_context_core.config.loader import ConfigLoader
 
 
 def export_graph(path: str, output: str = "ARCHITECTURE.mmd"):

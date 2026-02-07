@@ -2,7 +2,7 @@
 
 import click
 
-from .cli_groups import ALL_CMDS
+from .commands import ALL_CMDS
 
 
 @click.group()

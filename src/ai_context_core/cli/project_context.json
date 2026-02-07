@@ -1,0 +1,2704 @@
+{
+  "project_name": "cli",
+  "metrics": {
+    "total_physical_lines": 1566,
+    "total_lines_code": 1139,
+    "total_functions": 79,
+    "total_classes": 7,
+    "average_complexity": 6.88,
+    "quality_score": 89.8,
+    "docstring_coverage": 100.0,
+    "avg_maintenance_index": 45.29,
+    "test_files_count": 0
+  },
+  "complexity": {
+    "total_modules": 25,
+    "total_lines": 1139,
+    "total_physical_lines": 1566,
+    "total_functions": 79,
+    "total_classes": 7,
+    "average_complexity": 6.88,
+    "avg_maintenance_index": 45.29,
+    "most_complex_modules": [
+      [
+        "commands/doctor.py",
+        24
+      ],
+      [
+        "commands/fix.py",
+        17
+      ],
+      [
+        "interactive.py",
+        16
+      ],
+      [
+        "commands/compare.py",
+        14
+      ],
+      [
+        "commands/report.py",
+        13
+      ],
+      [
+        "commands/deps.py",
+        11
+      ],
+      [
+        "commands/analyze.py",
+        9
+      ],
+      [
+        "commands/workflows.py",
+        7
+      ],
+      [
+        "commands/init.py",
+        7
+      ],
+      [
+        "commands/roadmap.py",
+        7
+      ]
+    ]
+  },
+  "modules": [
+    {
+      "path": "commands/serve.py",
+      "lines": 22,
+      "sloc": 17,
+      "file_size_kb": 0.6962890625,
+      "complexity": 4,
+      "imports": [
+        "http.server",
+        "socketserver",
+        "webbrowser",
+        "click"
+      ],
+      "classes": [],
+      "functions": [
+        "start_server(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "start_server": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 28,
+        "length": 35,
+        "volume": 140,
+        "difficulty": 2.58,
+        "effort": 361.67
+      },
+      "antipatterns": [],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 21,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 57.59,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 3
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/specialized.py",
+      "lines": 31,
+      "sloc": 20,
+      "file_size_kb": 1.119140625,
+      "complexity": 4,
+      "imports": [
+        "click",
+        "deps",
+        "git",
+        "qgis"
+      ],
+      "classes": [],
+      "functions": [
+        "deps_cmd(4 args)",
+        "git_cmd(2 args)",
+        "qgis_cmd(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "deps_cmd": true,
+          "git_cmd": true,
+          "qgis_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 3,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 34,
+        "length": 70,
+        "volume": 350,
+        "difficulty": 4.27,
+        "effort": 1493.33
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 30",
+          "line": 21,
+          "value": 30
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 53.27,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 7
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/stats.py",
+      "lines": 49,
+      "sloc": 37,
+      "file_size_kb": 1.806640625,
+      "complexity": 3,
+      "imports": [
+        "pathlib",
+        "click",
+        "rich.console.Console",
+        "rich.table.Table",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "show_quick_stats(1 args)",
+        "_show_complex_modules(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "show_quick_stats": true,
+          "_show_complex_modules": false
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 2,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 60,
+        "length": 114,
+        "volume": 570,
+        "difficulty": 2.89,
+        "effort": 1650.0
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 46,
+          "value": 5
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 46.09,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 11
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/workflows.py",
+      "lines": 69,
+      "sloc": 46,
+      "file_size_kb": 2.662109375,
+      "complexity": 7,
+      "imports": [
+        "click",
+        "sys",
+        "pathlib.Path",
+        "analyze",
+        "qgis",
+        "ai_context_core.analyzer.gis_utils"
+      ],
+      "classes": [],
+      "functions": [
+        "full_scan_cmd(3 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "full_scan_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 56,
+        "length": 102,
+        "volume": 510,
+        "difficulty": 3.65,
+        "effort": 1863.46
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 80.0",
+          "line": 12,
+          "value": 80.0
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 70.0",
+          "line": 62,
+          "value": 70.0
+        }
+      ],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 29,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 45,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 63,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 43.83,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 19
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "interactive.py",
+      "lines": 140,
+      "sloc": 90,
+      "file_size_kb": 4.9111328125,
+      "complexity": 16,
+      "imports": [
+        "click",
+        "sys",
+        "rich.console.Console",
+        "rich.prompt.Prompt",
+        "rich.prompt.FloatPrompt",
+        "rich.prompt.Confirm",
+        "rich.panel.Panel",
+        "rich.text.Text",
+        "commands.analyze",
+        "commands.qgis"
+      ],
+      "classes": [],
+      "functions": [
+        "interactive_cmd",
+        "show_welcome",
+        "main_menu",
+        "run_analyze_flow",
+        "run_audit_flow",
+        "run_patterns_flow",
+        "run_qgis_flow"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "interactive_cmd": true,
+          "show_welcome": true,
+          "main_menu": true,
+          "run_analyze_flow": true,
+          "run_audit_flow": true,
+          "run_patterns_flow": true,
+          "run_qgis_flow": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 7,
+        "typed_functions": 1,
+        "coverage": 14.285714285714285
+      },
+      "halstead": {
+        "vocabulary": 108,
+        "length": 208,
+        "volume": 1248,
+        "difficulty": 6.27,
+        "effort": 7827.8
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 80.0",
+          "line": 89,
+          "value": 80.0
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 70.0",
+          "line": 136,
+          "value": 70.0
+        }
+      ],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 98,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 139,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 81,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 33.54,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 33
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/git.py",
+      "lines": 48,
+      "sloc": 37,
+      "file_size_kb": 1.537109375,
+      "complexity": 5,
+      "imports": [
+        "pathlib",
+        "sys",
+        "click",
+        "rich.console.Console",
+        "rich.table.Table",
+        "ai_context_core.analyzer.git_analysis"
+      ],
+      "classes": [],
+      "functions": [
+        "show_git_evolution(2 args)",
+        "_show_hotspots(2 args)",
+        "_show_churn(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "show_git_evolution": true,
+          "_show_hotspots": false,
+          "_show_churn": false
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 3,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 52,
+        "length": 99,
+        "volume": 495,
+        "difficulty": 3.71,
+        "effort": 1835.62
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 10",
+          "line": 27,
+          "value": 10
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 46.25,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 9
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/graph.py",
+      "lines": 37,
+      "sloc": 24,
+      "file_size_kb": 1.3359375,
+      "complexity": 2,
+      "imports": [
+        "pathlib",
+        "click",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.analyzer.reporting.generate_dependency_diagram",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "export_graph(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "export_graph": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 31,
+        "length": 48,
+        "volume": 192,
+        "difficulty": 3.26,
+        "effort": 625.78
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 53.64,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 4
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/init.py",
+      "lines": 43,
+      "sloc": 30,
+      "file_size_kb": 1.41796875,
+      "complexity": 7,
+      "imports": [
+        "pathlib",
+        "shutil",
+        "click",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "initialize_project(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "initialize_project": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 46,
+        "length": 94,
+        "volume": 470,
+        "difficulty": 6.64,
+        "effort": 3121.28
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 48.13,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 6
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/inspect.py",
+      "lines": 35,
+      "sloc": 27,
+      "file_size_kb": 1.162109375,
+      "complexity": 4,
+      "imports": [
+        "pathlib",
+        "sys",
+        "click",
+        "ai_context_core.analyzer.engine_components.worker.AnalysisWorker",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "inspect_file(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "inspect_file": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 39,
+        "length": 75,
+        "volume": 375,
+        "difficulty": 4.93,
+        "effort": 1847.43
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 29,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 35,
+          "value": 40
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 50.21,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 8
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/maintenance.py",
+      "lines": 58,
+      "sloc": 35,
+      "file_size_kb": 1.75390625,
+      "complexity": 1,
+      "imports": [
+        "click",
+        "doctor",
+        "fix",
+        "graph",
+        "compare",
+        "scaffold",
+        "roadmap"
+      ],
+      "classes": [],
+      "functions": [
+        "maintenance_group",
+        "doctor_cmd(1 args)",
+        "fix_cmd(2 args)",
+        "graph_cmd(2 args)",
+        "compare_cmd(2 args)",
+        "scaffold_cmd(2 args)",
+        "roadmap_cmd(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "maintenance_group": true,
+          "doctor_cmd": true,
+          "fix_cmd": true,
+          "graph_cmd": true,
+          "compare_cmd": true,
+          "scaffold_cmd": true,
+          "roadmap_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 7,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 37,
+        "length": 90,
+        "volume": 450,
+        "difficulty": 1.15,
+        "effort": 518.75
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 47.61,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 7
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/qgis.py",
+      "lines": 77,
+      "sloc": 54,
+      "file_size_kb": 2.87109375,
+      "complexity": 5,
+      "imports": [
+        "pathlib",
+        "click",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "validate_qgis(1 args)",
+        "_show_metadata_validation(1 args)",
+        "_show_i18n_stats(1 args)",
+        "_show_qt_transition(1 args)",
+        "check_compliance(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "validate_qgis": true,
+          "_show_metadata_validation": false,
+          "_show_i18n_stats": false,
+          "_show_qt_transition": false,
+          "check_compliance": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 5,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 76,
+        "length": 160,
+        "volume": 960,
+        "difficulty": 7.36,
+        "effort": 7060.87
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 100",
+          "line": 51,
+          "value": 100
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 70",
+          "line": 30,
+          "value": 70
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 40.66,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 14
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/report.py",
+      "lines": 60,
+      "sloc": 48,
+      "file_size_kb": 2.0498046875,
+      "complexity": 13,
+      "imports": [
+        "pathlib",
+        "click",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "show_specific(2 args)",
+        "_show_patterns(1 args)",
+        "_show_security(1 args)",
+        "_show_recommendations(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "show_specific": true,
+          "_show_patterns": false,
+          "_show_security": false,
+          "_show_recommendations": false
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 4,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 67,
+        "length": 155,
+        "volume": 930,
+        "difficulty": 5.36,
+        "effort": 4987.5
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 40.79,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 9
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/reports.py",
+      "lines": 25,
+      "sloc": 14,
+      "file_size_kb": 0.716796875,
+      "complexity": 1,
+      "imports": [
+        "click",
+        "report"
+      ],
+      "classes": [],
+      "functions": [
+        "patterns_cmd(1 args)",
+        "security_cmd(1 args)",
+        "help_me_cmd(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "patterns_cmd": true,
+          "security_cmd": true,
+          "help_me_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 3,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 16,
+        "length": 37,
+        "volume": 148,
+        "difficulty": 1.13,
+        "effort": 167.73
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 59.67,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 3
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/roadmap.py",
+      "lines": 84,
+      "sloc": 61,
+      "file_size_kb": 2.435546875,
+      "complexity": 7,
+      "imports": [
+        "pathlib",
+        "click",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader",
+        "rich.console.Console",
+        "rich.table.Table"
+      ],
+      "classes": [
+        "Console",
+        "Table"
+      ],
+      "functions": [
+        "print(1 args)",
+        "__init__(1 args)",
+        "add_column(1 args)",
+        "add_row(1 args)",
+        "run_roadmap(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {
+          "Console": false,
+          "Table": false
+        },
+        "functions": {
+          "print": false,
+          "__init__": false,
+          "add_column": false,
+          "add_row": false,
+          "run_roadmap": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 5,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 60,
+        "length": 128,
+        "volume": 640,
+        "difficulty": 6.39,
+        "effort": 4088.89
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 75,
+          "value": 15
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 40.46,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 6
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/scaffold.py",
+      "lines": 76,
+      "sloc": 67,
+      "file_size_kb": 1.890625,
+      "complexity": 5,
+      "imports": [
+        "pathlib",
+        "click"
+      ],
+      "classes": [],
+      "functions": [
+        "run_scaffold(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "run_scaffold": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 32,
+        "length": 52,
+        "volume": 260,
+        "difficulty": 4.17,
+        "effort": 1083.33
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 42.58,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 8
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "__init__.py",
+      "lines": 45,
+      "sloc": 30,
+      "file_size_kb": 1.8505859375,
+      "complexity": 3,
+      "imports": [
+        "click",
+        "commands.ALL_CMDS"
+      ],
+      "classes": [],
+      "functions": [
+        "cli"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "cli": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 53,
+        "length": 96,
+        "volume": 480,
+        "difficulty": 3.76,
+        "effort": 1802.45
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 24,
+          "value": 5
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 7",
+          "line": 25,
+          "value": 7
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 26,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 6",
+          "line": 27,
+          "value": 6
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 8",
+          "line": 28,
+          "value": 8
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 9",
+          "line": 29,
+          "value": 9
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 11",
+          "line": 30,
+          "value": 11
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 12",
+          "line": 31,
+          "value": 12
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 13",
+          "line": 33,
+          "value": 13
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 34,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 14",
+          "line": 35,
+          "value": 14
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 15",
+          "line": 36,
+          "value": 15
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 16",
+          "line": 37,
+          "value": 16
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 17",
+          "line": 38,
+          "value": 17
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 18",
+          "line": 39,
+          "value": 18
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 19",
+          "line": 40,
+          "value": 19
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 20",
+          "line": 41,
+          "value": 20
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 21",
+          "line": 42,
+          "value": 21
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 48.6,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 0
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/__init__.py",
+      "lines": 42,
+      "sloc": 37,
+      "file_size_kb": 1.0732421875,
+      "complexity": 1,
+      "imports": [
+        "base.init_cmd",
+        "base.stats_cmd",
+        "base.clean_cmd",
+        "base.serve_cmd",
+        "base.profiles_cmd",
+        "analysis.analyze_cmd",
+        "analysis.audit_cmd",
+        "analysis.inspect_cmd",
+        "reports.patterns_cmd",
+        "reports.security_cmd",
+        "reports.help_me_cmd",
+        "specialized.deps_cmd",
+        "specialized.git_cmd",
+        "specialized.qgis_cmd",
+        "interactive.interactive_cmd",
+        "workflows.full_scan_cmd",
+        "maintenance.doctor_cmd",
+        "maintenance.fix_cmd",
+        "maintenance.graph_cmd",
+        "maintenance.compare_cmd",
+        "maintenance.scaffold_cmd",
+        "maintenance.roadmap_cmd"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {}
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 0,
+        "typed_functions": 0,
+        "coverage": 100.0
+      },
+      "halstead": {
+        "vocabulary": 32,
+        "length": 44,
+        "volume": 220,
+        "difficulty": 0.61,
+        "effort": 134.84
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 49.26,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 0
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/analysis.py",
+      "lines": 37,
+      "sloc": 26,
+      "file_size_kb": 1.154296875,
+      "complexity": 1,
+      "imports": [
+        "click",
+        "typing.Optional",
+        "analyze",
+        "inspect"
+      ],
+      "classes": [],
+      "functions": [
+        "analyze_cmd(4 args)",
+        "audit_cmd(2 args)",
+        "inspect_cmd(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "analyze_cmd": true,
+          "audit_cmd": true,
+          "inspect_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 3,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 39,
+        "length": 65,
+        "volume": 325,
+        "difficulty": 0.82,
+        "effort": 265.13
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 70.0",
+          "line": 26,
+          "value": 70.0
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 51.41,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 5
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/analyze.py",
+      "lines": 79,
+      "sloc": 66,
+      "file_size_kb": 2.482421875,
+      "complexity": 9,
+      "imports": [
+        "pathlib",
+        "os",
+        "sys",
+        "click",
+        "typing.Optional",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader",
+        "yaml",
+        "json"
+      ],
+      "classes": [],
+      "functions": [
+        "run_analysis(4 args)",
+        "run_audit(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "run_analysis": true,
+          "run_audit": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 2,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 78,
+        "length": 157,
+        "volume": 942,
+        "difficulty": 10.22,
+        "effort": 9627.79
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 47,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 40",
+          "line": 54,
+          "value": 40
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 42,
+          "value": 2
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 80",
+          "line": 49,
+          "value": 80
+        }
+      ],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 56,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 23,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 38.27,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 15
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/base.py",
+      "lines": 45,
+      "sloc": 28,
+      "file_size_kb": 1.4140625,
+      "complexity": 2,
+      "imports": [
+        "click",
+        "init",
+        "stats",
+        "clean",
+        "serve",
+        "ai_context_core.config.loader.list_profiles"
+      ],
+      "classes": [],
+      "functions": [
+        "init_cmd(2 args)",
+        "stats_cmd(1 args)",
+        "clean_cmd(2 args)",
+        "serve_cmd(2 args)",
+        "profiles_cmd"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "init_cmd": true,
+          "stats_cmd": true,
+          "clean_cmd": true,
+          "serve_cmd": true,
+          "profiles_cmd": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": true,
+        "type": "click_cli"
+      },
+      "has_main": true,
+      "type_hints": {
+        "total_functions": 5,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 40,
+        "length": 76,
+        "volume": 380,
+        "difficulty": 1.84,
+        "effort": 700.0
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 8000",
+          "line": 34,
+          "value": 8000
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 50.1,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 7
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/clean.py",
+      "lines": 39,
+      "sloc": 30,
+      "file_size_kb": 1.11328125,
+      "complexity": 6,
+      "imports": [
+        "pathlib",
+        "click"
+      ],
+      "classes": [],
+      "functions": [
+        "clean_artifacts(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "clean_artifacts": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 1,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 37,
+        "length": 68,
+        "volume": 340,
+        "difficulty": 5.23,
+        "effort": 1776.77
+      },
+      "antipatterns": [],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 49.25,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 6
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/compare.py",
+      "lines": 95,
+      "sloc": 68,
+      "file_size_kb": 2.7822265625,
+      "complexity": 14,
+      "imports": [
+        "json",
+        "pathlib",
+        "click",
+        "typing.Dict",
+        "typing.Any",
+        "rich.console.Console",
+        "rich.table.Table"
+      ],
+      "classes": [
+        "Console",
+        "Table"
+      ],
+      "functions": [
+        "print(1 args)",
+        "__init__(1 args)",
+        "add_column(1 args)",
+        "add_row(1 args)",
+        "run_compare(2 args)",
+        "_get_nested(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {
+          "Console": false,
+          "Table": false
+        },
+        "functions": {
+          "print": false,
+          "__init__": false,
+          "add_column": false,
+          "add_row": false,
+          "run_compare": true,
+          "_get_nested": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 6,
+        "typed_functions": 1,
+        "coverage": 16.666666666666664
+      },
+      "halstead": {
+        "vocabulary": 93,
+        "length": 197,
+        "volume": 1182,
+        "difficulty": 12.22,
+        "effort": 14446.67
+      },
+      "antipatterns": [],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 43,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 36.63,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 12
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/deps.py",
+      "lines": 77,
+      "sloc": 61,
+      "file_size_kb": 2.48828125,
+      "complexity": 11,
+      "imports": [
+        "pathlib",
+        "click",
+        "rich.console.Console",
+        "rich.table.Table",
+        "ai_context_core.analyzer.engine.ProjectAnalyzer",
+        "ai_context_core.config.loader.ConfigLoader"
+      ],
+      "classes": [],
+      "functions": [
+        "show_dependencies(4 args)",
+        "_show_unused(1 args)",
+        "_show_cycles(1 args)",
+        "_show_metrics(2 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "show_dependencies": true,
+          "_show_unused": false,
+          "_show_cycles": false,
+          "_show_metrics": false
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 4,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 86,
+        "length": 168,
+        "volume": 1008,
+        "difficulty": 3.71,
+        "effort": 3736.98
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 5",
+          "line": 74,
+          "value": 5
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 38.55,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 10
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/doctor.py",
+      "lines": 161,
+      "sloc": 119,
+      "file_size_kb": 4.830078125,
+      "complexity": 24,
+      "imports": [
+        "pathlib",
+        "sys",
+        "click",
+        "typing.Tuple",
+        "rich.console.Console",
+        "rich.table.Table",
+        "rich.panel.Panel",
+        "tomllib",
+        "tomli"
+      ],
+      "classes": [
+        "Console",
+        "Table",
+        "Panel"
+      ],
+      "functions": [
+        "print(1 args)",
+        "__init__(1 args)",
+        "add_column(1 args)",
+        "add_row(1 args)",
+        "__init__(1 args)",
+        "run_doctor(1 args)",
+        "check_versions(1 args)",
+        "check_configs(1 args)",
+        "check_env",
+        "check_structure(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {
+          "Console": false,
+          "Table": false,
+          "Panel": false
+        },
+        "functions": {
+          "print": false,
+          "__init__": false,
+          "add_column": false,
+          "add_row": false,
+          "run_doctor": true,
+          "check_versions": true,
+          "check_configs": true,
+          "check_env": true,
+          "check_structure": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 10,
+        "typed_functions": 4,
+        "coverage": 40.0
+      },
+      "halstead": {
+        "vocabulary": 119,
+        "length": 284,
+        "volume": 1704,
+        "difficulty": 15.0,
+        "effort": 25560.0
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 134,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 9",
+          "line": 134,
+          "value": 9
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 89,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 11",
+          "line": 89,
+          "value": 11
+        }
+      ],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 105,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [
+        "rich.panel.Panel"
+      ],
+      "maintenance_index": 28.87,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 21
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    },
+    {
+      "path": "commands/fix.py",
+      "lines": 92,
+      "sloc": 67,
+      "file_size_kb": 2.9794921875,
+      "complexity": 17,
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "click",
+        "sys",
+        "tomllib",
+        "tomli"
+      ],
+      "classes": [],
+      "functions": [
+        "run_fix(2 args)",
+        "synchronize_versions(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {},
+        "functions": {
+          "run_fix": true,
+          "synchronize_versions": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 2,
+        "typed_functions": 0,
+        "coverage": 0.0
+      },
+      "halstead": {
+        "vocabulary": 76,
+        "length": 161,
+        "volume": 966,
+        "difficulty": 12.0,
+        "effort": 11592.0
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 3",
+          "line": 58,
+          "value": 3
+        },
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 11",
+          "line": 58,
+          "value": 11
+        }
+      ],
+      "ast_security": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 70,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "patterns": {},
+      "unused_imports": [],
+      "maintenance_index": 36.98,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 12
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
+    }
+  ],
+  "dependencies": {
+    "internal": [
+      "commands.ALL_CMDS",
+      "commands.analyze",
+      "commands.qgis",
+      "interactive.interactive_cmd"
+    ],
+    "external": [
+      "http.server",
+      "inspect",
+      "json",
+      "os",
+      "pathlib",
+      "pathlib.Path",
+      "shutil",
+      "socketserver",
+      "subprocess",
+      "sys",
+      "tomllib",
+      "typing.Any",
+      "typing.Dict",
+      "typing.Optional",
+      "typing.Tuple",
+      "webbrowser"
+    ],
+    "third_party": [
+      "ai_context_core.analyzer.engine.ProjectAnalyzer",
+      "ai_context_core.analyzer.engine_components.worker.AnalysisWorker",
+      "ai_context_core.analyzer.gis_utils",
+      "ai_context_core.analyzer.git_analysis",
+      "ai_context_core.analyzer.reporting.generate_dependency_diagram",
+      "ai_context_core.config.loader.ConfigLoader",
+      "ai_context_core.config.loader.list_profiles",
+      "analysis.analyze_cmd",
+      "analysis.audit_cmd",
+      "analysis.inspect_cmd",
+      "analyze",
+      "base.clean_cmd",
+      "base.init_cmd",
+      "base.profiles_cmd",
+      "base.serve_cmd",
+      "base.stats_cmd",
+      "clean",
+      "click",
+      "compare",
+      "deps",
+      "doctor",
+      "fix",
+      "git",
+      "graph",
+      "init",
+      "maintenance.compare_cmd",
+      "maintenance.doctor_cmd",
+      "maintenance.fix_cmd",
+      "maintenance.graph_cmd",
+      "maintenance.roadmap_cmd",
+      "maintenance.scaffold_cmd",
+      "qgis",
+      "report",
+      "reports.help_me_cmd",
+      "reports.patterns_cmd",
+      "reports.security_cmd",
+      "rich.console.Console",
+      "rich.panel.Panel",
+      "rich.prompt.Confirm",
+      "rich.prompt.FloatPrompt",
+      "rich.prompt.Prompt",
+      "rich.table.Table",
+      "rich.text.Text",
+      "roadmap",
+      "scaffold",
+      "serve",
+      "specialized.deps_cmd",
+      "specialized.git_cmd",
+      "specialized.qgis_cmd",
+      "stats",
+      "tomli",
+      "workflows.full_scan_cmd",
+      "yaml"
+    ],
+    "files": {},
+    "import_graph": {
+      "commands/serve.py": [],
+      "commands/specialized.py": [],
+      "commands/stats.py": [],
+      "commands/workflows.py": [],
+      "interactive.py": [
+        "commands/qgis.py",
+        "commands/analyze.py"
+      ],
+      "commands/git.py": [],
+      "commands/graph.py": [],
+      "commands/init.py": [],
+      "commands/inspect.py": [],
+      "commands/maintenance.py": [],
+      "commands/qgis.py": [],
+      "commands/report.py": [],
+      "commands/reports.py": [],
+      "commands/roadmap.py": [],
+      "commands/scaffold.py": [],
+      "__init__.py": [
+        "commands/__init__.py"
+      ],
+      "commands/__init__.py": [
+        "interactive.py"
+      ],
+      "commands/analysis.py": [],
+      "commands/analyze.py": [],
+      "commands/base.py": [],
+      "commands/clean.py": [],
+      "commands/compare.py": [],
+      "commands/deps.py": [],
+      "commands/doctor.py": [],
+      "commands/fix.py": []
+    },
+    "circular_dependencies": [],
+    "graph_metrics": {
+      "nodes": 25,
+      "edges": 4,
+      "density": 0.006666666666666667,
+      "is_dag": true,
+      "weakly_connected_components": 21
+    },
+    "coupling_metrics": {
+      "commands/init.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/reports.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/doctor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "__init__.py": {
+        "fan_in": 0,
+        "fan_out": 1,
+        "cbo": 1
+      },
+      "commands/roadmap.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/compare.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/specialized.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/scaffold.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/git.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/analyze.py": {
+        "fan_in": 1,
+        "fan_out": 0,
+        "cbo": 1
+      },
+      "commands/deps.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/analysis.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/inspect.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/report.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/__init__.py": {
+        "fan_in": 1,
+        "fan_out": 1,
+        "cbo": 2
+      },
+      "commands/graph.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/maintenance.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/qgis.py": {
+        "fan_in": 1,
+        "fan_out": 0,
+        "cbo": 1
+      },
+      "commands/clean.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/fix.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/serve.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/workflows.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "commands/stats.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "interactive.py": {
+        "fan_in": 1,
+        "fan_out": 2,
+        "cbo": 3
+      }
+    },
+    "unused_imports": {
+      "commands/doctor.py": [
+        "rich.panel.Panel"
+      ]
+    }
+  },
+  "security": [
+    {
+      "module": "commands/serve.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 21,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "high"
+    },
+    {
+      "module": "commands/workflows.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 29,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 45,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 63,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 3,
+      "max_severity": "high"
+    },
+    {
+      "module": "interactive.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 98,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 139,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 81,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 3,
+      "max_severity": "high"
+    },
+    {
+      "module": "commands/analyze.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 56,
+          "description": "Too broad exception handler"
+        },
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 23,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 2,
+      "max_severity": "high"
+    },
+    {
+      "module": "commands/compare.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 43,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "high"
+    },
+    {
+      "module": "commands/doctor.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 105,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "high"
+    },
+    {
+      "module": "commands/fix.py",
+      "issues": [
+        {
+          "pattern": "except Exception:",
+          "severity": "low",
+          "line": 70,
+          "description": "Too broad exception handler"
+        }
+      ],
+      "total_issues": 1,
+      "max_severity": "high"
+    }
+  ],
+  "qgis_compliance": {},
+  "optimizations": [
+    {
+      "module": "interactive.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "Consider breaking down large logic",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "module": "commands/doctor.py",
+      "suggestions": [
+        {
+          "type": "complexity_refactoring",
+          "priority": "high",
+          "message": "Consider breaking down large logic",
+          "severity": "low"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "category": "Testing",
+      "priority": "Critical",
+      "message": "No test files detected. Initialize a test suite immediately."
+    },
+    {
+      "category": "Type Hints",
+      "priority": "medium",
+      "message": "Improve type hint coverage (current: 0%)"
+    }
+  ],
+  "patterns": {},
+  "git": {
+    "hotspots": [
+      {
+        "path": "src/ai_context_core/analyzer/engine.py",
+        "commits": 26
+      },
+      {
+        "path": "src/ai_context_core/analyzer/fs_utils.py",
+        "commits": 24
+      },
+      {
+        "path": "src/ai_context_core/cli.py",
+        "commits": 21
+      },
+      {
+        "path": "src/ai_context_core/analyzer/issues.py",
+        "commits": 21
+      },
+      {
+        "path": "src/ai_context_core/analyzer/reporting.py",
+        "commits": 21
+      }
+    ],
+    "churn": {
+      "available": true,
+      "period_days": 30,
+      "added": 107317,
+      "deleted": 58071,
+      "total_churn": 165388,
+      "files_changed": 1182
+    },
+    "is_repo": true
+  },
+  "timestamp": 1770503767.7323117,
+  "structure": {
+    "tree": "./\n    __init__.py\n    interactive.py\n    commands/\n        __init__.py\n        analysis.py\n        analyze.py\n        base.py\n        clean.py\n        compare.py\n        deps.py\n        ... (+15 more)",
+    "modules_count": 25,
+    "file_types": {
+      ".py": 25
+    },
+    "size_stats": {
+      "total_files": 25,
+      "total_size_mb": 0.05,
+      "python_files": 25,
+      "python_size_mb": 0.05,
+      "avg_file_size_kb": 2.02,
+      "python_percentage": 100.0
+    }
+  },
+  "manual_notes": ""
+}

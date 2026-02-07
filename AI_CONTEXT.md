@@ -113,46 +113,46 @@ graph TD
     maintenance --> py
     workflows --> py
     classDef module fill:#f9f,stroke:#333,stroke-width:2px;
-    formatter
-    class formatter module;
-    base
-    class base module;
-    ai_recommendations
-    class ai_recommendations module;
+    skill_sync
+    class skill_sync module;
+    init
+    class init module;
+    workflows
+    class workflows module;
+    ai_context_generator
+    class ai_context_generator module;
+    check_complexity
+    class check_complexity module;
+    aggregator
+    class aggregator module;
     init
     class init module;
     analysis
     class analysis module;
-    maintenance
-    class maintenance module;
-    audit_quality
-    class audit_quality module;
     init
     class init module;
-    base
-    class base module;
-    aggregator
-    class aggregator module;
-    check_complexity
-    class check_complexity module;
-    interactive
-    class interactive module;
-    workflows
-    class workflows module;
-    singleton_rules
-    class singleton_rules module;
-    check_docs
-    class check_docs module;
-    init
-    class init module;
-    qgis
-    class qgis module;
     dead_code
     class dead_code module;
-    skill_sync
-    class skill_sync module;
-    ai_context_generator
-    class ai_context_generator module;
+    singleton_rules
+    class singleton_rules module;
+    base
+    class base module;
+    qgis
+    class qgis module;
+    interactive
+    class interactive module;
+    maintenance
+    class maintenance module;
+    base
+    class base module;
+    formatter
+    class formatter module;
+    audit_quality
+    class audit_quality module;
+    ai_recommendations
+    class ai_recommendations module;
+    check_docs
+    class check_docs module;
 ```
 
 ## 💡 OPTIMIZATION RECOMMENDATIONS
@@ -170,12 +170,12 @@ graph TD
 ## 🔄 GIT AND EVOLUTION
 ### Top Hotspots:
 - `src/ai_context_core/analyzer/engine.py` (26 commits)
-- `src/ai_context_core/analyzer/fs_utils.py` (23 commits)
+- `src/ai_context_core/analyzer/fs_utils.py` (24 commits)
+- `src/ai_context_core/cli.py` (21 commits)
 - `src/ai_context_core/analyzer/issues.py` (21 commits)
 - `src/ai_context_core/analyzer/reporting.py` (21 commits)
-- `src/ai_context_core/cli.py` (20 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 147559
+- Total lines changed: 165379
 
 ## 🔑 PROJECT KEYWORDS
 - **Technologies**: .py, .md, .json, .yaml, .yml, .toml, .in, .zip

@@ -1,7 +1,7 @@
 """Specialized commands for the CLI (deps, git, qgis)."""
 
 import click
-from ai_context_core.commands import deps, git, qgis
+from . import deps, git, qgis
 
 
 @click.command(name="deps")
