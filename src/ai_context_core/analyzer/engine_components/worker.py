@@ -6,7 +6,8 @@ import time
 import concurrent.futures
 import pathlib
 from typing import Dict, Any, List
-from .. import ast_utils, issues, patterns, metrics
+from .. import ast_utils, metrics
+from ..registry import registry
 from ..constants import PARALLEL_MIN_FILES
 
 logger = logging.getLogger(__name__)
@@ -119,7 +120,9 @@ class AnalysisWorker:
 
     def analyze_single(self, file_path: pathlib.Path) -> Dict[str, Any]:
         """Deep analysis of a single Python module."""
-        from .. import fs_utils, antipattern_orchestrator
+        from .. import fs_utils
+        # Ensure detectors are registered
+        from .. import antipatterns, issues, patterns, ast_qgis  # noqa: F401
 
         try:
             content = fs_utils.read_file_fast(file_path)
@@ -146,16 +149,17 @@ class AnalysisWorker:
                 "has_main": entry_data["is_entry_point"],
                 "type_hints": ast_utils.calculate_type_hint_coverage(tree),
                 "halstead": halstead,
-                "antipatterns": antipattern_orchestrator.detect_all(tree),
-                "ast_security": issues.detect(tree),
-                "patterns": patterns.detect_patterns(tree),
-                "unused_imports": ast_utils.detect_unused_imports(tree),
                 "maintenance_index": metrics.calculate_maintenance_index(
                     halstead["volume"], complexity, sloc
                 ),
-                "qgis_compliance": ast_utils.check_qgis_compliance(tree),
                 "syntax_error": False,
             }
+
+            # Inject dynamic detectors from registry
+            for name, detector in registry.detectors.items():
+                res[name] = detector(tree)
+
+            return res
         except Exception as e:
             print(f"DEBUG: analyze_single FAILED for {file_path}: {e}")
             return {

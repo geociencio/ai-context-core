@@ -19,6 +19,7 @@ from .issues_components import (  # noqa: F401
     find_optimizations,
     find_technical_debt,
 )
+from .registry import register_detector
 
 
 class IssueDetector:
@@ -71,6 +72,7 @@ def find_security_issues(
     return find_secrets(modules_data, project_path)
 
 
+@register_detector("ast_security")
 def detect(tree: ast.AST) -> List[Dict[str, Any]]:
     """Detects security issues in the AST.
 

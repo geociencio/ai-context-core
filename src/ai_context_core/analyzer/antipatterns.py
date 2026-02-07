@@ -11,6 +11,18 @@ from .antipattern_detectors.god_object import GodObjectDetector
 from .antipattern_detectors.spaghetti_code import SpaghettiCodeDetector
 from .antipattern_detectors.magic_number import MagicNumberDetector
 from .antipattern_detectors.dead_code import DeadCodeDetector
+from .registry import register_detector
+
+
+@register_detector("antipatterns")
+def detect_all(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Run all antipattern detectors on the AST."""
+    return (
+        detect_god_object(tree)
+        + detect_spaghetti_code(tree)
+        + detect_magic_numbers(tree)
+        + detect_dead_code(tree)
+    )
 
 
 def detect_god_object(

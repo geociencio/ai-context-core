@@ -15,6 +15,15 @@ from .ast_visitors_components import (
     detect_unused_imports,
 )
 
+from .registry import register_detector
+
+
+@register_detector("unused_imports")
+def detect_unused_imports_registered(tree):
+    """Registered unused imports detector."""
+    return detect_unused_imports(tree)
+
+
 __all__ = [
     "FunctionVisitor",
     "extract_functions",
@@ -25,4 +34,5 @@ __all__ = [
     "ImportVisitor",
     "extract_imports",
     "detect_unused_imports",
+    "detect_unused_imports_registered",
 ]

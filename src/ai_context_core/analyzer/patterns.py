@@ -16,10 +16,12 @@ from .patterns_components import (  # noqa: F401
     detect_strategy,
     detect_decorator,
 )
+from .registry import register_detector
 
 # Re-export individual detectors for backward compatibility
 
 
+@register_detector("patterns")
 def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
     """Analyzes an AST to detect common design patterns using a unified visitor.
 
