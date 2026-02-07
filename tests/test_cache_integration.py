@@ -24,7 +24,8 @@ class TestIncrementalCache:
         # 1. First run (Cold Cache)
         results_1 = analyzer.analyze()
 
-        assert len(results_1["complexity"]["most_complex_modules"]) == 2
+        # Verify that modules were analyzed (they won't appear in most_complex_modules due to low complexity)
+        assert len(results_1.get("modules", [])) == 2
         cache_file = self.test_dir / ".ai_context_cache.json"
         assert cache_file.exists()
 

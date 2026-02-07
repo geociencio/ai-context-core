@@ -33,14 +33,15 @@ def detect_singleton(tree: ast.AST):
         tree: The AST tree to analyze.
 
     Returns:
-        List of detected Singleton pattern instances.
+        List of detected Singleton pattern instances with confidence >= 50.
     """
     detector = SingletonDetector()
     results = []
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
             detector.visit(node)
-            if detector.evidence:
+            # Only report patterns with confidence >= 50
+            if detector.evidence and detector.confidence >= 50:
                 results.append({
                     "class": node.name,
                     "evidence": detector.evidence,
