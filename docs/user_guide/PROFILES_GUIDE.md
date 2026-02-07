@@ -12,33 +12,30 @@ User-defined profiles can be created in your project's `.ai-context/profiles` di
 A profile is a YAML file with three main sections:
 
 ### 1. `quality_weights`
-Defines how much each metric contributes to the overall "Quality Score" (0-100) of a file. The score is calculated by summing the weights of all met conditions.
+Defines how much each metric contributes to the overall "Quality Score" (0-100) of a file.
 
-Here are the available metrics and their default weights:
+| Metric | Weight | Condition |
+| :--- | :--- | :--- |
+| `no_syntax_error` | 25 | The file has no critical syntax errors. |
+| `complexity_low` | 20 | Cyclomatic complexity is below the low threshold. |
+| `docstrings` | 15 | Modules, classes, and functions have Google-style docstrings. |
+| `size_small` | 15 | Physical line count is below the small threshold. |
+| `complexity_medium` | 10 | Cyclomatic complexity is within the medium range. |
+| `size_medium` | 10 | Physical line count is within the medium range. |
+| `has_main` | 5 | The file includes an execution entry point (`if __name__ == "__main__":`). |
+| `complexity_high` | -10 | Penalty for excessive cyclomatic complexity. |
 
-| Metric              | Default Weight | Description                                            |
-|---------------------|----------------|--------------------------------------------------------|
-| `docstrings`        | 30             | The file has a docstring.                              |
-| `complexity_low`    | 20             | The cyclomatic complexity is low.                      |
-| `size_small`        | 15             | The file size is small.                                |
-| `has_main`          | 5              | The file has a `if __name__ == "__main__":` block.     |
-| `no_syntax_error`   | 30             | The file has no syntax errors.                         |
-| `complexity_medium` | 10             | The cyclomatic complexity is medium.                   |
-| `complexity_high`   | -10            | The cyclomatic complexity is high.                     |
-| `size_medium`       | 10             | The file size is medium.                               |
+### 2. `quality_thresholds`
+Define the boundaries for metrics. These are configurable per profile to adapt to different project scales (e.g., microservices vs. large monoliths).
 
-### 2. `thresholds`
-Define the boundaries for metrics. What is "too complex" or "too large" depends on the project type.
+| Threshold | Default (TOML) | Description |
+| :--- | :--- | :--- |
+| **Complexity** | 10 (Warning), 15 (Error) | Cyclomatic complexity per module. |
+| **Maintainability** | 65 (Warning), 50 (Error) | Maintainability Index based on Halstead/Volume. |
+| **Lines (SLOC)** | 400 (Warning), 800 (Error)| Lines of code excluding empty/comments. |
 
-Here are the available thresholds and their default values:
-
-| Threshold           | Default Value | Description                                               |
-|---------------------|---------------|-----------------------------------------------------------|
-| `complexity_low`    | 5             | Cyclomatic complexity below this value is considered low.   |
-| `complexity_medium` | 15            | Cyclomatic complexity below this value is considered medium.|
-| `complexity_high`   | 25            | Cyclomatic complexity below this value is considered high.  |
-| `size_small`        | 200           | File size (in lines) below this value is considered small.|
-| `size_medium`       | 500           | File size (in lines) below this value is considered medium.|
+> [!NOTE]
+> When using `ai-ctx audit`, the tool will exit with code 1 if any module reaches the **Error** threshold.
 
 ### 3. `patterns`
 Enables or disables specific detection logic modules.
@@ -74,8 +71,23 @@ patterns:
     enabled: false
 ```
 
-3.  Use it via CLI:
-    ```bash
-    ai-ctx init --profile my-api-profile
+3.  **Active via TOML**:
+    In your `.ai-context/config.toml`, reference the profile or override values directly:
+    ```toml
+    [analysis]
+    profile = "my-api-profile"
     ```
-    The tool will automatically find your custom profile.
+
+## 🛠️ CLI & Profile Integration
+
+### Verifying Configuration (`doctor`)
+Use the `doctor` command to verify that your profile is loaded correctly and that there are no syntax errors in your TOML overrides.
+```bash
+ai-ctx doctor
+```
+
+### Profile-Driven Scaffolding
+The `scaffold` command uses weights and thresholds from the active profile to generate code that is "compliant by design". If your profile enforces a complexity limit of 10, the generated templates will be optimized for that constraint.
+
+### Automated Fixes (`fix`)
+The `fix` command can synchronize versions and metadata based on your profile's `project_metadata` settings, ensuring that your `__init__.py` and `pyproject.toml` are always in sync with the profile expectations.
