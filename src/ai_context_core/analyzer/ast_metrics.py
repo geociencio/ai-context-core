@@ -131,48 +131,21 @@ def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
     """Calculates basic Halstead complexity metrics.
 
-    Computes vocabulary, length, volume, difficulty, and effort.
-
     Args:
         tree: The AST to analyze.
 
     Returns:
         Dictionary of Halstead metrics.
     """
-    visitor = HalsteadVisitor()
-    visitor.visit(tree)
+    from .ast_metrics_components import calculate_halstead_metrics as _calc_halstead
 
-    n1 = len(visitor.operators)
-    n2 = len(visitor.operands)
-    N1 = sum(visitor.operators.values())
-    N2 = sum(visitor.operands.values())
-
-    h_vocabulary = n1 + n2
-    h_length = N1 + N2
-
-    if n1 > 0 and n2 > 0:
-        h_volume = h_length * (h_vocabulary.bit_length() - 1)
-        h_difficulty = (n1 / 2) * (N2 / n2)
-        h_effort = h_difficulty * h_volume
-    else:
-        h_volume = h_difficulty = h_effort = 0
-
-    return {
-        "vocabulary": h_vocabulary,
-        "length": h_length,
-        "volume": round(h_volume, 2),
-        "difficulty": round(h_difficulty, 2),
-        "effort": round(h_effort, 2),
-    }
+    return _calc_halstead(tree)
 
 
 def calculate_sloc(tree: ast.AST, content: str) -> int:
     """Calculates Source Lines of Code (SLOC).
 
-    Excludes:
-    - Blank lines
-    - Comment-only lines
-    - Docstrings (module, class, and function level)
+    Excludes blank lines, comments, and docstrings.
 
     Args:
         tree: The AST of the module.
@@ -181,69 +154,6 @@ def calculate_sloc(tree: ast.AST, content: str) -> int:
     Returns:
         The count of real source lines of code.
     """
-    import io
-    import tokenize
+    from .ast_metrics_components import calculate_sloc as _calc_sloc
 
-    # 1. Identify docstring ranges using AST
-    docstring_ranges = []
-    for node in ast.walk(tree):
-        if isinstance(
-            node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
-        ):
-            doc = ast.get_docstring(node, clean=False)
-            if doc is not None:
-                # We need to find the Expr node that contains the docstring to get its range
-                # In Python 3.8+, Expr nodes have lineno/end_lineno
-                body = node.body
-                if (
-                    body
-                    and isinstance(body[0], ast.Expr)
-                    and isinstance(
-                        body[0].value, (ast.Constant, getattr(ast, "Str", ast.Constant))
-                    )
-                ):
-                    doc_node = body[0]
-                    if hasattr(doc_node, "lineno") and hasattr(doc_node, "end_lineno"):
-                        docstring_ranges.append((doc_node.lineno, doc_node.end_lineno))
-
-    # 2. Use tokenize to iterate through lines and filter
-    sloc_count = 0
-    lines_with_code = set()
-
-    try:
-        tokens = tokenize.generate_tokens(io.StringIO(content).readline)
-        for tok in tokens:
-            start_line = tok.start[0]
-            end_line = tok.end[0]
-
-            # Skip comments and blank lines
-            if tok.type in (
-                tokenize.COMMENT,
-                tokenize.NL,
-                tokenize.NEWLINE,
-                tokenize.INDENT,
-                tokenize.DEDENT,
-                tokenize.ENDMARKER,
-            ):
-                continue
-
-            # Check if this token is within a docstring range
-            is_docstring = False
-            for dr in docstring_ranges:
-                if dr[0] <= start_line <= dr[1]:
-                    is_docstring = True
-                    break
-
-            if not is_docstring:
-                # Count lines that contain at least one non-comment, non-docstring token
-                for line_idx in range(start_line, end_line + 1):
-                    lines_with_code.add(line_idx)
-
-        sloc_count = len(lines_with_code)
-    except Exception:
-        # Fallback to a simpler line count if tokenization fails
-        # (e.g., due to encoding issues or partial files)
-        lines = [line.strip() for line in content.splitlines()]
-        sloc_count = len([line for line in lines if line and not line.startswith("#")])
-
-    return sloc_count
+    return _calc_sloc(tree, content)

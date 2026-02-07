@@ -5,8 +5,13 @@ from typing import Dict, List, Any
 from .base import PatternDetector
 
 
+from .strategy_rules import StrategyRules
+
 class StrategyDetector(PatternDetector):
-    """Detects Strategy pattern implementations."""
+    """Detects Strategy pattern implementations.
+    
+    Delegates rule checking to StrategyRules to keep complexity low.
+    """
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
         """Detects Strategy pattern implementations in a node.
@@ -19,43 +24,12 @@ class StrategyDetector(PatternDetector):
         """
         if not isinstance(node, ast.ClassDef):
             return []
+        
         self.evidence, self.confidence = [], 0
-        has_inj = False
-
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef) and (
-                item.name == "__init__" or "set_" in item.name
-            ):
-                for arg in item.args.args:
-                    if any(
-                        kw in arg.arg.lower()
-                        for kw in ("strategy", "algorithm", "engine", "handler", "mode")
-                    ):
-                        has_inj = True
-                        self._add_evidence(
-                            f"Injection detected in '{item.name}' via '{arg.arg}'", 30
-                        )
-                        break
+        has_inj = self._check_for_injection(node)
 
         if has_inj:
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef) and item.name not in (
-                    "__init__",
-                    "set_",
-                ):
-                    for sub in ast.walk(item):
-                        if isinstance(sub, ast.Call) and isinstance(
-                            sub.func, ast.Attribute
-                        ):
-                            if any(
-                                kw in ast.unparse(sub.func).lower()
-                                for kw in ("strategy", "algorithm", "engine", "handler")
-                            ):
-                                self._add_evidence(
-                                    f"Strategy call in '{item.name}': {ast.unparse(sub.func)}()",
-                                    40,
-                                )
-                                break
+            self._check_for_calls(node)
 
         if self.confidence >= 50:
             return [
@@ -66,3 +40,28 @@ class StrategyDetector(PatternDetector):
                 }
             ]
         return []
+
+    def _check_for_injection(self, node: ast.ClassDef) -> bool:
+        """Checks class methods for strategy injection."""
+        has_inj = False
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and (
+                item.name == "__init__" or "set_" in item.name
+            ):
+                arg_name = StrategyRules.check_injection(item)
+                if arg_name:
+                    has_inj = True
+                    self._add_evidence(
+                        f"Injection detected in '{item.name}' via '{arg_name}'", 30
+                    )
+        return has_inj
+
+    def _check_for_calls(self, node: ast.ClassDef) -> None:
+        """Checks class methods for calls to injected strategies."""
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and item.name not in ("__init__", "set_"):
+                call_str = StrategyRules.detect_strategy_call(item)
+                if call_str:
+                    self._add_evidence(
+                        f"Strategy call in '{item.name}': {call_str}()", 40
+                    )

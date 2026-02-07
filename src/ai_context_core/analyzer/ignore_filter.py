@@ -7,8 +7,13 @@ import re
 from typing import List, Optional
 
 
+from .ignore_components import load_ignore_patterns, compile_ignore_patterns
+
 class IgnoreFilter:
-    """Handles logic for filtering files and directories based on exclusion patterns."""
+    """Handles logic for filtering files and directories based on exclusion patterns.
+    
+    Delegates pattern loading and regex compilation to specialized internal components.
+    """
 
     def __init__(
         self, project_path: pathlib.Path, extra_patterns: Optional[List[str]] = None
@@ -20,83 +25,31 @@ class IgnoreFilter:
             extra_patterns: Optional list of additional patterns to ignore.
         """
         self.project_path = project_path
-        self.patterns = self._load_patterns(extra_patterns)
-        self.regex = self._compile_patterns(self.patterns)
-
-    def _compile_patterns(self, patterns: List[str]) -> Optional[re.Pattern]:
-        """Compiles glob patterns into a single efficient Regex."""
-        if not patterns:
-            return None
-        regex_parts = []
-        for p in patterns:
-            # Convert glob to regex: escape dots, replace * with .*, etc.
-            part = fnmatch.translate(p.rstrip("/"))
-            regex_parts.append(part)
-        return re.compile("|".join(regex_parts))
-
-    def _load_patterns(self, extra_patterns: Optional[List[str]]) -> List[str]:
-        """Loads ignore patterns from .analyzerignore or returns defaults.
-
-        Args:
-            extra_patterns: Patterns provided via CLI or config.
-
-        Returns:
-            A list of glob patterns.
-        """
-        patterns = []
-        ignore_file = self.project_path / ".analyzerignore"
-        if ignore_file.exists():
-            try:
-                with open(ignore_file, encoding="utf-8") as f:
-                    patterns = [
-                        line.strip()
-                        for line in f
-                        if line.strip() and not line.startswith("#")
-                    ]
-            except Exception:
-                pass
-
-        if not patterns:
-            patterns = [
-                "__pycache__",
-                ".git",
-                ".venv",
-                "venv",
-                "env",
-                ".tox",
-                ".pytest_cache",
-                ".mypy_cache",
-                ".coverage",
-                "build",
-                "dist",
-                "*.egg-info",
-            ]
-
-        if extra_patterns:
-            patterns.extend(extra_patterns)
-        return patterns
+        self.patterns = load_ignore_patterns(project_path, extra_patterns)
+        self.regex = compile_ignore_patterns(self.patterns)
 
     def is_ignored(self, path: pathlib.Path) -> bool:
-        """Checks if a path or any of its parents should be ignored."""
+        """Checks if a path or any of its parents should be ignored.
+
+        Args:
+            path: Path to check.
+
+        Returns:
+            True if the path should be excluded from analysis.
+        """
         if not self.regex:
             return False
 
         try:
             rel_path = path.relative_to(self.project_path)
         except ValueError:
-            # If path is not under project_path, use absolute or as-is
             rel_path = path
 
-        # 1. Check if any parent directory is ignored (recursive check)
+        # 1. Check if any parent directory is ignored
         for part in rel_path.parts:
             if self.regex.match(part):
                 return True
 
-        # 2. Check the full relative path string (for patterns like 'docs/*.html')
-        rel_path_str = str(rel_path).replace(
-            "\\", "/"
-        )  # Ensure forward slashes for matching
-        if self.regex.match(rel_path_str):
-            return True
-
-        return False
+        # 2. Check the full relative path string (e.g. 'docs/*.html')
+        rel_path_str = str(rel_path).replace("\\", "/")
+        return bool(self.regex.match(rel_path_str))

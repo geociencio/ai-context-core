@@ -82,7 +82,16 @@ DEPENDENCY_FILES = [
 def analyze_dependencies(
     modules_data: List[Dict[str, Any]], project_path: Path, read_file_func: Callable
 ) -> Dict[str, Any]:
-    """Analyzes project dependencies, builds the import graph, and detects circularities."""
+    """Analyzes project dependencies, builds the import graph, and detects circularities.
+
+    Args:
+        modules_data: List of analyzed module data.
+        project_path: Root path of the project.
+        read_file_func: Function to read file content.
+
+    Returns:
+        Dictionary with dependency analysis results.
+    """
     dependencies = {
         "internal": [],
         "external": [],
@@ -94,7 +103,9 @@ def analyze_dependencies(
     }
 
     # 1. Parse common dependency files
-    dependencies["files"] = _parse_dependency_files(project_path, read_file_func)
+    from .dependency_analyser_components import parse_dependency_files
+
+    dependencies["files"] = parse_dependency_files(project_path, read_file_func)
 
     # 2. Build import graph and identify internal modules
     builder = graph_engine.ImportGraphBuilder(modules_data)
@@ -121,10 +132,7 @@ def analyze_dependencies(
             "nodes": len(import_graph),
             "edges": num_edges,
             "density": metrics_calc.calculate_density(num_edges),
-            "is_dag": len(
-                graph_engine.CycleDetector(import_graph, limit=1).find_cycles()
-            )
-            == 0,
+            "is_dag": len(graph_engine.CycleDetector(import_graph, limit=1).find_cycles()) == 0,
             "weakly_connected_components": metrics_calc.count_connected_components(),
         }
         dependencies["coupling_metrics"] = metrics_calc.calculate_coupling_metrics()
@@ -143,80 +151,24 @@ def analyze_dependencies(
     for module in modules_data:
         all_imports.update(module.get("imports", []))
 
-    classified = _classify_imports(all_imports, known_internal)
+    from .dependency_analyser_components import classify_imports
+
+    classified = classify_imports(all_imports, STDLIB_MODULES, known_internal)
     dependencies.update(classified)
 
     return dependencies
 
 
-def _parse_dependency_files(
-    project_path: Path, read_file_func: Callable
-) -> Dict[str, str]:
-    """Read content from common dependency files.
-
-    Args:
-        project_path: Path to the project root.
-        read_file_func: Function to read file content.
-
-    Returns:
-        Dictionary mapping filename to its content.
-    """
-    files_content = {}
-    for req_file in DEPENDENCY_FILES:
-        path = project_path / req_file
-        if path.exists():
-            try:
-                content = read_file_func(path)
-                if content:
-                    files_content[req_file] = content[:2000]
-            except Exception:
-                pass
-    return files_content
+def _parse_dependency_files(project_path: Path, read_file_func: Callable) -> Dict[str, str]:
+    """Legacy wrapper for parsing dependency files."""
+    from .dependency_analyser_components import parse_dependency_files as _parser
+    return _parser(project_path, read_file_func)
 
 
-def _classify_imports(
-    all_imports: Set[str], known_internal: Set[str] = None
-) -> Dict[str, List[str]]:
-    """Categorizes imports into internal, external (StdLib), and third-party modules.
-
-    Args:
-        all_imports: Set of all import strings found in the project.
-        known_internal: Set of known internal module names (optional).
-
-    """
-    results = {"internal": [], "external": [], "third_party": []}
-    known_internal = known_internal or set()
-
-    for imp in sorted(all_imports):
-        root_pkg = imp.split(".")[0]
-
-        # Check for explicitly known internal modules
-        is_known_internal = False
-        if imp in known_internal:
-            is_known_internal = True
-        else:
-            # Check prefixes (e.g., if 'my_pkg.utils' is known, 'my_pkg' should be internal too?)
-            # Actually, reverse: if 'my_pkg' is in known_internal, 'my_pkg.utils' is internal.
-            # But known_internal usually contains full paths 'my_pkg.utils'.
-            # We need to check if 'imp' or any parent is in known_internal.
-            # A simpler heuristic for this step: check if root package matches any known internal root
-            for internal in known_internal:
-                if imp == internal or imp.startswith(internal + "."):
-                    is_known_internal = True
-                    break
-
-        if (
-            is_known_internal
-            or imp.startswith(".")
-            or any(seg in imp for seg in ["..", "./"])
-        ):
-            results["internal"].append(imp)
-        elif root_pkg in STDLIB_MODULES:
-            results["external"].append(imp)
-        else:
-            results["third_party"].append(imp)
-
-    return results
+def _classify_imports(all_imports: Set[str], known_internal: Set[str] = None) -> Dict[str, List[str]]:
+    """Legacy wrapper for classifying imports."""
+    from .dependency_analyser_components import classify_imports as _classifier
+    return _classifier(all_imports, STDLIB_MODULES, known_internal)
 
 
 # Re-export legacy functions if needed for API compatibility,

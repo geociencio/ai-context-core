@@ -5,8 +5,13 @@ from typing import Dict, List, Any
 from .base import PatternDetector
 
 
+from .decorator_rules import DecoratorRules
+
 class DecoratorDetector(PatternDetector):
-    """Detects Decorator pattern implementations."""
+    """Detects Decorator pattern implementations.
+    
+    Delegates rule checking to DecoratorRules to keep complexity low.
+    """
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
         """Detects Decorator pattern implementations in a node.
@@ -19,56 +24,39 @@ class DecoratorDetector(PatternDetector):
         """
         res = []
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            self.evidence, self.confidence = [], 0
-            inner = next(
-                (
-                    i
-                    for i in node.body
-                    if isinstance(i, (ast.FunctionDef, ast.AsyncFunctionDef))
-                ),
-                None,
-            )
-            if inner:
-                if any(
-                    isinstance(i, ast.Return)
-                    and isinstance(i.value, ast.Name)
-                    and i.value.id == inner.name
-                    for i in node.body
-                ):
-                    self._add_evidence(
-                        f"Function contains and returns inner '{inner.name}'", 50
-                    )
-                    if any(
-                        isinstance(d, ast.Call)
-                        and (
-                            getattr(d.func, "attr", "") == "wraps"
-                            or getattr(d.func, "id", "") == "wraps"
-                        )
-                        for d in inner.decorator_list
-                    ):
-                        self._add_evidence("Uses @functools.wraps", 40)
-            if self.confidence >= 50:
-                res.append(
-                    {
-                        "class": node.name,
-                        "type": "function",
-                        "confidence": min(self.confidence, 100),
-                        "evidence": self.evidence,
-                    }
-                )
-
+            self._analyze_function(node, res)
         elif isinstance(node, ast.ClassDef):
-            self.evidence, self.confidence = [], 0
-            names = {i.name for i in node.body if isinstance(i, ast.FunctionDef)}
-            if "__init__" in names and "__call__" in names:
-                self._add_evidence("Class implements both __init__ and __call__", 60)
-            if self.confidence >= 50:
-                res.append(
-                    {
-                        "class": node.name,
-                        "type": "class",
-                        "confidence": min(self.confidence, 100),
-                        "evidence": self.evidence,
-                    }
-                )
+            self._analyze_class(node, res)
         return res
+
+    def _analyze_function(self, node: ast.AST, res: List[Dict[str, Any]]) -> None:
+        """Analyzes a function for decorator patterns."""
+        self.evidence, self.confidence = [], 0
+        inner = DecoratorRules.find_inner_function(node)
+        
+        if inner and DecoratorRules.returns_inner(node, inner.name):
+            self._add_evidence(f"Function contains and returns inner '{inner.name}'", 50)
+            if DecoratorRules.has_wraps(inner):
+                self._add_evidence("Uses @functools.wraps", 40)
+        
+        if self.confidence >= 50:
+            res.append({
+                "class": node.name,
+                "type": "function",
+                "confidence": min(self.confidence, 100),
+                "evidence": self.evidence,
+            })
+
+    def _analyze_class(self, node: ast.ClassDef, res: List[Dict[str, Any]]) -> None:
+        """Analyzes a class for decorator patterns."""
+        self.evidence, self.confidence = [], 0
+        if DecoratorRules.is_class_decorator(node):
+            self._add_evidence("Class implements both __init__ and __call__", 60)
+        
+        if self.confidence >= 50:
+            res.append({
+                "class": node.name,
+                "type": "class",
+                "confidence": min(self.confidence, 100),
+                "evidence": self.evidence,
+            })

@@ -119,7 +119,10 @@ def _get_hardcoded_defaults() -> Dict[str, Any]:
 
 
 class ProjectAnalyzer:
-    """Optimized and modular Python project analyzer."""
+    """Optimized and modular Python project analyzer.
+
+    Coordinates scanning, analysis, and aggregation of project data.
+    """
 
     def __init__(
         self,
@@ -133,17 +136,18 @@ class ProjectAnalyzer:
 
         Args:
             project_path: Absolute or relative path to the project root.
-            config: Optional configuration dictionary. If None, loads from defaults.
+            config: Optional configuration dictionary.
             max_workers: Maximum number of parallel workers for analysis.
             exclude_patterns: List of glob patterns to exclude from scanning.
             ignore_cache: Whether to force a full analysis ignoring existing cache.
         """
+        from .engine_components import load_config as loader_func
+
         self.project_path = pathlib.Path(project_path).resolve()
         self.max_workers = max_workers or (
             2 * (4 if hasattr(time, "get_clock_info") else 1)
         )
-        # Load config from file if not provided explicitly
-        self.config = config or load_config(self.project_path)
+        self.config = config or loader_func(self.project_path)
 
         self.exclusion_patterns = fs_utils.load_exclusion_patterns(
             self.project_path, exclude_patterns
@@ -153,10 +157,6 @@ class ProjectAnalyzer:
             {} if ignore_cache else fs_utils.load_cache(self.project_path)
         )
         self.error_log = {}
-
-    def _get_default_config(self) -> Dict[str, Any]:
-        """Return default configuration. Deprecated: Use load_config."""
-        return _get_hardcoded_defaults()
 
     def analyze(self, output_format: str = "markdown") -> Dict[str, Any]:
         """Execute the complete project analysis pipeline.
@@ -174,8 +174,14 @@ class ProjectAnalyzer:
         logger.info(f"Starting analysis for {self.project_path}")
 
         # 1. Scanning and Parallel Analysis
+        from .engine_components import AnalysisWorker
+
         scan_res = fs_utils.scan_project(self.project_path, self.exclusion_patterns)
-        modules_data = self._analyze_modules_parallel(scan_res.python_files)
+        worker = AnalysisWorker(
+            self.project_path, self.config, self.max_workers, self.analysis_cache
+        )
+        modules_data = worker.run_parallel(scan_res.python_files)
+        self.error_log.update(worker.error_log)
 
         # 2. Dependency Analysis
         dep_analyzer = dependencies.DependencyAnalyzer(self.project_path)
@@ -206,16 +212,9 @@ class ProjectAnalyzer:
         return results
 
     def _read_manual_notes(self) -> str:
-        """Read manual architecture notes if they exist.
-
-        Looks for architecture_notes.md or project_brain.md in .ai-context directory.
-
-        Returns:
-            The content of the notes file if found, otherwise an empty string.
-        """
+        """Read manual architecture notes if they exist."""
         notes_path = self.project_path / ".ai-context" / "architecture_notes.md"
         if not notes_path.exists():
-            # Try legacy or alternative name
             notes_path = self.project_path / ".ai-context" / "project_brain.md"
 
         if notes_path.exists():
@@ -225,147 +224,8 @@ class ProjectAnalyzer:
                 logger.warning(f"Could not read manual notes: {e}")
         return ""
 
-    def _analyze_modules_parallel(
-        self, files: List[pathlib.Path]
-    ) -> List[Dict[str, Any]]:
-        """Analyze modules in parallel using process pool.
-
-        Uses cached results if hashes match, otherwise submits to worker pool.
-
-        Args:
-            files: List of file paths to analyze.
-
-        Returns:
-            List of dictionaries containing individual module analysis data.
-        """
-        results, to_analyze = [], []
-        for f in files:
-            rel = str(f.relative_to(self.project_path))
-            h = fs_utils.calculate_file_hash(f)
-            cached = self.analysis_cache.get(rel)
-            if cached and cached.get("hash") == h:
-                results.append(cached["data"])
-            else:
-                to_analyze.append(f)
-
-        if not to_analyze:
-            return results
-
-        # Optimization: Sequential execution for small projects
-        if len(to_analyze) < PARALLEL_MIN_FILES:
-            logger.info(f"Analyzing {len(to_analyze)} modules sequentially...")
-            for f in to_analyze:
-                data = self._analyze_single_module(f)
-                if data:
-                    results.append(data)
-                    self.analysis_cache[str(f.relative_to(self.project_path))] = {
-                        "hash": fs_utils.calculate_file_hash(f),
-                        "data": data,
-                        "timestamp": time.time(),
-                    }
-            return results
-
-        logger.info(f"Analyzing {len(to_analyze)} modules in parallel...")
-        with concurrent.futures.ProcessPoolExecutor(
-            max_workers=self.max_workers
-        ) as exc:
-            futures = {
-                exc.submit(self._analyze_single_module, f): f for f in to_analyze
-            }
-            for fut in concurrent.futures.as_completed(futures):
-                f = futures[fut]
-                try:
-                    data = fut.result()
-                    if data:
-                        results.append(data)
-                        self.analysis_cache[str(f.relative_to(self.project_path))] = {
-                            "hash": fs_utils.calculate_file_hash(f),
-                            "data": data,
-                            "timestamp": time.time(),
-                        }
-                except Exception as e:
-                    logger.error(f"Error analyzing {f}: {e}")
-                    self.error_log[str(f)] = str(e)
-        return results
-
-    def _analyze_single_module(self, file_path: pathlib.Path) -> Dict[str, Any]:
-        """Analyze a single module's content and metrics.
-
-        Performs AST parsing and runs multiple internal detectors.
-
-        Args:
-            file_path: Absolute path to the module file.
-
-        Returns:
-            Dictionary with module metrics (LOC, complexity, imports, etc.).
-        """
-        try:
-            content = fs_utils.read_file_fast(file_path)
-            if not content:
-                return {}
-            tree = ast.parse(content)
-            entry_data = ast_utils.is_entry_point(tree)
-            complexity = ast_utils.calculate_complexity(tree)
-            halstead = ast_utils.calculate_halstead_metrics(tree)
-            sloc = ast_utils.calculate_sloc(tree, content)
-            line_count = len(content.splitlines())
-
-            return {
-                "path": str(file_path.relative_to(self.project_path)),
-                "lines": line_count,
-                "sloc": sloc,
-                "file_size_kb": file_path.stat().st_size / 1024,
-                "complexity": complexity,
-                "imports": ast_utils.extract_imports(tree),
-                "classes": ast_utils.extract_classes(tree),
-                "functions": ast_utils.extract_functions(tree),
-                "docstrings": ast_utils.check_docstrings(tree),
-                "entry_point_info": entry_data,
-                "has_main": entry_data["is_entry_point"],
-                "type_hints": ast_utils.calculate_type_hint_coverage(tree),
-                "halstead": halstead,
-                "antipatterns": self._detect_antipatterns(tree),
-                "ast_security": issues.detect(tree),
-                "patterns": patterns.detect_patterns(tree),
-                "unused_imports": ast_utils.detect_unused_imports(tree),
-                "maintenance_index": metrics.calculate_maintenance_index(
-                    halstead["volume"], complexity, sloc
-                ),
-                "qgis_compliance": ast_utils.check_qgis_compliance(tree),
-                "syntax_error": False,
-            }
-        except Exception as e:
-            return {
-                "path": str(file_path.relative_to(self.project_path)),
-                "syntax_error": True,
-                "error": str(e),
-            }
-
-    def _detect_antipatterns(self, tree: ast.AST) -> List[Dict[str, Any]]:
-        """Run all antipattern detectors on the AST.
-
-        Args:
-            tree: The parsed AST of the module.
-
-        Returns:
-            List of detected anti-patterns with details.
-        """
-        return (
-            antipatterns.detect_god_object(tree)
-            + antipatterns.detect_spaghetti_code(tree)
-            + antipatterns.detect_magic_numbers(tree)
-            + antipatterns.detect_dead_code(tree)
-        )
-
     def _generate_outputs(self, results: Dict[str, Any], fmt: str):
-        """Generate final report files based on analysis results.
-
-        Creates PROJECT_SUMMARY and AI_CONTEXT files.
-
-        Args:
-            results: The aggregated analysis data.
-            fmt: Output format for the summary ('markdown' or 'html').
-        """
+        """Generate final report files based on analysis results."""
         try:
             ext = ".html" if fmt == "html" else ".md"
             reporting.generate_project_summary(
