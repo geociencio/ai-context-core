@@ -152,6 +152,42 @@ class MyWidget:
         finally:
             shutil.rmtree(tmp_dir)
 
+    def test_ai_context_manager_full(self):
+        import shutil
+        import tempfile
+        import pathlib
+        from ai_context_core.context.manager import AIContextManager
+
+        tmp_dir = tempfile.mkdtemp()
+        try:
+            p = pathlib.Path(tmp_dir)
+            manager = AIContextManager(str(p))
+
+            # Test builders
+            # GPT
+            res = manager.create_optimized_prompt("task", model="gpt")
+            self.assertIn("Senior Dev", res)
+
+            # DeepSeek
+            res = manager.create_optimized_prompt("task", model="deepseek")
+            self.assertIn("efficiency", res)
+
+            # Claude
+            res = manager.create_optimized_prompt("task", model="claude")
+            self.assertIn("Expert Architect", res)
+
+            # Default
+            res = manager.create_optimized_prompt("task", model="unknown")
+            self.assertIn("Senior Dev", res)
+
+            # Update context
+            manager.update_context({"foo": "bar"})
+            ctx_yaml = p / ".ai-context-updates.yaml"
+            self.assertTrue(ctx_yaml.exists())
+
+        finally:
+            shutil.rmtree(tmp_dir)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -51,7 +51,7 @@ class ResultsAggregator:
         graph_data["unused_imports"] = unused_imports
 
         # Security aggregation
-        security_issues = issues.find_secrets(m_data, str(self.project_path))
+        security_issues = self._aggregate_security(m_data)
 
         # QGIS compliance aggregation
         qgis_compliance = self._run_qgis_aggregation(valid_modules, qgis_metadata)
@@ -89,6 +89,7 @@ class ResultsAggregator:
             "qgis_compliance": qgis_compliance,
             "optimizations": optimizations,
             "recommendations": recommendations,
+            "patterns": self._aggregate_patterns(valid_modules),
             "git": git_data,
             "timestamp": time.time() if "time" in globals() else None,
         }
@@ -108,6 +109,48 @@ class ResultsAggregator:
         from .aggregator_components import aggregate_qgis_compliance
 
         return aggregate_qgis_compliance(m_data, metadata)
+
+    def _aggregate_patterns(self, m_data: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Aggregates design patterns from all modules."""
+        all_patterns = {}
+        for mod in m_data:
+            pats = mod.get("patterns", {})
+            for name, instances in pats.items():
+                if name not in all_patterns:
+                    all_patterns[name] = []
+                # Add module info to instances
+                for inst in instances:
+                    inst["module"] = mod["path"]
+                all_patterns[name].extend(instances)
+        return all_patterns
+
+    def _aggregate_security(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Aggregates secrets and AST security issues."""
+        # Get secrets first (file-based)
+        all_security = issues.find_secrets(m_data, str(self.project_path))
+
+        # Add AST security issues from module data
+        for mod in m_data:
+            ast_issues = mod.get("ast_security", [])
+            if ast_issues:
+                # Find if module already exists in all_security
+                found = False
+                for existing in all_security:
+                    if existing["module"] == mod["path"]:
+                        existing["issues"].extend(ast_issues)
+                        existing["total_issues"] = len(existing["issues"])
+                        found = True
+                        break
+                if not found:
+                    all_security.append(
+                        {
+                            "module": mod["path"],
+                            "issues": ast_issues,
+                            "total_issues": len(ast_issues),
+                            "max_severity": "high",  # Default for AST issues for now
+                        }
+                    )
+        return all_security
 
     def _aggregate_qgis_compliance(
         self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]

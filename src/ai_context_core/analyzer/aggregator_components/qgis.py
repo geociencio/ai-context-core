@@ -6,15 +6,7 @@ from typing import List, Dict, Any
 def aggregate_qgis_compliance(
     m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
 ) -> Dict[str, Any]:
-    """Aggregate QGIS-specific results from modules and metadata.
-
-    Args:
-        m_data: List of module analysis results.
-        metadata: Parsed metadata.txt content.
-
-    Returns:
-        Dictionary with aggregated QGIS compliance metrics.
-    """
+    """Aggregate QGIS-specific results from modules and metadata."""
     agg = {
         "metadata": metadata,
         "processing_framework_detected": any(

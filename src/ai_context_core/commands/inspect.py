@@ -3,7 +3,7 @@
 import pathlib
 import sys
 import click
-from ..analyzer.engine import ProjectAnalyzer
+from ..analyzer.engine_components.worker import AnalysisWorker
 from ..config.loader import ConfigLoader
 
 
@@ -16,11 +16,12 @@ def inspect_file(file_path: str):
 
     loader = ConfigLoader()
     cfg = loader.load_config()
-    # We need a ProjectAnalyzer to access its analysis methods
-    analyzer = ProjectAnalyzer(project_path=str(path.parent), config=cfg)
+    worker = AnalysisWorker(
+        project_path=path.parent, config=cfg, max_workers=1, cache={}
+    )
     click.echo(f"🔍 Inspecting {path.name}...")
 
-    data = analyzer._analyze_single_module(path)
+    data = worker.analyze_single(path)
     if data.get("syntax_error"):
         click.secho(f"❌ Syntax Error: {data.get('error')}", fg="red")
         sys.exit(1)

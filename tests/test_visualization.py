@@ -21,6 +21,18 @@ class TestVisualization:
         assert "module_a --> utils" in graph
         assert "classDef module" in graph
 
+    def test_mermaid_self_loop(self):
+        deps = {
+            "import_graph": {
+                "module_a.py": ["module_a.py", "module_b"],
+                "module_b.py": [],
+            }
+        }
+        graph = generate_dependency_diagram(deps)
+        # Should NOT contain self-loop module_a --> module_a
+        assert "module_a --> module_a" not in graph
+        assert "module_a --> module_b" in graph
+
     def test_html_builder(self):
         builder = HTMLBuilder("Test Report")
         builder.add_section("Section 1", "<p>Content</p>")

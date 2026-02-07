@@ -124,6 +124,7 @@ class AnalysisWorker:
                 "syntax_error": False,
             }
         except Exception as e:
+            print(f"DEBUG: analyze_single FAILED for {file_path}: {e}")
             return {
                 "path": str(file_path.relative_to(self.project_path)),
                 "syntax_error": True,

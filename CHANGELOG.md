@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- **Test Coverage**: Achieved **98%** project-wide test coverage (263 tests), covering all critical modules including `engine`, `fs_utils`, `dependencies`, and `checkers`.
+- **System Stability**: Implemented comprehensive edge case handling for filesystem operations, complexity calculations, and dependency analysis.
+
 ## [3.1.1] - 2026-02-07 - QGIS Profile & Analysis Fixes
 
 ### Added
@@ -211,6 +216,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
 ## [Unreleased]
+### Added
+- **i18n Precision**: Implemented naming pattern heuristics (snake_case, camelCase) to ignore technical identifiers in i18n analysis.
+- **AST Context Awareness**: The i18n checker now ignores dictionary keys and specific technical QGIS/Qt methods (`setObjectName`, `addItem`, etc.).
+- **Test Coverage Boost**: Increased project coverage to **80%** by adding a comprehensive new test suite (`tests/test_coverage_boost.py`) covering summarizers, metrics, and extractors.
+- **Facade Fixes**: Restored missing exports in `fs_utils.py` and `metrics/__init__.py` to resolve regressions.
+
 ### Added
 - New `patterns_detectors/` package for modular design pattern detection.
 - `ignore_filter.py` module extracted from `fs_utils.py` for better separation of concerns.

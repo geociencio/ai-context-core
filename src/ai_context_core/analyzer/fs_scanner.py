@@ -98,7 +98,6 @@ class ProjectScanner:
 
             # DEBUG:
             ignored = is_test_file(path_obj)
-            print(f"Scanner: {file_path}, is_test={ignored}")
             if ignored:
                 self.test_files_count += 1
             else:

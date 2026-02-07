@@ -98,6 +98,57 @@ obj.setValue("some_value")
         # All these should be ignored because they are in the _ignored_functions list.
         self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 0)
 
+    def test_i18n_tr_simple(self):
+        code = """
+class Test:
+    def __init__(self):
+        self.tr('Hello World')
+"""
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+
+        self.assertEqual(visitor.results["i18n_usage"]["tr"], 1)
+        self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 1)
+
+    def test_legacy_gdal_import(self):
+        code = "import gdal"
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+        self.assertEqual(visitor.results["gdal_import_style"], "Legacy")
+
+    def test_correct_gdal_import(self):
+        code = "from osgeo import gdal"
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+        self.assertEqual(visitor.results["gdal_import_style"], "Correct")
+
+    def test_qt_imports(self):
+        code = "from PyQt5.QtCore import pyqtSignal\nimport PyQt6.QtWidgets"
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+        self.assertIn("PyQt5.QtCore", visitor.results["qt_transition"]["pyqt5_imports"])
+        self.assertIn(
+            "PyQt6.QtWidgets", visitor.results["qt_transition"]["pyqt6_imports"]
+        )
+
+    def test_processing_framework(self):
+        code = "class MyAlg(QgsProcessingAlgorithm): pass"
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+        self.assertTrue(visitor.results["processing_framework"])
+
+    def test_legacy_signals(self):
+        code = "self.connect(self, SIGNAL('triggered()'), self.tab)"
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+        self.assertEqual(visitor.results["signals_slots"]["legacy"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

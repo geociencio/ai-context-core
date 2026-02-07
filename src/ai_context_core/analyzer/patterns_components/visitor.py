@@ -25,7 +25,12 @@ class PatternsUnifiedVisitor(ast.NodeVisitor):
     def visit_ClassDef(self, node: ast.ClassDef):
         """Visits a class definition to detect patterns."""
         for name, det in self.detectors.items():
-            found = det.get_results(node) if hasattr(det, "visit") else det.detect(node)
+            if hasattr(det, "visit"):
+                det.visit(node)
+                found = det.get_results(node)
+            else:
+                found = det.detect(node)
+
             if found:
                 if name not in self.results:
                     self.results[name] = []
