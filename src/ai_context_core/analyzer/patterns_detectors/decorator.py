@@ -60,3 +60,21 @@ class DecoratorDetector(PatternDetector):
                 "confidence": min(self.confidence, 100),
                 "evidence": self.evidence,
             })
+
+
+def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Facade function to detect Decorator patterns in an AST.
+
+    Args:
+        tree: The AST tree to analyze.
+
+    Returns:
+        List of detected Decorator pattern instances.
+    """
+    detector = DecoratorDetector()
+    results = []
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            detected = detector.detect(node)
+            results.extend(detected)
+    return results

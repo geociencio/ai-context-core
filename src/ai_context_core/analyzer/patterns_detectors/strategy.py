@@ -65,3 +65,21 @@ class StrategyDetector(PatternDetector):
                     self._add_evidence(
                         f"Strategy call in '{item.name}': {call_str}()", 40
                     )
+
+
+def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Facade function to detect Strategy patterns in an AST.
+
+    Args:
+        tree: The AST tree to analyze.
+
+    Returns:
+        List of detected Strategy pattern instances.
+    """
+    detector = StrategyDetector()
+    results = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef):
+            detected = detector.detect(node)
+            results.extend(detected)
+    return results

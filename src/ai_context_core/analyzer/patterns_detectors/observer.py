@@ -41,3 +41,21 @@ class ObserverDetector(PatternDetector):
                 }
             ]
         return []
+
+
+def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Facade function to detect Observer patterns in an AST.
+
+    Args:
+        tree: The AST tree to analyze.
+
+    Returns:
+        List of detected Observer pattern instances.
+    """
+    detector = ObserverDetector()
+    results = []
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.ClassDef, ast.Module)):
+            detected = detector.detect(node)
+            results.extend(detected)
+    return results

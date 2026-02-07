@@ -14,6 +14,10 @@ from .patterns_components import (
 
 # Re-export individual detectors for backward compatibility
 from .patterns_detectors.singleton import detect_singleton
+from .patterns_detectors.observer import detect_observer
+from .patterns_detectors.factory import detect_factory
+from .patterns_detectors.strategy import detect_strategy
+from .patterns_detectors.decorator import detect_decorator
 
 def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
     """Analyzes an AST to detect common design patterns using a unified visitor.

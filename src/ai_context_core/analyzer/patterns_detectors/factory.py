@@ -61,3 +61,21 @@ class FactoryDetector(PatternDetector):
                         }
                     )
         return res
+
+
+def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
+    """Facade function to detect Factory patterns in an AST.
+
+    Args:
+        tree: The AST tree to analyze.
+
+    Returns:
+        List of detected Factory pattern instances.
+    """
+    detector = FactoryDetector()
+    results = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef):
+            detected = detector.detect(node)
+            results.extend(detected)
+    return results
