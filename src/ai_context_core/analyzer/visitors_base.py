@@ -33,11 +33,12 @@ class BaseVisitor(ast.NodeVisitor):
             )
 
     def _log_error(self, message: str, node: Optional[ast.AST] = None):
-        """Logs an error and appends it to the errors list.
+        """Log an error and append it to the errors list.
 
         Args:
             message: The error message.
             node: The AST node associated with the error (optional).
+
         """
         lineno = getattr(node, "lineno", "N/A") if node else "N/A"
         error_entry = {"message": message, "line": lineno, "file": self._current_file}

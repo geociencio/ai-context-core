@@ -37,9 +37,25 @@ class AnalysisWorker:
         # print(f"run_parallel called with {len(files)} files")
         for f in files:
             rel = str(f.relative_to(self.project_path))
-            h = fs_utils.calculate_file_hash(f)
             cached = self.cache.get(rel)
+
+            # Quick check: mtime and size
+            stats = fs_utils.get_file_stats(f)
+            if (
+                cached
+                and cached.get("mtime") == stats["mtime"]
+                and cached.get("size") == stats["size"]
+            ):
+                # Most likely unchanged, trust the cache
+                results.append(cached["data"])
+                continue
+
+            # Fallback to hash if mtime/size differ or not in cache
+            h = fs_utils.calculate_file_hash(f)
             if cached and cached.get("hash") == h:
+                # Content is same despite meta changes, update meta in cache but keep data
+                cached["mtime"] = stats["mtime"]
+                cached["size"] = stats["size"]
                 results.append(cached["data"])
             else:
                 to_analyze.append(f)
@@ -52,25 +68,40 @@ class AnalysisWorker:
                 self._analyze_and_cache(f, results)
             return results
 
+        from ..constants import PARALLEL_BATCH_SIZE
+
         with concurrent.futures.ProcessPoolExecutor(
             max_workers=self.max_workers
         ) as exc:
-            futures = {exc.submit(self.analyze_single, f): f for f in to_analyze}
+            batches = [
+                to_analyze[i : i + PARALLEL_BATCH_SIZE]
+                for i in range(0, len(to_analyze), PARALLEL_BATCH_SIZE)
+            ]
+            futures = {exc.submit(self.analyze_batch, b): b for b in batches}
+
             for fut in concurrent.futures.as_completed(futures):
-                f = futures[fut]
+                batch_files = futures[fut]
                 try:
-                    data = fut.result()
-                    if data:
-                        results.append(data)
-                        self.cache[str(f.relative_to(self.project_path))] = {
-                            "hash": fs_utils.calculate_file_hash(f),
-                            "data": data,
-                            "timestamp": time.time(),
-                        }
+                    batch_results = fut.result()
+                    for f, data in zip(batch_files, batch_results):
+                        if data:
+                            results.append(data)
+                            self.cache[str(f.relative_to(self.project_path))] = {
+                                "hash": fs_utils.calculate_file_hash(f),
+                                "mtime": f.stat().st_mtime,
+                                "size": f.stat().st_size,
+                                "data": data,
+                                "timestamp": time.time(),
+                            }
                 except Exception as e:
-                    logger.error(f"Error analyzing {f}: {e}")
-                    self.error_log[str(f)] = str(e)
+                    logger.error(f"Error analyzing batch {batch_files}: {e}")
+                    for f in batch_files:
+                        self.error_log[str(f)] = str(e)
         return results
+
+    def analyze_batch(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
+        """Analyze a batch of files."""
+        return [self.analyze_single(f) for f in files]
 
     def _analyze_and_cache(self, f: pathlib.Path, results: List[Dict[str, Any]]):
         from .. import fs_utils
@@ -80,6 +111,8 @@ class AnalysisWorker:
             results.append(data)
             self.cache[str(f.relative_to(self.project_path))] = {
                 "hash": fs_utils.calculate_file_hash(f),
+                "mtime": f.stat().st_mtime,
+                "size": f.stat().st_size,
                 "data": data,
                 "timestamp": time.time(),
             }

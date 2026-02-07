@@ -13,13 +13,14 @@ class FactoryDetector(PatternDetector):
     """Detects Factory pattern implementations."""
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Detects Factory pattern implementations in a node.
+        """Detect Factory pattern implementations in a node.
 
         Args:
             node: The AST node to analyze.
 
         Returns:
             List of detected factory instances.
+
         """
         if not isinstance(node, ast.ClassDef):
             return []
@@ -71,6 +72,7 @@ def detect_factory(tree: ast.AST) -> List[Dict[str, Any]]:
 
     Returns:
         List of detected Factory pattern instances.
+
     """
     detector = FactoryDetector()
     results = []

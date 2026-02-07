@@ -56,6 +56,7 @@ QGIS_COMPLIANCE_ISSUE_PENALTY = 10
 
 # Thresholds for parallel processing
 PARALLEL_MIN_FILES = 5
+PARALLEL_BATCH_SIZE = 10
 
 # Thresholds for git analysis
 GIT_CHURN_DAYS_DEFAULT = 30

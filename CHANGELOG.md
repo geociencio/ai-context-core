@@ -14,11 +14,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- **Component Consolidation**: Merged `singleton_components` and `observer_components` into cohesive rule files, reducing project fragmentation.
-- **Pre-commit**: Updated `ruff-pre-commit` to v0.15.0 and resolved new linting rules.
+- **CLI Suite Expansion**:
+    - `ai-ctx doctor`: Environmental diagnostics and health checks.
+    - `ai-ctx fix`: Auto-remediation for linting and project structure.
+    - `ai-ctx graph`: Architecture visualization (Mermaid diagrams).
+    - `ai-ctx roadmap`: Technical debt prioritization (Complexity × Churn).
+    - `ai-ctx scaffold`: Design pattern code generation.
+    - `ai-ctx compare`: Snapshot-based regression tracking.
+- **Reporting**: Added `--format json` to `ai-ctx analyze` for structured data extraction.
+- **Design Pattern Standardization**: Unified detector hierarchy and improved rule modularization.
+- **Component Consolidation**: Merged singleton and observer logic into cohesive rule sets.
+
+### Changed
+- **Performance Optimization**: 
+    - Incremental analysis using `mtime` and `size` to avoid redundant hashing.
+    - Parallel processing task batching to reduce IPC overhead.
+    - Optimized `fs_scanner` for large-scale directory traversal.
 
 ### Fixed
-- **FS Utilities**: Restored missing exports (`read_file_fast`, `load_exclusion_patterns`) in `fs_utils.py` to fix regression in test suite and external consumers.
+- **FS Utilities**: Restored missing facade exports in `fs_utils.py`.
+- **Linting**: Updated pre-commit configurations and resolved new Ruff rules.
 
 ### Added
 - **Test Coverage**: Achieved **98%** project-wide test coverage (263 tests), covering all critical modules including `engine`, `fs_utils`, `dependencies`, and `checkers`.

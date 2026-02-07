@@ -32,9 +32,16 @@ def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool)
         max_workers=workers,
         ignore_cache=no_cache,
     )
-    click.echo(f"🚀 Analyzing {proj.name}...")
+    if format != "json":
+        click.echo(f"🚀 Analyzing {proj.name}...")
     try:
         res = analyzer.analyze(output_format=format)
+        if format == "json":
+            import json
+
+            click.echo(json.dumps(res, indent=2, ensure_ascii=False))
+            return
+
         m = res.get("metrics", {})
         q = m.get("quality_score", 0)
         click.echo("-" * 40)

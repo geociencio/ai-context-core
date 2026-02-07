@@ -54,7 +54,8 @@ class ProjectScanner:
 
             i = 0
             while i < len(dirs):
-                d_path = pathlib.Path(root) / dirs[i]
+                d = dirs[i]
+                d_path = pathlib.Path(root) / d
                 if self.ignore_filter.is_ignored(d_path):
                     del dirs[i]
                 else:

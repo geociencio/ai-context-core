@@ -14,10 +14,11 @@ class SingletonDetector(PatternDetector):
     """
 
     def visit(self, node: ast.AST):
-        """Analyzes a node to find Singleton pattern evidence.
+        """Analyze a node to find Singleton pattern evidence.
 
         Args:
             node: The AST node to analyze.
+
         """
         self.evidence, self.confidence = [], 0
         if not isinstance(node, ast.ClassDef):
@@ -35,6 +36,7 @@ def detect_singleton(tree: ast.AST):
 
     Returns:
         List of detected Singleton pattern instances with confidence >= 50.
+
     """
     detector = SingletonDetector()
     results = []

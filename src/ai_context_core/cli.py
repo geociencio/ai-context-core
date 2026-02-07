@@ -32,6 +32,14 @@ cli.add_command(ALL_CMDS[12], name="git_cmd")  # git_cmd alias
 cli.add_command(ALL_CMDS[1], name="stats_cmd")  # stats_cmd alias
 cli.add_command(ALL_CMDS[13], name="qgis_cmd")  # qgis_cmd alias
 cli.add_command(ALL_CMDS[2], name="clean_cmd")  # clean_cmd alias
+cli.add_command(ALL_CMDS[14], name="interactive_cmd")  # interactive_cmd alias
+cli.add_command(ALL_CMDS[15], name="full_scan_cmd")  # full_scan_cmd alias
+cli.add_command(ALL_CMDS[16], name="doctor_cmd")  # doctor_cmd alias
+cli.add_command(ALL_CMDS[17], name="fix_cmd")  # fix_cmd alias
+cli.add_command(ALL_CMDS[18], name="graph_cmd")  # graph_cmd alias
+cli.add_command(ALL_CMDS[19], name="compare_cmd")  # compare_cmd alias
+cli.add_command(ALL_CMDS[20], name="scaffold_cmd")  # scaffold_cmd alias
+cli.add_command(ALL_CMDS[21], name="roadmap_cmd")  # roadmap_cmd alias
 
 if __name__ == "__main__":
     cli()

@@ -15,13 +15,14 @@ class DecoratorDetector(PatternDetector):
     """
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Detects Decorator pattern implementations in a node.
+        """Detect Decorator pattern implementations in a node.
 
         Args:
             node: The AST node to analyze.
 
         Returns:
             List of detected decorator instances.
+
         """
         res = []
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -77,6 +78,7 @@ def detect_decorator(tree: ast.AST) -> List[Dict[str, Any]]:
 
     Returns:
         List of detected Decorator pattern instances.
+
     """
     detector = DecoratorDetector()
     results = []

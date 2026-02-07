@@ -14,13 +14,14 @@ class ObserverDetector(PatternDetector):
     """
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Detects Observer pattern implementations in a node.
+        """Detect Observer pattern implementations in a node.
 
         Args:
             node: The AST node to analyze.
 
         Returns:
             List of detected observer instances.
+
         """
         self.evidence, self.confidence = [], 0
         name = getattr(node, "name", "Module")
@@ -54,6 +55,7 @@ def detect_observer(tree: ast.AST) -> List[Dict[str, Any]]:
 
     Returns:
         List of detected Observer pattern instances.
+
     """
     detector = ObserverDetector()
     results = []

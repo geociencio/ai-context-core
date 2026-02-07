@@ -40,6 +40,15 @@ def is_test_file(path: pathlib.Path) -> bool:
     )
 
 
+def get_file_stats(path: pathlib.Path) -> dict:
+    """Return mtime and size for quick change detection."""
+    try:
+        stat = path.stat()
+        return {"mtime": stat.st_mtime, "size": stat.st_size}
+    except Exception:
+        return {"mtime": 0, "size": 0}
+
+
 def calculate_file_hash(path: pathlib.Path) -> str:
     try:
         content = read_file_fast(path)

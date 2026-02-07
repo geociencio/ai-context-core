@@ -9,7 +9,10 @@ from ai_context_core.commands import analyze, inspect
 @click.option("--path", default=".", help="Project path")
 @click.option("--workers", "-w", default=None, type=int, help="Parallel workers")
 @click.option(
-    "--format", "-f", type=click.Choice(["markdown", "html"]), default="markdown"
+    "--format",
+    "-f",
+    type=click.Choice(["markdown", "html", "json"]),
+    default="markdown",
 )
 @click.option("--no-cache", is_flag=True, help="Force full analysis, ignoring cache")
 def analyze_cmd(path: str, workers: Optional[int], format: str, no_cache: bool):

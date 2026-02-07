@@ -15,13 +15,14 @@ class StrategyDetector(PatternDetector):
     """
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Detects Strategy pattern implementations in a node.
+        """Detect Strategy pattern implementations in a node.
 
         Args:
             node: The AST node to analyze.
 
         Returns:
             List of detected strategy instances.
+
         """
         if not isinstance(node, ast.ClassDef):
             return []
@@ -43,7 +44,7 @@ class StrategyDetector(PatternDetector):
         return []
 
     def _check_for_injection(self, node: ast.ClassDef) -> bool:
-        """Checks class methods for strategy injection."""
+        """Check class methods for strategy injection."""
         has_inj = False
         for item in node.body:
             if isinstance(item, ast.FunctionDef) and (
@@ -58,7 +59,7 @@ class StrategyDetector(PatternDetector):
         return has_inj
 
     def _check_for_calls(self, node: ast.ClassDef) -> None:
-        """Checks class methods for calls to injected strategies."""
+        """Check class methods for calls to injected strategies."""
         for item in node.body:
             if isinstance(item, ast.FunctionDef) and item.name not in (
                 "__init__",
@@ -79,6 +80,7 @@ def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:
 
     Returns:
         List of detected Strategy pattern instances.
+
     """
     detector = StrategyDetector()
     results = []

@@ -17,8 +17,10 @@ class PatternDetector:
         self.confidence = 0
 
     def detect(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Analyzes a node and returns detected pattern instances.
+        """Analyze a node and returns detected pattern instances.
+
         Implemented for backward compatibility with individual detector calls.
+
         """
         if hasattr(self, "visit"):
             self.visit(node)
@@ -26,17 +28,18 @@ class PatternDetector:
         raise NotImplementedError
 
     def _add_evidence(self, msg: str, weight: int):
-        """Adds evidence of a pattern and increases confidence.
+        """Add evidence of a pattern and increase confidence.
 
         Args:
             msg: Description of the evidence found.
             weight: Confidence weight to add.
+
         """
         self.evidence.append(msg)
         self.confidence += weight
 
     def get_results(self, node: ast.AST) -> List[Dict[str, Any]]:
-        """Returns the results if confidence threshold is met."""
+        """Return the results if confidence threshold is met."""
         if self.confidence >= PATTERN_DETECTION_CONFIDENCE_THRESHOLD:
             name = getattr(node, "name", "N/A")
             return [
