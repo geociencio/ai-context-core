@@ -64,14 +64,19 @@ sql_injection_indicators = ["execute(", "executemany("]
 
 ### 4. Configuración de Análisis (`analysis`)
 
-Parámetros técnicos del motor de análisis.
+Parámetros técnicos del motor de análisis para optimizar el rendimiento.
 
 ```toml
 [analysis]
-parallel_workers = "auto"  # "auto" usa CPU count * 2, o un entero específico
-cache_enabled = true       # Usa caché incremental en .ai-context/cache
-max_file_size_mb = 10      # Ignora archivos mayores a este tamaño
+parallel_workers = "auto"  # "auto" usa cores*2, o un entero específico
+parallel_batch_size = 10   # Agrupa archivos en lotes para reducir overhead de IPC
+cache_enabled = true       # Usa caché persistente (.ai_context_cache.json)
+incremental = true         # Comprobación ultra-rápida vía mtime/size antes de hashing
+max_file_size_mb = 10      # Ignora archivos mayores a este límite
 ```
+
+> [!NOTE]
+> El análisis incremental permite que ejecuciones subsecuentes sean casi instantáneas si los archivos no han cambiado físicamente.
 
 ## Ejemplo de Personalización
 
