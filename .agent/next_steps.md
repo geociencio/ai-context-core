@@ -36,9 +36,15 @@
 
 ## 📋 Future Enhancements (v3.2.0+)
 
-### Phase 9: AI Recommendations 2.0
-- Integrate local LLM support for code suggestions.
-- Implement specialized prompts for QGIS plugin development.
+### Phase 7: Performance Optimization
+- [ ] Profile analysis performance on large projects (10k+ files).
+- [ ] Optimize AST traversal to reduce redundant walks.
+- [ ] Implement incremental analysis (only analyze changed files).
+
+### Phase 8: Enhanced QGIS Support
+- [ ] Add QGIS 3.x API compatibility checks.
+- [ ] Detect deprecated QGIS APIs.
+- [ ] Analyze `plugin.xml` and resource files.
 
 ## 🐛 Known Issues
 

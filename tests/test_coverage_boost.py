@@ -2,7 +2,7 @@ import unittest
 import ast
 from ai_context_core.analyzer.summarizers.issues import IssuesSummarizer
 from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummarizer
-from ai_context_core.analyzer.patterns_detectors.observer_components.signals import (
+from ai_context_core.analyzer.patterns_detectors.observer_rules import (
     detect_signals,
 )
 from ai_context_core.analyzer.metrics import calculate_halstead_metrics

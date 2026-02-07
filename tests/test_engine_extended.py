@@ -102,6 +102,6 @@ def test_worker_run_parallel_exception():
                 return_value="hash",
             ):
                 # to_analyze needs to be filled
-                res = worker.run_parallel(files)
+                worker.run_parallel(files)
                 # Should have logged error
                 assert "Future fail" in str(worker.error_log)

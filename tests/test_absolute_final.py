@@ -1,6 +1,7 @@
 import ast
+import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.patterns_detectors.singleton_components.assign_rules import (
+from ai_context_core.analyzer.patterns_detectors.singleton_rules import (
     _is_singleton_instance_var,
 )
 from ai_context_core.analyzer.patterns_detectors.strategy_rules import StrategyRules
@@ -13,7 +14,7 @@ from click.testing import CliRunner
 
 
 def test_singleton_assign_non_name():
-    # Coverage for assign_rules.py line 17
+    # Coverage for singleton_rules.py line 17
     # target is not ast.Name
     target = ast.Attribute(
         value=ast.Name(id="self", ctx=ast.Load()), attr="instance", ctx=ast.Store()
@@ -43,12 +44,13 @@ def test_clean_no_artifacts():
     runner = CliRunner()
     with runner.isolated_filesystem():
         # No files created
-        from ai_context_core.commands.clean import clean_artifacts
+        pass
 
 
 def test_gis_utils_extract_metadata():
     # Coverage for gis_utils.py lines 44-45, 48-49
     from ai_context_core.analyzer.gis_utils import parse_qgis_metadata
+    from ai_context_core.commands.clean import clean_artifacts
 
     # Test with missing metadata.txt
     with patch("pathlib.Path.exists", return_value=False):
@@ -80,7 +82,7 @@ def test_cli_main_entry():
     # Attempt to cover 'if __name__ == "__main__":'
     import sys
 
-    with patch("ai_context_core.cli.cli") as mock_cli:
+    with patch("ai_context_core.cli.cli"):
         # Manually trigger the block logic by setting __name__
         # and simulating the script execution environment
         with patch.object(sys, "argv", ["ai-ctx"]):
@@ -103,7 +105,7 @@ def test_cli_main_entry():
 def test_observer_class_analyzer_exception():
     # Coverage for src/ai_context_core/analyzer/patterns_detectors/observer_components/class_analyzer.py 37-38
     # _check_connection_call try-except
-    from ai_context_core.analyzer.patterns_detectors.observer_components.class_analyzer import (
+    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
         _check_connection_call,
     )
 
@@ -120,7 +122,7 @@ def test_observer_class_analyzer_exception():
 
 def test_observer_signals_exception():
     # Coverage for src/ai_context_core/analyzer/patterns_detectors/observer_components/signals.py 27-28
-    from ai_context_core.analyzer.patterns_detectors.observer_components.signals import (
+    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
         _is_signal_definition,
     )
 

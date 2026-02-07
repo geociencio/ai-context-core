@@ -4,7 +4,7 @@ import ast
 from .base import PatternDetector
 
 
-from .singleton_components import check_singleton_item
+from .singleton_rules import check_singleton_item
 
 
 class SingletonDetector(PatternDetector):

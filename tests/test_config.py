@@ -7,7 +7,6 @@ from ai_context_core.analyzer.engine import load_config
 
 
 class TestConfigLoading:
-
     @pytest.fixture
     def mock_defaults_toml(self):
         return """

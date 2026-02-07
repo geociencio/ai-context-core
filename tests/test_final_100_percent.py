@@ -92,7 +92,7 @@ def test_gis_utils_extract_metadata():
     # Test with missing metadata.txt
     with patch("pathlib.Path.exists", return_value=False):
         result = parse_qgis_metadata(pathlib.Path("/tmp"))
-        assert result["exists"] == False
+        assert not result["exists"]
 
     # Test with valid metadata.txt
     metadata_content = """

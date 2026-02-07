@@ -4,7 +4,7 @@ from ai_context_core.analyzer.security_checkers.insecure_calls import (
     InsecureCallsChecker,
 )
 from ai_context_core.analyzer.security_checkers.base import BaseSecurityChecker
-from ai_context_core.analyzer.patterns_detectors.observer_components.class_analyzer import (
+from ai_context_core.analyzer.patterns_detectors.observer_rules import (
     analyze_class_body,
 )
 
@@ -47,7 +47,7 @@ class MyEmitter:
 
 def test_observer_collection_init_coverage():
     # Test collections.py line 24 (False case already covered, need True)
-    from ai_context_core.analyzer.patterns_detectors.observer_components.collections import (
+    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
         check_init_assign,
     )
 
@@ -62,7 +62,7 @@ def test_observer_collection_init_coverage():
 
 def test_observer_iteration_coverage():
     # Test collections.py line 34 (False case already covered, need True)
-    from ai_context_core.analyzer.patterns_detectors.observer_components.collections import (
+    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
         check_iteration,
     )
 

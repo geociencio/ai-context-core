@@ -91,7 +91,6 @@ def test_aggregator_timestamp():
         patch("ai_context_core.analyzer.issues.find_optimizations"),
         patch("ai_context_core.analyzer.issues.find_secrets"),
     ):
-
         res = agg.aggregate([], {}, {}, {})
         assert "timestamp" in res
         assert isinstance(res["timestamp"], float)

@@ -258,7 +258,6 @@ def test_serve_command():
             ) as mock_server_cls,
             patch("ai_context_core.commands.serve.webbrowser.open") as mock_open,
         ):
-
             # Setup mock server that stops immediately
             mock_server = MagicMock()
             mock_server_cls.return_value.__enter__.return_value = mock_server
