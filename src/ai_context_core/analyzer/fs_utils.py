@@ -8,7 +8,7 @@ import pathlib
 import logging
 from typing import Dict, Any
 from .fs_scanner import scan_project
-from .fs_helpers import load_exclusion_patterns, calculate_file_hash
+from .fs_helpers import load_exclusion_patterns, calculate_file_hash, read_file_fast
 from .fs_cache import load_cache, save_cache
 from .gis_utils import parse_qgis_metadata
 from .fs_tree import generate_tree_optimized

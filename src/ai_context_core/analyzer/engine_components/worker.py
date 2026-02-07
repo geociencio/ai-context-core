@@ -33,6 +33,8 @@ class AnalysisWorker:
         results, to_analyze = [], []
         from .. import fs_utils
 
+        # DEBUG:
+        # print(f"run_parallel called with {len(files)} files")
         for f in files:
             rel = str(f.relative_to(self.project_path))
             h = fs_utils.calculate_file_hash(f)

@@ -10,9 +10,8 @@ def validate_qgis(path: str):
     """Validates QGIS plugin compliance."""
     proj = pathlib.Path(path).resolve()
     loader = ConfigLoader()
-    # For QGIS validation, we explicitly use the qgis profile or ensure qgis compliance is enabled
-    # Actually CLIHandler.validate_qgis just used the current config
-    cfg = loader.load_config()
+    # For QGIS validation, we explicitly use the qgis profile to ensure qgis compliance is enabled
+    cfg = loader.load_config(profile_name="qgis")
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
     res = analyzer.analyze()
 

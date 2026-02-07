@@ -12,6 +12,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2026-02-07 - QGIS Profile & Analysis Fixes
+
+### Added
+- **Integration Tests**: Added `tests/test_qgis_command.py` to verify the full QGIS compliance command flow.
+
+### Fixed
+- **QGIS Profile Enforcement**: Fixed critical bug where the `qgis` command failed to load its specialized profile, resulting in a default 0.0 compliance score.
+- **Worker Execution**: Resolved `AttributeError` in `fs_utils.py` by correctly exporting `read_file_fast`, fixing silent analysis failures.
+- **i18n Heuristics**: Refined translatable string detection to be more resilient to short mock strings in tests.
+
+
 ## [3.1.0] - 2026-02-07 - Quality Excellence & Extreme Fragmentation
 
 ### Added
