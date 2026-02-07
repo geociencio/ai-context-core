@@ -1,5 +1,13 @@
 # Development Log
 
+## [2026-02-07] Python 3.14 Compatibility & Logic Fixes (v3.0.2) - COMPLETADA
+**TEMA**: Estabilidad y Estándares Modernos 🐍
+- **Python 3.14**: Fix para `ast.Str` (eliminado en 3.14), ahora usa `ast.Constant`. 🐍
+- **Complexity**: Solucionado bug de doble conteo en bloques `try` y `async with`. 🧩
+- **QGIS i18n**: Optimizado conteo de strings (docstrings ignorados) y corregido `KeyError` en `translate`. 🌍
+- **Ignore Engine**: Filtrado recursivo robusto para directorios ignorados. 🛡️
+- **Quality Score**: Elevado a **62.6/100**. 🏆
+
 ## [2026-01-30] SLOC Engine & Metadata Fix - COMPLETADA
 **TEMA**: Precisión de Métricas y GIS 🇲🇽
 - **SLOC Engine**: Implementado conteo de líneas de código real (Source Lines of Code) excluyendo docstrings y comentarios. 📈

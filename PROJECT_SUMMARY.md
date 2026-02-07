@@ -1,11 +1,10 @@
-# PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 09:49:48
-Analyzer Version: 2.0 (Ai-Context-Core)
-
-## 📊 KEY METRICS
-- **Total Modules**: 48
-- **Source Lines (SLOC)**: 4,106
-- **Total Physical Lines**: 6,853
+# PROJECT SUMMARY - ai-context-cor----------------------------------------
+🏆 Quality Score: 62.6/100
+📊 Lines: 4,106
+💡 Opts: 16
+----------------------------------------
+✅ Completed.
+*Total Physical Lines**: 6,853
 - **Total Size**: 1.2 MB
 - **Average Complexity**: 18.2
 - **Avg Maintenance Index**: 42.6
@@ -15,7 +14,7 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 
 ## 📁 STRUCTURE
 - **Python Files**: 68
-- **Total Files**: 208
+- **Total Files**: 210
 - **Primary File Types**: .md, .py, .json, .yaml, .yml
 
 ## 📦 QGIS STANDARDS
@@ -31,19 +30,19 @@ Analyzer Version: 2.0 (Ai-Context-Core)
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/ast_metrics.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/ast_visitors.py
+### src/ai_context_core/analyzer/ast_qgis.py
 - Consider breaking down large logic
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 596
-- **Additions**: +50381
-- **Deletions**: -25708
-- **Total Churn**: 76089
+- **Files Changed**: 633
+- **Additions**: +51525
+- **Deletions**: -26169
+- **Total Churn**: 77694
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 24 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 19 commits
 - `src/ai_context_core/analyzer/reporting.py`: 19 commits
+- `src/ai_context_core/cli.py`: 17 commits
 - `src/ai_context_core/analyzer/issues.py`: 17 commits
-- `src/ai_context_core/cli.py`: 16 commits
