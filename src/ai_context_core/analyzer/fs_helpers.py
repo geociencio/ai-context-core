@@ -10,9 +10,11 @@ def read_file_fast(path: pathlib.Path) -> str:
     from .fs_cache import file_cache
     cache_key = str(path)
     cached = file_cache.get(cache_key)
-    if cached: return cached
+    if cached:
+        return cached
     try:
-        if not path.exists(): return ""
+        if not path.exists():
+            return ""
         with open(path, "rb") as f:
             file_size = path.stat().st_size
             if file_size > 1024 * 1024:
@@ -22,7 +24,8 @@ def read_file_fast(path: pathlib.Path) -> str:
                 content = f.read().decode("utf-8-sig", errors="replace")
             file_cache.set(cache_key, content)
             return content
-    except Exception: return ""
+    except Exception:
+        return ""
 
 def is_test_file(path: pathlib.Path) -> bool:
     filename = path.name.lower()
@@ -36,9 +39,11 @@ def is_test_file(path: pathlib.Path) -> bool:
 def calculate_file_hash(path: pathlib.Path) -> str:
     try:
         content = read_file_fast(path)
-        if not content: return ""
+        if not content:
+            return ""
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
-    except Exception: return ""
+    except Exception:
+        return ""
 
 def load_exclusion_patterns(project_path: pathlib.Path, extra: List[str] = None) -> List[str]:
     return IgnoreFilter(project_path, extra).patterns

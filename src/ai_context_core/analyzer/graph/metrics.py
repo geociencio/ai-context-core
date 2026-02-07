@@ -1,19 +1,6 @@
 """Calculation of dependency graph metrics."""
 
-from typing import Dict, List, Set
-
-class GraphMetricsCalculator:
-    """Class to calculate various graph metrics."""
-
-    def __init__(self, import_graph: Dict[str, Set[str]]):
-        """Initialize the graph metrics calculator.
-
-        Args:
-            import_graph: Project dependency graph.
-        """
-        self.graph = import_graph
-        self.num_nodes = len(import_graph)
-
+from typing import Dict, Set
 from .metrics_components import count_connected_components as _count_comp, calculate_coupling as _calc_coupling
 
 class GraphMetricsCalculator:

@@ -1,7 +1,7 @@
 """Logic for parsing common dependency files (requirements.txt, pyproject.toml, etc.)."""
 
 import pathlib
-from typing import Dict, List, Callable
+from typing import Dict, Callable
 
 DEPENDENCY_FILES = [
     "requirements.txt",

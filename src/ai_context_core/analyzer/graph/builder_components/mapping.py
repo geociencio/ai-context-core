@@ -1,7 +1,6 @@
 """Logic for mapping file paths to importable python paths."""
 
-import pathlib
-from typing import Dict, Optional
+from typing import Optional
 
 def get_importable_path(path: str) -> Optional[str]:
     """Map a file path to an importable python path (e.g., 'pkg.mod').

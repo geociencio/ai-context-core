@@ -1,7 +1,6 @@
 """Singleton pattern detector implementation."""
 
 import ast
-from ..constants import PATTERN_DETECTION_CONFIDENCE_HIGH
 from .base import PatternDetector
 
 
@@ -25,3 +24,26 @@ class SingletonDetector(PatternDetector):
             
         for item in node.body:
             check_singleton_item(item, self._add_evidence)
+
+
+def detect_singleton(tree: ast.AST):
+    """Facade function to detect Singleton patterns in an AST.
+
+    Args:
+        tree: The AST tree to analyze.
+
+    Returns:
+        List of detected Singleton pattern instances.
+    """
+    detector = SingletonDetector()
+    results = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef):
+            detector.visit(node)
+            if detector.evidence:
+                results.append({
+                    "class": node.name,
+                    "evidence": detector.evidence,
+                    "confidence": detector.confidence
+                })
+    return results

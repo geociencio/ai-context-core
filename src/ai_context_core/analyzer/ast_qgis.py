@@ -1,11 +1,19 @@
-"""QGIS specific compliance and pattern detection."""
+"""QGIS specific compliance and pattern detection.
 
-import ast
-from typing import Dict, Any
-
+This module is a facade that re-exports functionality from ast_qgis_components.
+"""
 
 from .ast_qgis_components import (
-    GenericQGISComplianceVisitor as QGISComplianceVisitor,
+    GenericQGISComplianceVisitor,
     is_qgis_entry_point_node,
-    check_qgis_compliance
+    check_qgis_compliance,
 )
+
+__all__ = [
+    "GenericQGISComplianceVisitor",
+    "is_qgis_entry_point_node",
+    "check_qgis_compliance",
+]
+
+# Alias for backward compatibility
+QGISComplianceVisitor = GenericQGISComplianceVisitor

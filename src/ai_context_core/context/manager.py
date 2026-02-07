@@ -1,7 +1,5 @@
 """Project context and AI prompt management."""
 
-import json
-import yaml
 import pathlib
 from typing import Dict, Any
 

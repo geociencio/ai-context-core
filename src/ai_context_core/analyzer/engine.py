@@ -6,24 +6,16 @@ aggregating results from AST analysis, dependency checking, and issue detection.
 
 import logging
 import time
-import ast
-import concurrent.futures
 import pathlib
 import json
 from typing import Dict, Any, List, Optional
 from . import (
-    ast_utils,
     fs_utils,
-    metrics,
-    issues,
     reporting,
     dependencies,
-    antipatterns,
-    patterns,
     git_analysis,
     aggregator,
 )
-from .constants import PARALLEL_MIN_FILES
 from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)

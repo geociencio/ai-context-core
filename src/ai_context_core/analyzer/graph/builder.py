@@ -1,21 +1,6 @@
 """Logic for building the project import graph."""
 
-from typing import Dict, Any, List, Set, Optional
-
-class ImportGraphBuilder:
-    """Class responsible for building the internal import graph of the project."""
-
-    def __init__(self, modules_data: List[Dict[str, Any]]):
-        """Initialize the builder with module data.
-
-        Args:
-            modules_data: List of module analysis results.
-        """
-        self.modules_data = modules_data
-        self.import_graph = {}
-        self.import_map = {}
-        self.known_internal_modules = set()
-
+from typing import Dict, Any, List, Set
 from .builder_components import get_importable_path, resolve_import
 
 class ImportGraphBuilder:

@@ -1,9 +1,7 @@
 """Handles loading and updating project context files."""
 
-import json
-import yaml
 import pathlib
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from .store_components import load_context_files, load_single_context_file, update_context_file
 

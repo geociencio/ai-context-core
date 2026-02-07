@@ -3,7 +3,6 @@
 import ast
 from typing import Dict, List, Any
 from .base import PatternDetector
-from .observer_rules import ObserverRules
 
 from .observer_components import detect_signals, analyze_class_body
 

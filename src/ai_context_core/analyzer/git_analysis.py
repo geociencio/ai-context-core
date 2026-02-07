@@ -4,13 +4,11 @@ This module provides tools to analyze git history, identify hotspots,
 and calculate code churn.
 """
 
-import subprocess
 import pathlib
-from typing import List, Dict, Any, Optional
-from collections import Counter
+from typing import List, Dict, Any
 
 
-from .git_analysis_components import GitRunner, GitParser, GitAnalyzer
+from .git_analysis_components import GitAnalyzer
 
 def is_git_repo(path: pathlib.Path) -> bool:
     """Legacy wrapper for is_repo."""

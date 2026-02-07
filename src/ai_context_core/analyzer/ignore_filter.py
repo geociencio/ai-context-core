@@ -2,8 +2,6 @@
 
 import pathlib
 
-import fnmatch
-import re
 from typing import List, Optional
 
 

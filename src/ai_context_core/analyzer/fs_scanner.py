@@ -35,7 +35,8 @@ class ProjectScanner:
     def scan(self) -> ProjectScanResult:
         for root, dirs, files in os.walk(self.project_path):
             rel_root = os.path.relpath(root, self.project_path)
-            if rel_root == ".": rel_root = ""
+            if rel_root == ".":
+                rel_root = ""
 
             i = 0
             while i < len(dirs):
@@ -58,11 +59,14 @@ class ProjectScanner:
     def _process_file(self, root: str, rel_root: str, file: str):
         file_path = os.path.join(root, file)
         path_obj = pathlib.Path(file_path)
-        if self.ignore_filter.is_ignored(path_obj): return
+        if self.ignore_filter.is_ignored(path_obj):
+            return
 
         size = 0
-        try: size = os.path.getsize(file_path)
-        except OSError: pass
+        try:
+            size = os.path.getsize(file_path)
+        except OSError:
+            pass
 
         self.stats["total_files"] += 1
         self.stats["total_size"] += size

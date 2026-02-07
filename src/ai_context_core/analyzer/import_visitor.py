@@ -5,7 +5,6 @@ from typing import List
 
 
 from .import_visitor_components import (
-    GenericImportVisitor as ImportVisitor,
     get_unique_imports,
     get_unused_imports
 )

@@ -9,5 +9,6 @@ from .class_analyzer import analyze_class_body
 
 __all__ = [
     "detect_signals", "check_init_assign", "check_iteration", 
-    "check_mgmt_method", "check_notify_method", "analyze_class_body"
+    "check_mgmt_method", "check_notify_method", "analyze_class_body",
+    "KEYWORDS_INIT", "KEYWORDS_MGMT", "KEYWORDS_NOTIFY"
 ]

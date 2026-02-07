@@ -1,6 +1,7 @@
 """SLOC (Source Lines of Code) calculation logic."""
 
 import ast
+from typing import List, Tuple
 import io
 import tokenize
 
@@ -57,4 +58,3 @@ def _fallback_sloc(content: str) -> int:
     lines = [line.strip() for line in content.splitlines()]
     return len([line for line in lines if line and not line.startswith("#")])
 
-from typing import List, Tuple, Optional

@@ -1,7 +1,6 @@
 """Specialized rules for detecting observer pattern indicators."""
 
 import ast
-from typing import List, Dict, Any
 
 from .observer_components import (
     detect_signals as _sig_detect,

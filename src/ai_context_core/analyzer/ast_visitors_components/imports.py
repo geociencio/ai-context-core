@@ -1,7 +1,7 @@
 """Import extraction and unused detection visitor."""
 
 import ast
-from typing import List, Dict, Set
+from typing import List
 
 class ImportVisitor(ast.NodeVisitor):
     """Visitor to extract imports."""

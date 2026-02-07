@@ -7,23 +7,17 @@ This module now uses a plugin-based system with Checkers.
 """
 
 import ast
-import pathlib
 import warnings
-from typing import List, Dict, Any, Type
+from typing import List, Dict, Any
 
-from .checkers import BaseChecker
-from .checkers.security_checker import SecurityChecker
-from .checkers.tech_debt_checker import TechDebtChecker
-from .checkers.optimization_checker import OptimizationChecker
-from .secrets import detect_secrets
 from .ast_security import ASTSecurityDetector  # noqa: F401
 
 
 from .issues_components import (
     CheckerRegistry,
-    find_technical_debt,
+    find_secrets,
     find_optimizations,
-    find_secrets
+    find_technical_debt,
 )
 
 class IssueDetector:

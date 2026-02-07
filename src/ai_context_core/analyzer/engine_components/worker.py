@@ -6,7 +6,7 @@ import time
 import concurrent.futures
 import pathlib
 from typing import Dict, Any, List
-from .. import ast_utils, issues, patterns, metrics, antipatterns
+from .. import ast_utils, issues, patterns, metrics
 from ..constants import PARALLEL_MIN_FILES
 
 logger = logging.getLogger(__name__)

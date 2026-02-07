@@ -19,10 +19,12 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
         res["content"] = metadata
         mandatory = ["name", "description", "version", "qgisminimumversion", "author", "email"]
         for field in mandatory:
-            if field not in metadata: res["issues"].append(f"Missing mandatory field: {field}")
+            if field not in metadata:
+                res["issues"].append(f"Missing mandatory field: {field}")
         recommended = ["repository", "tracker", "homepage", "category", "tags"]
         for field in recommended:
-            if field not in metadata: res["issues"].append(f"Missing recommended field: {field}")
+            if field not in metadata:
+                res["issues"].append(f"Missing recommended field: {field}")
         if not res["issues"]:
             res["valid"] = True
             res["compliance_score"] = 100

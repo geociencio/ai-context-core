@@ -1,14 +1,6 @@
 """Command Line Interface for Ai-Context-Core."""
 
 import click
-import pathlib
-import shutil
-import os
-import sys
-from typing import Optional
-from .analyzer.engine import ProjectAnalyzer
-from .config.loader import list_profiles
-from .commands import init, analyze, inspect, serve, report, deps, git, stats, qgis, clean
 
 from .cli_groups import ALL_CMDS
 

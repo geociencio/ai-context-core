@@ -1,7 +1,7 @@
 """Specialized rules for detecting Decorator pattern indicators."""
 
 import ast
-from typing import Optional, Tuple
+from typing import Optional
 
 class DecoratorRules:
     """Encapsulates patterns for Decorator detection."""

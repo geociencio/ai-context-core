@@ -5,22 +5,15 @@ This module now acts as a facade for individual detectors located in `patterns_d
 """
 
 import ast
-from typing import Dict, List, Any
-from .patterns_detectors.singleton import SingletonDetector
-from .patterns_detectors.factory import FactoryDetector
-from .patterns_detectors.observer import ObserverDetector
-from .patterns_detectors.strategy import StrategyDetector
-from .patterns_detectors.decorator import DecoratorDetector
+from typing import Dict, Any
 
 
 from .patterns_components import (
-    PatternsUnifiedVisitor,
-    detect_singleton,
-    detect_factory,
-    detect_observer,
-    detect_strategy,
-    detect_decorator
+    PatternsUnifiedVisitor
 )
+
+# Re-export individual detectors for backward compatibility
+from .patterns_detectors.singleton import detect_singleton
 
 def detect_patterns(tree: ast.AST) -> Dict[str, Any]:
     """Analyzes an AST to detect common design patterns using a unified visitor.

@@ -1,7 +1,7 @@
 """Core metrics calculation logic (MI, Halstead, etc.)."""
 
 import math
-from typing import Dict, Any
+from typing import Dict
 
 class MetricsCalculator:
     """Class to calculate basic code metrics."""
@@ -43,11 +43,32 @@ class MetricsCalculator:
         v = N * math.log2(n) if n > 0 else 0
         d = (n1 / 2) * (N2 / n2) if n2 > 0 else 0
         e = d * v
+        return {"volume": v, "difficulty": d, "effort": e}
+
 def calculate_maintenance_index(v: float, g: int, loc: int) -> float:
-    """Standalone function to calculate Maintenance Index."""
+    """Standalone function to calculate Maintenance Index.
+
+    Args:
+        v: Halstead Volume.
+        g: Cyclomatic Complexity.
+        loc: Lines of Code (Source).
+
+    Returns:
+        Normalized Maintenance Index.
+    """
     return MetricsCalculator.maintenance_index(v, g, loc)
 
 
 def calculate_halstead_metrics(n1: int, n2: int, N1: int, N2: int) -> Dict[str, float]:
-    """Standalone function to calculate Halstead metrics."""
+    """Standalone function to calculate Halstead metrics.
+
+    Args:
+        n1: Number of unique operators.
+        n2: Number of unique operands.
+        N1: Total number of operators.
+        N2: Total number of operands.
+
+    Returns:
+        Dictionary with volume, difficulty, and effort.
+    """
     return MetricsCalculator.halstead_metrics(n1, n2, N1, N2)

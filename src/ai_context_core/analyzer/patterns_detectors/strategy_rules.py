@@ -1,7 +1,6 @@
 """Specialized rules for detecting Strategy pattern indicators."""
 
 import ast
-from typing import List
 
 class StrategyRules:
     """Encapsulates patterns for Strategy detection."""

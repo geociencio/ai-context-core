@@ -13,14 +13,16 @@ def generate_tree_optimized(project_path: pathlib.Path) -> str:
         )
         if result.returncode == 0:
             return result.stdout[:1500]
-    except Exception: pass
+    except Exception:
+        pass
     return _generate_tree_fallback(project_path)
 
 def _generate_tree_fallback(project_path: pathlib.Path) -> str:
     tree_lines = ["./"]
     for root, dirs, files in os.walk(project_path):
         depth = root[len(str(project_path)) :].count(os.sep)
-        if depth > 4: continue
+        if depth > 4:
+            continue
         dirs[:] = [d for d in dirs if not d.startswith((".", "_"))]
         indent = "    " * depth
         rel_root = os.path.relpath(root, project_path)

@@ -1,7 +1,6 @@
 """Visitor implementation for QGIS compliance analysis."""
 
 import ast
-from typing import Dict, Any
 
 class GenericQGISComplianceVisitor(ast.NodeVisitor):
     """Visitor to check for QGIS coding standards and best practices."""
