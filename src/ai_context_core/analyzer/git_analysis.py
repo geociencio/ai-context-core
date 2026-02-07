@@ -8,7 +8,11 @@ import pathlib
 from typing import List, Dict, Any
 
 
-from .git_analysis_components import GitAnalyzer
+from .git_analysis_components import (  # noqa: F401
+    GitAnalyzer,
+    GitRunner,
+    GitParser,
+)
 
 
 def is_git_repo(path: pathlib.Path) -> bool:

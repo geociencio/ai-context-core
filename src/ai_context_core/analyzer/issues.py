@@ -13,7 +13,7 @@ from typing import List, Dict, Any
 from .ast_security import ASTSecurityDetector  # noqa: F401
 
 
-from .issues_components import (
+from .issues_components import (  # noqa: F401
     CheckerRegistry,
     find_secrets,
     find_optimizations,

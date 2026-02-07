@@ -8,7 +8,14 @@ import ast
 from typing import Dict, Any
 
 
-from .patterns_components import PatternsUnifiedVisitor
+from .patterns_components import (  # noqa: F401
+    PatternsUnifiedVisitor,
+    detect_singleton,
+    detect_factory,
+    detect_observer,
+    detect_strategy,
+    detect_decorator,
+)
 
 # Re-export individual detectors for backward compatibility
 
