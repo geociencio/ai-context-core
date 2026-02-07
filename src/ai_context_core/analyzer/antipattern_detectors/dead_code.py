@@ -1,7 +1,5 @@
 """Detección de Código Muerto (unreachable code)."""
 
-
-
 import ast
 from typing import List, Dict, Any
 from .base import AntiPatternDetector

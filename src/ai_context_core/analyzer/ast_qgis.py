@@ -11,7 +11,7 @@ class QGISComplianceVisitor(ast.NodeVisitor):
         """Initialize the QGIS compliance visitor."""
         self.results = {
             "processing_framework": False,
-            "i18n_usage": {"tr": 0, "total_strings": 0},
+            "i18n_usage": {"tr": 0, "translate": 0, "total_strings": 0},
             "gdal_import_style": "Modern",  # Modern, Legacy, or Missing
             "qt_transition": {"pyqt5_imports": [], "pyqt6_imports": []},
             "signals_slots": {"legacy": 0, "modern": 0},
@@ -46,25 +46,57 @@ class QGISComplianceVisitor(ast.NodeVisitor):
             self.results["qt_transition"]["pyqt6_imports"].append(node.module)
         self.generic_visit(node)
 
-    def visit_ClassDef(self, node: ast.ClassDef):
-        """Visits a class definition to check for QGIS-specific base classes.
+    def visit_Module(self, node: ast.Module):
+        """Visits the module node and ignores its docstring."""
+        self._generic_visit_with_docstring_skip(node)
 
-        Args:
-            node: The ClassDef node.
-        """
-        # Check for Processing Framework
+    def visit_ClassDef(self, node: ast.ClassDef):
+        """Visits a class definition and ignores its docstring."""
+        # Check for Processing Framework (existing logic)
         processing_bases = {"QgsProcessingAlgorithm", "QgsProcessingProvider"}
         for base in node.bases:
-            # Simple base name extraction
             base_name = "Unknown"
             if isinstance(base, ast.Name):
                 base_name = base.id
             elif isinstance(base, ast.Attribute):
                 base_name = base.attr
-
             if base_name in processing_bases:
                 self.results["processing_framework"] = True
-        self.generic_visit(node)
+
+        self._generic_visit_with_docstring_skip(node)
+
+    def visit_FunctionDef(self, node: ast.FunctionDef):
+        """Visits a function definition and ignores its docstring."""
+        self._generic_visit_with_docstring_skip(node)
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
+        """Visits an async function definition and ignores its docstring."""
+        self._generic_visit_with_docstring_skip(node)
+
+    def _generic_visit_with_docstring_skip(self, node: ast.AST):
+        """Helper to visit children while skipping the docstring of the current node."""
+        docstring = ast.get_docstring(node, clean=False)
+        body = getattr(node, "body", [])
+        start_idx = 0
+        if docstring is not None and body and isinstance(body[0], ast.Expr):
+            # Skip the first expression if it's the docstring
+            start_idx = 1
+
+        for child in body[start_idx:]:
+            self.visit(child)
+
+        # Visit decorators and other parts if applicable (for classes/functions)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            for decorator in node.decorator_list:
+                self.visit(decorator)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                for arg in node.args.args:
+                    self.visit(arg)
+                if node.returns:
+                    self.visit(node.returns)
+            elif isinstance(node, ast.ClassDef):
+                for base in node.bases:
+                    self.visit(base)
 
     def visit_Call(self, node: ast.Call):
         """Visits a call node to detect i18n usage and legacy signals.
@@ -73,11 +105,12 @@ class QGISComplianceVisitor(ast.NodeVisitor):
             node: The Call node.
         """
         # Check for i18n: self.tr() or QCoreApplication.translate()
-        if isinstance(node.func, ast.Attribute) and node.func.attr == "tr":
-            self.results["i18n_usage"]["tr"] += 1
-        elif isinstance(node.func, ast.Attribute) and node.func.attr == "translate":
-            # Might be QCoreApplication.translate
-            self.results["i18n_usage"]["translate"] += 1
+        if isinstance(node.func, ast.Attribute):
+            if node.func.attr == "tr":
+                self.results["i18n_usage"]["tr"] += 1
+            elif node.func.attr == "translate":
+                # Check for QCoreApplication.translate or simply .translate
+                self.results["i18n_usage"]["translate"] += 1
 
         # Check for legacy signals/slots (SIGNAL/SLOT macros)
         if isinstance(node.func, ast.Name) and node.func.id in ("SIGNAL", "SLOT"):
@@ -92,7 +125,16 @@ class QGISComplianceVisitor(ast.NodeVisitor):
             node: The Constant node.
         """
         if isinstance(node.value, str) and len(node.value.strip()) > 1:
-            self.results["i18n_usage"]["total_strings"] += 1
+            # Check if this string looks like an internal path, ID, or key
+            val = node.value.strip()
+            # Heuristic: strings with spaces are usually translatable,
+            # while underscored/camelcased strings without spaces are often IDs.
+            if " " in val or any(c in val for c in ".,!?;"):
+                self.results["i18n_usage"]["total_strings"] += 1
+            # But let's keep it simple for now and just rely on docstring exclusion
+            # which is the biggest source of noise.
+            # actually, if I want to be conservative:
+            # self.results["i18n_usage"]["total_strings"] += 1
         self.generic_visit(node)
 
 

@@ -100,48 +100,9 @@ def calculate_complexity(tree: ast.AST) -> int:
     Returns:
         Cyclomatic complexity value.
     """
-    # Note: Using import from complexity_visitor if available, otherwise implementing simple
-    # logic here or assuming it was imported.
-    # For now, let's implement a simple direct visitor or re-use existing logic.
-    # The original file imported from .complexity_visitor inside the function.
-    # We should probably port that logic here or maintain the import.
-    # Assuming we want to consolidate code metrics.
-    try:
-        from .complexity_visitor import calculate_complexity as _calc_complexity
+    from .complexity_visitor import calculate_complexity as _calc_complexity
 
-        return _calc_complexity(tree)
-    except ImportError:
-        # Fallback implementation if module missing
-        return _simple_complexity(tree)
-
-
-def _simple_complexity(tree: ast.AST) -> int:
-    """Fallback complexity calculation using simple node walking.
-
-    Args:
-        tree: The AST to analyze.
-
-    Returns:
-        Rough cyclomatic complexity.
-    """
-    complexity = 1
-    for node in ast.walk(tree):
-        if isinstance(
-            node,
-            (
-                ast.If,
-                ast.While,
-                ast.For,
-                ast.Assert,
-                ast.ExceptHandler,
-                ast.With,
-                ast.Try,
-            ),
-        ):
-            complexity += 1
-        elif isinstance(node, ast.BoolOp):
-            complexity += len(node.values) - 1
-    return complexity
+    return _calc_complexity(tree)
 
 
 def calculate_type_hint_coverage(tree: ast.AST) -> Dict[str, Any]:
@@ -237,7 +198,9 @@ def calculate_sloc(tree: ast.AST, content: str) -> int:
                 if (
                     body
                     and isinstance(body[0], ast.Expr)
-                    and isinstance(body[0].value, (ast.Constant, ast.Str))
+                    and isinstance(
+                        body[0].value, (ast.Constant, getattr(ast, "Str", ast.Constant))
+                    )
                 ):
                     doc_node = body[0]
                     if hasattr(doc_node, "lineno") and hasattr(doc_node, "end_lineno"):

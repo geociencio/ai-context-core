@@ -1,7 +1,5 @@
 """Detección de clases 'God Object' (con demasiados métodos)."""
 
-
-
 import ast
 from typing import List, Dict, Any
 from .base import AntiPatternDetector

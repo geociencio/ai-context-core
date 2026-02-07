@@ -1,7 +1,5 @@
 """Detección de 'Magic Numbers' (constantes numéricas arbitrarias)."""
 
-
-
 import ast
 from typing import List, Dict, Any
 from .base import AntiPatternDetector

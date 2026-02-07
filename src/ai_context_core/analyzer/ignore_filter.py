@@ -77,13 +77,26 @@ class IgnoreFilter:
         return patterns
 
     def is_ignored(self, path: pathlib.Path) -> bool:
-        """Checks if a path should be ignored using optimized regex."""
+        """Checks if a path or any of its parents should be ignored."""
         if not self.regex:
             return False
-        try:
-            rel_path = str(path.relative_to(self.project_path))
-        except ValueError:
-            rel_path = str(path)
 
-        # Match against relative path or just the filename
-        return bool(self.regex.match(rel_path) or self.regex.match(path.name))
+        try:
+            rel_path = path.relative_to(self.project_path)
+        except ValueError:
+            # If path is not under project_path, use absolute or as-is
+            rel_path = path
+
+        # 1. Check if any parent directory is ignored (recursive check)
+        for part in rel_path.parts:
+            if self.regex.match(part):
+                return True
+
+        # 2. Check the full relative path string (for patterns like 'docs/*.html')
+        rel_path_str = str(rel_path).replace(
+            "\\", "/"
+        )  # Ensure forward slashes for matching
+        if self.regex.match(rel_path_str):
+            return True
+
+        return False

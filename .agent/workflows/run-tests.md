@@ -6,27 +6,31 @@ skills:
   - testing-standards
 ---
 
-# Workflow: Run Tests
+# Workflow: Ejecución de Pruebas
 
-Este workflow ejecuta todas las pruebas unitarias disponibles en el proyecto, garantizando un entorno reproducible mediante uv.
+Este workflow garantiza que el código sea estable y cumpla con los umbrales de cobertura definidos.
 
-1.  **Ejecución de Tests**:
-    
-    *Opción A: Entorno Aislado (Docker - Recomendado)*
-    Garantiza que funciona en un entorno limpio sin contaminación local.
-    // turbo
-    ```bash
-    make docker-test
-    ```
+## 1. Ejecución Estratégica
 
-    *Opción B: Entorno Local (uv - Rápido)*
-    Para iteraciones rápidas durante el desarrollo.
-    ```bash
-    uv run pytest tests/ -v --cov=src/ai_context_core
-    ```
+**Opción A: Entorno Aislado (Docker - Recomendado)**
+Garantiza un entorno limpio y reproducible.
+// turbo
+```bash
+make docker-test
+```
 
-    > [!TIP]
-    > Parametros útiles:
-    > - `-k "pattern"`: Ejecuta solo tests que coincidan con el patrón.
-    > - `-x`: Detiene la ejecución al primer fallo.
-    > - `--pdb`: Entra en el debugger al fallar.
+**Opción B: Entorno Local (uv - Rápido)**
+Para desarrollo activo e iteraciones rápidas.
+```bash
+uv run pytest tests/ -v --cov=src/ai_context_core --cov-report=term-missing
+```
+
+## 2. Análisis de Resultados
+
+- **Fallo de Tests**: Si un test falla, detén el desarrollo y prioriza la corrección.
+- **Cobertura**: Verifica que no haya regresiones. El objetivo global es **>70%**.
+- **Regresión**: Si la cobertura baja, se debe justificar o añadir más tests.
+
+## Tips Útiles
+- Usar `-x` para detenerse al primer error.
+- Usar `--ff` para ejecutar primero los tests que fallaron anteriormente.

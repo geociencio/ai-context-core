@@ -1,7 +1,5 @@
 """Base classes for anti-pattern detection."""
 
-
-
 import ast
 from typing import List, Dict, Any
 

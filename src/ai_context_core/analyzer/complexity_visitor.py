@@ -65,7 +65,6 @@ class ComplexityVisitor(ast.NodeVisitor):
             node: The Try node.
         """
         self.generic_visit(node)
-        self.generic_visit(node)
 
     def visit_AsyncWith(self, node: ast.AsyncWith):
         """Visits an async with-statement.
@@ -73,7 +72,6 @@ class ComplexityVisitor(ast.NodeVisitor):
         Args:
             node: The AsyncWith node.
         """
-        self.generic_visit(node)
         self.generic_visit(node)
 
     def visit_ExceptHandler(self, node: ast.ExceptHandler):

@@ -7,57 +7,52 @@ skills:
   - commit-standards
 ---
 
-# Workflow: Release Package
+# Workflow: Liberar Versión (Release)
 
-Este workflow estandariza el proceso de liberación de una nueva versión de `ai-context-core`.
+Este workflow asegura que cada versión pública de `ai-context-core` sea estable, esté documentada y sea trazable.
 
-## Fases del Release
+## 1. Auditoría de Calidad (Puerta de Enlace)
 
-1.  **Validación de Calidad**:
-    Antes de versionar, aseguramos que el código cumpla los estándares.
-    // turbo
-    ```bash
-    uv run ai-ctx analyze
-    uv run ruff check .
-    uv run python -m unittest discover tests
-    ```
-    > **Check**: El score debe ser alto (>90%) y los tests deben pasar (100%).
+Antes de cualquier cambio de versión, el sistema debe ser auditado.
 
-2.  **Versionado y Nombramiento (Bump Version)**:
-    Actualiza la versión en `pyproject.toml` y define un título para el lanzamiento.
-    *Reemplaza `NEW_VERSION` con la versión real (ej: 2.5.0) y `VERSION_TITLE` (ej: Performance and GIS Edition).*
-    ```bash
-    # sed -i 's/^version = "OLD"/version = "NEW_VERSION"/' pyproject.toml
-    ```
+// turbo
+```bash
+uv run ai-ctx audit --threshold 90
+uv run ruff check .
+make docker-test
+```
 
-3.  **Actualización de Documentos**:
-    *   **README.md**: Actualizar insignias de versión y secciones clave si hay nuevos features.
-    *   **Changelog**: 
-        - Mover `[Unreleased]` a `[NEW_VERSION] - FECHA - VERSION_TITLE`.
-        - Asegurar que cada sección (Added, Fixed, Optimized) tenga títulos descriptivos.
-    *   **Release Notes**: Generar `docs/releases/notes/vNEW_VERSION.md` con el título del release en el encabezado #1.
+> **STOP**: No procedas si el score es <90 o si hay fallos en los tests.
 
-4.  **Git Operations**:
-    Etiqueta la versión en el control de versiones.
-    ```bash
-    git add pyproject.toml CHANGELOG.md README.md docs/
-    git commit -m "chore(release): prepare vNEW_VERSION - VERSION_TITLE"
-    git tag -a "vNEW_VERSION" -m "vNEW_VERSION - VERSION_TITLE"
-    git push origin main
-    git push origin "vNEW_VERSION"
-    ```
+## 2. Preparación del Release
 
-5.  **Build & Distribution**:
-    Genera los artefactos distribuibles.
-    // turbo
-    ```bash
-    uv build
-    ls -la dist/
-    ```
+1.  **Versionado**: Actualiza `version` en `pyproject.toml`.
+2.  **Changelog**: Mueve `[Unreleased]` a la nueva versión con la fecha actual.
+3.  **Release Notes**: Crea `docs/releases/notes/v[VERSION].md`.
 
-6.  **GitHub Release**:
-    Crea el draft release con el título oficial.
-    ```bash
-    gh release create "vNEW_VERSION" --title "vNEW_VERSION - VERSION_TITLE" --notes-file docs/releases/notes/vNEW_VERSION.md --draft
-    gh release upload "vNEW_VERSION" dist/* --clobber
-    ```
+## 3. Operaciones de Git
+
+Estandariza los mensajes y etiquetas.
+
+```bash
+git add pyproject.toml CHANGELOG.md README.md docs/
+git commit -m "chore(release): prepare v[VERSION] - [Título]"
+git tag -a "v[VERSION]" -m "v[VERSION] - [Título]"
+git push origin main --tags
+```
+
+## 4. Construcción y Publicación
+
+Genera los artefactos y prepara la release en GitHub.
+
+// turbo
+```bash
+uv build
+gh release create "v[VERSION]" --title "v[VERSION] - [Título]" --notes-file docs/releases/notes/v[VERSION].md --draft
+gh release upload "v[VERSION]" dist/*
+```
+
+## Resultado Esperado
+- Versión actualizada en `pyproject.toml`.
+- Etiqueta de Git creada y subida al remoto.
+- Draft release en GitHub con artefactos `.whl` y `.tar.gz`.

@@ -4,69 +4,56 @@ agent: Senior Architect
 skills:
   - project-context
   - tech-stack
-validation: |
-  - Verificar que 11 tests pasen
-  - Confirmar que AI_CONTEXT.md está actualizado con métricas recientes
-  - Validar que no hay regresiones en complejidad ciclomática
+validation:
+  - ¿Los 11 tests pasan satisfactoriamente?
+  - ¿AI_CONTEXT.md refleja las últimas métricas?
+  - ¿Se ha leído .agent/next_steps.md para retomar el trabajo?
 ---
+
+# Workflow: Iniciar Sesión
 
 Este workflow optimiza el inicio del desarrollo asegurando un entorno sincronizado, **contextualizado** y validado.
 
-1.  **Sintonización de Contexto (CRÍTICO)**:
-    
-    🤖 **Agent Action**: Actualizar y revisar contexto para entender "dónde nos quedamos".
-    
-    Actualiza y lee el contexto para entender el estado actual del proyecto.
-    // turbo
-    ```bash
-    uv run python -m ai_context_core.cli analyze && cat .agent/next_steps.md
-    ```
-    
-    🤖 **Agent Action**: Revisar archivos de contexto usando skills **project-context** y **tech-stack** para identificar:
-    - Deuda técnica crítica (funciones largas, alta complejidad)
-    - Módulos con complejidad ciclomática alta (CC > 15)
-    - Recomendaciones de optimización pendientes
-    
-    Revisa los siguientes archivos en este orden:
-    *   **`.agent/next_steps.md`**: **[CRÍTICO]** El Testigo. Punto exacto donde se detuvo la sesión anterior.
-    *   **`AI_CONTEXT.md`**: Memoria de largo plazo, métricas y directrices de alto nivel.
-    *   **`project_context.json`**: Datos estructurados de complejidad y dependencias.
-    *   **`docs/DEVELOPMENT_LOG.md`**: Ver resumen de la última sesión (orden cronológico inverso).
-    *   **`CHANGELOG.md`**: Cambios recientes y features en desarrollo.
+## 1. Sintonización de Contexto (CRÍTICO)
 
-2.  **Sincronización de Entorno**:
-    
-    🤖 **Agent Action**: Verificar que no hay conflictos de dependencias.
-    
-    Asegura que las dependencias estén sincronizadas.
-    // turbo
-    ```bash
-    uv sync
-    ```
+Actualiza y lee el contexto para entender el estado actual del proyecto.
 
-3.  **Verificación de Estado (Sanity Check)**:
-    
-    🤖 **Agent Action**: Confirmar que el sistema está estable. Los 11 tests deben pasar.
-    
-    Verifica que el código base esté estable antes de empezar a trabajar.
-    
-    Verifica que el código base esté estable antes de empezar a trabajar.
-    
-    *Opción A (Docker - Robusto):*
-    // turbo
-    ```bash
-    make docker-test
-    ```
-    
-    *Opción B (Local - Rápido):*
-    ```bash
-    uv run pytest tests/ -v
-    ```
-    
-    🤖 **Agent Action**: Si hay fallos en tests:
-    - Identificar si son fallos de lógica o de configuración
-    - Sugerir correcciones basadas en estándares del proyecto
-    - Verificar cobertura de código (objetivo: >70%)
+// turbo
+```bash
+uv run python -m ai_context_core.cli analyze && cat .agent/next_steps.md
+```
 
-**Objetivo**: Empezar a codificar sabiendo *exactamente* qué pasó en la última sesión y con el contexto del proyecto cargado.
+**Acciones del Agente**:
+- Revisar `.agent/next_steps.md` para identificar el punto exacto de interrupción.
+- Consultar `AI_CONTEXT.md` para métricas de complejidad y deuda técnica.
+- Verificar `CHANGELOG.md` para cambios recientes.
 
+## 2. Sincronización de Entorno
+
+Asegura que las dependencias y el entorno estén al día.
+
+// turbo
+```bash
+uv sync
+```
+
+## 3. Verificación de Estado (Sanity Check)
+
+Verifica que el código base sea estable antes de comenzar.
+
+**Opción A (Docker - Recomendado):**
+// turbo
+```bash
+make docker-test
+```
+
+**Opción B (Local - Rápido):**
+```bash
+uv run pytest tests/ -v
+```
+
+## Resultado Esperado
+- Entorno de desarrollo actualizado (`uv sync`).
+- Contexto de la IA fresco y alineado con los últimos cambios.
+- Plan de acción claro basado en los "next steps" previos.
+- Estado de tests: **11 tests OK**.

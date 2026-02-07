@@ -6,19 +6,25 @@ skills:
   - tech-stack
 ---
 
-# Workflow: Update Documentation
+# Workflow: Actualizar Documentación
 
-Este workflow se encarga de mantener la documentación al día.
+Mantiene la documentación técnica y de usuario sincronizada con el estado real del código.
 
-1.  **Actualizar Resumen del Proyecto**:
-    Regenera `PROJECT_SUMMARY.md` y `AI_CONTEXT.md` para reflejar la estructura actual.
-    // turbo
-    ```bash
-    uv run ai-ctx analyze
-    ```
+## 1. Actualización Automática
 
-2.  **Verificar Documentation existente**:
-    Revisar `docs/` para asegurar que los nuevos features estén documentados.
+Regenera los archivos de contexto y resúmenes de arquitectura.
 
-3.  **Generar Sphinx Docs (Opción Futura)**:
-    *Si se configura Sphinx en el futuro, aquí irían los comandos `make html` o similares.*
+// turbo
+```bash
+uv run ai-ctx analyze
+```
+
+## 2. Auditoría de Documentos
+
+1.  **`CHANGELOG.md`**: Verificar que todas las features nuevas estén en `[Unreleased]`.
+2.  **`README.md`**: Actualizar ejemplos de uso si la API ha cambiado.
+3.  **Logs de Sesión**: Asegurar que cada sesión importante tenga su resumen en `docs/sessions/`.
+
+## 3. Consistencia
+- Las rutas mencionadas en la documentación deben ser **absolutas** o relativas al root del proyecto.
+- El lenguaje de la documentación técnica debe ser profesional y seguir los estándares de `project-context`.

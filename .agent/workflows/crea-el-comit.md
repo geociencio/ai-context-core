@@ -24,6 +24,7 @@ Este workflow es el estándar de oro para guardar cambios. No solo hace commit, 
     ```bash
     uv run ruff check --fix .
     uv run black .
+    git add .
     ```
 
 2.  **Stage Changes**:

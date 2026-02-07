@@ -1,85 +1,63 @@
 ---
-description: "Finaliza sesión: corre tests, actualiza logs (Dev/Maintenance), regenera contexto IA y propone commit de cierre."
+description: "Finaliza sesión: corre tests, actualiza logs, regenera contexto IA y propone commit de cierre."
 agent: QA Engineer
 skills:
   - project-context
   - commit-standards
-validation: |
-  - Verificar que todos los logs están actualizados
-  - Confirmar que tests pasan antes de cerrar
-  - Validar que .agent/next_steps.md existe y tiene contenido claro
+validation:
+  - ¿Todos los logs (DEVELOPMENT_LOG, CHANGELOG) están actualizados?
+  - ¿Se ha rotado el archivo next_steps.md al historial?
+  - ¿Los tests pasan antes de realizar el commit de cierre?
 ---
 
-Este workflow asegura un cierre limpio y documentado del trabajo realizado.
+# Workflow: Finalizar Sesión
 
-1.  **Formateo de Código**:
-    Asegura consistencia en el estilo del código.
-    ```bash
-    uv run black .
-    ```
+Este workflow asegura un cierre limpio, documentado y listo para que cualquier agente (o tú mismo) retome el trabajo.
 
-2.  **Sanity Check (Tests)**:
-    
-    🤖 **Agent Action**: Verificar que los 7 tests pasan. Alertar si hay fallos.
-    
-    Verifica que no rompimos nada crítico antes de irnos.
-    
-    Verifica que no rompimos nada crítico antes de irnos.
-    
-    *Opción A (Docker - Final Check):*
-    // turbo
-    ```bash
-    make docker-test
-    ```
-    
-    *Opción B (Local):*
-    ```bash
-    uv run pytest tests/ -v
-    ```
-    
-3.  **Actualización de Memoria (Logs & Roadmap)**:
-    
-    🤖 **Agent Action**: Validar que todos los archivos críticos están actualizados.
-    
-    *   **Identificación del Tema**: Define un nombre corto para la sesión (ej: `docker_integration`).
-    *   **`.agent/next_steps.md`**: **[CRÍTICO]** Crea o actualiza este archivo con el "paso de testigo": qué falta, qué errores hay pendientes y cuál es el comando para retomar.
-    *   **Archivado de Next Steps**: **[NUEVO]** Copia `.agent/next_steps.md` a `.agent/history/next_steps/next_steps_YYYY-MM-DD.md` para mantener el registro histórico.
-    *   **`docs/sessions/session_YYYY-MM-DD_[TEMA].md`**: **[OBLIGATORIO]** Crea este archivo con el resumen técnico de la sesión.
-    *   **`docs/DEVELOPMENT_LOG.md`**: **[CRÍTICO]** Añade una entrada `## [YYYY-MM-DD] Resumen` en la parte superior.
-    *   **`CHANGELOG.md`**: Registra cambios visibles para el usuario en `[Unreleased]`.
+## 1. Calidad y Formato
 
-4.  **Sincronización de Contexto Final**:
-    
-    🤖 **Agent Action**: Actualizar AI_CONTEXT.md y validar que next_steps.md es claro.
-    
-    Actualiza las métricas y la memoria de largo plazo del proyecto. Valida calidad antes de cerrar.
-    // turbo
-    ```bash
-    uv run ai-ctx audit --threshold 50
-    uv run ai-ctx analyze && cat .agent/next_steps.md
-    ```
+Asegura consistencia en el estilo del código.
+```bash
+uv run black .
+```
 
-5.  **Commit de Cierre**:
-    
-    🤖 **Agent Action**: Usar skill **commit-standards** para generar mensaje apropiado.
-    
-    Guarda tu progreso.
-    ```bash
-    git add .
-    git commit -m "chore(docs): close session [TEMA]"
-    ```
-    
-    **Formato recomendado**: `chore(docs): close session [tema_descriptivo]`
+## 2. Validación de Salida (Tests)
 
-6.  **Resumen para el Usuario**:
-    
-    🤖 **Agent Action**: Generar resumen estructurado de la sesión.
-    
-    Genera un mensaje final listando:
-    *   Archivos de log actualizados.
-    *   Estado de los tests (7 tests OK).
-    *   Contenido de `.agent/next_steps.md`.
-    *   Sugerencia para la próxima sesión (comando `/inicia-sesion`).
+**Check Final (Docker):**
+// turbo
+```bash
+make docker-test
+```
 
-**Filosofía**: Una sesión no termina cuando el código funciona, sino cuando la historia está contada.
+## 3. Documentación y Memoria
 
+Este paso es **CRÍTICO** para la persistencia del conocimiento.
+
+1.  **`.agent/next_steps.md`**: Define qué falta, qué errores hay pendientes y cómo retomar.
+2.  **Historial**: Copia `next_steps.md` a `.agent/history/next_steps/next_steps_YYYY-MM-DD.md`.
+3.  **Logs**: Actualiza `docs/DEVELOPMENT_LOG.md` con un resumen técnico del día.
+4.  **Changelog**: Registra cambios en la sección `[Unreleased]`.
+
+## 4. Sincronización de Contexto
+
+Actualiza las métricas y la memoria de largo plazo.
+
+// turbo
+```bash
+uv run ai-ctx audit --threshold 50
+uv run ai-ctx analyze
+```
+
+## 5. Commit de Cierre
+
+Usa el skill `commit-standards` para generar el mensaje.
+```bash
+git add .
+git commit -m "chore(docs): close session [tema_descriptivo]"
+```
+
+## Resultado Esperado
+- Suite de pruebas: **7 tests OK**.
+- Archivos de documentación actualizados y sincronizados.
+- Historial de sesión preservado en `.agent/history/`.
+- Commit de cierre realizado siguiendo estándares.

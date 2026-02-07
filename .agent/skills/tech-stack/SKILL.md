@@ -1,25 +1,51 @@
 ---
 name: tech-stack
-description: Technology stack guidelines and requirements
-trigger: python, uv, ruff, dependencies, install
+description: Guía de la pila tecnológica, gestión de dependencias con uv y herramientas de calidad.
 ---
 
-# Technology Stack
+# Tech Stack
 
-## Core Technologies
+Define el ecosistema de herramientas y librerías que sustentan el desarrollo de `ai-context-core`.
+
+## Cuándo usar este skill
+- Al instalar nuevas dependencias.
+- Al configurar el entorno de desarrollo.
+- Al ejecutar herramientas de linting o formateo.
+- Al verificar la compatibilidad de versiones de Python.
+
+## Grado de Libertad
+- **Estricto**: El uso de `uv` como gestor de paquetes es obligatorio.
+
+## Inputs necesarios
+- `pyproject.toml` para verificar configuración.
+
+## Workflow
+1. **Gestión**: Usar `uv` para cualquier operación de paquetes.
+2. **Sincronización**: Mantener el entorno al día con `uv sync`.
+3. **Calidad**: Ejecutar `ruff` para validación estática.
+
+## Instrucciones y Reglas
+
+### 1. Tecnologías Base
 - **Python**: >= 3.9
-- **Package Manager**: `uv` (replaces pip/poetry/venv).
-- **Linter/Formatter**: `ruff` (configuration in `pyproject.toml`).
+- **Gestor**: `uv` (reemplaza a pip/poetry).
+- **Calidad**: `ruff` (configurado en `pyproject.toml`).
 
-## Dependency Management
-- **Add Dependency**: `uv add [package]`
-- **Add Dev Dependency**: `uv add --dev [package]`
-- **Install/Sync**: `uv sync`
+### 2. Gestión de Dependencias
+- **Añadir**: `uv add [package]`
+- **Desarrollo**: `uv add --dev [package]`
+- **Instalar**: `uv sync`
 
-## Code Quality
+### 3. Calidad de Código
 - **Lint**: `uv run ruff check .`
-- **Format**: `uv run ruff format .` (or `uv run black .` if preferred, but ruff is default).
-    - Note: User preferences mention `black`, but `ruff` is configured in `pyproject.toml`. Follow `pyproject.toml` or user preference for `black`.
+- **Formateo**: `uv run ruff format .` (o `uv run black .` según preferencia de usuario).
 
-## Build System
-- **Backend**: `setuptools.build_meta`
+## Output (formato exacto)
+Un entorno de desarrollo coherente y dependencias correctamente registradas.
+
+## Lista de Verificación de Calidad
+- [ ] ¿Se prioriza el uso de `uv`?
+- [ ] ¿Se mencionan los comandos exactos de ruff/black?
+- [ ] ¿La versión de Python es correcta?
+- [ ] ¿Se ha evitado el uso de herramientas obsoletas (pip/venv)?
+- [ ] ¿El documento está en español?

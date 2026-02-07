@@ -12,6 +12,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.2] - 2026-02-07 - Python 3.14 Compatibility & Analyzer Logic Fixes
+
+### Added
+- **Python 3.14 Compatibility**: Safely handle the removal of `ast.Str` in Python 3.14 by using `ast.Constant` as a fallback in SLOC calculation.
+- **Regression Tests**: Added dedicated tests for AST metrics compatibility on latest Python versions.
+
+### Fixed
+- **Complexity Calculation**: Fixed critical logical bug where `try` and `async with` blocks were double-counted in cyclomatic complexity analysis.
+- **QGIS i18n Scoring**: 
+    - Resolved `KeyError` when analyzing `QCoreApplication.translate` calls.
+    - Optimized string counting to exclude docstrings from the total string count, preventing unfair score dilution.
+    - Added heuristic to skip obvious internal IDs/keys in string enumeration.
+- **Recursive Ignore Filter**: Fixed `IgnoreFilter` failure to detect files inside ignored directories during certain traversal modes; now recursively checks all path segments.
+- **Legacy Fallbacks**: Removed redundant `_simple_complexity` fallback in favor of central `ComplexityVisitor`.
+
 ## [3.0.1] - 2026-01-30 - QGIS Metadata Patch
 
 ### Fixed
