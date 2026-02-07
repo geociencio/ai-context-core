@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- **Component Consolidation**: Merged `singleton_components` and `observer_components` into cohesive rule files, reducing project fragmentation.
+- **Pre-commit**: Updated `ruff-pre-commit` to v0.15.0 and resolved new linting rules.
+
+### Fixed
+- **FS Utilities**: Restored missing exports (`read_file_fast`, `load_exclusion_patterns`) in `fs_utils.py` to fix regression in test suite and external consumers.
+
+### Added
 - **Test Coverage**: Achieved **98%** project-wide test coverage (263 tests), covering all critical modules including `engine`, `fs_utils`, `dependencies`, and `checkers`.
 - **System Stability**: Implemented comprehensive edge case handling for filesystem operations, complexity calculations, and dependency analysis.
 

@@ -5,7 +5,10 @@ import time
 from typing import List
 
 
-class HTMLBuilder:
+from .builders_base import BaseBuilder
+
+
+class HTMLBuilder(BaseBuilder):
     """Helper class for building HTML documents using string.Template."""
 
     CSS = """
@@ -37,6 +40,7 @@ class HTMLBuilder:
         Args:
             title: The title of the HTML document.
         """
+        super().__init__()
         self.title = title
         self.content_parts = []
 
@@ -62,7 +66,7 @@ class HTMLBuilder:
             return ""
         return "<ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>"
 
-    def render(self) -> str:
+    def build(self) -> str:
         """Renders the HTML document.
 
         Returns:
@@ -74,3 +78,7 @@ class HTMLBuilder:
             date=time.strftime("%Y-%m-%d %H:%M:%S"),
             content="\n".join(self.content_parts),
         )
+
+    def render(self) -> str:
+        """Alias for build() for backward compatibility."""
+        return self.build()

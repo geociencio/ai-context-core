@@ -4,11 +4,15 @@ import ast
 from typing import Set
 
 
-class ComplexityVisitor(ast.NodeVisitor):
+from .visitors_base import BaseVisitor
+
+
+class ComplexityVisitor(BaseVisitor):
     """Visitor to calculate cyclomatic complexity."""
 
     def __init__(self):
         """Initialize the visitor. Base complexity starts at 1."""
+        super().__init__()
         self.complexity = 1
         self.decision_lines = set()
 

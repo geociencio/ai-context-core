@@ -1,10 +1,11 @@
 """Logic for building the project import graph."""
 
 from typing import Dict, Any, List, Set
+from ..builders_base import BaseBuilder
 from .builder_components import get_importable_path, resolve_import
 
 
-class ImportGraphBuilder:
+class ImportGraphBuilder(BaseBuilder):
     """Class responsible for building the internal import graph of the project.
 
     Delegates path mapping and resolution to specialized components.
@@ -16,6 +17,7 @@ class ImportGraphBuilder:
         Args:
             modules_data: List of module analysis results.
         """
+        super().__init__()
         self.modules_data = modules_data
         self.import_graph = {}
         self.import_map = {}

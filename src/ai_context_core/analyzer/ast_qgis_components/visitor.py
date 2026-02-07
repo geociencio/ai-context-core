@@ -3,11 +3,15 @@
 import ast
 
 
-class GenericQGISComplianceVisitor(ast.NodeVisitor):
+from ..visitors_base import BaseVisitor
+
+
+class GenericQGISComplianceVisitor(BaseVisitor):
     """Visitor to check for QGIS coding standards and best practices."""
 
     def __init__(self):
         """Initialize the visitor with default results and checkers."""
+        super().__init__()
         self.results = {
             "processing_framework": False,
             "i18n_usage": {"tr": 0, "translate": 0, "total_strings": 0},
