@@ -1,24 +1,24 @@
 {
   "project_name": "ai-context-core",
   "metrics": {
-    "total_physical_lines": 2289,
-    "total_lines_code": 1286,
-    "total_functions": 103,
-    "total_classes": 26,
-    "average_complexity": 3.77,
-    "quality_score": 90.8,
-    "docstring_coverage": 93.75,
-    "avg_maintenance_index": 70.62,
+    "total_physical_lines": 2393,
+    "total_lines_code": 1331,
+    "total_functions": 107,
+    "total_classes": 27,
+    "average_complexity": 3.71,
+    "quality_score": 90.9,
+    "docstring_coverage": 93.88,
+    "avg_maintenance_index": 70.0,
     "test_files_count": 0
   },
   "complexity": {
-    "total_modules": 48,
-    "total_lines": 1286,
-    "total_physical_lines": 2289,
-    "total_functions": 103,
-    "total_classes": 26,
-    "average_complexity": 3.77,
-    "avg_maintenance_index": 70.62,
+    "total_modules": 49,
+    "total_lines": 1331,
+    "total_physical_lines": 2393,
+    "total_functions": 107,
+    "total_classes": 27,
+    "average_complexity": 3.71,
+    "avg_maintenance_index": 70.0,
     "most_complex_modules": [
       [
         ".agent/scripts/skill_sync.py",
@@ -2600,9 +2600,9 @@
     },
     {
       "path": "src/ai_context_core/analyzer/fs_utils.py",
-      "lines": 25,
-      "sloc": 13,
-      "file_size_kb": 0.7958984375,
+      "lines": 29,
+      "sloc": 17,
+      "file_size_kb": 0.8671875,
       "complexity": 1,
       "imports": [
         "pathlib",
@@ -2660,7 +2660,7 @@
         "gis_utils.parse_qgis_metadata",
         "fs_tree.generate_tree_optimized"
       ],
-      "maintenance_index": 63.44,
+      "maintenance_index": 60.89,
       "qgis_compliance": {
         "processing_framework": false,
         "i18n_usage": {
@@ -2687,16 +2687,18 @@
     },
     {
       "path": "src/ai_context_core/analyzer/git_analysis.py",
-      "lines": 38,
-      "sloc": 18,
-      "file_size_kb": 1.0927734375,
+      "lines": 42,
+      "sloc": 22,
+      "file_size_kb": 1.14453125,
       "complexity": 1,
       "imports": [
         "pathlib",
         "typing.List",
         "typing.Dict",
         "typing.Any",
-        "git_analysis_components.GitAnalyzer"
+        "git_analysis_components.GitAnalyzer",
+        "git_analysis_components.GitRunner",
+        "git_analysis_components.GitParser"
       ],
       "classes": [],
       "functions": [
@@ -2737,28 +2739,31 @@
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 5",
-          "line": 20,
+          "line": 24,
           "value": 5
         },
         {
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 1000",
-          "line": 20,
+          "line": 24,
           "value": 1000
         },
         {
           "type": "magic_number",
           "severity": "low",
           "message": "Magic number detected: 30",
-          "line": 26,
+          "line": 30,
           "value": 30
         }
       ],
       "ast_security": [],
       "patterns": {},
-      "unused_imports": [],
-      "maintenance_index": 56.5,
+      "unused_imports": [
+        "git_analysis_components.GitRunner",
+        "git_analysis_components.GitParser"
+      ],
+      "maintenance_index": 54.59,
       "qgis_compliance": {
         "processing_framework": false,
         "i18n_usage": {
@@ -3368,8 +3373,95 @@
     },
     {
       "path": "src/ai_context_core/analyzer/issues.py",
-      "syntax_error": true,
-      "error": "module 'ai_context_core.analyzer.fs_utils' has no attribute 'read_file_fast'"
+      "lines": 89,
+      "sloc": 30,
+      "file_size_kb": 2.1875,
+      "complexity": 1,
+      "imports": [
+        "ast",
+        "warnings",
+        "typing.List",
+        "typing.Dict",
+        "typing.Any",
+        "ast_security.ASTSecurityDetector",
+        "issues_components.CheckerRegistry",
+        "issues_components.find_secrets",
+        "issues_components.find_optimizations",
+        "issues_components.find_technical_debt",
+        "ast_security.detect_ast_security_issues"
+      ],
+      "classes": [
+        "IssueDetector"
+      ],
+      "functions": [
+        "detect(1 args)",
+        "run_analysis(2 args)",
+        "find_security_issues(2 args)",
+        "detect(1 args)"
+      ],
+      "docstrings": {
+        "module": true,
+        "classes": {
+          "IssueDetector": true
+        },
+        "functions": {
+          "detect": true,
+          "run_analysis": true,
+          "find_security_issues": true
+        }
+      },
+      "entry_point_info": {
+        "is_entry_point": false,
+        "type": null
+      },
+      "has_main": false,
+      "type_hints": {
+        "total_functions": 4,
+        "typed_functions": 4,
+        "coverage": 100.0
+      },
+      "halstead": {
+        "vocabulary": 29,
+        "length": 57,
+        "volume": 228,
+        "difficulty": 1.93,
+        "effort": 439.11
+      },
+      "antipatterns": [
+        {
+          "type": "magic_number",
+          "severity": "low",
+          "message": "Magic number detected: 2",
+          "line": 69,
+          "value": 2
+        }
+      ],
+      "ast_security": [],
+      "patterns": {},
+      "unused_imports": [
+        "ast_security.ASTSecurityDetector",
+        "issues_components.find_optimizations",
+        "issues_components.find_technical_debt"
+      ],
+      "maintenance_index": 51.13,
+      "qgis_compliance": {
+        "processing_framework": false,
+        "i18n_usage": {
+          "tr": 0,
+          "translate": 0,
+          "total_strings": 1
+        },
+        "gdal_import_style": "Modern",
+        "qt_transition": {
+          "pyqt5_imports": [],
+          "pyqt6_imports": []
+        },
+        "signals_slots": {
+          "legacy": 0,
+          "modern": 0
+        }
+      },
+      "syntax_error": false
     },
     {
       "path": "src/ai_context_core/analyzer/issues_components/__init__.py",
@@ -3483,15 +3575,20 @@
     },
     {
       "path": "src/ai_context_core/analyzer/patterns.py",
-      "lines": 27,
-      "sloc": 7,
-      "file_size_kb": 0.748046875,
+      "lines": 34,
+      "sloc": 14,
+      "file_size_kb": 0.8740234375,
       "complexity": 1,
       "imports": [
         "ast",
         "typing.Dict",
         "typing.Any",
-        "patterns_components.PatternsUnifiedVisitor"
+        "patterns_components.PatternsUnifiedVisitor",
+        "patterns_components.detect_singleton",
+        "patterns_components.detect_factory",
+        "patterns_components.detect_observer",
+        "patterns_components.detect_strategy",
+        "patterns_components.detect_decorator"
       ],
       "classes": [],
       "functions": [
@@ -3524,8 +3621,14 @@
       "antipatterns": [],
       "ast_security": [],
       "patterns": {},
-      "unused_imports": [],
-      "maintenance_index": 70.53,
+      "unused_imports": [
+        "patterns_components.detect_singleton",
+        "patterns_components.detect_factory",
+        "patterns_components.detect_observer",
+        "patterns_components.detect_strategy",
+        "patterns_components.detect_decorator"
+      ],
+      "maintenance_index": 63.97,
       "qgis_compliance": {
         "processing_framework": false,
         "i18n_usage": {
@@ -4661,7 +4764,8 @@
       "typing.NamedTuple",
       "typing.Optional",
       "typing.Set",
-      "typing.Tuple"
+      "typing.Tuple",
+      "warnings"
     ],
     "third_party": [
       "BaseChecker",
@@ -4684,6 +4788,7 @@
       "ast_metrics_components.calculate_sloc",
       "ast_qgis.check_qgis_compliance",
       "ast_security.ASTSecurityDetector",
+      "ast_security.detect_ast_security_issues",
       "ast_utils",
       "ast_utils.calculate_complexity",
       "ast_visitors.check_docstrings",
@@ -4728,6 +4833,8 @@
       "gis_utils.parse_qgis_metadata",
       "git",
       "git_analysis_components.GitAnalyzer",
+      "git_analysis_components.GitParser",
+      "git_analysis_components.GitRunner",
       "graph.CycleDetector",
       "graph.GraphMetricsCalculator",
       "graph.ImportGraphBuilder",
@@ -4739,6 +4846,10 @@
       "imports.ImportStyleChecker",
       "init",
       "issues",
+      "issues_components.CheckerRegistry",
+      "issues_components.find_optimizations",
+      "issues_components.find_secrets",
+      "issues_components.find_technical_debt",
       "loader.load_ignore_patterns",
       "loaders.load_context_files",
       "loaders.load_single_context_file",
@@ -4751,6 +4862,11 @@
       "parser.parse_dependency_files",
       "patterns",
       "patterns_components.PatternsUnifiedVisitor",
+      "patterns_components.detect_decorator",
+      "patterns_components.detect_factory",
+      "patterns_components.detect_observer",
+      "patterns_components.detect_singleton",
+      "patterns_components.detect_strategy",
       "qgis",
       "qgis.aggregate_qgis_compliance",
       "report",
@@ -4955,262 +5071,7 @@
       "weakly_connected_components": 176
     },
     "coupling_metrics": {
-      "src/ai_context_core/analyzer/ast_visitors.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/init.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/cli_groups/specialized.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/checkers/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ignore_components/loader.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/import_visitor_components/logic.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_helpers.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipattern_orchestrator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph/builder_components/mapping.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "check_docs.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_metrics_components/halstead.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues_components/secrets_scanner.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/aggregator_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/cli_groups/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/decorator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/dependency_analyser_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/import_visitor_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph/metrics_components/coupling.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/components/builders.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph/builder_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/context_builders/base.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/summarizers/qgis.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/singleton.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine_components/config_loader.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/security_checkers/exceptions.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_tree.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/method_rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_qgis_components/logic.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/deps.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/stats.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/factory.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/strategy_rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/aggregator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipattern_detectors/spaghetti_code.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/import_components/handlers.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/summarizers/git_patterns.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_metrics_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/entry_point_detectors/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph/builder.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipattern_detectors/dead_code.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/context_builders/dependencies.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/metrics/calculator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/git_analysis.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_visitors_components/docstrings.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/observer_components/signals.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/aggregator_components/qgis.py": {
+      "src/ai_context_core/analyzer/fs_utils.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5220,72 +5081,12 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/antipattern_detectors/__init__.py": {
+      "src/ai_context_core/analyzer/git_analysis_components/parser.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues_components/debt.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/html_builder.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/security_checkers/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_visitors_components/functions.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/git_analysis_components/runner.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/entry_point_detectors/framework_rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ignore_filter.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/secrets.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/pattern_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/git_analysis_components/analyzer.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "reproduce_bug.py": {
+      "src/ai_context_core/analyzer/ast_qgis_components/logic.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5295,82 +5096,32 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ai_context_generator.py": {
+      "src/ai_context_core/cli_groups/analysis.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/cli_groups/reports.py": {
+      "src/ai_context_core/context/components/builders.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_visitors_components/__init__.py": {
+      "src/ai_context_core/analyzer/engine.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/dependency_analyser_components/parser.py": {
+      "src/ai_context_core/analyzer/entry_point_detectors/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_detectors/observer_rules.py": {
+      "src/ai_context_core/context/components/store_components/updaters.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/cli.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/assign_rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_entry_points.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/decorator_rules.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/components/store_components/loaders.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/aggregator_components/formatter.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_qgis_components/visitor.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_visitors_components/classes.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues_components/optimizations.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/observer_components/signals.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5380,7 +5131,112 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/antipatterns.py": {
+      "src/ai_context_core/analyzer/ast_security.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "check_complexity.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/report.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues_components/optimizations.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/engine_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/git_analysis_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/context_builders/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/context_builders/dependencies.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/components/store.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/fs_tree.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      ".agent/scripts/skill_sync.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/manager.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/dependency_analyser_components/classifier.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/config/loader.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/builder_components/resolver.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/analyze.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/aggregator_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_entry_points.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/security_checkers/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_components/legacy.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "check_docs.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5390,17 +5246,42 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/cli_groups/analysis.py": {
+      "src/ai_context_core/analyzer/ai_recommendations.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/summarizers/__init__.py": {
+      "src/ai_context_core/analyzer/issues.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/context_builders/patterns.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_qgis_components/visitor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipattern_detectors/spaghetti_code.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/builder_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/builder_components/mapping.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5415,97 +5296,47 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "check_complexity.py": {
+      "src/ai_context_core/analyzer/ast_visitors_components/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_metrics_components/sloc.py": {
+      "src/ai_context_core/analyzer/ast_visitors_components/functions.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/commands/report.py": {
+      "src/ai_context_core/analyzer/ast_visitors_components/imports.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/summarizers/base.py": {
+      "src/ai_context_core/analyzer/summarizers/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/gis_utils.py": {
+      "src/ai_context_core/analyzer/complexity_visitor.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_components/legacy.py": {
+      "src/ai_context_core/analyzer/summary_generator.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_detectors/observer_components/class_analyzer.py": {
+      "src/ai_context_core/analyzer/ast_metrics.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_detectors/observer_components/collections.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/strategy.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/commands/git.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/fs_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/frameworks.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/summarizers/metrics.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/components/store.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/observer.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/clean.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/imports.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/commands/inspect.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "audit_quality.py": {
+      "src/ai_context_core/cli.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5515,12 +5346,82 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/metrics/__init__.py": {
+      "src/ai_context_core/analyzer/ignore_filter.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/cli_groups/base.py": {
+      "src/ai_context_core/analyzer/security_checkers/injection.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/git_analysis_components/runner.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/metrics_components/coupling.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/algorithms.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/aggregator_components/formatter.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/pattern_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/serve.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/observer.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/metrics/scorer.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/context_builders/patterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/components/store_components/loaders.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ignore_components/loader.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/security_checker.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5530,17 +5431,57 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/graph/metrics_components/connectivity.py": {
+      "src/ai_context_core/analyzer/context_builders/git_tech.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/security_checkers/base.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/observer_components/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/commands/analyze.py": {
+      "src/ai_context_core/analyzer/dependency_analyser_components/parser.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/observer_rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/secrets.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/components/store_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/components/extractor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "audit_quality.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/checkers/tech_debt_checker.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/summarizers/git_patterns.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5550,7 +5491,47 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/git_analysis_components/parser.py": {
+      "src/ai_context_core/analyzer/antipattern_detectors/magic_number.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/aggregator.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_metrics_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/summarizers/qgis.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/decorator_rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipattern_detectors/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/import_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph_engine.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/i18n.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5560,27 +5541,127 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_security.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/strategy_rules.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/config/loader.py": {
+      "src/ai_context_core/analyzer/ast_visitors_components/classes.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ai_recommendations.py": {
+      "src/ai_context_core/analyzer/antipattern_detectors/base.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/qgis_checkers/base.py": {
+      "src/ai_context_core/analyzer/graph/builder.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/patterns_components/visitor.py": {
+      "src/ai_context_core/analyzer/summarizers/metrics.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/cli_groups/reports.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/cli_groups/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/entry_point_detectors/framework_rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/import_visitor_components/logic.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/constants.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/observer_components/class_analyzer.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ignore_components/compiler.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/metrics/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/entry_point_detectors/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/gis_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_metrics_components/halstead.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipattern_detectors/dead_code.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/factory.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/call_handlers.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/summarizers/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues_components/registry.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_qgis_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/graph/metrics.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/observer_components/collections.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5595,72 +5676,37 @@
         "fan_out": 0,
         "cbo": 0
       },
-      ".agent/scripts/skill_sync.py": {
+      "src/ai_context_core/analyzer/qgis_checkers/import_components/handlers.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/security_checkers/injection.py": {
+      "src/ai_context_core/analyzer/dependency_analyser_components/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/context/components/store_components/__init__.py": {
+      "src/ai_context_core/analyzer/metrics/calculator.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/qgis_checkers/i18n.py": {
+      "src/ai_context_core/analyzer/ai_context_generator.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/graph/metrics.py": {
+      "src/ai_context_core/analyzer/issues_components/debt.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/context/manager.py": {
+      "src/ai_context_core/analyzer/aggregator_components/qgis.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/commands/serve.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine_components/worker.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/import_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ast_qgis_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/summary_generator.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/import_visitor.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/checkers/tech_debt_checker.py": {
+      "reproduce_bug.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5670,122 +5716,57 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/entry_point_detectors/base.py": {
+      "src/ai_context_core/analyzer/security_checkers/exceptions.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/dependency_analyser_components/classifier.py": {
+      "src/ai_context_core/analyzer/patterns_detectors/decorator.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/constants.py": {
+      "src/ai_context_core/analyzer/graph/metrics_components/connectivity.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/call_handlers.py": {
+      "src/ai_context_core/analyzer/patterns_components/visitor.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/context/components/extractor.py": {
+      "src/ai_context_core/analyzer/ast_metrics_components/sloc.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/git_analysis_components/__init__.py": {
+      "src/ai_context_core/cli_groups/base.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_visitors_components/imports.py": {
+      "src/ai_context_core/analyzer/ast_utils.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/metrics/scorer.py": {
+      "src/ai_context_core/commands/init.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/commands/qgis.py": {
+      "src/ai_context_core/analyzer/graph/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/qgis_checkers/__init__.py": {
+      "src/ai_context_core/analyzer/html_builder.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/graph/builder_components/resolver.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "mock_qgis_plugin/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/context_builders/git_tech.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/string_utils.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/context/components/store_components/updaters.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/graph_engine.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/complexity_visitor.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/engine_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/strategy.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/observer_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/__init__.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/issues_components/registry.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/antipattern_detectors/magic_number.py": {
-        "fan_in": 0,
-        "fan_out": 0,
-        "cbo": 0
-      },
-      "src/ai_context_core/analyzer/ignore_components/compiler.py": {
+      "src/ai_context_core/analyzer/ast_visitors_components/docstrings.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5795,12 +5776,12 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/antipattern_detectors/base.py": {
+      "src/ai_context_core/analyzer/graph/metrics_components/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/graph/algorithms.py": {
+      "src/ai_context_core/analyzer/patterns_components/__init__.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5810,7 +5791,32 @@
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/ast_metrics.py": {
+      "src/ai_context_core/analyzer/qgis_checkers/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/ast_visitors.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/engine_components/config_loader.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/imports.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/inspect.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/git_analysis_components/analyzer.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5820,17 +5826,127 @@
         "fan_out": 0,
         "cbo": 0
       },
+      "mock_qgis_plugin/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/clean.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/string_utils.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/deps.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/context/components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipatterns.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/issues_components/secrets_scanner.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/stats.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/i18n_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/import_visitor.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/qgis_checkers/frameworks.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
       "src/ai_context_core/analyzer/ast_qgis.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/graph/metrics_components/__init__.py": {
+      "src/ai_context_core/commands/qgis.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
       },
-      "src/ai_context_core/analyzer/checkers/security_checker.py": {
+      "src/ai_context_core/cli_groups/specialized.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/assign_rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/commands/git.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/engine_components/worker.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/patterns_detectors/singleton_components/method_rules.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/antipattern_orchestrator.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/git_analysis.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/import_visitor_components/__init__.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/security_checkers/base.py": {
+        "fan_in": 0,
+        "fan_out": 0,
+        "cbo": 0
+      },
+      "src/ai_context_core/analyzer/fs_helpers.py": {
         "fan_in": 0,
         "fan_out": 0,
         "cbo": 0
@@ -5872,6 +5988,10 @@
         "gis_utils.parse_qgis_metadata",
         "fs_tree.generate_tree_optimized"
       ],
+      "src/ai_context_core/analyzer/git_analysis.py": [
+        "git_analysis_components.GitRunner",
+        "git_analysis_components.GitParser"
+      ],
       "src/ai_context_core/analyzer/git_analysis_components/__init__.py": [
         "runner.GitRunner",
         "parser.GitParser",
@@ -5903,6 +6023,18 @@
         "visitor.GenericImportVisitor",
         "logic.get_unique_imports",
         "logic.get_unused_imports"
+      ],
+      "src/ai_context_core/analyzer/issues.py": [
+        "ast_security.ASTSecurityDetector",
+        "issues_components.find_optimizations",
+        "issues_components.find_technical_debt"
+      ],
+      "src/ai_context_core/analyzer/patterns.py": [
+        "patterns_components.detect_singleton",
+        "patterns_components.detect_factory",
+        "patterns_components.detect_observer",
+        "patterns_components.detect_strategy",
+        "patterns_components.detect_decorator"
       ],
       "src/ai_context_core/analyzer/patterns_detectors/singleton_components/__init__.py": [
         "rules.check_singleton_item"
@@ -5962,39 +6094,39 @@
         "commits": 26
       },
       {
-        "path": "src/ai_context_core/analyzer/reporting.py",
+        "path": "src/ai_context_core/analyzer/issues.py",
         "commits": 21
       },
       {
-        "path": "src/ai_context_core/analyzer/issues.py",
-        "commits": 20
+        "path": "src/ai_context_core/analyzer/reporting.py",
+        "commits": 21
       },
       {
         "path": "src/ai_context_core/cli.py",
         "commits": 20
       },
       {
-        "path": "src/ai_context_core/analyzer/ast_utils.py",
+        "path": "src/ai_context_core/analyzer/fs_utils.py",
         "commits": 19
       }
     ],
     "churn": {
       "available": true,
       "period_days": 30,
-      "added": 76245,
-      "deleted": 50285,
-      "total_churn": 126530,
-      "files_changed": 992
+      "added": 77511,
+      "deleted": 50685,
+      "total_churn": 128196,
+      "files_changed": 1014
     },
     "is_repo": true
   },
-  "timestamp": 1770490518.8993292,
+  "timestamp": 1770491806.470973,
   "structure": {
-    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    ... (+21 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                aggregator.py\n                ai_context_generator.py\n                ai_recommendations.py\n                antipattern_orchestrator.py\n                antipatterns.py\n                ast_entry_points.py\n                ast_metrics.py\n                ... (+24 more)\n                checkers/\n                    __init__.py\n                    optimization_checker.py\n                    security_checker.py\n                    tech_debt_checker.py\n                patterns_detectors/\n                    __init__.py\n                    base.py\n                    decorator.py\n                    decorator_rules.py\n                    factory.py\n                    observer.py\n                    observer_rules.py\n                    ... (+2 more)\n                antipattern_detectors/\n                    __init__.py\n                    base.py\n                    dead_code.py\n                    god_object.py\n                    magic_number.py\n                    spaghetti_code.py\n                security_checkers/\n                    __init__.py\n                    base.py\n                    exceptions.py\n                    injection.py\n                    insecure_calls.py\n                qgis_checkers/\n                    __init__.py\n                    base.py\n                    frameworks.py\n                    i18n.py\n                    imports.py\n                graph/\n                    __init__.py\n                    algorithms.py\n                    builder.py\n                    metrics.py\n                summarizers/\n                    __init__.py\n                    base.py\n                    git_patterns.py\n                    issues.py\n                    metrics.py\n                    qgis.py\n                entry_point_detectors/\n                    __init__.py\n                    base.py\n                    framework_rules.py\n                metrics/\n                    __init__.py\n                    calculator.py\n                    scorer.py\n                context_builders/\n                    __init__.py\n                    base.py\n                    dependencies.py\n                    git_tech.py\n                    metrics.py\n                    patterns.py\n                    structure.py\n                engine_components/\n                    __init__.py\n                    config_loader.py\n                    worker.py\n                ast_metrics_components/\n                    __init__.py\n                    halstead.py\n                    sloc.py\n                    sloc_helpers.py\n                dependency_analyser_components/\n                    __init__.py\n                    classifier.py\n                    parser.py\n                aggregator_components/\n                    __init__.py\n                    formatter.py\n                    qgis.py\n                patterns_components/\n                    __init__.py\n                    legacy.py\n                    visitor.py\n                ast_visitors_components/\n                    __init__.py\n                    classes.py\n                    docstrings.py\n                    functions.py\n                    imports.py\n                git_analysis_components/\n                    __init__.py\n                    analyzer.py\n                    parser.py\n                    runner.py\n                issues_components/\n                    __init__.py\n                    debt.py\n                    optimizations.py\n                    registry.py\n                    secrets_scanner.py\n                ignore_components/\n                    __init__.py\n                    compiler.py\n                    loader.py\n                import_visitor_components/\n                    __init__.py\n                    logic.py\n                    visitor.py\n                ast_qgis_components/\n                    __init__.py\n                    logic.py\n                    visitor.py\n            context/\n                manager.py\n                components/\n                    __init__.py\n                    builders.py\n                    extractor.py\n                    store.py\n            config/\n                defaults.toml\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n            commands/\n                __init__.py\n                analyze.py\n                clean.py\n                deps.py\n                git.py\n                init.py\n                inspect.py\n                ... (+3 more)\n            cli_groups/\n                __init__.py\n                analysis.py\n                base.py\n                reports.py\n                specialized.py\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AGENTIC_STANDARDS_AND_SOURCES.md\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        CONFIGURATION.md\n        DEVELOPMENT_LOG.md\n        GUIA_IMPLEMENTACION_AGENTICA.md\n        INDEX_IMPROVEMENTS.md\n        ... (+11 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n                v2.1.1.md\n                v2.5.0.md\n                v2.5.1.md\n                v2.5.2.md\n                v3.0.0.md\n                ... (+3 more)\n            walkthroughs/\n                v3.1.0-walkthrough.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_modularization_cycle.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            ... (+8 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            0005-optimization-refactoring-strategy.md\n            README.md\n            template.md\n        secinterp/\n            .ai_context_cache.json\n            AI_CONTEXT.md\n            PROJECT_SUMMARY.md\n            ai_ctx_bug_report.md\n            metadata.txt\n            project_context.json\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_metrics_compatibility.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_config.py\n        ... (+12 more)\n        fixtures/\n            false_positives.py\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py\n    dist/\n        .gitignore\n        ai_context_core-3.1.0-py3-none-any.whl\n        ai_context_core-3.1.0.tar.gz\n    mock_qgis_plugin/\n        __init__.py\n        metadata.txt",
+    "tree": "./\n    .ai_context_cache.json\n    .coverage\n    .dockerignore\n    .gitignore\n    .pre-commit-config.yaml\n    AI_CONTEXT.md\n    CHANGELOG.md\n    ... (+21 more)\n    src/\n        ai_context_core/\n            __init__.py\n            cli.py\n            analyzer/\n                aggregator.py\n                ai_context_generator.py\n                ai_recommendations.py\n                antipattern_orchestrator.py\n                antipatterns.py\n                ast_entry_points.py\n                ast_metrics.py\n                ... (+24 more)\n                checkers/\n                    __init__.py\n                    optimization_checker.py\n                    security_checker.py\n                    tech_debt_checker.py\n                patterns_detectors/\n                    __init__.py\n                    base.py\n                    decorator.py\n                    decorator_rules.py\n                    factory.py\n                    observer.py\n                    observer_rules.py\n                    ... (+2 more)\n                antipattern_detectors/\n                    __init__.py\n                    base.py\n                    dead_code.py\n                    god_object.py\n                    magic_number.py\n                    spaghetti_code.py\n                security_checkers/\n                    __init__.py\n                    base.py\n                    exceptions.py\n                    injection.py\n                    insecure_calls.py\n                qgis_checkers/\n                    __init__.py\n                    base.py\n                    frameworks.py\n                    i18n.py\n                    imports.py\n                graph/\n                    __init__.py\n                    algorithms.py\n                    builder.py\n                    metrics.py\n                summarizers/\n                    __init__.py\n                    base.py\n                    git_patterns.py\n                    issues.py\n                    metrics.py\n                    qgis.py\n                entry_point_detectors/\n                    __init__.py\n                    base.py\n                    framework_rules.py\n                metrics/\n                    __init__.py\n                    calculator.py\n                    scorer.py\n                context_builders/\n                    __init__.py\n                    base.py\n                    dependencies.py\n                    git_tech.py\n                    metrics.py\n                    patterns.py\n                    structure.py\n                engine_components/\n                    __init__.py\n                    config_loader.py\n                    worker.py\n                ast_metrics_components/\n                    __init__.py\n                    halstead.py\n                    sloc.py\n                    sloc_helpers.py\n                dependency_analyser_components/\n                    __init__.py\n                    classifier.py\n                    parser.py\n                aggregator_components/\n                    __init__.py\n                    formatter.py\n                    qgis.py\n                patterns_components/\n                    __init__.py\n                    legacy.py\n                    visitor.py\n                ast_visitors_components/\n                    __init__.py\n                    classes.py\n                    docstrings.py\n                    functions.py\n                    imports.py\n                git_analysis_components/\n                    __init__.py\n                    analyzer.py\n                    parser.py\n                    runner.py\n                issues_components/\n                    __init__.py\n                    debt.py\n                    optimizations.py\n                    registry.py\n                    secrets_scanner.py\n                ignore_components/\n                    __init__.py\n                    compiler.py\n                    loader.py\n                import_visitor_components/\n                    __init__.py\n                    logic.py\n                    visitor.py\n                ast_qgis_components/\n                    __init__.py\n                    logic.py\n                    visitor.py\n            context/\n                manager.py\n                components/\n                    __init__.py\n                    builders.py\n                    extractor.py\n                    store.py\n            config/\n                defaults.toml\n                defaults.yaml\n                loader.py\n                profiles/\n                    qgis.yaml\n            templates/\n                initial_prompt.md\n                workflows/\n                    create-commit.md\n                    end-session.md\n                    start-session.md\n                prompts/\n            commands/\n                __init__.py\n                analyze.py\n                clean.py\n                deps.py\n                git.py\n                init.py\n                inspect.py\n                ... (+3 more)\n            cli_groups/\n                __init__.py\n                analysis.py\n                base.py\n                reports.py\n                specialized.py\n        ai_context_core.egg-info/\n            PKG-INFO\n            SOURCES.txt\n            dependency_links.txt\n            entry_points.txt\n            requires.txt\n            top_level.txt\n    docs/\n        AGENTIC_STANDARDS_AND_SOURCES.md\n        ARCHITECTURAL_ANALYSIS.md\n        AiContextCore_Analysis_Report.md\n        COMMIT_GUIDELINES.md\n        CONFIGURATION.md\n        DEVELOPMENT_LOG.md\n        GUIA_IMPLEMENTACION_AGENTICA.md\n        ... (+12 more)\n        development/\n            ARCHITECTURE.md\n        releases/\n            github/\n            notes/\n                v1.0.0.md\n                v1.0.1.md\n                v2.1.1.md\n                v2.5.0.md\n                v2.5.1.md\n                v2.5.2.md\n                v3.0.0.md\n                ... (+4 more)\n            walkthroughs/\n                v3.1.0-walkthrough.md\n        reports/\n            initial_extraction.md\n        research/\n        user_guide/\n            PROFILES_GUIDE.md\n            QUICK_START.md\n        sessions/\n            session_2026-01-22_fix_config_release.md\n            session_2026-01-25_analysis_planning.md\n            session_2026-01-25_complete_workflows_summary.md\n            session_2026-01-25_docker_integration.md\n            session_2026-01-25_modularization_cycle.md\n            session_2026-01-25_optimization_quality.md\n            session_2026-01-25_phase1_completion.md\n            ... (+8 more)\n        adr/\n            0001-use-adr-for-architecture-decisions.md\n            0002-implement-13-improvements-roadmap.md\n            0003-pattern-detection-scoring-strategy.md\n            0004-multi-framework-entry-point-detection.md\n            0005-optimization-refactoring-strategy.md\n            README.md\n            template.md\n        secinterp/\n            .ai_context_cache.json\n            AI_CONTEXT.md\n            PROJECT_SUMMARY.md\n            ai_ctx_bug_report.md\n            metadata.txt\n            project_context.json\n    tests/\n        __init__.py\n        test_antipatterns.py\n        test_ast_metrics_compatibility.py\n        test_ast_utils.py\n        test_cache_integration.py\n        test_cli.py\n        test_config.py\n        ... (+12 more)\n        fixtures/\n            false_positives.py\n    test_project/\n        .ai-context-updates.yaml\n        project_context.json\n        test.py\n    dist/\n        .gitignore\n        ai_context_core-3.1.1-py3-none-any.whl\n        ai_context_core-3.1.1.tar.gz\n    mock_qgis_plugin/\n        __init__.py\n        metadata.txt",
     "modules_count": 176,
     "file_types": {
       ".py": 198,
-      ".md": 100,
+      ".md": 103,
       ".json": 6,
       ".yaml": 4,
       ".yml": 3,
@@ -6007,12 +6139,12 @@
       ".tag": 1
     },
     "size_stats": {
-      "total_files": 365,
-      "total_size_mb": 1.28,
+      "total_files": 368,
+      "total_size_mb": 1.29,
       "python_files": 198,
       "python_size_mb": 0.29,
-      "avg_file_size_kb": 3.59,
-      "python_percentage": 22.81
+      "avg_file_size_kb": 3.6,
+      "python_percentage": 22.56
     }
   },
   "manual_notes": ""

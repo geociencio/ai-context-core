@@ -1,5 +1,13 @@
 # Development Log
 
+## [2026-02-07] QGIS Profile Fix & Facade Restoration (v3.1.1) - COMPLETADA
+**TEMA**: Estabilidad y Estándares QGIS 🛠️
+- **QGIS Fix**: Se fuerza la carga del perfil `qgis` en el comando `ai-ctx qgis`, eliminando reportes vacíos. 🌍
+- **Facade Restoration**: Reparadas exportaciones en `fs_utils`, `issues`, `patterns` y `git_analysis` que causaban `AttributeError`. 🧩
+- **Validación**: Implementado `tests/test_qgis_command.py` (integración) y corregida heurística de i18n. ✅
+- **Release**: Versión `3.1.1` etiquetada y subida a GitHub. 🚀
+- **Quality Score**: Elevado a **90.9/100**. 🏆
+
 ## [2026-02-07] Precision i18n & Heuristic Refinement (v3.0.3) - COMPLETADA
 **TEMA**: Calidad y Precisión QGIS 🌍
 - **i18n Aggregation**: Soporte para `translate()` junto a `tr()`. 🔄
