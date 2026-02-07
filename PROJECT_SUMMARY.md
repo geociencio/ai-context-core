@@ -1,6 +1,6 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 12:08:03
-Analyzer Version: 3.0.3 (Ai-Context-Core)
+Analysis Date: 2026-02-07 12:39:10
+Analyzer Version: 3.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Total Modules**: 156
@@ -20,14 +20,14 @@ Analyzer Version: 3.0.3 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 651
-- **Additions**: +52334
-- **Deletions**: -26547
-- **Total Churn**: 78881
+- **Files Changed**: 804
+- **Additions**: +68910
+- **Deletions**: -34353
+- **Total Churn**: 103263
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 24 commits
+- `src/ai_context_core/analyzer/engine.py`: 25 commits
+- `src/ai_context_core/analyzer/reporting.py`: 20 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 19 commits
-- `src/ai_context_core/analyzer/reporting.py`: 19 commits
-- `src/ai_context_core/cli.py`: 17 commits
-- `src/ai_context_core/analyzer/issues.py`: 17 commits
+- `src/ai_context_core/analyzer/issues.py`: 18 commits
+- `src/ai_context_core/cli.py`: 18 commits
