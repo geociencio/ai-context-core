@@ -3,6 +3,7 @@
 import ast
 from typing import Optional
 
+
 class BaseEntryPointRule:
     """Base class for entry point detection rules."""
 

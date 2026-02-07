@@ -5,18 +5,32 @@ import pathlib
 from typing import List, Dict, Any, NamedTuple
 from .ignore_filter import IgnoreFilter
 
+
 class ProjectScanResult(NamedTuple):
     """Encapsulates the results of a project-wide filesystem scan."""
+
     python_files: List[pathlib.Path]
     test_files_count: int
     file_types: Dict[str, int]
     size_stats: Dict[str, Any]
 
+
 class ProjectScanner:
     """Consolidated project scanner that performs a single-pass traversal."""
+
     COMMON_EXTS = {
-        ".py", ".txt", ".md", ".json", ".yml", ".yaml",
-        ".html", ".css", ".js", ".xml", ".csv", ".sql",
+        ".py",
+        ".txt",
+        ".md",
+        ".json",
+        ".yml",
+        ".yaml",
+        ".html",
+        ".css",
+        ".js",
+        ".xml",
+        ".csv",
+        ".sql",
     }
 
     def __init__(self, project_path: pathlib.Path, ignore_filter: IgnoreFilter):
@@ -52,7 +66,9 @@ class ProjectScanner:
         return ProjectScanResult(
             python_files=sorted(self.python_files),
             test_files_count=self.test_files_count,
-            file_types=dict(sorted(self.file_types.items(), key=lambda x: x[1], reverse=True)[:20]),
+            file_types=dict(
+                sorted(self.file_types.items(), key=lambda x: x[1], reverse=True)[:20]
+            ),
             size_stats=self._finalize_stats(),
         )
 
@@ -79,6 +95,7 @@ class ProjectScanner:
             self.stats["python_files"] += 1
             self.stats["python_size"] += size
             from .fs_helpers import is_test_file
+
             if is_test_file(path_obj):
                 self.test_files_count += 1
             else:
@@ -96,6 +113,7 @@ class ProjectScanner:
             "avg_file_size_kb": round(ts / tf / 1024, 2) if tf > 0 else 0,
             "python_percentage": round(ps / ts * 100, 2) if ts > 0 else 0,
         }
+
 
 def scan_project(project_path: pathlib.Path, patterns: List[str]) -> ProjectScanResult:
     filt = IgnoreFilter(project_path, extra_patterns=patterns)

@@ -5,6 +5,7 @@ from typing import List, Dict, Any
 from .runner import GitRunner
 from .parser import GitParser
 
+
 class GitAnalyzer:
     """Encapsulates git-based project analysis logic."""
 
@@ -19,7 +20,9 @@ class GitAnalyzer:
         out = self.runner.run(["rev-parse", "--is-inside-work-tree"], check=True)
         return out is not None
 
-    def get_hotspots(self, limit: int = 5, max_commits: int = 1000) -> List[Dict[str, Any]]:
+    def get_hotspots(
+        self, limit: int = 5, max_commits: int = 1000
+    ) -> List[Dict[str, Any]]:
         """Identifies most frequently changed files."""
         if not self.is_repo():
             return []

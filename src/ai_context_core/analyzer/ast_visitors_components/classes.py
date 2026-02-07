@@ -3,6 +3,7 @@
 import ast
 from typing import List, Optional
 
+
 class ClassVisitor(ast.NodeVisitor):
     """Visitor to extract class names and inheritance infomation."""
 
@@ -24,6 +25,7 @@ class ClassVisitor(ast.NodeVisitor):
         if isinstance(node, ast.Attribute):
             return self._get_base_name(node.value)
         return None
+
 
 def extract_classes(tree: ast.AST) -> List[str]:
     """Extracts class names with inheritance information from an AST."""

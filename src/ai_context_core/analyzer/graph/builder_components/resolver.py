@@ -2,6 +2,7 @@
 
 from typing import Dict, Optional
 
+
 def resolve_import(imp: str, import_map: Dict[str, str]) -> Optional[str]:
     """Resolve an import string to a project file path.
 

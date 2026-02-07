@@ -14,12 +14,15 @@ except ImportError:
     except ImportError:
         tomllib = None
 
+
 def load_config(root_path: pathlib.Path) -> Dict[str, Any]:
     """Load configuration from defaults.toml and optional project overrides."""
     default_config = {}
     if tomllib:
         try:
-            defaults_path = pathlib.Path(__file__).parent.parent / ".." / "config" / "defaults.toml"
+            defaults_path = (
+                pathlib.Path(__file__).parent.parent / ".." / "config" / "defaults.toml"
+            )
             if defaults_path.exists():
                 with open(defaults_path, "rb") as f:
                     default_config = tomllib.load(f)
@@ -47,6 +50,7 @@ def load_config(root_path: pathlib.Path) -> Dict[str, Any]:
             final_config[section] = values
 
     return final_config
+
 
 def _get_hardcoded_defaults() -> Dict[str, Any]:
     """Return fallback hardcoded configuration."""

@@ -7,6 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from ..analyzer import git_analysis
 
+
 def show_git_evolution(path: str, days: int):
     """Shows git evolution analysis."""
     proj = pathlib.Path(path).resolve()
@@ -20,6 +21,7 @@ def show_git_evolution(path: str, days: int):
     _show_hotspots(analyzer, console)
     _show_churn(analyzer, days)
 
+
 def _show_hotspots(analyzer, console):
     click.secho("🔥 GIT HOTSPOTS (Most Modified Files)", fg="red", bold=True)
     hotspots = analyzer.get_hotspots(limit=10)
@@ -32,6 +34,7 @@ def _show_hotspots(analyzer, console):
         for h in hotspots:
             table.add_row(h["path"], str(h["commits"]))
         console.print(table)
+
 
 def _show_churn(analyzer, days):
     click.secho(f"\n📈 CODE CHURN (Last {days} days)", fg="yellow", bold=True)

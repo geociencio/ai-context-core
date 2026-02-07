@@ -3,6 +3,7 @@
 import json
 from typing import Dict, Any
 
+
 class ContextExtractor:
     """Logic for extracting relevant context from stored data."""
 
@@ -27,5 +28,5 @@ class ContextExtractor:
             )
             if any(k in s.lower() for k in kws):
                 found.append(f"=== {name} ===\n{s[:1000]}")
-        
+
         return "\n\n".join(found) if found else "No relevant context."

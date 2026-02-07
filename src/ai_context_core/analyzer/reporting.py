@@ -55,6 +55,7 @@ class MarkdownBuilder:
             title: The main title of the document.
         """
         from .. import __version__
+
         self.lines = [
             f"# {title}",
             f"Analysis Date: {time.strftime('%Y-%m-%d %H:%M:%S')}",

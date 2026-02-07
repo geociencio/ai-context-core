@@ -3,6 +3,7 @@
 from .base import BaseContextBuilder
 from typing import List
 
+
 class StructureBuilder(BaseContextBuilder):
     """Adds project structure and entry points."""
 

@@ -3,6 +3,7 @@
 import ast
 from typing import List
 
+
 class FunctionVisitor(ast.NodeVisitor):
     """Visitor to extract function names and argument counts."""
 
@@ -18,6 +19,7 @@ class FunctionVisitor(ast.NodeVisitor):
             func_info = f"{func_info}({args_count} args)"
         self.functions.append(func_info)
         self.generic_visit(node)
+
 
 def extract_functions(tree: ast.AST) -> List[str]:
     """Extracts function names and basic argument counts from an AST."""

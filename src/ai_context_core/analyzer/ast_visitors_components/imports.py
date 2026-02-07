@@ -3,6 +3,7 @@
 import ast
 from typing import List
 
+
 class ImportVisitor(ast.NodeVisitor):
     """Visitor to extract imports."""
 
@@ -42,11 +43,13 @@ class ImportVisitor(ast.NodeVisitor):
             self.used_names.add(curr.id)
         self.generic_visit(node)
 
+
 def extract_imports(tree: ast.AST) -> List[str]:
     """Extracts module imports from an AST tree."""
     visitor = ImportVisitor()
     visitor.visit(tree)
     return visitor.imports
+
 
 def detect_unused_imports(tree: ast.AST) -> List[str]:
     """Identifies imports that are not used anywhere in the module."""

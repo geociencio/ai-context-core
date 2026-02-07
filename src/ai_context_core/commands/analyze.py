@@ -8,6 +8,7 @@ from typing import Optional
 from ..analyzer.engine import ProjectAnalyzer
 from ..config.loader import ConfigLoader
 
+
 def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool):
     """Executes the full project analysis pipeline."""
     proj = pathlib.Path(path).resolve()
@@ -17,6 +18,7 @@ def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool)
     if local_cfg_path.exists():
         try:
             import yaml
+
             local_cfg = yaml.safe_load(local_cfg_path.read_text()) or {}
         except Exception:
             pass
@@ -49,6 +51,7 @@ def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool)
         if os.environ.get("DEBUG"):
             raise e
         sys.exit(1)
+
 
 def run_audit(path: str, threshold: float):
     """Performs a security and quality audit, exits with error if below threshold."""

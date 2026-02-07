@@ -3,6 +3,7 @@
 import ast
 from typing import Dict, Any
 
+
 class DocstringVisitor(ast.NodeVisitor):
     """Visitor to check for docstring presence."""
 
@@ -24,6 +25,7 @@ class DocstringVisitor(ast.NodeVisitor):
         """Visits a function definition."""
         self.docstrings["functions"][node.name] = ast.get_docstring(node) is not None
         self.generic_visit(node)
+
 
 def check_docstrings(tree: ast.AST) -> Dict[str, Any]:
     """Checks for the presence of docstrings in modules, classes, and functions."""

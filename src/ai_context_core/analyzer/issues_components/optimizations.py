@@ -3,6 +3,7 @@
 from typing import List, Dict, Any
 from ..checkers.optimization_checker import OptimizationChecker
 
+
 def find_optimizations(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Find optimization opportunities in project modules."""
     res = []

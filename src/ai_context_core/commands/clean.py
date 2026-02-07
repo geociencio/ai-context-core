@@ -3,6 +3,7 @@
 import pathlib
 import click
 
+
 def clean_artifacts(path: str, dry_run: bool):
     """Cleans cache and generated artifacts."""
     proj = pathlib.Path(path).resolve()
@@ -31,6 +32,8 @@ def clean_artifacts(path: str, dry_run: bool):
     if deleted_count == 0:
         click.echo("No artifacts found to clean.")
     elif dry_run:
-        click.echo(f"\n{deleted_count} file(s) would be deleted. Run without --dry-run to delete.")
+        click.echo(
+            f"\n{deleted_count} file(s) would be deleted. Run without --dry-run to delete."
+        )
     else:
         click.secho(f"\n✨ Cleaned {deleted_count} file(s)", fg="green")

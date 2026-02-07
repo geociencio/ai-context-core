@@ -132,7 +132,10 @@ def analyze_dependencies(
             "nodes": len(import_graph),
             "edges": num_edges,
             "density": metrics_calc.calculate_density(num_edges),
-            "is_dag": len(graph_engine.CycleDetector(import_graph, limit=1).find_cycles()) == 0,
+            "is_dag": len(
+                graph_engine.CycleDetector(import_graph, limit=1).find_cycles()
+            )
+            == 0,
             "weakly_connected_components": metrics_calc.count_connected_components(),
         }
         dependencies["coupling_metrics"] = metrics_calc.calculate_coupling_metrics()
@@ -159,15 +162,21 @@ def analyze_dependencies(
     return dependencies
 
 
-def _parse_dependency_files(project_path: Path, read_file_func: Callable) -> Dict[str, str]:
+def _parse_dependency_files(
+    project_path: Path, read_file_func: Callable
+) -> Dict[str, str]:
     """Legacy wrapper for parsing dependency files."""
     from .dependency_analyser_components import parse_dependency_files as _parser
+
     return _parser(project_path, read_file_func)
 
 
-def _classify_imports(all_imports: Set[str], known_internal: Set[str] = None) -> Dict[str, List[str]]:
+def _classify_imports(
+    all_imports: Set[str], known_internal: Set[str] = None
+) -> Dict[str, List[str]]:
     """Legacy wrapper for classifying imports."""
     from .dependency_analyser_components import classify_imports as _classifier
+
     return _classifier(all_imports, STDLIB_MODULES, known_internal)
 
 

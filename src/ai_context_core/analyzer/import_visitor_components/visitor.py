@@ -2,6 +2,7 @@
 
 import ast
 
+
 class GenericImportVisitor(ast.NodeVisitor):
     """Visitor to extract imports and track usage."""
 

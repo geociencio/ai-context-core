@@ -5,6 +5,7 @@ import click
 from ..analyzer.engine import ProjectAnalyzer
 from ..config.loader import ConfigLoader
 
+
 def show_specific(path: str, category: str):
     """Shows specific analysis category results."""
     proj = pathlib.Path(path).resolve()
@@ -20,6 +21,7 @@ def show_specific(path: str, category: str):
     elif category == "recommendations":
         _show_recommendations(res)
 
+
 def _show_patterns(res):
     click.secho("🏗️  DETECTED PATTERNS", fg="cyan", bold=True)
     pats = res.get("patterns", {})
@@ -32,6 +34,7 @@ def _show_patterns(res):
             confidence = o.get("confidence", 0)
             click.echo(f"- {name}: {class_name} in {module_path} ({confidence}%)")
 
+
 def _show_security(res):
     click.secho("🚨 SECURITY ISSUES", fg="red", bold=True)
     sec = res.get("security", [])
@@ -43,6 +46,7 @@ def _show_security(res):
             module_name = mod.get("module", "N/A")
             message = issue.get("message", issue.get("description", "No description"))
             click.echo(f"- [{severity}] {module_name}: {message}")
+
 
 def _show_recommendations(res):
     click.secho("💡 AI RECOMMENDATIONS", fg="yellow", bold=True)

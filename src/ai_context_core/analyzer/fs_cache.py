@@ -5,6 +5,7 @@ import pathlib
 from collections import OrderedDict
 from typing import Dict, Any
 
+
 class LRUCache:
     def __init__(self, maxsize: int = 256):
         self.cache = OrderedDict()
@@ -26,7 +27,9 @@ class LRUCache:
     def clear(self):
         self.cache.clear()
 
+
 file_cache = LRUCache()
+
 
 def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:
     cache_file = project_path / ".ai_context_cache.json"
@@ -37,6 +40,7 @@ def load_cache(project_path: pathlib.Path) -> Dict[str, Any]:
             return json.load(f)
     except Exception:
         return {}
+
 
 def save_cache(project_path: pathlib.Path, cache_data: Dict[str, Any]):
     cache_file = project_path / ".ai_context_cache.json"

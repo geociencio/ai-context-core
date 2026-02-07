@@ -5,4 +5,9 @@ from .injection import InjectionChecker
 from .insecure_calls import InsecureCallsChecker
 from .exceptions import ExceptionsChecker
 
-__all__ = ["BaseSecurityChecker", "InjectionChecker", "InsecureCallsChecker", "ExceptionsChecker"]
+__all__ = [
+    "BaseSecurityChecker",
+    "InjectionChecker",
+    "InsecureCallsChecker",
+    "ExceptionsChecker",
+]

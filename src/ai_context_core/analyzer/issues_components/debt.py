@@ -3,6 +3,7 @@
 from typing import List, Dict, Any
 from ..checkers.tech_debt_checker import TechDebtChecker
 
+
 def find_technical_debt(modules_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Find technical debt in project modules."""
     res = []

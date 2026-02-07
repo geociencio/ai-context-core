@@ -4,17 +4,18 @@ import ast
 from typing import Optional
 from .base import BaseEntryPointRule
 
+
 class DecoratorRule(BaseEntryPointRule):
     """Detects entry points based on function decorators (click, flask, fastapi)."""
 
     def check(self, node: ast.AST) -> Optional[str]:
         if not isinstance(node, (ast.Call, ast.Attribute, ast.Name)):
             return None
-            
+
         check_node = node.func if isinstance(node, ast.Call) else node
         if not isinstance(check_node, ast.Attribute):
             return None
-        
+
         attr = check_node.attr
         val = check_node.value
         if isinstance(val, ast.Name):
@@ -26,6 +27,7 @@ class DecoratorRule(BaseEntryPointRule):
                 return "fastapi_app"
         return None
 
+
 class AssignmentRule(BaseEntryPointRule):
     """Detects entry points based on variable assignments (django, flask, fastapi)."""
 
@@ -36,12 +38,18 @@ class AssignmentRule(BaseEntryPointRule):
     def check(self, node: ast.AST) -> Optional[str]:
         if self.target_id == "application":
             return "django_app"
-        if self.target_id == "urlpatterns" and isinstance(self.value, (ast.List, ast.Tuple)):
+        if self.target_id == "urlpatterns" and isinstance(
+            self.value, (ast.List, ast.Tuple)
+        ):
             return "django_urls"
-        if self.target_id == "INSTALLED_APPS" and isinstance(self.value, (ast.List, ast.Tuple)):
+        if self.target_id == "INSTALLED_APPS" and isinstance(
+            self.value, (ast.List, ast.Tuple)
+        ):
             return "django_settings"
-        
-        if self.target_id in ("app", "application") and isinstance(self.value, ast.Call):
+
+        if self.target_id in ("app", "application") and isinstance(
+            self.value, ast.Call
+        ):
             func = self.value.func
             if isinstance(func, ast.Name):
                 if func.id == "Flask":

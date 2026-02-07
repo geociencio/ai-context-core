@@ -2,6 +2,7 @@
 
 from typing import Dict, Set
 
+
 def calculate_coupling(graph: Dict[str, Set[str]]) -> Dict[str, Dict[str, int]]:
     """Calculate Fan-In, Fan-Out, and CBO for each node.
 
@@ -28,6 +29,7 @@ def calculate_coupling(graph: Dict[str, Set[str]]) -> Dict[str, Dict[str, int]]:
         }
         for node in all_nodes
     }
+
 
 def _get_all_nodes(graph: Dict[str, Set[str]]) -> Set[str]:
     """Retrieves all unique node names in the graph."""

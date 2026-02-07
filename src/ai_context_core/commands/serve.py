@@ -5,6 +5,7 @@ import socketserver
 import webbrowser
 import click
 
+
 def start_server(port: int, open_browser: bool):
     """Serves the HTML report locally."""
     handler = http.server.SimpleHTTPRequestHandler

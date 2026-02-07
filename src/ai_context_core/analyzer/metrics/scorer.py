@@ -2,6 +2,7 @@
 
 from typing import Dict, Any, List
 
+
 class ProjectScorer:
     """Handles project quality score calculation using weighted metrics."""
 
@@ -15,7 +16,9 @@ class ProjectScorer:
         self.thresholds = config.get("thresholds", {})
         self.config = config
 
-    def calculate(self, modules_data: List[Dict[str, Any]], ctx: Dict[str, Any]) -> float:
+    def calculate(
+        self, modules_data: List[Dict[str, Any]], ctx: Dict[str, Any]
+    ) -> float:
         """Calculates the overall project quality score.
 
         Args:
@@ -43,7 +46,11 @@ class ProjectScorer:
         score = (total / max_total * 100) if max_total > 0 else 0
 
         # Factor QGIS
-        qgis_enabled = self.config.get("patterns", {}).get("qgis_compliance", {}).get("enabled", False)
+        qgis_enabled = (
+            self.config.get("patterns", {})
+            .get("qgis_compliance", {})
+            .get("enabled", False)
+        )
         qgis_score = ctx.get("qgis_compliance", {}).get("compliance_score")
         if qgis_enabled and qgis_score is not None:
             score = (score * 0.7) + (qgis_score * 0.3)

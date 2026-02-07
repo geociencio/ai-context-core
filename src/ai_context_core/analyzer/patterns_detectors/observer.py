@@ -6,9 +6,10 @@ from .base import PatternDetector
 
 from .observer_components import detect_signals, analyze_class_body
 
+
 class ObserverDetector(PatternDetector):
     """Detects Observer pattern implementations.
-    
+
     Delegates analysis to specialized components to maintain extremely low complexity.
     """
 
@@ -30,7 +31,9 @@ class ObserverDetector(PatternDetector):
         if isinstance(node, (ast.ClassDef, ast.Module)):
             signals = detect_signals(node)
             if signals > 0:
-                self._add_evidence(f"Detected {signals} signals (PyQt/Signals)", signals * 20)
+                self._add_evidence(
+                    f"Detected {signals} signals (PyQt/Signals)", signals * 20
+                )
 
         if self.confidence >= 50:
             return [

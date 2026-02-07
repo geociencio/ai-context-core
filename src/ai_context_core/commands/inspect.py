@@ -6,6 +6,7 @@ import click
 from ..analyzer.engine import ProjectAnalyzer
 from ..config.loader import ConfigLoader
 
+
 def inspect_file(file_path: str):
     """Deep analysis of a single file."""
     path = pathlib.Path(file_path).resolve()

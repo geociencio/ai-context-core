@@ -7,6 +7,7 @@ from ..patterns_detectors.observer import ObserverDetector
 from ..patterns_detectors.strategy import StrategyDetector
 from ..patterns_detectors.decorator import DecoratorDetector
 
+
 class PatternsUnifiedVisitor(ast.NodeVisitor):
     """Orchestrates pattern detection in a single AST pass."""
 

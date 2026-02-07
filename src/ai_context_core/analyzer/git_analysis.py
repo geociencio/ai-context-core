@@ -10,6 +10,7 @@ from typing import List, Dict, Any
 
 from .git_analysis_components import GitAnalyzer, GitRunner
 
+
 def is_git_repo(path: pathlib.Path) -> bool:
     """Legacy wrapper for is_repo."""
     return GitAnalyzer(path).is_repo()

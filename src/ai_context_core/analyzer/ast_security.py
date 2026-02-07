@@ -33,7 +33,12 @@ class ASTSecurityDetector(IssueDetector):
             config: Configuration dictionary containing security patterns.
         """
         self.config = config or {}
-        from .security_checkers import InjectionChecker, InsecureCallsChecker, ExceptionsChecker
+        from .security_checkers import (
+            InjectionChecker,
+            InsecureCallsChecker,
+            ExceptionsChecker,
+        )
+
         self.checkers = [
             InjectionChecker(self.config),
             InsecureCallsChecker(self.config),

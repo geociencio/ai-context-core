@@ -2,6 +2,7 @@
 
 from .base import BaseSummarizer
 
+
 class IssuesSummarizer(BaseSummarizer):
     """Builds sections for critical issues and optimizations."""
 
@@ -40,6 +41,6 @@ class IssuesSummarizer(BaseSummarizer):
         res = []
         for o in opts[:3]:
             res.append(f"### {o.get('module')}")
-            for sug in o.get('suggestions', [])[:2]:
+            for sug in o.get("suggestions", [])[:2]:
                 res.append(f"- {sug.get('message', 'N/A')}")
         return "\n".join(res)

@@ -2,6 +2,7 @@ import ast
 import os
 from pathlib import Path
 
+
 def check_docstrings(start_path):
     missing = []
     for root, dirs, files in os.walk(start_path):
@@ -16,6 +17,7 @@ def check_docstrings(start_path):
                     except Exception:
                         pass
     return missing
+
 
 if __name__ == "__main__":
     missing = check_docstrings("src/ai_context_core")

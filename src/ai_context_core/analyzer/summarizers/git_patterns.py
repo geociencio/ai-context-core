@@ -2,6 +2,7 @@
 
 from .base import BaseSummarizer
 
+
 class GitPatternsSummarizer(BaseSummarizer):
     """Builds sections for git analysis and detected patterns."""
 

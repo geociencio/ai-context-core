@@ -4,10 +4,8 @@ import ast
 from typing import List
 
 
-from .import_visitor_components import (
-    get_unique_imports,
-    get_unused_imports
-)
+from .import_visitor_components import get_unique_imports, get_unused_imports
+
 
 def extract_imports(tree: ast.AST) -> List[str]:
     """Extracts module imports in an optimized way.

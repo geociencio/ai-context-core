@@ -16,6 +16,7 @@ class EntryPointVisitor(ast.NodeVisitor):
         """Initialize the entry point visitor."""
         self.result = {"is_entry_point": False, "type": None}
         from .entry_point_detectors import DecoratorRule
+
         self._deco_rule = DecoratorRule()
 
     def visit_If(self, node: ast.If):
@@ -43,6 +44,7 @@ class EntryPointVisitor(ast.NodeVisitor):
         if self.result["is_entry_point"]:
             return
         from .entry_point_detectors import AssignmentRule
+
         for target in node.targets:
             if isinstance(target, ast.Name):
                 res_type = AssignmentRule(target.id, node.value).check(node)

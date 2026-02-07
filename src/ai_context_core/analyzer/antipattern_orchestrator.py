@@ -4,6 +4,7 @@ import ast
 from typing import List, Dict, Any
 from . import antipatterns
 
+
 def detect_all(tree: ast.AST) -> List[Dict[str, Any]]:
     """Run all antipattern detectors on the AST.
 

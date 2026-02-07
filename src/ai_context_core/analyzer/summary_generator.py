@@ -27,6 +27,7 @@ class SummaryGenerator:
             QGISSummarizer,
             GitPatternsSummarizer,
         )
+
         self.metrics_s = MetricsSummarizer(analyses)
         self.issues_s = IssuesSummarizer(analyses)
         self.qgis_s = QGISSummarizer(analyses)

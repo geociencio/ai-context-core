@@ -2,7 +2,10 @@
 
 from typing import List, Dict, Any
 
-def format_complexity_agg(valid_modules: List[Dict[str, Any]], project_metrics: Dict[str, Any]) -> Dict[str, Any]:
+
+def format_complexity_agg(
+    valid_modules: List[Dict[str, Any]], project_metrics: Dict[str, Any]
+) -> Dict[str, Any]:
     """Builds the complexity aggregation dictionary for backward compatibility."""
     return {
         "total_modules": len(valid_modules),

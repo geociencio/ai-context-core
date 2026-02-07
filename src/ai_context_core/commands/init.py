@@ -5,6 +5,7 @@ import shutil
 import click
 from ..config.loader import ConfigLoader
 
+
 def initialize_project(path: str, profile: str):
     """Sets up the initial project structure and configuration.
 

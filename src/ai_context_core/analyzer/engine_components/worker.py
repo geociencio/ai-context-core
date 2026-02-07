@@ -11,10 +11,17 @@ from ..constants import PARALLEL_MIN_FILES
 
 logger = logging.getLogger(__name__)
 
+
 class AnalysisWorker:
     """Handles individual and parallel module analysis."""
 
-    def __init__(self, project_path: pathlib.Path, config: Dict[str, Any], max_workers: int, cache: Dict[str, Any]):
+    def __init__(
+        self,
+        project_path: pathlib.Path,
+        config: Dict[str, Any],
+        max_workers: int,
+        cache: Dict[str, Any],
+    ):
         self.project_path = project_path
         self.config = config
         self.max_workers = max_workers
@@ -25,6 +32,7 @@ class AnalysisWorker:
         """Executes parallel analysis of modules."""
         results, to_analyze = [], []
         from .. import fs_utils
+
         for f in files:
             rel = str(f.relative_to(self.project_path))
             h = fs_utils.calculate_file_hash(f)
@@ -42,7 +50,9 @@ class AnalysisWorker:
                 self._analyze_and_cache(f, results)
             return results
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as exc:
+        with concurrent.futures.ProcessPoolExecutor(
+            max_workers=self.max_workers
+        ) as exc:
             futures = {exc.submit(self.analyze_single, f): f for f in to_analyze}
             for fut in concurrent.futures.as_completed(futures):
                 f = futures[fut]
@@ -62,6 +72,7 @@ class AnalysisWorker:
 
     def _analyze_and_cache(self, f: pathlib.Path, results: List[Dict[str, Any]]):
         from .. import fs_utils
+
         data = self.analyze_single(f)
         if data:
             results.append(data)
@@ -74,17 +85,18 @@ class AnalysisWorker:
     def analyze_single(self, file_path: pathlib.Path) -> Dict[str, Any]:
         """Deep analysis of a single Python module."""
         from .. import fs_utils, antipattern_orchestrator
+
         try:
             content = fs_utils.read_file_fast(file_path)
             if not content:
                 return {}
             tree = ast.parse(content)
-            
+
             entry_data = ast_utils.is_entry_point(tree)
             complexity = ast_utils.calculate_complexity(tree)
             halstead = ast_utils.calculate_halstead_metrics(tree)
             sloc = ast_utils.calculate_sloc(tree, content)
-            
+
             return {
                 "path": str(file_path.relative_to(self.project_path)),
                 "lines": len(content.splitlines()),

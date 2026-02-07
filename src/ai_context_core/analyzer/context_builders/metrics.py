@@ -3,13 +3,14 @@
 from .base import BaseContextBuilder
 from typing import List
 
+
 class MetricsBuilder(BaseContextBuilder):
     """Adds metrics and complexity sections."""
 
     def build(self, lines: List[str]) -> None:
         c = self.analyses.get("complexity", {})
         m = self.analyses.get("metrics", {})
-        
+
         lines.append("\n## 📈 COMPLEXITY AND METRICS")
         lines.append(f"- **Total Modules**: {c.get('total_modules', 0)}")
         lines.append(f"- **Source Lines (SLOC)**: {c.get('total_lines', 0):,}")

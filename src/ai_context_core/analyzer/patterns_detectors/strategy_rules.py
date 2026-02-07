@@ -2,6 +2,7 @@
 
 import ast
 
+
 class StrategyRules:
     """Encapsulates patterns for Strategy detection."""
 

@@ -3,9 +3,10 @@
 from typing import Dict, Any, List, Set
 from .builder_components import get_importable_path, resolve_import
 
+
 class ImportGraphBuilder:
     """Class responsible for building the internal import graph of the project.
-    
+
     Delegates path mapping and resolution to specialized components.
     """
 

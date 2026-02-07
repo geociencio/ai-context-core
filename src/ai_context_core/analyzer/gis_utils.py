@@ -3,9 +3,16 @@
 import pathlib
 from typing import Dict, Any
 
+
 def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
     metadata_file = project_path / "metadata.txt"
-    res = {"exists": False, "valid": False, "content": {}, "issues": [], "compliance_score": 0}
+    res = {
+        "exists": False,
+        "valid": False,
+        "content": {},
+        "issues": [],
+        "compliance_score": 0,
+    }
     if not metadata_file.exists():
         res["issues"].append("Missing metadata.txt")
         return res
@@ -13,11 +20,19 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
     try:
         content = metadata_file.read_text(encoding="utf-8")
         import configparser
+
         config = configparser.ConfigParser(strict=False)
         config.read_string("[general]\n" + content.strip())
         metadata = dict(config["general"]) if "general" in config else {}
         res["content"] = metadata
-        mandatory = ["name", "description", "version", "qgisminimumversion", "author", "email"]
+        mandatory = [
+            "name",
+            "description",
+            "version",
+            "qgisminimumversion",
+            "author",
+            "email",
+        ]
         for field in mandatory:
             if field not in metadata:
                 res["issues"].append(f"Missing mandatory field: {field}")

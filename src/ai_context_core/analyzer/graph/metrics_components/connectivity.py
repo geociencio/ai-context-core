@@ -2,6 +2,7 @@
 
 from typing import Dict, Set
 
+
 def count_connected_components(graph: Dict[str, Set[str]]) -> int:
     """Count weakly connected components in the graph.
 
@@ -20,6 +21,7 @@ def count_connected_components(graph: Dict[str, Set[str]]) -> int:
             _bfs_visit(node, visited, undirected)
     return count
 
+
 def _build_undirected(graph: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
     """Convers a directed graph into an undirected adjacency list."""
     undirected = {}
@@ -32,6 +34,7 @@ def _build_undirected(graph: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
                 undirected[v] = set()
             undirected[v].add(u)
     return undirected
+
 
 def _bfs_visit(start_node: str, visited: Set[str], undirected: Dict[str, Set[str]]):
     """BFS traversal for component counting."""

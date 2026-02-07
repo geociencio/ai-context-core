@@ -2,6 +2,7 @@
 
 from .base import BaseSummarizer
 
+
 class MetricsSummarizer(BaseSummarizer):
     """Builds metrics and structure sections."""
 

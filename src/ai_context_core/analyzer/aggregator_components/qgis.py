@@ -2,7 +2,10 @@
 
 from typing import List, Dict, Any
 
-def aggregate_qgis_compliance(m_data: List[Dict[str, Any]], metadata: Dict[str, Any]) -> Dict[str, Any]:
+
+def aggregate_qgis_compliance(
+    m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
+) -> Dict[str, Any]:
     """Aggregate QGIS-specific results from modules and metadata.
 
     Args:
@@ -24,7 +27,9 @@ def aggregate_qgis_compliance(m_data: List[Dict[str, Any]], metadata: Dict[str, 
                 for m in m_data
             ),
             "total_strings": sum(
-                m.get("qgis_compliance", {}).get("i18n_usage", {}).get("total_strings", 0)
+                m.get("qgis_compliance", {})
+                .get("i18n_usage", {})
+                .get("total_strings", 0)
                 for m in m_data
             ),
         },
@@ -38,11 +43,19 @@ def aggregate_qgis_compliance(m_data: List[Dict[str, Any]], metadata: Dict[str, 
         ),
         "qt_transition": {
             "pyqt5_count": sum(
-                len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt5_imports", []))
+                len(
+                    m.get("qgis_compliance", {})
+                    .get("qt_transition", {})
+                    .get("pyqt5_imports", [])
+                )
                 for m in m_data
             ),
             "pyqt6_count": sum(
-                len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt6_imports", []))
+                len(
+                    m.get("qgis_compliance", {})
+                    .get("qt_transition", {})
+                    .get("pyqt6_imports", [])
+                )
                 for m in m_data
             ),
         },

@@ -7,9 +7,10 @@ from typing import List, Optional
 
 from .ignore_components import load_ignore_patterns, compile_ignore_patterns
 
+
 class IgnoreFilter:
     """Handles logic for filtering files and directories based on exclusion patterns.
-    
+
     Delegates pattern loading and regex compilation to specialized internal components.
     """
 

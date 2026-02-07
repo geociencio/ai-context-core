@@ -12,7 +12,10 @@ DEPENDENCY_FILES = [
     "environment.yml",
 ]
 
-def parse_dependency_files(project_path: pathlib.Path, read_file_func: Callable) -> Dict[str, str]:
+
+def parse_dependency_files(
+    project_path: pathlib.Path, read_file_func: Callable
+) -> Dict[str, str]:
     """Read content from common dependency files."""
     files_content = {}
     for req_file in DEPENDENCY_FILES:

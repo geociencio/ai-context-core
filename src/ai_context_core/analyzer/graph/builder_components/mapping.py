@@ -2,6 +2,7 @@
 
 from typing import Optional
 
+
 def get_importable_path(path: str) -> Optional[str]:
     """Map a file path to an importable python path (e.g., 'pkg.mod').
 

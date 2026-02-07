@@ -3,11 +3,13 @@
 from .base import BaseContextBuilder
 from typing import List
 
+
 class DependencyBuilder(BaseContextBuilder):
     """Adds dependency analysis and optimizations."""
 
     def build(self, lines: List[str]) -> None:
         from ..reporting import generate_dependency_diagram
+
         deps = self.analyses.get("dependencies", {})
         lines.append("\n## 🔗 PRIMARY DEPENDENCIES")
         tp = deps.get("third_party", [])
@@ -35,12 +37,16 @@ class DependencyBuilder(BaseContextBuilder):
         if high_c:
             lines.append("\n## 🔗 HIGH COUPLING MODULES (CBO)")
             for mod, m_val in high_c:
-                lines.append(f"- **{mod}**: CBO {m_val['cbo']} (In: {m_val['fan_in']}, Out: {m_val['fan_out']})")
+                lines.append(
+                    f"- **{mod}**: CBO {m_val['cbo']} (In: {m_val['fan_in']}, Out: {m_val['fan_out']})"
+                )
 
         g_m = deps.get("graph_metrics", {})
         if g_m:
             lines.append("\n## 🕸️  DEPENDENCY STRUCTURE")
-            lines.append(f"- **Nodes**: {g_m.get('nodes', 0)}\n- **Edges**: {g_m.get('edges', 0)}\n- **Density**: {g_m.get('density', 0):.3f}")
+            lines.append(
+                f"- **Nodes**: {g_m.get('nodes', 0)}\n- **Edges**: {g_m.get('edges', 0)}\n- **Density**: {g_m.get('density', 0):.3f}"
+            )
             lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)\n```mermaid")
             lines.append(generate_dependency_diagram(deps))
             lines.append("```")
@@ -52,4 +58,6 @@ class DependencyBuilder(BaseContextBuilder):
             for o in opts[:5]:
                 lines.append(f"### {o.get('module')}")
                 for sug in o.get("suggestions", [])[:2]:
-                    lines.append(f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}")
+                    lines.append(
+                        f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}"
+                    )

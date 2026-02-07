@@ -3,6 +3,7 @@
 import ast
 from typing import Optional
 
+
 class DecoratorRules:
     """Encapsulates patterns for Decorator detection."""
 
@@ -17,8 +18,12 @@ class DecoratorRules:
             Inner function node or None.
         """
         return next(
-            (i for i in getattr(node, "body", []) if isinstance(i, (ast.FunctionDef, ast.AsyncFunctionDef))),
-            None
+            (
+                i
+                for i in getattr(node, "body", [])
+                if isinstance(i, (ast.FunctionDef, ast.AsyncFunctionDef))
+            ),
+            None,
         )
 
     @classmethod
@@ -33,7 +38,11 @@ class DecoratorRules:
             True if it returns the inner function.
         """
         for i in getattr(node, "body", []):
-            if isinstance(i, ast.Return) and isinstance(i.value, ast.Name) and i.value.id == inner_name:
+            if (
+                isinstance(i, ast.Return)
+                and isinstance(i.value, ast.Name)
+                and i.value.id == inner_name
+            ):
                 return True
         return False
 

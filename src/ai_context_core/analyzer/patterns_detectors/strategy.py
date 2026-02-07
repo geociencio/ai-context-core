@@ -7,9 +7,10 @@ from .base import PatternDetector
 
 from .strategy_rules import StrategyRules
 
+
 class StrategyDetector(PatternDetector):
     """Detects Strategy pattern implementations.
-    
+
     Delegates rule checking to StrategyRules to keep complexity low.
     """
 
@@ -24,7 +25,7 @@ class StrategyDetector(PatternDetector):
         """
         if not isinstance(node, ast.ClassDef):
             return []
-        
+
         self.evidence, self.confidence = [], 0
         has_inj = self._check_for_injection(node)
 
@@ -59,7 +60,10 @@ class StrategyDetector(PatternDetector):
     def _check_for_calls(self, node: ast.ClassDef) -> None:
         """Checks class methods for calls to injected strategies."""
         for item in node.body:
-            if isinstance(item, ast.FunctionDef) and item.name not in ("__init__", "set_"):
+            if isinstance(item, ast.FunctionDef) and item.name not in (
+                "__init__",
+                "set_",
+            ):
                 call_str = StrategyRules.detect_strategy_call(item)
                 if call_str:
                     self._add_evidence(

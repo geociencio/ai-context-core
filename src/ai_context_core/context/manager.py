@@ -4,11 +4,18 @@ import pathlib
 from typing import Dict, Any
 
 
-from .components import ContextStore, ContextExtractor, GPTBuilder, DeepSeekBuilder, ClaudeBuilder
+from .components import (
+    ContextStore,
+    ContextExtractor,
+    GPTBuilder,
+    DeepSeekBuilder,
+    ClaudeBuilder,
+)
+
 
 class AIContextManager:
     """Manages project context and optimizes prompts.
-    
+
     Delegates storage, extraction and builder selection to specialized components.
     """
 

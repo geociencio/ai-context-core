@@ -3,11 +3,16 @@
 import pathlib
 from typing import Dict, Any
 
-from .store_components import load_context_files, load_single_context_file, update_context_file
+from .store_components import (
+    load_context_files,
+    load_single_context_file,
+    update_context_file,
+)
+
 
 class ContextStore:
     """Manages persistence of context data.
-    
+
     Delegates file-specific loading and updating logic to specialized components.
     """
 

@@ -20,6 +20,7 @@ from .issues_components import (
     find_technical_debt,
 )
 
+
 class IssueDetector:
     """Base class for issue detection rules (Legacy)."""
 

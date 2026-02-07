@@ -6,6 +6,7 @@ from ..checkers.security_checker import SecurityChecker
 from ..checkers.tech_debt_checker import TechDebtChecker
 from ..checkers.optimization_checker import OptimizationChecker
 
+
 class CheckerRegistry:
     """Registry for issue checkers."""
 

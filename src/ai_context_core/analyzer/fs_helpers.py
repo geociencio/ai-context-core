@@ -6,8 +6,10 @@ import hashlib
 from typing import List
 from .ignore_filter import IgnoreFilter
 
+
 def read_file_fast(path: pathlib.Path) -> str:
     from .fs_cache import file_cache
+
     cache_key = str(path)
     cached = file_cache.get(cache_key)
     if cached:
@@ -27,6 +29,7 @@ def read_file_fast(path: pathlib.Path) -> str:
     except Exception:
         return ""
 
+
 def is_test_file(path: pathlib.Path) -> bool:
     filename = path.name.lower()
     test_patterns = ["test_", "_test", "spec_", "_spec", "conftest"]
@@ -35,6 +38,7 @@ def is_test_file(path: pathlib.Path) -> bool:
         or "tests" in str(path).lower()
         or "test" in path.parent.name.lower()
     )
+
 
 def calculate_file_hash(path: pathlib.Path) -> str:
     try:
@@ -45,5 +49,8 @@ def calculate_file_hash(path: pathlib.Path) -> str:
     except Exception:
         return ""
 
-def load_exclusion_patterns(project_path: pathlib.Path, extra: List[str] = None) -> List[str]:
+
+def load_exclusion_patterns(
+    project_path: pathlib.Path, extra: List[str] = None
+) -> List[str]:
     return IgnoreFilter(project_path, extra).patterns

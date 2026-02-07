@@ -1,5 +1,6 @@
 """Prompt building strategies for different AI models."""
 
+
 class PromptBuilder:
     """Strategy for building model-specific prompts."""
 

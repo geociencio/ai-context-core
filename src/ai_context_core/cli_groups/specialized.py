@@ -3,6 +3,7 @@
 import click
 from ai_context_core.commands import deps, git, qgis
 
+
 @click.command(name="deps")
 @click.option("--path", default=".", help="Project path")
 @click.option("--unused", is_flag=True, help="Show unused imports")

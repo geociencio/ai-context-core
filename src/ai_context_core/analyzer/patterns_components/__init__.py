@@ -2,8 +2,11 @@
 
 from .visitor import PatternsUnifiedVisitor
 from .legacy import (
-    detect_singleton, detect_factory, detect_observer,
-    detect_strategy, detect_decorator
+    detect_singleton,
+    detect_factory,
+    detect_observer,
+    detect_strategy,
+    detect_decorator,
 )
 
 __all__ = [
@@ -12,5 +15,5 @@ __all__ = [
     "detect_factory",
     "detect_observer",
     "detect_strategy",
-    "detect_decorator"
+    "detect_decorator",
 ]

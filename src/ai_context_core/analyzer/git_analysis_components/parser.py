@@ -3,6 +3,7 @@
 from typing import List, Dict, Any
 from collections import Counter
 
+
 class GitParser:
     """Parses git command outputs into structured data."""
 

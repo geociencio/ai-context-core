@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Set
 
+
 class CycleDetector:
     """Class responsible for detecting cycles in the graph."""
 

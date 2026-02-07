@@ -3,6 +3,7 @@
 from .base import BaseContextBuilder
 from typing import List
 
+
 class GitTechBuilder(BaseContextBuilder):
     """Adds git analysis and technology summary."""
 

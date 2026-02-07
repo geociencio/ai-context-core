@@ -73,6 +73,7 @@ class ResultsAggregator:
 
         # Complexity aggregation (for backward compatibility)
         from .aggregator_components import format_complexity_agg
+
         complexity_agg = format_complexity_agg(valid_modules, project_metrics)
 
         # Module-level optimizations
@@ -96,11 +97,16 @@ class ResultsAggregator:
         self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Runs QGIS aggregation if enabled in config."""
-        qgis_enabled = self.config.get("patterns", {}).get("qgis_compliance", {}).get("enabled", False)
+        qgis_enabled = (
+            self.config.get("patterns", {})
+            .get("qgis_compliance", {})
+            .get("enabled", False)
+        )
         if not qgis_enabled:
             return {}
-        
+
         from .aggregator_components import aggregate_qgis_compliance
+
         return aggregate_qgis_compliance(m_data, metadata)
 
     def _aggregate_qgis_compliance(
@@ -108,4 +114,5 @@ class ResultsAggregator:
     ) -> Dict[str, Any]:
         """Legacy wrapper for QGIS compliance aggregation."""
         from .aggregator_components import aggregate_qgis_compliance
+
         return aggregate_qgis_compliance(m_data, metadata)

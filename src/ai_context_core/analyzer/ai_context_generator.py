@@ -2,6 +2,7 @@
 
 from typing import Dict, Any
 
+
 class AICtxGenerator:
     """Generator for AI Context documents.
 
@@ -30,6 +31,7 @@ class AICtxGenerator:
             DependencyBuilder,
             GitTechBuilder,
         )
+
         self.builders = [
             StructureBuilder(analyses),
             MetricsBuilder(analyses),

@@ -15,9 +15,11 @@ from .fs_tree import generate_tree_optimized
 
 logger = logging.getLogger(__name__)
 
+
 # Helper for backward compatibility
 def count_file_types(project_path: pathlib.Path) -> Dict[str, int]:
     return scan_project(project_path, []).file_types
+
 
 def calculate_size_stats(project_path: pathlib.Path) -> Dict[str, Any]:
     return scan_project(project_path, []).size_stats

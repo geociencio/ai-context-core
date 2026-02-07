@@ -6,9 +6,10 @@ from .base import BaseQGISChecker
 
 from .i18n_components import is_translatable_string, handle_i18n_call
 
+
 class I18nChecker(BaseQGISChecker):
     """Analyzes tr()/translate() usage and translatable string coverage.
-    
+
     Delegates string classification and call handling to specialized components.
     """
 
@@ -16,8 +17,16 @@ class I18nChecker(BaseQGISChecker):
         super().__init__(results)
         self._in_ignored_call = False
         self._ignored_functions = {
-            "debug", "info", "warning", "error", "critical", "log",
-            "Exception", "ValueError", "TypeError", "RuntimeError",
+            "debug",
+            "info",
+            "warning",
+            "error",
+            "critical",
+            "log",
+            "Exception",
+            "ValueError",
+            "TypeError",
+            "RuntimeError",
         }
 
     def set_ignored(self, ignored: bool):
@@ -37,7 +46,7 @@ class I18nChecker(BaseQGISChecker):
             return
         if self._in_ignored_call:
             return
-            
+
         if is_translatable_string(node.value):
             self.results["i18n_usage"]["total_strings"] += 1
 

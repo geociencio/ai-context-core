@@ -3,6 +3,7 @@
 import ast
 from .base import BaseQGISChecker
 
+
 class FrameworkChecker(BaseQGISChecker):
     """Checks for Processing framework and Signals/Slots usage patterns."""
 

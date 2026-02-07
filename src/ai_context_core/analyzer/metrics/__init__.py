@@ -28,21 +28,41 @@ def calculate_project_metrics(
     """
     total_physical = sum(m.get("lines", 0) for m in modules_data)
     total_sloc = sum(m.get("sloc", 0) for m in modules_data)
-    
-    # functions and classes are lists in modules_data
-    total_functions = sum(len(m.get("functions", [])) if isinstance(m.get("functions"), list) else m.get("functions", 0) for m in modules_data)
-    total_classes = sum(len(m.get("classes", [])) if isinstance(m.get("classes"), list) else m.get("classes", 0) for m in modules_data)
-    
-    complexity_list = [m.get("complexity", 0) for m in modules_data]
-    avg_complexity = sum(complexity_list) / len(complexity_list) if complexity_list else 0
 
-    total_docstrings = sum(1 for m in modules_data if m.get("docstrings", {}).get("module"))
+    # functions and classes are lists in modules_data
+    total_functions = sum(
+        (
+            len(m.get("functions", []))
+            if isinstance(m.get("functions"), list)
+            else m.get("functions", 0)
+        )
+        for m in modules_data
+    )
+    total_classes = sum(
+        (
+            len(m.get("classes", []))
+            if isinstance(m.get("classes"), list)
+            else m.get("classes", 0)
+        )
+        for m in modules_data
+    )
+
+    complexity_list = [m.get("complexity", 0) for m in modules_data]
+    avg_complexity = (
+        sum(complexity_list) / len(complexity_list) if complexity_list else 0
+    )
+
+    total_docstrings = sum(
+        1 for m in modules_data if m.get("docstrings", {}).get("module")
+    )
     doc_coverage = (total_docstrings / len(modules_data) * 100) if modules_data else 0
 
     scorer = ProjectScorer(config)
     quality_score = scorer.calculate(modules_data, ctx)
 
-    mi_list = [m.get("maintenance_index", 0) for m in modules_data if "maintenance_index" in m]
+    mi_list = [
+        m.get("maintenance_index", 0) for m in modules_data if "maintenance_index" in m
+    ]
     avg_mi = sum(mi_list) / len(mi_list) if mi_list else 0
 
     return {

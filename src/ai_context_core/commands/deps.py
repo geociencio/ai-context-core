@@ -7,7 +7,10 @@ from rich.table import Table
 from ..analyzer.engine import ProjectAnalyzer
 from ..config.loader import ConfigLoader
 
-def show_dependencies(path: str, show_unused: bool, show_cycles: bool, show_metrics: bool):
+
+def show_dependencies(
+    path: str, show_unused: bool, show_cycles: bool, show_metrics: bool
+):
     """Shows dependency analysis results."""
     proj = pathlib.Path(path).resolve()
     loader = ConfigLoader()
@@ -24,6 +27,7 @@ def show_dependencies(path: str, show_unused: bool, show_cycles: bool, show_metr
     if show_metrics:
         _show_metrics(deps, console)
 
+
 def _show_unused(deps):
     click.secho("🗑️  UNUSED IMPORTS", fg="yellow", bold=True)
     unused = deps.get("unused_imports", {})
@@ -35,6 +39,7 @@ def _show_unused(deps):
             for imp in imports:
                 click.echo(f"  - {imp}")
 
+
 def _show_cycles(deps):
     click.secho("\n🔄 CIRCULAR DEPENDENCIES", fg="red", bold=True)
     cycles = deps.get("circular_dependencies", [])
@@ -43,6 +48,7 @@ def _show_cycles(deps):
     else:
         for i, cycle in enumerate(cycles, 1):
             click.echo(f"{i}. {' → '.join(cycle)}")
+
 
 def _show_metrics(deps, console):
     click.secho("\n📊 DEPENDENCY METRICS", fg="cyan", bold=True)

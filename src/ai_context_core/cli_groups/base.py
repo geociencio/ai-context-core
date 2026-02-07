@@ -4,6 +4,7 @@ import click
 from ai_context_core.commands import init, stats, clean, serve
 from ai_context_core.config.loader import list_profiles
 
+
 @click.command(name="init")
 @click.option("--profile", "-p", default="generic", help="Config profile")
 @click.option("--path", default=".", help="Project path")
@@ -21,7 +22,9 @@ def stats_cmd(path: str):
 
 @click.command(name="clean")
 @click.option("--path", default=".", help="Project path")
-@click.option("--dry-run", is_flag=True, help="Show what would be deleted without deleting")
+@click.option(
+    "--dry-run", is_flag=True, help="Show what would be deleted without deleting"
+)
 def clean_cmd(path: str, dry_run: bool):
     """Cleans cache and generated artifacts."""
     clean.clean_artifacts(path, dry_run)

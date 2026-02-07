@@ -2,6 +2,7 @@
 
 from typing import Dict, Any, List
 
+
 class BaseContextBuilder:
     """Base class for building sections of the AI context document."""
 

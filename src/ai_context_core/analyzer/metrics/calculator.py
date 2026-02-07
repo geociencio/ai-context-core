@@ -3,6 +3,7 @@
 import math
 from typing import Dict
 
+
 class MetricsCalculator:
     """Class to calculate basic code metrics."""
 
@@ -44,6 +45,7 @@ class MetricsCalculator:
         d = (n1 / 2) * (N2 / n2) if n2 > 0 else 0
         e = d * v
         return {"volume": v, "difficulty": d, "effort": e}
+
 
 def calculate_maintenance_index(v: float, g: int, loc: int) -> float:
     """Standalone function to calculate Maintenance Index.

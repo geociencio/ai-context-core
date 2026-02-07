@@ -1,11 +1,15 @@
 """Calculation of dependency graph metrics."""
 
 from typing import Dict, Set
-from .metrics_components import count_connected_components as _count_comp, calculate_coupling as _calc_coupling
+from .metrics_components import (
+    count_connected_components as _count_comp,
+    calculate_coupling as _calc_coupling,
+)
+
 
 class GraphMetricsCalculator:
     """Class to calculate various graph metrics.
-    
+
     Delegates complex algorithms to specialized components.
     """
 

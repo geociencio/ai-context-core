@@ -7,12 +7,13 @@ from .observer_components import (
     check_init_assign as _init_check,
     check_iteration as _iter_check,
     check_mgmt_method as _mgmt_check,
-    check_notify_method as _notify_check
+    check_notify_method as _notify_check,
 )
+
 
 class ObserverRules:
     """Encapsulates patterns for observer detection.
-    
+
     Delegates to specialized components to maintain low complexity.
     """
 

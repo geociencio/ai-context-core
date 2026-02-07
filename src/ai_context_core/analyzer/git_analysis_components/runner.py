@@ -4,6 +4,7 @@ import subprocess
 import pathlib
 from typing import List, Optional
 
+
 class GitRunner:
     """Handles execution of git commands."""
 

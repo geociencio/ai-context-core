@@ -5,17 +5,31 @@ import pathlib
 import subprocess
 from typing import Dict, Any
 
+
 def generate_tree_optimized(project_path: pathlib.Path) -> str:
     try:
         result = subprocess.run(
-            ["tree", "-I", "__pycache__|*.pyc|*.pyo|*.pycache|.git|.venv|venv|env", "-a", "--noreport", "-L", "4"],
-            cwd=project_path, capture_output=True, text=True, timeout=3, check=False,
+            [
+                "tree",
+                "-I",
+                "__pycache__|*.pyc|*.pyo|*.pycache|.git|.venv|venv|env",
+                "-a",
+                "--noreport",
+                "-L",
+                "4",
+            ],
+            cwd=project_path,
+            capture_output=True,
+            text=True,
+            timeout=3,
+            check=False,
         )
         if result.returncode == 0:
             return result.stdout[:1500]
     except Exception:
         pass
     return _generate_tree_fallback(project_path)
+
 
 def _generate_tree_fallback(project_path: pathlib.Path) -> str:
     tree_lines = ["./"]
@@ -36,8 +50,10 @@ def _generate_tree_fallback(project_path: pathlib.Path) -> str:
             tree_lines.append(f"{f_indent}{file}")
     return "\n".join(tree_lines)
 
+
 def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[str, Any]:
     from .fs_scanner import scan_project
+
     res = scan_project(project_path, [])
     return {
         "tree": generate_tree_optimized(project_path),

@@ -2,6 +2,7 @@
 
 import ast
 
+
 class GenericQGISComplianceVisitor(ast.NodeVisitor):
     """Visitor to check for QGIS coding standards and best practices."""
 
@@ -15,12 +16,15 @@ class GenericQGISComplianceVisitor(ast.NodeVisitor):
             "signals_slots": {"legacy": 0, "modern": 0},
         }
         from ..qgis_checkers import ImportStyleChecker, I18nChecker, FrameworkChecker
+
         self.checkers = [
             ImportStyleChecker(self.results),
             I18nChecker(self.results),
             FrameworkChecker(self.results),
         ]
-        self._i18n_checker = next(c for c in self.checkers if isinstance(c, I18nChecker))
+        self._i18n_checker = next(
+            c for c in self.checkers if isinstance(c, I18nChecker)
+        )
 
     def visit_Import(self, node: ast.Import):
         """Checks for legacy imports."""
@@ -60,7 +64,7 @@ class GenericQGISComplianceVisitor(ast.NodeVisitor):
         """Visits a call node to detect i18n usage and legacy signals."""
         func_name = self._get_func_name(node.func)
         is_ignored_func = self._i18n_checker.is_ignored_func(func_name)
-        
+
         if is_ignored_func:
             self._i18n_checker.set_ignored(True)
 
@@ -68,7 +72,7 @@ class GenericQGISComplianceVisitor(ast.NodeVisitor):
             checker.visit(node)
 
         self.generic_visit(node)
-        
+
         if is_ignored_func:
             self._i18n_checker.set_ignored(False)
 

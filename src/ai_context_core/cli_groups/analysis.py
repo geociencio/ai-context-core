@@ -4,10 +4,13 @@ import click
 from typing import Optional
 from ai_context_core.commands import analyze, inspect
 
+
 @click.command(name="analyze")
 @click.option("--path", default=".", help="Project path")
 @click.option("--workers", "-w", default=None, type=int, help="Parallel workers")
-@click.option("--format", "-f", type=click.Choice(["markdown", "html"]), default="markdown")
+@click.option(
+    "--format", "-f", type=click.Choice(["markdown", "html"]), default="markdown"
+)
 @click.option("--no-cache", is_flag=True, help="Force full analysis, ignoring cache")
 def analyze_cmd(path: str, workers: Optional[int], format: str, no_cache: bool):
     """Runs project analysis."""
@@ -16,7 +19,9 @@ def analyze_cmd(path: str, workers: Optional[int], format: str, no_cache: bool):
 
 @click.command(name="audit")
 @click.option("--path", default=".", help="Project path")
-@click.option("--threshold", "-t", default=70.0, type=float, help="Minimum Quality Score")
+@click.option(
+    "--threshold", "-t", default=70.0, type=float, help="Minimum Quality Score"
+)
 def audit_cmd(path: str, threshold: float):
     """Fails if Quality Score is below threshold."""
     analyze.run_audit(path, threshold)

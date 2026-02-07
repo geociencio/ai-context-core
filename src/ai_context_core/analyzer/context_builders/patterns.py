@@ -3,6 +3,7 @@
 from .base import BaseContextBuilder
 from typing import List
 
+
 class PatternsBuilder(BaseContextBuilder):
     """Adds detected patterns and anti-patterns."""
 

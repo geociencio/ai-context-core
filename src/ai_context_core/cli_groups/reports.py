@@ -3,6 +3,7 @@
 import click
 from ai_context_core.commands import report
 
+
 @click.command(name="patterns")
 @click.option("--path", default=".", help="Project path")
 def patterns_cmd(path: str):

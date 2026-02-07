@@ -6,4 +6,10 @@ from .issues import IssuesSummarizer
 from .qgis import QGISSummarizer
 from .git_patterns import GitPatternsSummarizer
 
-__all__ = ["BaseSummarizer", "MetricsSummarizer", "IssuesSummarizer", "QGISSummarizer", "GitPatternsSummarizer"]
+__all__ = [
+    "BaseSummarizer",
+    "MetricsSummarizer",
+    "IssuesSummarizer",
+    "QGISSummarizer",
+    "GitPatternsSummarizer",
+]

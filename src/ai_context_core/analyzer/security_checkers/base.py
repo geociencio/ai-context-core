@@ -3,6 +3,7 @@
 import ast
 from typing import List, Dict, Any
 
+
 class BaseSecurityChecker:
     """Base class for security detection rules."""
 

@@ -2,6 +2,7 @@
 
 from typing import Dict, Any
 
+
 class BaseSummarizer:
     """Base class for building sections of the summary report."""
 

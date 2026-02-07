@@ -5,6 +5,7 @@ import click
 from ..analyzer.engine import ProjectAnalyzer
 from ..config.loader import ConfigLoader
 
+
 def validate_qgis(path: str):
     """Validates QGIS plugin compliance."""
     proj = pathlib.Path(path).resolve()
@@ -30,6 +31,7 @@ def validate_qgis(path: str):
         fg="green" if score > 70 else "yellow",
     )
 
+
 def _show_metadata_validation(metadata):
     if metadata.get("valid"):
         click.secho("\n✅ metadata.txt is valid", fg="green")
@@ -42,6 +44,7 @@ def _show_metadata_validation(metadata):
         for err in metadata.get("errors", []):
             click.echo(f"  - {err}")
 
+
 def _show_i18n_stats(qgis):
     i18n = qgis.get("i18n_stats", {})
     total_tr = i18n.get("total_tr", 0)
@@ -49,6 +52,7 @@ def _show_i18n_stats(qgis):
     coverage = (total_tr / total_strings * 100) if total_strings > 0 else 0
     click.secho("\n🌍 Internationalization (i18n)", fg="cyan", bold=True)
     click.echo(f"Translated strings: {total_tr}/{total_strings} ({coverage:.1f}%)")
+
 
 def _show_qt_transition(qgis):
     qt = qgis.get("qt_transition", {})

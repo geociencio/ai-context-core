@@ -2,6 +2,7 @@
 
 from .base import BaseSummarizer
 
+
 class QGISSummarizer(BaseSummarizer):
     """Builds the QGIS standards compliance section."""
 
@@ -14,7 +15,9 @@ class QGISSummarizer(BaseSummarizer):
         if q.get("processing_framework_detected"):
             res.append("- ✅ **Architecture**: Processing Framework detected")
         else:
-            res.append("- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)")
+            res.append(
+                "- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)"
+            )
 
         i18n = q.get("i18n_stats", {})
         if i18n.get("total_strings", 0) > 0:
@@ -25,13 +28,17 @@ class QGISSummarizer(BaseSummarizer):
 
         qt = q.get("qt_transition", {})
         if qt.get("pyqt5_count", 0) > 0:
-            res.append(f"- 🍎 **Qt6 Transition**: {qt['pyqt5_count']} PyQt5 imports (Action required for QGIS 4)")
+            res.append(
+                f"- 🍎 **Qt6 Transition**: {qt['pyqt5_count']} PyQt5 imports (Action required for QGIS 4)"
+            )
 
         if q.get("gdal_style") == "Legacy":
             res.append("- ⚠️ **GDAL Style**: Legacy imports detected (`import gdal`)")
 
         if q.get("legacy_signals", 0) > 0:
-            res.append(f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected")
+            res.append(
+                f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected"
+            )
 
         issues = q.get("metadata", {}).get("issues", [])
         if issues:

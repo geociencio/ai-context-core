@@ -6,9 +6,10 @@ from .base import PatternDetector
 
 from .singleton_components import check_singleton_item
 
+
 class SingletonDetector(PatternDetector):
     """Detects Singleton pattern implementations.
-    
+
     Delegates rule checking to specialized components.
     """
 
@@ -21,7 +22,7 @@ class SingletonDetector(PatternDetector):
         self.evidence, self.confidence = [], 0
         if not isinstance(node, ast.ClassDef):
             return
-            
+
         for item in node.body:
             check_singleton_item(item, self._add_evidence)
 
@@ -42,9 +43,11 @@ def detect_singleton(tree: ast.AST):
             detector.visit(node)
             # Only report patterns with confidence >= 50
             if detector.evidence and detector.confidence >= 50:
-                results.append({
-                    "class": node.name,
-                    "evidence": detector.evidence,
-                    "confidence": detector.confidence
-                })
+                results.append(
+                    {
+                        "class": node.name,
+                        "evidence": detector.evidence,
+                        "confidence": detector.confidence,
+                    }
+                )
     return results

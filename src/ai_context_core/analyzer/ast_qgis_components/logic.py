@@ -4,6 +4,7 @@ import ast
 from typing import Dict, Any
 from .visitor import GenericQGISComplianceVisitor
 
+
 def is_qgis_entry_point_node(node: ast.AST) -> bool:
     """Checks if an AST node is a QGIS classFactory entry point."""
     return (
@@ -11,6 +12,7 @@ def is_qgis_entry_point_node(node: ast.AST) -> bool:
         and node.name == "classFactory"
         and any(arg.arg == "iface" for arg in node.args.args)
     )
+
 
 def check_qgis_compliance(tree: ast.AST) -> Dict[str, Any]:
     """Checks for compliance with QGIS-specific coding standards."""

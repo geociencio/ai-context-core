@@ -4,15 +4,46 @@ import ast
 from collections import Counter
 from typing import Dict, Any
 
+
 class HalsteadVisitor(ast.NodeVisitor):
     """Visitor to calculate Halstead metrics indicators."""
 
     OPERATORS = (
-        ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Mod, ast.Pow, ast.LShift, ast.RShift,
-        ast.BitOr, ast.BitXor, ast.BitAnd, ast.FloorDiv, ast.And, ast.Or, ast.Not,
-        ast.Invert, ast.UAdd, ast.USub, ast.Eq, ast.NotEq, ast.Lt, ast.LtE, ast.Gt,
-        ast.GtE, ast.Is, ast.IsNot, ast.In, ast.NotIn, ast.If, ast.For, ast.While,
-        ast.Try, ast.With, ast.FunctionDef, ast.ClassDef,
+        ast.Add,
+        ast.Sub,
+        ast.Mult,
+        ast.Div,
+        ast.Mod,
+        ast.Pow,
+        ast.LShift,
+        ast.RShift,
+        ast.BitOr,
+        ast.BitXor,
+        ast.BitAnd,
+        ast.FloorDiv,
+        ast.And,
+        ast.Or,
+        ast.Not,
+        ast.Invert,
+        ast.UAdd,
+        ast.USub,
+        ast.Eq,
+        ast.NotEq,
+        ast.Lt,
+        ast.LtE,
+        ast.Gt,
+        ast.GtE,
+        ast.Is,
+        ast.IsNot,
+        ast.In,
+        ast.NotIn,
+        ast.If,
+        ast.For,
+        ast.While,
+        ast.Try,
+        ast.With,
+        ast.FunctionDef,
+        ast.ClassDef,
     )
 
     def __init__(self):
@@ -29,6 +60,7 @@ class HalsteadVisitor(ast.NodeVisitor):
         elif isinstance(node, ast.Constant):
             self.operands[str(node.value)] += 1
         super().visit(node)
+
 
 def calculate_halstead_metrics(tree: ast.AST) -> Dict[str, Any]:
     """Calculates basic Halstead complexity metrics."""
