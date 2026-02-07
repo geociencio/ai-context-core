@@ -16,6 +16,7 @@ class I18nChecker(BaseQGISChecker):
     def __init__(self, results: Dict[str, Any]):
         super().__init__(results)
         self._in_ignored_call = False
+        self._in_dict_key = False
         self._ignored_functions = {
             "debug",
             "info",
@@ -27,11 +28,25 @@ class I18nChecker(BaseQGISChecker):
             "ValueError",
             "TypeError",
             "RuntimeError",
+            "setObjectName",
+            "addItem",
+            "setValue",
+            "value",
+            "key",
+            "setProperty",
+            "connect",
+            "disconnect",
+            "signal",
+            "slot",
         }
 
     def set_ignored(self, ignored: bool):
         """Sets whether the current context is an ignored call (e.g. logging)."""
         self._in_ignored_call = ignored
+
+    def set_in_dict(self, in_dict: bool):
+        """Sets whether the current context is a dictionary key."""
+        self._in_dict_key = in_dict
 
     def visit(self, node: ast.AST) -> None:
         """Visits nodes to detect i18n markers and translatable strings."""
@@ -44,7 +59,7 @@ class I18nChecker(BaseQGISChecker):
         """Processes a string constant to determine translatability."""
         if not isinstance(node.value, str):
             return
-        if self._in_ignored_call:
+        if self._in_ignored_call or self._in_dict_key:
             return
 
         if is_translatable_string(node.value):

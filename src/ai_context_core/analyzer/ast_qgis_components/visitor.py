@@ -84,6 +84,16 @@ class GenericQGISComplianceVisitor(ast.NodeVisitor):
             return func.attr
         return ""
 
+    def visit_Dict(self, node: ast.Dict):
+        """Visits dictionary and ignores its keys for i18n string counting."""
+        for key, value in zip(node.keys, node.values):
+            if key:
+                self._i18n_checker.set_in_dict(True)
+                self.visit(key)
+                self._i18n_checker.set_in_dict(False)
+            if value:
+                self.visit(value)
+
     def visit_Constant(self, node: ast.Constant):
         """Visits a constant node to count potential i18n strings."""
         self._i18n_checker.visit(node)

@@ -42,7 +42,16 @@
 - [ ] Analyze `plugin.xml` and resource files.
 
 ## 🐛 Known Issues
-- No critical issues known. All regressions fixed in v3.1.1.
+
+**None currently blocking** - All critical issues resolved in v3.1.0
+
+## 📚 Documentation Needs
+
+- [ ] Add architecture diagram showing component relationships
+- [ ] Create video tutorial for basic usage
+- [ ] Write blog post about extreme fragmentation benefits
+- [ ] Add contributing guide for new developers
+- [ ] Document performance benchmarks
 
 ## 🔧 Technical Debt
 - Monitor the fragmentation of `*_components` packages; consolidate if they become too sparse.

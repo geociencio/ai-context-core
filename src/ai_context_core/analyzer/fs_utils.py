@@ -8,11 +8,6 @@ import pathlib
 import logging
 from typing import Dict, Any
 from .fs_scanner import scan_project
-from .fs_helpers import (
-    load_exclusion_patterns,
-    calculate_file_hash,
-    read_file_fast,
-)  # noqa: F401
 from .fs_cache import load_cache, save_cache  # noqa: F401
 from .gis_utils import parse_qgis_metadata  # noqa: F401
 from .fs_tree import generate_tree_optimized  # noqa: F401

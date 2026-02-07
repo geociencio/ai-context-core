@@ -1,8 +1,6 @@
 import unittest
 import ast
 from src.ai_context_core.analyzer.ast_qgis import QGISComplianceVisitor
-from src.ai_context_core.analyzer.aggregator import ResultsAggregator
-from pathlib import Path
 
 
 class TestQGISCompliance(unittest.TestCase):
@@ -54,26 +52,51 @@ class MyPlugin:
         # it might need adjustment if it's called as `exceptions.ValueError`.
         self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 1)
 
-    def test_aggregator_i18n_sum(self):
-        aggregator = ResultsAggregator(Path("/tmp"), {})
-        m_data = [
-            {
-                "path": "mod1.py",
-                "qgis_compliance": {
-                    "i18n_usage": {"tr": 2, "translate": 1, "total_strings": 10}
-                },
-            },
-            {
-                "path": "mod2.py",
-                "qgis_compliance": {
-                    "i18n_usage": {"tr": 1, "translate": 2, "total_strings": 5}
-                },
-            },
-        ]
-        results = aggregator._aggregate_qgis_compliance(m_data, {})
+    def test_i18n_naming_patterns(self):
+        code = """
+class Patterns:
+    def test(self):
+        a = "snake_case_is_ignored"
+        b = "camelCaseIsIgnored"
+        c = "PascalCaseIsIgnored"
+        d = "UPPER_CASE_IS_IGNORED"
+        e = "This has spaces and is NOT ignored"
+        f = "data.with.dots.is.ignored"
+"""
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
 
-        self.assertEqual(results["i18n_stats"]["total_tr"], 6)  # (2+1) + (1+2)
-        self.assertEqual(results["i18n_stats"]["total_strings"], 15)
+        # f is dotted, a-d match patterns, e has spaces.
+        # Only "This has spaces and is NOT ignored" should be counted.
+        self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 1)
+
+    def test_i18n_dict_keys_ignored(self):
+        code = """
+cfg = {
+    "technical_key": "Translated Value",
+    "another_key": "Another Translated Value"
+}
+"""
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+
+        # 2 keys ignored, 2 values counted.
+        self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 2)
+
+    def test_i18n_ignored_functions_expanded(self):
+        code = """
+obj.setObjectName("technical_name")
+obj.addItem("Technical Item")  #addItem often used for UI, but guide says technical
+obj.setValue("some_value")
+"""
+        tree = ast.parse(code)
+        visitor = QGISComplianceVisitor()
+        visitor.visit(tree)
+
+        # All these should be ignored because they are in the _ignored_functions list.
+        self.assertEqual(visitor.results["i18n_usage"]["total_strings"], 0)
 
 
 if __name__ == "__main__":

@@ -1,10 +1,19 @@
 """Metrics calculation and quality scoring for ai-context-core."""
 
 from typing import Dict, Any, List
-from .calculator import MetricsCalculator, calculate_maintenance_index
+from .calculator import (
+    MetricsCalculator,
+    calculate_maintenance_index,
+    calculate_halstead_metrics,
+)
 from .scorer import ProjectScorer
 
-__all__ = ["MetricsCalculator", "ProjectScorer", "calculate_maintenance_index"]
+__all__ = [
+    "MetricsCalculator",
+    "ProjectScorer",
+    "calculate_maintenance_index",
+    "calculate_halstead_metrics",
+]
 
 
 def calculate_project_metrics(
