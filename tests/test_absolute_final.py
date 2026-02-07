@@ -45,10 +45,11 @@ def test_clean_no_artifacts():
         # No files created
         from ai_context_core.commands.clean import clean_artifacts
 
+
 def test_gis_utils_extract_metadata():
     # Coverage for gis_utils.py lines 44-45, 48-49
     from ai_context_core.analyzer.gis_utils import parse_qgis_metadata
-    
+
     # Test with missing metadata.txt
     with patch("pathlib.Path.exists", return_value=False):
         result = parse_qgis_metadata(pathlib.Path("/tmp"))
