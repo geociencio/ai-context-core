@@ -39,23 +39,30 @@ uv sync
 ```
 *Note: If you prefer standard pip: `python3 -m venv .venv && source .venv/bin/activate && pip install -e .`*
 
-## 4. Verification (Smoke Test)
-Verify that the CLI is installed correctly.
+## 4. Verification (Health Check)
+Verify that the CLI is installed and your environment is ready using the `doctor` command.
 
 ```bash
-# Should show CLI help
-uv run ai-ctx --help
+# Checks requirements, project structure, and config health
+uv run ai-ctx doctor
 ```
 
-## 5. First Run ("Dogfooding")
-Use the tool to analyze itself. This will initialize the AI context within the `ai-context-core` repo itself.
+## 5. First Run ("Interactive Mode")
+The easiest way to start is using the **Interactive Mode**, which will guide you through initialization and analysis.
 
 ```bash
-# 1. Initialize context (using generic profile)
-uv run ai-ctx init --profile generic
-
-# 2. Run first analysis
-uv run ai-ctx analyze
+uv run ai-ctx interactive
 ```
 
-If successful, you will see a generated `.ai-context/` folder with the initial report. You are now ready to push to GitHub/GitLab!
+*Prefer the manual way?*
+1. **Initialize**: `uv run ai-ctx init --profile generic`
+2. **Analyze**: `uv run ai-ctx analyze`
+
+## 🚀 Next Steps: Explore the Suite
+Once initialized, try these commands to understand your codebase better:
+- **`ai-ctx graph`**: Generate an architectural dependency diagram.
+- **`ai-ctx roadmap`**: Identify which files to refactor first.
+- **`ai-ctx audit`**: Check the absolute Quality Score of your project.
+
+---
+*Note: Thanks to the **Incremental Cache**, subsequent analysis runs will be near-instant!*
