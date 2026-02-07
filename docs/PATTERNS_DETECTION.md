@@ -53,6 +53,26 @@ Lets you attach new behaviors to objects by placing these objects inside special
     *   Class implements both `__init__` (accepting a callable) and `__call__` (Score: 60)
 *   **Threshold:** >50% confidence.
 
+## From Detection to Generation
+
+The tool now supports not just identifying patterns, but also generating and visualizing them.
+
+### 🛠️ Scaffolding Patterns
+You can bootstrap a standard implementation of a design pattern using the `scaffold` command. This ensures your code follows the architectural expectations of the analyzer from the start.
+
+```bash
+ai-ctx scaffold strategy -o my_logic.py
+```
+
+*Supported for scaffolding:* Strategy, Observer.
+
+### 📊 Architectural Visualization
+To see how these patterns interact or to verify the overall dependency structure, use the `graph` command. It exports a Mermaid diagram that highlights the most connected modules.
+
+```bash
+ai-ctx graph --output ARC.mmd
+```
+
 ## Limitations
 
 Since detection is based on **static analysis** (source code only, no execution), it may produce false positives if naming conventions are used without implementing the actual logic, or false negatives for highly dynamic or unconventional implementations.
