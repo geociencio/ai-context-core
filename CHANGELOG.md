@@ -35,9 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **FS Utilities**: Restored missing facade exports in `fs_utils.py`.
 - **Linting**: Updated pre-commit configurations and resolved new Ruff rules.
 
-### Added
-- **Test Coverage**: Achieved **98%** project-wide test coverage (263 tests), covering all critical modules including `engine`, `fs_utils`, `dependencies`, and `checkers`.
-- **System Stability**: Implemented comprehensive edge case handling for filesystem operations, complexity calculations, and dependency analysis.
+- [x] Test Coverage Boost: Achieved **98%** project-wide test coverage (263 tests), covering all critical modules including `engine`, `fs_utils`, `dependencies`, and `checkers`.
+- [x] System Stability: Implemented comprehensive edge case handling for filesystem operations, complexity calculations, and dependency analysis.
+- [x] **Documentation Localization Sprint**: Translated and modernized all core technical guides to English, establishing a universal documentation standard (v3.1.2 baseline).
+    - **Updated**: `README.md`, `CONFIGURATION.md`, `PATTERNS_DETECTION.md`.
+    - **Modernized**: `PROFILES_GUIDE.md`, `QUICK_START.md`, `ARCHITECTURAL_ANALYSIS.md`.
+    - **Localized**: `AGENTIC_IMPLEMENTATION_GUIDE.md`, `i18n_improvement_guide.md`, `DEVELOPMENT_LOG.md`.
 
 ## [3.1.1] - 2026-02-07 - QGIS Profile & Analysis Fixes
 
