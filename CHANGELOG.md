@@ -299,6 +299,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Workflows**: Optimized local workflows (`inicia-sesion`, `cierra-sesion`) with hybrid Docker/uv support.
 
 ### Fixed
+- **i18n Scope Analysis**: Fixed critical bugs in v3.2.0 where i18n configuration was ignored in aggregation, and recursive path matching (`**`) failed. Implemented high-performance regex-based matching with caching.
+- **CLI QGIS Command**: Added missing `--i18n-scope` option and improved reporting transparency (active scope and analyzed module count).
 - **Engine**: Resolved `KeyError: complexity` in summary generation for errored files.
 - **Linting**: Fixed import order and unused variables across `analyzer` modules.
 - **Clean Code**: Removed legacy garbage content from `dependencies.py`.

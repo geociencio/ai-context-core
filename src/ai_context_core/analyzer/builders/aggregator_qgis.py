@@ -1,6 +1,52 @@
 """Aggregation logic for QGIS compliance findings."""
 
 from typing import List, Dict, Any
+import re
+import fnmatch
+
+_PATTERN_CACHE = {}
+
+
+def _match_path(path: str, pattern: str) -> bool:
+    """Helper to match path against glob pattern robustly using regex and caching.
+
+    Supports recursive ** patterns globally on all Python versions (3.9+).
+    """
+    # Normalize paths to use forward slashes for consistency
+    path = path.replace("\\", "/")
+    pattern = pattern.replace("\\", "/")
+
+    if pattern not in _PATTERN_CACHE:
+        try:
+            if "**" not in pattern:
+                # Standard glob behavior for non-recursive patterns
+                _PATTERN_CACHE[pattern] = re.compile(fnmatch.translate(pattern))
+            else:
+                # Convert recursive glob to regex
+                # 1. Escape everything
+                # 2. Replace escaped **/ with (.*/)? (matches zero or more directories)
+                # 3. Replace escaped * with [^/]* (matches within one directory)
+                regex_str = (
+                    re.escape(pattern)
+                    .replace(r"\*\*/", "(.*/)?")
+                    .replace(r"\*", "[^/]*")
+                )
+
+                # Ensure it matches as a suffix if it doesn't start with a slash/glob
+                if not regex_str.startswith("(\\.\\*/)?") and not pattern.startswith(
+                    "/"
+                ):
+                    regex_str = f"^(.*/)?{regex_str}$"
+                else:
+                    regex_str = f"^{regex_str}$"
+
+                _PATTERN_CACHE[pattern] = re.compile(regex_str)
+        except Exception:
+            # Fallback if regex generation fails
+            return False
+
+    regex = _PATTERN_CACHE[pattern]
+    return bool(regex.match(path))
 
 
 def aggregate_qgis_compliance(
@@ -15,9 +61,6 @@ def aggregate_qgis_compliance(
         metadata: Project metadata
         i18n_config: Optional i18n configuration with scope and patterns
     """
-    import fnmatch
-    from pathlib import Path
-
     # Default i18n config if not provided
     if i18n_config is None:
         i18n_config = {"scope": "all"}
@@ -30,7 +73,7 @@ def aggregate_qgis_compliance(
         if scope == "all":
             return True
 
-        module_path = module_data.get("file", "")
+        module_path = module_data.get("path", "")
         if not module_path:
             return True  # Include if no path info
 
@@ -45,7 +88,6 @@ def aggregate_qgis_compliance(
 
             # Check exclusions first
             for pattern in exclude_patterns:
-                # Simple string check for reliability
                 if _match_path(module_path, pattern):
                     return False
         else:
@@ -55,37 +97,6 @@ def aggregate_qgis_compliance(
         for pattern in patterns:
             if _match_path(module_path, pattern):
                 return True
-
-        return False
-
-    def _match_path(path: str, pattern: str) -> bool:
-        """Helper to match path against glob pattern robustly."""
-        try:
-            path_obj = Path(path)
-            parts = path_obj.parts
-            pattern = pattern.strip()
-
-            # Handle **/ explicitly locally to avoid fnmatch recursive issues
-            if "**/" in pattern:
-                prefix, suffix = pattern.split("**/", 1)
-                clean_prefix = prefix.strip("/")
-
-                # Check if prefix exists in path parts
-                if not clean_prefix or clean_prefix in parts:
-                    if suffix:
-                        # Match suffix against full path (allowing any prefix chars)
-                        if fnmatch.fnmatch(path, "*" + suffix):
-                            return True
-                    else:
-                        # Pattern was just "prefix/**" -> match everything under prefix
-                        return True
-
-            # Fallback to direct match
-            if fnmatch.fnmatch(path, pattern) or fnmatch.fnmatch(path, "*" + pattern):
-                return True
-
-        except Exception:
-            pass
 
         return False
 

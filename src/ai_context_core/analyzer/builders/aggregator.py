@@ -112,7 +112,9 @@ class ResultsAggregator:
 
         from .aggregator_qgis import aggregate_qgis_compliance
 
-        return aggregate_qgis_compliance(m_data, metadata)
+        patterns = self.config.get("patterns", {}) or {}
+        i18n_config = patterns.get("i18n", {}) or {}
+        return aggregate_qgis_compliance(m_data, metadata, i18n_config)
 
     def _aggregate_patterns(self, m_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Aggregates design patterns from all modules."""

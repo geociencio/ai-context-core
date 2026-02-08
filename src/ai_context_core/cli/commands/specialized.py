@@ -26,6 +26,11 @@ def git_cmd(path: str, days: int):
 
 @click.command(name="qgis")
 @click.option("--path", default=".", help="Project path")
-def qgis_cmd(path: str):
+@click.option(
+    "--i18n-scope",
+    type=click.Choice(["all", "gui_only"]),
+    help="Limit i18n analysis scope (e.g., 'gui_only' to filter technical modules)",
+)
+def qgis_cmd(path: str, i18n_scope: str):
     """Validates QGIS plugin compliance."""
-    qgis.validate_qgis(path)
+    qgis.validate_qgis(path, i18n_scope)

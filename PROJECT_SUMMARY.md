@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 23:08:53
+Analysis Date: 2026-02-07 23:44:56
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Quality Score**: 98.4/100
-- **Source Lines (SLOC)**: 9,162
-- **Total Physical Lines**: 14,011
-- **Maintainability**: 57.2
-- **Test Coverage**: 57 test files
+- **Source Lines (SLOC)**: 9,258
+- **Total Physical Lines**: 14,134
+- **Maintainability**: 57.3
+- **Test Coverage**: 58 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 237
+**Total Modules**: 240
 
 ```tree
 ./
@@ -21,7 +21,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
     .pre-commit-config.yaml
     AI_CONTEXT.md
     CHANGELOG.md
-    ... (+23 more)
+    ... (+24 more)
     src/
         __init__.py
         ai_context_core/
@@ -152,7 +152,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         AiContextCore_Analysis_Report.md
         CHANGELOG.md
         COMMIT_GUIDELINES.md
-        ... (+17 more)
+        ... (+18 more)
         development/
             ARCHITECTURE.md
         releases/
@@ -207,7 +207,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+47 more)
+        ... (+48 more)
         fixtures/
             false_positives.py
     test_project/
@@ -216,10 +216,15 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test.py
     dist/
         .gitignore
-        ai_context_core-3.1.2-py3-none-any.whl
-        ai_context_core-3.1.2.tar.gz
         ai_context_core-3.2.0-py3-none-any.whl
         ai_context_core-3.2.0.tar.gz
+    repro_plugin/
+        .ai_context_cache.json
+        AI_CONTEXT.md
+        PROJECT_SUMMARY.md
+        __init__.py
+        metadata.txt
+        project_context.json
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -229,11 +234,11 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **tests/test_secrets.py**: 2 issues (Max: CRITICAL)
 
 ## 💡 MAIN RECOMMENDATIONS
+### src/ai_context_core/analyzer/builders/aggregator.py
+- Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/dependencies.py
-- Consider breaking down large logic
-### src/ai_context_core/analyzer/engine.py
 - Consider breaking down large logic
 
 ## 🏗️ DESIGN PATTERNS
@@ -250,10 +255,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 1619
-- **Additions**: +157582
-- **Deletions**: -84523
-- **Total Churn**: 242105
+- **Files Changed**: 1631
+- **Additions**: +159137
+- **Deletions**: -85490
+- **Total Churn**: 244627
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -263,5 +268,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.40
-- **Max Complexity**: 38
+- **Average Complexity**: 5.37
+- **Max Complexity**: 35

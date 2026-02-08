@@ -57,9 +57,20 @@ def _show_i18n_stats(qgis):
     i18n = qgis.get("i18n_stats", {})
     total_tr = i18n.get("total_tr", 0)
     total_strings = i18n.get("total_strings", 0)
+    scope = i18n.get("scope", "all")
+    analyzed = i18n.get("modules_analyzed", 0)
+    total_mods = i18n.get("modules_total", 0)
+
     coverage = (total_tr / total_strings * 100) if total_strings > 0 else 0
+
     click.secho("\n🌍 Internationalization (i18n)", fg="cyan", bold=True)
+    click.echo(f"Scope: {scope} ({analyzed}/{total_mods} modules)")
     click.echo(f"Translated strings: {total_tr}/{total_strings} ({coverage:.1f}%)")
+
+    if analyzed == 0 and total_mods > 0:
+        click.secho(
+            "⚠️  Warning: No modules matched the selected i18n scope.", fg="yellow"
+        )
 
 
 def _show_qt_transition(qgis):
