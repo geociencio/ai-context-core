@@ -95,7 +95,7 @@ def calculate_project_metrics(
     Returns:
         Dictionary with aggregated project metrics.
     """
-    total_loc = sum(m.get("loc", 0) for m in modules)
+    total_loc = sum(m.get("sloc", m.get("loc", 0)) for m in modules)
     total_complexity = sum(m.get("complexity", 0) for m in modules)
     avg_complexity = total_complexity / len(modules) if modules else 0
     max_complexity = max((m.get("complexity", 0) for m in modules), default=0)

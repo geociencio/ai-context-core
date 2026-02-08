@@ -98,11 +98,9 @@ class ProjectScanner:
             from .fs_helpers import is_test_file
 
             # DEBUG:
-            ignored = is_test_file(path_obj)
-            if ignored:
+            if is_test_file(path_obj):
                 self.test_files_count += 1
-            else:
-                self.python_files.append(path_obj)
+            self.python_files.append(path_obj)
 
     def _finalize_stats(self) -> Dict[str, Any]:
         ts = self.stats["total_size"]

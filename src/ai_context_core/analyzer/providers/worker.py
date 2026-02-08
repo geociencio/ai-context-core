@@ -141,6 +141,7 @@ class AnalysisWorker:
                 "path": str(file_path.relative_to(self.project_path)),
                 "lines": len(content.splitlines()),
                 "sloc": sloc,
+                "loc": sloc,
                 "file_size_kb": file_path.stat().st_size / 1024,
                 "complexity": complexity,
                 "imports": ast_utils.extract_imports(tree),
