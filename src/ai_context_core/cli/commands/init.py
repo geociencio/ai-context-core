@@ -24,7 +24,7 @@ def initialize_project(path: str, profile: str):
         # Prefer TOML profiles
         p_toml = loader.profiles_path / f"{profile}.toml"
         p_yaml = loader.profiles_path / f"{profile}.yaml"
-        
+
         if p_toml.exists():
             shutil.copy2(p_toml, ai_ctx / "config.toml")
         elif p_yaml.exists():

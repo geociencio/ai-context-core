@@ -50,12 +50,12 @@ class ConfigLoader:
             # Try TOML first (modern standard)
             profile_toml = self.profiles_path / f"{profile_name}.toml"
             profile_yaml = self.profiles_path / f"{profile_name}.yaml"
-            
+
             if profile_toml.exists():
                 profile_config = self._load_toml(profile_toml)
                 config = self._merge_dicts(config, profile_config)
             elif profile_yaml.exists():
-                 # Fallback to YAML (legacy)
+                # Fallback to YAML (legacy)
                 profile_config = self._load_yaml(profile_yaml)
                 config = self._merge_dicts(config, profile_config)
             else:
@@ -127,10 +127,10 @@ def list_profiles() -> list[str]:
     profiles = ["generic"]
     if not profiles_dir.exists():
         return profiles
-        
+
     # Add YAML profiles
     profiles.extend([p.stem for p in profiles_dir.glob("*.yaml")])
     # Add TOML profiles
     profiles.extend([p.stem for p in profiles_dir.glob("*.toml")])
-    
+
     return sorted(list(set(profiles)))

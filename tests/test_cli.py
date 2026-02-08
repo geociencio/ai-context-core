@@ -290,7 +290,7 @@ def test_analyze_local_config():
     with runner.isolated_filesystem():
         os.makedirs(".ai-context")
         with open(".ai-context/config.toml", "w") as f:
-            f.write("profile_name = \"generic\"\n[quality_thresholds]\nscore = 90")
+            f.write('profile_name = "generic"\n[quality_thresholds]\nscore = 90')
 
         with open("test.py", "w") as f:
             f.write("def foo(): pass")

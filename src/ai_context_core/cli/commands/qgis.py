@@ -12,7 +12,7 @@ def validate_qgis(path: str, i18n_scope: str = None):
     loader = ConfigLoader()
     # For QGIS validation, we explicitly use the qgis profile to ensure qgis compliance is enabled
     cfg = loader.load_config(profile_name="qgis")
-    
+
     # Apply CLI override for i18n scope
     if i18n_scope:
         if "patterns" not in cfg:
@@ -20,7 +20,7 @@ def validate_qgis(path: str, i18n_scope: str = None):
         if "i18n" not in cfg["patterns"]:
             cfg["patterns"]["i18n"] = {}
         cfg["patterns"]["i18n"]["scope"] = i18n_scope
-        
+
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
     res = analyzer.analyze()
 

@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 21:12:00
+Analysis Date: 2026-02-07 23:08:53
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 98.6/100
-- **Source Lines (SLOC)**: 9,017
-- **Total Physical Lines**: 13,782
-- **Maintainability**: 57.4
-- **Test Coverage**: 56 test files
+- **Quality Score**: 98.4/100
+- **Source Lines (SLOC)**: 9,162
+- **Total Physical Lines**: 14,011
+- **Maintainability**: 57.2
+- **Test Coverage**: 57 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 236
+**Total Modules**: 237
 
 ```tree
 ./
@@ -102,10 +102,9 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     store.py
             config/
                 defaults.toml
-                defaults.yaml
                 loader.py
                 profiles/
-                    qgis.yaml
+                    qgis.toml
             templates/
                 initial_prompt.md
                 workflows/
@@ -149,11 +148,11 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         AGENTIC_IMPLEMENTATION_GUIDE.md
         AGENTIC_STANDARDS_AND_SOURCES.md
         ARCHITECTURAL_ANALYSIS.md
+        ARCHITECTURE.md
         AiContextCore_Analysis_Report.md
+        CHANGELOG.md
         COMMIT_GUIDELINES.md
-        CONFIGURATION.md
-        DEVELOPMENT_LOG.md
-        ... (+13 more)
+        ... (+17 more)
         development/
             ARCHITECTURE.md
         releases/
@@ -166,7 +165,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+5 more)
+                ... (+6 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -190,8 +189,9 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
             0003-pattern-detection-scoring-strategy.md
             0004-multi-framework-entry-point-detection.md
             0005-optimization-refactoring-strategy.md
-            README.md
-            template.md
+            0006-elimination-of-root-facades-and-enforcement-of-strict-modularity.md
+            0007-scoped-i18n-analysis-for-qgis-plugins.md
+            ... (+1 more)
         secinterp/
             .ai_context_cache.json
             AI_CONTEXT.md
@@ -207,7 +207,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+46 more)
+        ... (+47 more)
         fixtures/
             false_positives.py
     test_project/
@@ -218,6 +218,8 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         .gitignore
         ai_context_core-3.1.2-py3-none-any.whl
         ai_context_core-3.1.2.tar.gz
+        ai_context_core-3.2.0-py3-none-any.whl
+        ai_context_core-3.2.0.tar.gz
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -248,18 +250,18 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 1527
-- **Additions**: +153098
-- **Deletions**: -79245
-- **Total Churn**: 232343
+- **Files Changed**: 1619
+- **Additions**: +157582
+- **Deletions**: -84523
+- **Total Churn**: 242105
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
+- `src/ai_context_core/analyzer/issues.py`: 24 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
-- `src/ai_context_core/analyzer/issues.py`: 23 commits
-- `src/ai_context_core/analyzer/reporting.py`: 22 commits
-- `src/ai_context_core/cli.py`: 21 commits
+- `src/ai_context_core/analyzer/reporting.py`: 23 commits
+- `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.31
-- **Max Complexity**: 33
+- **Average Complexity**: 5.40
+- **Max Complexity**: 38

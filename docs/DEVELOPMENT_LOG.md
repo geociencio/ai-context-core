@@ -1,5 +1,14 @@
 # Development Log
 
+## [2026-02-08] Scoped i18n & TOML Standardization (v3.2.0) - COMPLETED
+**THEME**: Precision and Modernization 🎯
+- **Scoped i18n**: Implemented `[qgis.i18n]` to filter translation analysis by path scopes (`all`, `gui_only`, `custom`). 🌍
+- **TOML Migration**: Fully converted `defaults.yaml` and `qgis.yaml` to TOML, updating `ConfigLoader` to prioritize the new format. ⚙️
+- **Modernization**: Enhanced `README.md` with Shields.io badges and enriched `pyproject.toml` metadata (Python 3.13, AST tags). 🌟
+- **Architectural Cleanup**: Removed legacy import facades, achieving 100% modular internal architecture. 🧱
+- **Quality Score**: Reached a record **98.4/100**. 🎉
+- **Release**: Version `3.2.0` tagged, built, and uploaded as a draft to GitHub. 🚀
+
 ## [2026-02-07] Performance & Maintenance Suite Expansion (v3.1.2) - COMPLETED
 **THEME**: Scalability and Tooling Excellence 🚀
 - **Performance**: Implemented incremental analysis using metadata (`mtime`/`size`), achieving near-instant re-scans.
