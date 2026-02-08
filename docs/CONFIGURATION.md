@@ -8,10 +8,7 @@ The tool loads configuration in the following order of priority (from lowest to 
 
 1.  **System Defaults**: Default values compiled in `src/ai_context_core/config/defaults.toml`.
 2.  **Project Configuration**: `.ai-context/config.toml` file in your project root.
-3.  **Profile Configuration**: `.yaml` files in `.ai-context/config.yaml` (Legacy/Transition).
-
-> [!TIP]
-> It is recommended to use `.ai-context/config.toml` for all new configurations.
+Standard configuration follows the TOML format. While legacy YAML remains partially supported for backward compatibility, **TOML is now the required standard** for all new projects and profiles.
 
 ## Available Options
 
@@ -99,4 +96,29 @@ test_coverage = 0.10
 
 [analysis]
 parallel_workers = 4
+
+### 5. QGIS i18n Analysis (`qgis.i18n`)
+
+Configures internationalization analysis scope for QGIS plugins (introduced in v3.2.0).
+This configuration is typically placed in a TOML profile file (e.g. `.ai-context/config.toml` or `src/ai_context_core/config/profiles/qgis.toml`):
+
+```toml
+[qgis.i18n]
+# Scope of i18n analysis
+# - "all": Analyze all project files (default)
+# - "gui_only": Analyze only typical GUI paths
+# - "custom": Use custom include/exclude patterns
+scope = "gui_only"
+
+# Patterns used when scope = "gui_only"
+gui_patterns = [
+    "gui/**/*.py",
+    "dialogs/**/*.py",
+    "ui/**/*.py"
+]
+
+# Custom patterns (only used when scope = "custom")
+include_patterns = ["src/my_plugin/**/*.py"]
+exclude_patterns = ["src/my_plugin/core/**/*.py"]
+```
 ```

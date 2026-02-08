@@ -21,9 +21,14 @@ def initialize_project(path: str, profile: str):
 
     loader = ConfigLoader()
     if profile != "generic":
-        p_path = loader.profiles_path / f"{profile}.yaml"
-        if p_path.exists():
-            shutil.copy2(p_path, ai_ctx / "config.yaml")
+        # Prefer TOML profiles
+        p_toml = loader.profiles_path / f"{profile}.toml"
+        p_yaml = loader.profiles_path / f"{profile}.yaml"
+        
+        if p_toml.exists():
+            shutil.copy2(p_toml, ai_ctx / "config.toml")
+        elif p_yaml.exists():
+            shutil.copy2(p_yaml, ai_ctx / "config.yaml")
 
     templates = pathlib.Path(__file__).parent.parent / "templates"
     for wf in (templates / "workflows").glob("*.md"):

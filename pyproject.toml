@@ -1,6 +1,6 @@
 [project]
 name = "ai-context-core"
-version = "3.1.2"
+version = "3.2.0"
 description = "Core logic for AI-driven development context management"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -8,7 +8,7 @@ authors = [
     {name = "Juan M. Bernales", email = "juanbernales@gmail.com"}
 ]
 license = {text = "GPL-3.0-or-later"}
-keywords = ["ai", "context", "llm", "analysis", "development-tools", "productivity"]
+keywords = ["ai", "context", "llm", "analysis", "python", "qgis", "static-analysis", "agentic-coding", "ast", "metrics", "productivity"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -19,6 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
 ]
 dependencies = [
@@ -39,7 +40,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.package-data]
-"ai_context_core" = ["**/*.yaml", "**/*.json", "**/*.md"]
+"ai_context_core" = ["**/*.yaml", "**/*.toml", "**/*.json", "**/*.md"]
 
 [tool.setuptools]
 include-package-data = true

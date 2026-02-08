@@ -11,6 +11,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+
+## [3.2.0] - 2026-02-08 - Scoped i18n & TOML Standardization
+
+### Added
+- **i18n Scoping**: New configuration option `[qgis.i18n]` to filter translation analysis by path (e.g. `gui_only`, `custom`).
+- **CLI**: Added `--i18n-scope` flag to `ai-ctx qgis`.
+- **TOML Support**: Full migration to TOML for defaults and profiles.
+
+### Changed
+- **Configuration Standard**: TOML is now the primary and recommended format for all configurations.
+- **License**: Officially moved to **GNU General Public License v3 (GPLv3)**.
+
+### Refactored
+- **Architectural Cleanup**: Removed all backward compatibility facade files from the package root.
+- **FS Utilities**: Modularized ignore filter and scanner logic.
 
 ## [3.1.2] - 2026-02-07 - Architectural Stabilization & Global Localization
 ### Refactored

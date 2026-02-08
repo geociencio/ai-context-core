@@ -9,7 +9,7 @@ def test_init_command_with_qgis_profile():
     with runner.isolated_filesystem():
         result = runner.invoke(cli, ["init", "--profile", "qgis"])
         assert result.exit_code == 0
-        assert os.path.exists(".ai-context/config.yaml")
+        assert os.path.exists(".ai-context/config.toml")
 
 
 def test_init_command_with_generic_profile():
@@ -17,6 +17,7 @@ def test_init_command_with_generic_profile():
     with runner.isolated_filesystem():
         result = runner.invoke(cli, ["init"])
         assert result.exit_code == 0
+        assert not os.path.exists(".ai-context/config.toml")
         assert not os.path.exists(".ai-context/config.yaml")
 
 
@@ -288,8 +289,8 @@ def test_analyze_local_config():
     runner = CliRunner()
     with runner.isolated_filesystem():
         os.makedirs(".ai-context")
-        with open(".ai-context/config.yaml", "w") as f:
-            f.write("profile_name: generic\nquality_thresholds:\n  score: 90")
+        with open(".ai-context/config.toml", "w") as f:
+            f.write("profile_name = \"generic\"\n[quality_thresholds]\nscore = 90")
 
         with open("test.py", "w") as f:
             f.write("def foo(): pass")

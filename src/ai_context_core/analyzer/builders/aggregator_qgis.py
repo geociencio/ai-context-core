@@ -4,9 +4,95 @@ from typing import List, Dict, Any
 
 
 def aggregate_qgis_compliance(
-    m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
+    m_data: List[Dict[str, Any]], metadata: Dict[str, Any], i18n_config: Dict[str, Any] = None
 ) -> Dict[str, Any]:
-    """Aggregate QGIS-specific results from modules and metadata."""
+    """Aggregate QGIS-specific results from modules and metadata.
+    
+    Args:
+        m_data: List of module analysis results
+        metadata: Project metadata
+        i18n_config: Optional i18n configuration with scope and patterns
+    """
+    import fnmatch
+    from pathlib import Path
+    
+    # Default i18n config if not provided
+    if i18n_config is None:
+        i18n_config = {"scope": "all"}
+    
+    scope = i18n_config.get("scope", "all")
+    
+    # Determine which modules to include for i18n analysis
+    def should_include_for_i18n(module_data: Dict[str, Any]) -> bool:
+        """Check if a module should be included in i18n analysis based on scope."""
+        if scope == "all":
+            return True
+        
+        module_path = module_data.get("file", "")
+        if not module_path:
+            return True  # Include if no path info
+        
+        
+        if scope == "gui_only":
+            patterns = i18n_config.get("gui_patterns", [
+                "gui/**/*.py",
+                "dialogs/**/*.py",
+                "widgets/**/*.py",
+                "ui/**/*.py"
+            ])
+        elif scope == "custom":
+            patterns = i18n_config.get("include_patterns", [])
+            exclude_patterns = i18n_config.get("exclude_patterns", [])
+            
+            # Check exclusions first
+            for pattern in exclude_patterns:
+                # Simple string check for reliability
+                if _match_path(module_path, pattern):
+                    return False
+        else:
+            return True  # Unknown scope, include all
+        
+        # Check inclusions
+        for pattern in patterns:
+            if _match_path(module_path, pattern):
+                return True
+        
+        return False
+
+    def _match_path(path: str, pattern: str) -> bool:
+        """Helper to match path against glob pattern robustly."""
+        try:
+            path_obj = Path(path)
+            parts = path_obj.parts
+            pattern = pattern.strip()
+            
+            # Handle **/ explicitly locally to avoid fnmatch recursive issues
+            if "**/" in pattern:
+                prefix, suffix = pattern.split("**/", 1)
+                clean_prefix = prefix.strip("/")
+                
+                # Check if prefix exists in path parts
+                if not clean_prefix or clean_prefix in parts:
+                    if suffix:
+                        # Match suffix against full path (allowing any prefix chars)
+                        if fnmatch.fnmatch(path, "*" + suffix):
+                            return True
+                    else:
+                        # Pattern was just "prefix/**" -> match everything under prefix
+                        return True
+            
+            # Fallback to direct match
+            if fnmatch.fnmatch(path, pattern) or fnmatch.fnmatch(path, "*" + pattern):
+                return True
+                
+        except Exception:
+            pass
+            
+        return False
+    
+    # Filter modules for i18n counting
+    i18n_modules = [m for m in m_data if should_include_for_i18n(m)]
+    
     agg = {
         "metadata": metadata,
         "processing_framework_detected": any(
@@ -16,14 +102,17 @@ def aggregate_qgis_compliance(
             "total_tr": sum(
                 m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
                 + m.get("qgis_compliance", {}).get("i18n_usage", {}).get("translate", 0)
-                for m in m_data
+                for m in i18n_modules  # Use filtered modules
             ),
             "total_strings": sum(
                 m.get("qgis_compliance", {})
                 .get("i18n_usage", {})
                 .get("total_strings", 0)
-                for m in m_data
+                for m in i18n_modules  # Use filtered modules
             ),
+            "scope": scope,  # Add scope metadata
+            "modules_analyzed": len(i18n_modules),
+            "modules_total": len(m_data),
         },
         "gdal_style": (
             "Correct"

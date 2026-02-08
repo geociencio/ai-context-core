@@ -1,5 +1,15 @@
 # AI Context Core
 
+[![CI](https://github.com/geociencio/ai-context-core/actions/workflows/ci.yml/badge.svg)](https://github.com/geociencio/ai-context-core/actions/workflows/ci.yml)
+[![PyPI Version](https://img.shields.io/pypi/v/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
+[![Downloads](https://img.shields.io/pypi/dm/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![QGIS Plugin Ready](https://img.shields.io/badge/QGIS-Plugin%20Ready-green?logo=qgis)](https://qgis.org)
+[![AI-Context Driven](https://img.shields.io/badge/AI-Context%20Driven-blue?logo=openai)](https://github.com/geociencio/ai-context-core)
+
 The central nervous system for your AI-assisted coding workflow.
 
 ## Features
@@ -82,6 +92,23 @@ pip install ai-context-core
 ```
 
 *Note: It is always recommended to use a virtual environment.*
+
+## Configuration
+
+For detailed configuration options, see [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
+
+### QGIS i18n Analysis (New in v3.2.0)
+
+Configure the scope of internationalization analysis in your project's `.ai-context/config.toml` (or `src/ai_context_core/config/profiles/qgis.toml`):
+
+```toml
+[qgis.i18n]
+# Scope: "all" (default), "gui_only", or "custom"
+scope = "gui_only"
+
+# Patterns used when scope = "gui_only"
+gui_patterns = ["gui/**/*.py", "ui/**/*.py"]
+```
 
 ## Commands Reference
 

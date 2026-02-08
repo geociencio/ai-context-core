@@ -40,7 +40,7 @@ Transforms raw visitor findings into high-level metrics and reports.
 ### 💻 CLI Layer (`cli/`)
 The interface for human and automated users.
 - **Command Pattern**: Every action (`analyze`, `audit`, `security`) is an isolated handler invoked by a centralized Click-based entry point.
-- **Profiles**: Manages domain-specific configuration (e.g., QGIS vs. Generic Python) through a flexible profile system.
+- **Profiles**: Manages domain-specific configuration (e.g., QGIS vs. Generic Python) through a flexible profile system, primarily using **TOML** as the standard format.
 
 ## 🚀 Key Design Patterns
 
@@ -68,4 +68,4 @@ Unlike simple code greppers, AI-Context-Core maintains a **Persistent Context** 
 - Make informed refactoring recommendations based on historical hotspots.
 
 ---
-**Version**: 3.1.2 | **License**: GPL v3 | **Status**: Modular Refactor Complete
+**Version**: 3.2.0 | **License**: GPL v3 | **Status**: Modular Refactor Complete

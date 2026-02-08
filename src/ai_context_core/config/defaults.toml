@@ -17,14 +17,14 @@ error = 800
 # Quality Score Weights
 # Weights differ depending on the importance of the metric for the final score.
 [quality_weights]
-docstrings = 15
+docstrings = 30
 complexity_low = 20
 complexity_medium = 10
 complexity_high = -10
 size_small = 15
 size_medium = 10
 has_main = 5
-no_syntax_error = 25
+no_syntax_error = 30
 
 # Security Patterns
 # Definitions of patterns considered dangerous.
@@ -39,3 +39,9 @@ parallel_workers = "auto"
 cache_enabled = true
 # Maximum file size to analyze in MB
 max_file_size_mb = 10
+
+[patterns.qgis_compliance]
+enabled = false
+
+[patterns.linter]
+enabled = true

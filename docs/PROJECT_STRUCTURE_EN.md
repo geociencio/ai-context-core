@@ -4,7 +4,7 @@
 
 **AI-Context-Core** is a high-performance, AI-native context extraction and analysis tool designed to build rich knowledge bases for LLMs from source code. It specializes in extracting architectural patterns, dependency graphs, security hot-spots, and quality metrics using advanced AST (Abstract Syntax Tree) analysis.
 
-**Version**: 3.1.2
+**Version**: 3.2.0
 **Author**: Juan M Bernales
 **License**: GNU General Public License v3 (GPLv3)
 **Repository**: https://github.com/geociencio/ai-context-core
@@ -48,7 +48,7 @@ ai-context-core/
 │       │   ├── 📁 commands/    # ActionHandlers (audit, analyze, qgis)
 │       │   └── __init__.py     # Click CLI entry point
 │       │
-│       ├── 📁 config/          # Configuration System (Profiles, Yaml)
+│       ├── 📁 config/          # Configuration System (Profiles, Defaults - TOML)
 │       └── 📁 context/         # Semantic Memory & Context Storage
 │
 ├── 📁 tests/                   # Comprehensive Test Suite

@@ -1,0 +1,32 @@
+profile_name = "qgis-plugin"
+description = "Profile optimized for QGIS Plugins development"
+
+[patterns.qgis_compliance]
+enabled = true
+mandatory_files = ["metadata.txt", "__init__.py"]
+
+[patterns.qgis_compliance.architecture]
+check_ui_logic_mix = true
+
+[patterns.qgis_compliance.widgets]
+recommend_native = true
+
+[patterns.i18n]
+# Scope of i18n analysis: "all" (default), "gui_only", or "custom"
+scope = "all"
+
+# Patterns used when scope = "gui_only"
+gui_patterns = [
+    "gui/**/*.py",
+    "dialogs/**/*.py",
+    "widgets/**/*.py",
+    "ui/**/*.py"
+]
+
+# Custom patterns (used when scope = "custom")
+include_patterns = []
+exclude_patterns = []
+
+[thresholds]
+size_small = 300  # QGIS plugins tend to be slightly larger
+size_medium = 600

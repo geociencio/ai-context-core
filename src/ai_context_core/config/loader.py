@@ -6,6 +6,7 @@ runtime overrides (CLI flags).
 
 import yaml
 import pathlib
+import tomllib
 from typing import Dict, Any, Optional
 
 
@@ -21,7 +22,8 @@ class ConfigLoader:
     def __init__(self):
         """Initializes the ConfigLoader with standard project paths."""
         self.base_path = pathlib.Path(__file__).parent
-        self.defaults_path = self.base_path / "defaults.yaml"
+        self.defaults_path_toml = self.base_path / "defaults.toml"
+        self.defaults_path_yaml = self.base_path / "defaults.yaml"
         self.profiles_path = self.base_path / "profiles"
 
     def load_config(
@@ -38,13 +40,23 @@ class ConfigLoader:
         """
 
         # 1. Load baseline defaults
-        config = self._load_yaml(self.defaults_path)
+        if self.defaults_path_toml.exists():
+            config = self._load_toml(self.defaults_path_toml)
+        else:
+            config = self._load_yaml(self.defaults_path_yaml)
 
         # 2. Layer profile configuration if specified
         if profile_name:
-            profile_file = self.profiles_path / f"{profile_name}.yaml"
-            if profile_file.exists():
-                profile_config = self._load_yaml(profile_file)
+            # Try TOML first (modern standard)
+            profile_toml = self.profiles_path / f"{profile_name}.toml"
+            profile_yaml = self.profiles_path / f"{profile_name}.yaml"
+            
+            if profile_toml.exists():
+                profile_config = self._load_toml(profile_toml)
+                config = self._merge_dicts(config, profile_config)
+            elif profile_yaml.exists():
+                 # Fallback to YAML (legacy)
+                profile_config = self._load_yaml(profile_yaml)
                 config = self._merge_dicts(config, profile_config)
             else:
                 print(
@@ -68,6 +80,21 @@ class ConfigLoader:
         """
         try:
             return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        except Exception as e:
+            print(f"❌ Error loading configuration {path}: {e}")
+            return {}
+
+    def _load_toml(self, path: pathlib.Path) -> Dict[str, Any]:
+        """Safely loads a TOML file from disk.
+
+        Args:
+            path: Path to the TOML file.
+
+        Returns:
+            Parsed dictionary or an empty dict if the file is invalid or missing.
+        """
+        try:
+            return tomllib.loads(path.read_text(encoding="utf-8")) or {}
         except Exception as e:
             print(f"❌ Error loading configuration {path}: {e}")
             return {}
@@ -100,5 +127,10 @@ def list_profiles() -> list[str]:
     profiles = ["generic"]
     if not profiles_dir.exists():
         return profiles
+        
+    # Add YAML profiles
     profiles.extend([p.stem for p in profiles_dir.glob("*.yaml")])
-    return profiles
+    # Add TOML profiles
+    profiles.extend([p.stem for p in profiles_dir.glob("*.toml")])
+    
+    return sorted(list(set(profiles)))
