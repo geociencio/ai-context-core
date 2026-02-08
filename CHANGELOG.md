@@ -280,7 +280,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
-## [Unreleased]
+## [3.2.1] - 2026-02-07 - Internationalization & Performance Peak
 ### Added
 - **License Formalization**: Officially consolidated the project license under **GNU General Public License v3 (GPLv3)**.
 - **Documentation Modernization**: Rewrote and localized all core technical guides (`ARCHITECTURE.md`, `DEVELOPMENT_GUIDE_EN.md`, etc.) to match the internal modular architecture and established **ADR 0006**.
