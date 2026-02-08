@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 23:44:56
+Analysis Date: 2026-02-08 00:08:54
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 98.4/100
-- **Source Lines (SLOC)**: 9,258
-- **Total Physical Lines**: 14,134
-- **Maintainability**: 57.3
-- **Test Coverage**: 58 test files
+- **Quality Score**: 98.3/100
+- **Source Lines (SLOC)**: 9,183
+- **Total Physical Lines**: 14,040
+- **Maintainability**: 57.2
+- **Test Coverage**: 57 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 240
+**Total Modules**: 237
 
 ```tree
 ./
@@ -21,7 +21,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
     .pre-commit-config.yaml
     AI_CONTEXT.md
     CHANGELOG.md
-    ... (+24 more)
+    ... (+23 more)
     src/
         __init__.py
         ai_context_core/
@@ -165,7 +165,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+6 more)
+                ... (+7 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -207,7 +207,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+48 more)
+        ... (+47 more)
         fixtures/
             false_positives.py
     test_project/
@@ -216,15 +216,8 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test.py
     dist/
         .gitignore
-        ai_context_core-3.2.0-py3-none-any.whl
-        ai_context_core-3.2.0.tar.gz
-    repro_plugin/
-        .ai_context_cache.json
-        AI_CONTEXT.md
-        PROJECT_SUMMARY.md
-        __init__.py
-        metadata.txt
-        project_context.json
+        ai_context_core-3.2.1-py3-none-any.whl
+        ai_context_core-3.2.1.tar.gz
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -255,10 +248,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 1631
-- **Additions**: +159137
-- **Deletions**: -85490
-- **Total Churn**: 244627
+- **Files Changed**: 1643
+- **Additions**: +160344
+- **Deletions**: -86285
+- **Total Churn**: 246629
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -268,5 +261,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.37
+- **Average Complexity**: 5.41
 - **Max Complexity**: 35

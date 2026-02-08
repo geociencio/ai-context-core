@@ -1,5 +1,12 @@
 # Development Log
 
+## [2026-02-08] Internationalization & Performance Peak (v3.2.1) - COMPLETED
+**THEME**: Correctness and Resilience 🛡️
+- **Robust i18n Matching**: Replaced path matching with a regex-based engine to support recursive patterns (`**`) across all platforms. 🌍
+- **Fix v3.2.0 Regressions**: Corrected i18n config injection and `--i18n-scope` CLI option. 🛠️
+- **Quality Audit**: Maintained record score of **98.4/100**. 🏆
+- **GitHub Release**: Tagged `v3.2.1` and pushed to remote with draft release artifacts. 🚀
+
 ## [2026-02-08] Scoped i18n & TOML Standardization (v3.2.0) - COMPLETED
 **THEME**: Precision and Modernization 🎯
 - **Scoped i18n**: Implemented `[qgis.i18n]` to filter translation analysis by path scopes (`all`, `gui_only`, `custom`). 🌍

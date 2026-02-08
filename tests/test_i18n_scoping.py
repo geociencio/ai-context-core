@@ -6,7 +6,7 @@ from ai_context_core.analyzer.builders.aggregator_qgis import aggregate_qgis_com
 def mock_modules():
     return [
         {
-            "file": "/project/gui/dialog.py",
+            "path": "/project/gui/dialog.py",
             "qgis_compliance": {
                 "i18n_usage": {"tr": 10, "translate": 0, "total_strings": 20},
                 "processing_framework": False,
@@ -16,7 +16,7 @@ def mock_modules():
             },
         },
         {
-            "file": "/project/core/logic.py",
+            "path": "/project/core/logic.py",
             "qgis_compliance": {
                 # Untranslated technical strings
                 "i18n_usage": {"tr": 0, "translate": 0, "total_strings": 50},
