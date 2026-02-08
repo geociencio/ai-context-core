@@ -9,7 +9,7 @@ from unittest.mock import patch, mock_open
 from ai_context_core.analyzer.checkers.tech_debt_checker import TechDebtChecker
 from ai_context_core.analyzer.context_builders.patterns import PatternsBuilder
 from ai_context_core.analyzer.context_builders.structure import StructureBuilder
-from ai_context_core.analyzer.issues import find_secrets
+from ai_context_core.analyzer.visitors.issues import find_secrets
 
 
 def test_tech_debt_checker_all_branches():
@@ -79,7 +79,8 @@ def test_issues_find_secrets_with_secrets():
         return "x = 1"
 
     with patch(
-        "ai_context_core.analyzer.fs_helpers.read_file_fast", side_effect=mock_read
+        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast",
+        side_effect=mock_read,
     ):
         result = find_secrets(modules, "/tmp")
         assert isinstance(result, list)
@@ -87,7 +88,7 @@ def test_issues_find_secrets_with_secrets():
 
 def test_gis_utils_extract_metadata():
     # Coverage for gis_utils.py lines 44-45, 48-49
-    from ai_context_core.analyzer.gis_utils import parse_qgis_metadata
+    from ai_context_core.analyzer.providers.gis_utils import parse_qgis_metadata
 
     # Test with missing metadata.txt
     with patch("pathlib.Path.exists", return_value=False):
@@ -134,7 +135,7 @@ def test_config_loader_all_branches():
 
 def test_complexity_visitor_all_nodes():
     # Coverage for complexity_visitor.py lines 40-41, 49-50, 167
-    from ai_context_core.analyzer.complexity_visitor import ComplexityVisitor
+    from ai_context_core.analyzer.visitors.complexity_visitor import ComplexityVisitor
 
     # Test Match/case (Python 3.10+)
     try:
@@ -175,7 +176,7 @@ def test_remaining_edge_cases():
     assert isinstance(imports, (list, set))
 
     # Test ignore filter edge case
-    from ai_context_core.analyzer.ignore_filter import IgnoreFilter
+    from ai_context_core.analyzer.providers.ignore_filter import IgnoreFilter
 
     filter_obj = IgnoreFilter(pathlib.Path("/tmp"))
     assert hasattr(filter_obj, "patterns")

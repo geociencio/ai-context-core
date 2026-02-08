@@ -1,7 +1,7 @@
 import unittest
 import pathlib
 from unittest.mock import patch
-from ai_context_core.analyzer.git_analysis import (
+from ai_context_core.analyzer.providers.git_analysis import (
     is_git_repo,
     get_git_hotspots,
     get_git_churn,
@@ -14,12 +14,16 @@ class TestGitAnalysis(unittest.TestCase):
 
     def test_is_git_repo(self):
         # Test positive case (is a repo)
-        with patch("ai_context_core.analyzer.git_analysis.GitRunner.run") as mock_run:
+        with patch(
+            "ai_context_core.analyzer.providers.git_analysis.GitRunner.run"
+        ) as mock_run:
             mock_run.return_value = "true\n"
             self.assertTrue(is_git_repo(self.project_path))
 
         # Test negative case (is not a repo)
-        with patch("ai_context_core.analyzer.git_analysis.GitRunner.run") as mock_run:
+        with patch(
+            "ai_context_core.analyzer.providers.git_analysis.GitRunner.run"
+        ) as mock_run:
             mock_run.return_value = None
             self.assertFalse(is_git_repo(pathlib.Path("/tmp")))
 

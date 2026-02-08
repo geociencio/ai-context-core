@@ -1,6 +1,6 @@
 import unittest
 import ast
-from ai_context_core.analyzer import antipatterns
+from ai_context_core.analyzer.visitors import antipatterns
 
 
 class TestAntipatterns(unittest.TestCase):

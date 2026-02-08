@@ -1,6 +1,6 @@
 import ast
 import pytest
-from ai_context_core.analyzer.ast_security import (
+from ai_context_core.analyzer.visitors.ast_security import (
     IssueDetector,
     ASTSecurityDetector,
     detect_ast_security_issues,

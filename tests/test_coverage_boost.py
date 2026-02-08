@@ -5,7 +5,7 @@ from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummari
 from ai_context_core.analyzer.patterns_detectors.observer_rules import (
     detect_signals,
 )
-from ai_context_core.analyzer.metrics import calculate_halstead_metrics
+from ai_context_core.analyzer.builders.calculator import calculate_halstead_metrics
 
 
 class TestCoverageBoost(unittest.TestCase):

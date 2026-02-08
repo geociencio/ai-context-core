@@ -6,7 +6,7 @@ from ai_context_core.analyzer.patterns_detectors.strategy import detect_strategy
 from ai_context_core.analyzer.patterns_detectors.factory import detect_factory
 from ai_context_core.analyzer.patterns_detectors.decorator import detect_decorator
 
-from ai_context_core.analyzer.patterns import detect_patterns
+from ai_context_core.analyzer.visitors.patterns import detect_patterns
 
 
 class TestPatternsCoverage(unittest.TestCase):

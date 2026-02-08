@@ -4,8 +4,11 @@ Tests para cubrir gaps en fs_helpers, complexity_visitor y otros módulos core.
 
 import pathlib
 from unittest.mock import patch, MagicMock, mock_open
-from ai_context_core.analyzer.fs_helpers import read_file_fast, calculate_file_hash
-from ai_context_core.analyzer.complexity_visitor import (
+from ai_context_core.analyzer.providers.fs_helpers import (
+    read_file_fast,
+    calculate_file_hash,
+)
+from ai_context_core.analyzer.visitors.complexity_visitor import (
     ComplexityVisitor,
     _apply_complexity_penalty,
 )
@@ -46,12 +49,14 @@ def test_read_file_fast_exception():
 
 def test_calculate_file_hash_empty_content():
     # Coverage for fs_helpers.py lines 47, 49-50
-    with patch("ai_context_core.analyzer.fs_helpers.read_file_fast", return_value=""):
+    with patch(
+        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast", return_value=""
+    ):
         result = calculate_file_hash(pathlib.Path("/empty.py"))
         assert result == ""
 
     with patch(
-        "ai_context_core.analyzer.fs_helpers.read_file_fast",
+        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast",
         side_effect=Exception("Hash error"),
     ):
         result = calculate_file_hash(pathlib.Path("/error.py"))

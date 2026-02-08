@@ -1,6 +1,6 @@
 import unittest
 import ast
-from ai_context_core.analyzer import issues
+from ai_context_core.analyzer.visitors import issues
 
 
 class TestSecurityEnhanced(unittest.TestCase):

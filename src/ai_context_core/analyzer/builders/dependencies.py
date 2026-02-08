@@ -225,3 +225,53 @@ class DependencyBuilder(BaseContextBuilder):
                     lines.append(
                         f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}"
                     )
+
+
+def find_simple_cycles(graph, limit=5):
+    from .algorithms import CycleDetector
+
+    detector = CycleDetector(graph, limit=limit)
+    return detector.find_cycles()
+
+
+def count_edges(graph):
+    from .algorithms import GraphMetricsCalculator
+
+    return GraphMetricsCalculator(graph).count_edges()
+
+
+def count_connected_components(graph):
+    from .algorithms import GraphMetricsCalculator
+
+    return GraphMetricsCalculator(graph).count_connected_components()
+
+
+def calculate_coupling_metrics(graph):
+    from .algorithms import GraphMetricsCalculator
+
+    return GraphMetricsCalculator(graph).calculate_coupling_metrics()
+
+
+def calculate_density(graph, edges):
+    from .algorithms import GraphMetricsCalculator
+
+    calc = GraphMetricsCalculator(graph)
+    # GraphMetricsCalculator.calculate_density takes 1 arg (num_edges)
+    # but uses self.num_nodes.
+    return calc.calculate_density(edges)
+
+
+# Legacy internal aliases
+def _classify_imports(*args, **kwargs):
+    from .classifier import classify_imports
+
+    return classify_imports(*args, **kwargs)
+
+
+def _parse_dependency_files(*args, **kwargs):
+    from .parser import parse_dependency_files
+
+    return parse_dependency_files(*args, **kwargs)
+
+
+STDLIB_MODULES = STDLIB_MODULES  # expose it

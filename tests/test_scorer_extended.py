@@ -1,4 +1,4 @@
-from ai_context_core.analyzer.metrics.scorer import ProjectScorer
+from ai_context_core.analyzer.builders.scorer import ProjectScorer
 
 
 def test_scorer_empty_data():

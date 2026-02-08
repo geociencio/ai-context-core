@@ -58,7 +58,9 @@ def test_load_config_non_dict_override():
 def test_worker_read_empty_file():
     # Coverage for worker.py line 94
     worker = AnalysisWorker(pathlib.Path("/tmp"), {}, 1, {})
-    with patch("ai_context_core.analyzer.fs_utils.read_file_fast", return_value=""):
+    with patch(
+        "ai_context_core.analyzer.providers.fs_utils.read_file_fast", return_value=""
+    ):
         assert worker.analyze_single(pathlib.Path("/tmp/empty.py")) == {}
 
 
@@ -67,7 +69,7 @@ def test_worker_analyze_single_exception():
     worker = AnalysisWorker(pathlib.Path("/tmp"), {}, 1, {})
     # Trigger syntax error or other exception in ast.parse
     with patch(
-        "ai_context_core.analyzer.fs_utils.read_file_fast",
+        "ai_context_core.analyzer.providers.fs_utils.read_file_fast",
         return_value="invalid syntax",
     ):
         res = worker.analyze_single(pathlib.Path("/tmp/fail.py"))
@@ -92,7 +94,7 @@ def test_worker_run_parallel_exception():
         # as_completed should yield our failing future
         with patch("concurrent.futures.as_completed", return_value=[mock_future]):
             with patch(
-                "ai_context_core.analyzer.fs_utils.calculate_file_hash",
+                "ai_context_core.analyzer.providers.fs_utils.calculate_file_hash",
                 return_value="hash",
             ):
                 # to_analyze needs to be filled

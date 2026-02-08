@@ -1,5 +1,5 @@
 import pytest
-from ai_context_core.analyzer.ai_recommendations import (
+from ai_context_core.analyzer.builders.ai_recommendations import (
     RecommendationRule,
     DocumentationRule,
     TypeHintRule,

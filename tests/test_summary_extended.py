@@ -1,4 +1,4 @@
-from ai_context_core.analyzer.summary_generator import SummaryGenerator
+from ai_context_core.analyzer.builders.summary_generator import SummaryGenerator
 
 
 def test_generate_html_with_findings(tmp_path):

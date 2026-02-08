@@ -5,7 +5,7 @@ from ai_context_core.analyzer.patterns_detectors.singleton_rules import (
     _is_singleton_instance_var,
 )
 from ai_context_core.analyzer.patterns_detectors.strategy_rules import StrategyRules
-from ai_context_core.analyzer.secrets import SecretScanner
+from ai_context_core.analyzer.visitors.secrets import SecretScanner
 from ai_context_core.context.components.store import ContextStore
 from ai_context_core.context.components.store import (
     load_single_context_file,
@@ -49,7 +49,7 @@ def test_clean_no_artifacts():
 
 def test_gis_utils_extract_metadata():
     # Coverage for gis_utils.py lines 44-45, 48-49
-    from ai_context_core.analyzer.gis_utils import parse_qgis_metadata
+    from ai_context_core.analyzer.providers.gis_utils import parse_qgis_metadata
     from ai_context_core.commands.clean import clean_artifacts
 
     # Test with missing metadata.txt

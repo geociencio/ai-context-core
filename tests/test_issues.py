@@ -1,5 +1,5 @@
 import unittest
-from ai_context_core.analyzer import issues
+from ai_context_core.analyzer.visitors import issues
 import tempfile
 import shutil
 from pathlib import Path

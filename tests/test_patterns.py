@@ -1,6 +1,6 @@
 import unittest
 import ast
-from src.ai_context_core.analyzer.patterns import detect_singleton
+from src.ai_context_core.analyzer.visitors.patterns import detect_singleton
 
 
 class TestPatterns(unittest.TestCase):
@@ -47,7 +47,7 @@ class NormalClass:
         self.assertEqual(len(results), 0)
 
     def test_factory_class_and_method(self):
-        from src.ai_context_core.analyzer.patterns import detect_factory
+        from src.ai_context_core.analyzer.visitors.patterns import detect_factory
 
         code = """
 class WidgetFactory:
@@ -65,7 +65,7 @@ class WidgetFactory:
         self.assertEqual(results[0]["confidence"], 100)
 
     def test_factory_method_only(self):
-        from src.ai_context_core.analyzer.patterns import detect_factory
+        from src.ai_context_core.analyzer.visitors.patterns import detect_factory
 
         code = """
 class ServiceProvider:
@@ -79,7 +79,7 @@ class ServiceProvider:
         self.assertEqual(results[0]["confidence"], 70)
 
     def test_observer_pattern(self):
-        from src.ai_context_core.analyzer.patterns import detect_observer
+        from src.ai_context_core.analyzer.visitors.patterns import detect_observer
 
         code = """
 class NewsAgency:
@@ -101,7 +101,7 @@ class NewsAgency:
         self.assertEqual(results[0]["confidence"], 80)
 
     def test_strategy_pattern(self):
-        from src.ai_context_core.analyzer.patterns import detect_strategy
+        from src.ai_context_core.analyzer.visitors.patterns import detect_strategy
 
         code = """
 class DataProcessor:
@@ -119,7 +119,7 @@ class DataProcessor:
         self.assertEqual(results[0]["confidence"], 70)
 
     def test_functional_decorator(self):
-        from src.ai_context_core.analyzer.patterns import detect_decorator
+        from src.ai_context_core.analyzer.visitors.patterns import detect_decorator
 
         code = """
 import functools
@@ -137,7 +137,7 @@ def my_decorator(func):
         self.assertEqual(results[0]["confidence"], 90)
 
     def test_class_decorator(self):
-        from src.ai_context_core.analyzer.patterns import detect_decorator
+        from src.ai_context_core.analyzer.visitors.patterns import detect_decorator
 
         code = """
 class ClassDecorator:
@@ -154,7 +154,7 @@ class ClassDecorator:
         self.assertEqual(results[0]["confidence"], 60)
 
     def test_singleton_confidence_levels(self):
-        from src.ai_context_core.analyzer.patterns import detect_singleton
+        from src.ai_context_core.analyzer.visitors.patterns import detect_singleton
 
         # Only static var = 20 (not reported as < 50)
         code_low = "class A: _instance = None"

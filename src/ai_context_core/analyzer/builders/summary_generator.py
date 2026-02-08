@@ -114,3 +114,7 @@ class ProjectSummaryGenerator:
     def _build_manual_notes(self) -> str:
         """Reads manual architecture notes from the project configuration."""
         return self.analyses.get("manual_notes", "")
+
+
+# Alias for backward compatibility
+SummaryGenerator = ProjectSummaryGenerator

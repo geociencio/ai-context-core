@@ -1,5 +1,5 @@
 import unittest
-from ai_context_core.analyzer.secrets import detect_secrets, _mask_secret
+from ai_context_core.analyzer.visitors.secrets import detect_secrets, _mask_secret
 
 
 class TestSecrets(unittest.TestCase):

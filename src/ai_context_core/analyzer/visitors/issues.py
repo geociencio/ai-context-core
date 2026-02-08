@@ -10,7 +10,7 @@ import ast
 import warnings
 from typing import List, Dict, Any
 
-# from .ast_security import ASTSecurityDetector  # noqa: F401
+from .ast_security import ASTSecurityDetector, IssueDetector  # noqa: F401
 
 
 from .checker_registry import CheckerRegistry
@@ -25,7 +25,6 @@ class GenericIssueDetector:
 
     @property
     def detector_class(self):
-        from .ast_security import ASTSecurityDetector
 
         return ASTSecurityDetector
 

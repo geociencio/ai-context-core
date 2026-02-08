@@ -1,11 +1,11 @@
 import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.fs_scanner import ProjectScanner
-from ai_context_core.analyzer.fs_tree import (
+from ai_context_core.analyzer.providers.fs_scanner import ProjectScanner
+from ai_context_core.analyzer.providers.fs_tree import (
     generate_tree_optimized,
     _generate_tree_fallback,
 )
-from ai_context_core.analyzer.fs_cache import load_cache, save_cache, LRUCache
+from ai_context_core.analyzer.providers.fs_cache import load_cache, save_cache, LRUCache
 
 
 def test_fs_scanner_getsize_oserror():

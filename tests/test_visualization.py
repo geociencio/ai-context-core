@@ -1,8 +1,8 @@
 import os
 from click.testing import CliRunner
-from ai_context_core.analyzer.reporting import generate_dependency_diagram
-from ai_context_core.analyzer.html_builder import HTMLBuilder
-from ai_context_core.analyzer.ai_recommendations import AIRecommender
+from ai_context_core.analyzer.builders.reporting import generate_dependency_diagram
+from ai_context_core.analyzer.builders.html_builder import HTMLBuilder
+from ai_context_core.analyzer.builders.ai_recommendations import AIRecommender
 from ai_context_core.cli import cli
 
 

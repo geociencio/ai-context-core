@@ -1,6 +1,6 @@
 import pathlib
 from ai_context_core.analyzer.providers.ignore_filter import load_ignore_patterns
-from ai_context_core.analyzer.ignore_filter import IgnoreFilter
+from ai_context_core.analyzer.providers.ignore_filter import IgnoreFilter
 
 
 def test_load_ignore_patterns_file_exists(tmp_path):

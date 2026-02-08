@@ -1,15 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 20:35:58
+Analysis Date: 2026-02-07 21:12:00
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 100.0/100
-- **Source Lines (SLOC)**: 9,056
-- **Maintainability**: 61.0
+- **Quality Score**: 98.6/100
+- **Source Lines (SLOC)**: 9,017
+- **Total Physical Lines**: 13,782
+- **Maintainability**: 57.4
 - **Test Coverage**: 56 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 261
+**Total Modules**: 236
 
 ```tree
 ./
@@ -27,13 +28,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
             __init__.py
             analyzer/
                 __init__.py
-                aggregator.py
-                ai_recommendations.py
-                antipatterns.py
-                ast_entry_points.py
-                ast_metrics.py
-                ast_qgis.py
-                ... (+20 more)
+                constants.py
+                engine.py
+                pattern_base.py
+                registry.py
                 visitors/
                     __init__.py
                     antipattern_base.py
@@ -61,9 +59,6 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     fs_helpers.py
                     fs_scanner.py
                     ... (+8 more)
-                metrics/
-                    __init__.py
-                    scorer.py
                 summarizers/
                     __init__.py
                     base.py
@@ -253,10 +248,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 1519
-- **Additions**: +152422
-- **Deletions**: -78580
-- **Total Churn**: 231002
+- **Files Changed**: 1527
+- **Additions**: +153098
+- **Deletions**: -79245
+- **Total Churn**: 232343
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -266,5 +261,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/cli.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 4.90
+- **Average Complexity**: 5.31
 - **Max Complexity**: 33

@@ -1,7 +1,7 @@
 import unittest
 import ast
-from ai_context_core.analyzer.ast_utils import detect_unused_imports
-from ai_context_core.analyzer.dependencies import calculate_coupling_metrics
+from ai_context_core.analyzer.visitors.ast_utils import detect_unused_imports
+from ai_context_core.analyzer.builders.dependencies import calculate_coupling_metrics
 
 
 class TestDependenciesAdvanced(unittest.TestCase):

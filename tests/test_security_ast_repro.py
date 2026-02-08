@@ -1,5 +1,5 @@
 import ast
-from ai_context_core.analyzer.issues import ASTSecurityDetector
+from ai_context_core.analyzer.visitors.issues import ASTSecurityDetector
 
 
 def test_ast_security_no_false_positives():

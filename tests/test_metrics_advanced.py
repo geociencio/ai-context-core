@@ -1,5 +1,5 @@
 import unittest
-from ai_context_core.analyzer.metrics import calculate_maintenance_index
+from ai_context_core.analyzer.builders.calculator import calculate_maintenance_index
 
 
 class TestMetricsAdvanced(unittest.TestCase):

@@ -82,3 +82,7 @@ class HTMLReportBuilder(BaseBuilder):
     def render(self) -> str:
         """Alias for build() for backward compatibility."""
         return self.build()
+
+
+# Alias for backward compatibility
+HTMLBuilder = HTMLReportBuilder

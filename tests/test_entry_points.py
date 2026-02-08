@@ -1,6 +1,6 @@
 import unittest
 import ast
-from ai_context_core.analyzer import ast_utils
+from ai_context_core.analyzer.visitors import ast_utils
 
 
 class TestEntryPoints(unittest.TestCase):

@@ -1,5 +1,5 @@
 import ast
-from ai_context_core.analyzer.complexity_visitor import (
+from ai_context_core.analyzer.visitors.complexity_visitor import (
     ComplexityVisitor,
     calculate_complexity,
 )

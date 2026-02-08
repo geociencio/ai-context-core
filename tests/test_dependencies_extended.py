@@ -1,6 +1,6 @@
 import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.dependencies import (
+from ai_context_core.analyzer.builders.dependencies import (
     analyze_dependencies,
     find_simple_cycles,
     count_edges,
@@ -54,7 +54,10 @@ def test_dependency_analyzer_legacy():
 
 def test_classify_imports_full_coverage():
     # Coverage for dependency_analyser_components/classifier.py (via dependencies.py)
-    from ai_context_core.analyzer.dependencies import _classify_imports, STDLIB_MODULES
+    from ai_context_core.analyzer.builders.dependencies import (
+        _classify_imports,
+        STDLIB_MODULES,
+    )
 
     # Test case where import is both internal and external (should favor internal usually, or depends on implementation)
     res = _classify_imports({"os", "my_mod"}, STDLIB_MODULES, known_internal={"my_mod"})
@@ -66,7 +69,7 @@ def test_classify_imports_full_coverage():
 
 def test_parse_dependency_files_components():
     # Coverage for parser.py
-    from ai_context_core.analyzer.dependencies import _parse_dependency_files
+    from ai_context_core.analyzer.builders.dependencies import _parse_dependency_files
 
     def mock_read(p):
         if p.name == "requirements.txt":

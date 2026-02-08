@@ -4,7 +4,7 @@ Tests masivos para cubrir todos los gaps restantes.
 
 import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.issues import find_secrets
+from ai_context_core.analyzer.visitors.issues import find_secrets
 from ai_context_core.analyzer.graph.builder import ImportGraphBuilder
 from ai_context_core.analyzer.builders.classifier import (
     classify_imports,
@@ -18,7 +18,8 @@ def test_find_secrets_no_secrets():
     # Coverage for issues.py lines 36, 51, 66-71
     modules = [{"path": "test.py"}]
     with patch(
-        "ai_context_core.analyzer.fs_helpers.read_file_fast", return_value="x = 1"
+        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast",
+        return_value="x = 1",
     ):
         result = find_secrets(modules, "/tmp")
         assert isinstance(result, list)
@@ -59,7 +60,7 @@ def test_parse_dependency_files_no_toml():
 
 def test_fs_tree_subprocess_timeout():
     # Coverage for fs_tree.py lines 27-28
-    from ai_context_core.analyzer.fs_tree import generate_tree_optimized
+    from ai_context_core.analyzer.providers.fs_tree import generate_tree_optimized
 
     with patch("subprocess.run", side_effect=TimeoutError("Timeout")):
         result = generate_tree_optimized(pathlib.Path("/tmp"))
@@ -69,9 +70,11 @@ def test_fs_tree_subprocess_timeout():
 
 def test_fs_tree_analyze_structure():
     # Coverage for fs_tree.py lines 55-58
-    from ai_context_core.analyzer.fs_tree import analyze_structure
+    from ai_context_core.analyzer.providers.fs_tree import analyze_structure
 
-    with patch("ai_context_core.analyzer.fs_scanner.scan_project") as mock_scan:
+    with patch(
+        "ai_context_core.analyzer.providers.fs_scanner.scan_project"
+    ) as mock_scan:
         mock_scan.return_value = MagicMock(
             file_types={"py": 10}, size_stats={"total_files": 10}
         )
@@ -98,7 +101,8 @@ def test_worker_parallel_edge_cases():
     # Test with exactly PARALLEL_MIN_FILES files
     files = [pathlib.Path(f"/tmp/file{i}.py") for i in range(5)]
     with patch(
-        "ai_context_core.analyzer.fs_utils.calculate_file_hash", return_value="hash"
+        "ai_context_core.analyzer.providers.fs_utils.calculate_file_hash",
+        return_value="hash",
     ):
         with patch.object(worker, "analyze_single", return_value={"path": "test.py"}):
             result = worker.run_parallel(files)
@@ -107,8 +111,8 @@ def test_worker_parallel_edge_cases():
 
 def test_fs_scanner_oserror():
     # Coverage for fs_scanner.py lines 84-85
-    from ai_context_core.analyzer.fs_scanner import ProjectScanner
-    from ai_context_core.analyzer.ignore_filter import IgnoreFilter
+    from ai_context_core.analyzer.providers.fs_scanner import ProjectScanner
+    from ai_context_core.analyzer.providers.ignore_filter import IgnoreFilter
 
     scanner = ProjectScanner(pathlib.Path("/tmp"), IgnoreFilter(pathlib.Path("/tmp")))
     with patch("os.path.getsize", side_effect=OSError("Permission denied")):
@@ -119,7 +123,7 @@ def test_fs_scanner_oserror():
 
 def test_dependencies_fallback():
     # Coverage for dependencies.py line 20
-    from ai_context_core.analyzer.dependencies import STDLIB_MODULES
+    from ai_context_core.analyzer.builders.dependencies import STDLIB_MODULES
 
     # Verify STDLIB_MODULES is populated
     assert len(STDLIB_MODULES) > 0

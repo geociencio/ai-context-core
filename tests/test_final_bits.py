@@ -1,6 +1,6 @@
 import ast
 from unittest.mock import patch
-from ai_context_core.analyzer.metrics.scorer import ProjectScorer
+from ai_context_core.analyzer.builders.scorer import ProjectScorer
 from ai_context_core.analyzer.visitors.sloc import calculate_sloc
 
 

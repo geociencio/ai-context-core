@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from ai_context_core.analyzer import fs_utils
+from ai_context_core.analyzer.providers import fs_utils
 import tempfile
 import shutil
 

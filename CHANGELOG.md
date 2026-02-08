@@ -285,30 +285,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Metric Aggregation**: Added "Total Physical Lines" to project-level metrics and reports (Markdown/HTML) to improve documentation density analysis.
 ### Refactored
 - **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
-- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
-
-### Added
-- **i18n Precision**: Implemented naming pattern heuristics (snake_case, camelCase) to ignore technical identifiers in i18n analysis.
-- **AST Context Awareness**: The i18n checker now ignores dictionary keys and specific technical QGIS/Qt methods (`setObjectName`, `addItem`, etc.).
-- **Test Coverage Boost**: Increased project coverage to **80%** by adding a comprehensive new test suite (`tests/test_coverage_boost.py`) covering summarizers, metrics, and extractors.
-- **Facade Fixes**: Restored missing exports in `fs_utils.py` and `metrics/__init__.py` to resolve regressions.
-
-### Refactored
-- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
-- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+- **Facade Elimination**: Removed all backward compatibility facade files from the `analyzer` package root, successfully migrating 266 tests and CLI commands to the modular structure.
 
 ### Added
 - New `patterns_detectors/` package for modular design pattern detection.
 - `ignore_filter.py` module extracted from `fs_utils.py` for better separation of concerns.
-
-### Changed
-- Refactored `patterns.py` into a facade to reduce cyclomatic complexity hotspots.
-- Optimized `ProjectScanner` in `fs_utils.py` and improved file system traversal.
-- Replaced deprecated `find_security_issues` with modernized `find_secrets` and AST-based checks.
-- Enforced Google-style docstrings across core analyzer components.
-### Refactored
-- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
-- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **Configuration**: Unit tests for config system and full documentation in `docs/CONFIGURATION.md`.

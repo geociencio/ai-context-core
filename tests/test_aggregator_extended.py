@@ -1,6 +1,6 @@
 import pathlib
 from unittest.mock import patch
-from ai_context_core.analyzer.aggregator import ResultsAggregator
+from ai_context_core.analyzer.builders.aggregator import ResultsAggregator
 
 
 def test_aggregate_security_combined():
@@ -84,11 +84,15 @@ def test_aggregator_timestamp():
     )
     # Mocking dependencies etc to make aggregate run
     with (
-        patch("ai_context_core.analyzer.dependencies.detect_unused_imports_in_project"),
-        patch("ai_context_core.analyzer.metrics.calculate_project_metrics"),
-        patch("ai_context_core.analyzer.ai_recommendations.generate_recommendations"),
+        patch(
+            "ai_context_core.analyzer.builders.dependencies.detect_unused_imports_in_project"
+        ),
+        patch("ai_context_core.analyzer.builders.calculator.calculate_project_metrics"),
+        patch(
+            "ai_context_core.analyzer.builders.ai_recommendations.generate_recommendations"
+        ),
         patch("ai_context_core.analyzer.builders.formatter.format_complexity_agg"),
-        patch("ai_context_core.analyzer.issues.find_optimizations"),
+        patch("ai_context_core.analyzer.visitors.issues.find_optimizations"),
         patch("ai_context_core.analyzer.visitors.issues.find_secrets"),
     ):
         res = agg.aggregate([], {}, {}, {})
