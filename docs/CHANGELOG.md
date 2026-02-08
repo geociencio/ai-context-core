@@ -80,9 +80,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Architectural Excellence (Phase 4)**: Applied extreme fragmentation to reduce all project module complexities to **< 15** (Source directory maximum: 14).
-- **Quality Metrics**: 
-    - Achieved record **90.4/100 Quality Score**.
-    - Achieved **60.6 Average Maintenance Index**.
+### Quality Metrics
+- Achieved record **90.4/100 Quality Score**.
+- Achieved **60.6 Average Maintenance Index**.
 - **Facade Patterns**: Transformed `imports.py`, `i18n.py`, `singleton.py`, `observer.py`, `issues.py`, `ignore_filter.py`, and `import_visitor.py` into clean facades for modular components.
 
 ### Fixed
@@ -283,7 +283,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - **License Formalization**: Officially consolidated the project license under **GNU General Public License v3 (GPLv3)**.
-- **Documentation Modernization**: Rewrote and localized all core technical guides (`ARCHITECTURE.md`, `DEVELOPMENT_GUIDE_EN.md`, etc.) to match the internal modular architecture and established **ADR 0006**.
 - **Metric Aggregation**: Added "Total Physical Lines" to project-level metrics and reports (Markdown/HTML) to improve documentation density analysis.
 ### Refactored
 - **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
