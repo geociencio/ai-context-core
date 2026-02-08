@@ -1,7 +1,9 @@
 from .builders.dependencies import *  # noqa: F403
 from .builders.algorithms import CycleDetector, GraphMetricsCalculator
 from .builders.classifier import classify_imports as _classify_imports  # noqa: F401
-from .builders.parser import parse_dependency_files as _parse_dependency_files  # noqa: F401
+from .builders.parser import (
+    parse_dependency_files as _parse_dependency_files,
+)  # noqa: F401
 
 
 def find_simple_cycles(graph, limit=5):

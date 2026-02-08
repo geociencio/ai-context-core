@@ -20,6 +20,9 @@ class MetricsSummarizer:
             f"- **Source Lines (SLOC)**: {metrics.get('total_lines_code', 0):,}"
         )
         lines.append(
+            f"- **Total Physical Lines**: {metrics.get('total_physical_lines', 0):,}"
+        )
+        lines.append(
             f"- **Maintainability**: {metrics.get('avg_maintainability', 0):.1f}"
         )
         lines.append(

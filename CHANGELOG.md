@@ -281,6 +281,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
 ## [Unreleased]
+### Added
+- **Metric Aggregation**: Added "Total Physical Lines" to project-level metrics and reports (Markdown/HTML) to improve documentation density analysis.
 ### Refactored
 - **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
 - **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
