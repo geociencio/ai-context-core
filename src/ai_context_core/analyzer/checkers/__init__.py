@@ -1,30 +1,13 @@
-"""Registry and base classes for issue checkers."""
+"""Compatibility facade for checkers."""
 
-from typing import List, Dict, Any
+from ..visitors.checker_base import BaseChecker
+from ..visitors.security_checker import SecurityChecker
+from ..visitors.tech_debt_checker import TechDebtChecker
+from ..visitors.optimization_checker import OptimizationChecker
 
-
-class BaseChecker:
-    """Base class for all issue checkers."""
-
-    def __init__(self, config: Dict[str, Any] = None):
-        """Initialize the checker.
-
-        Args:
-            config: Optional configuration dictionary.
-        """
-        self.config = config or {}
-
-    def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Performs the check on the module data.
-
-        Args:
-            module_info: Analyzed module data.
-
-        Returns:
-            List of found issues.
-        """
-        raise NotImplementedError
-
-    def get_category(self) -> str:
-        """Returns the category name for this checker."""
-        raise NotImplementedError
+__all__ = [
+    "BaseChecker",
+    "SecurityChecker",
+    "TechDebtChecker",
+    "OptimizationChecker",
+]

@@ -1,5 +1,5 @@
 import ast
-from ai_context_core.analyzer.ast_metrics import calculate_sloc
+from ai_context_core.analyzer.visitors.ast_utils import calculate_sloc
 
 
 def test_sloc_with_docstrings():

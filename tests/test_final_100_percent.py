@@ -126,9 +126,7 @@ def test_config_loader_all_branches():
     from ai_context_core.analyzer.engine_components.config_loader import load_config
 
     # Test without tomllib (fallback)
-    with patch(
-        "ai_context_core.analyzer.engine_components.config_loader.tomllib", None
-    ):
+    with patch("ai_context_core.analyzer.providers.config_loader.tomllib", None):
         result = load_config(pathlib.Path("/tmp"))
         assert isinstance(result, dict)
         assert "patterns" in result or "thresholds" in result

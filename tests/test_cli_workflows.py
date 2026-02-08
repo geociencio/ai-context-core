@@ -11,10 +11,10 @@ def runner():
     return CliRunner()
 
 
-@patch("ai_context_core.commands.analyze.run_analysis")
-@patch("ai_context_core.commands.analyze.run_audit")
-@patch("ai_context_core.analyzer.gis_utils.parse_qgis_metadata")
-@patch("ai_context_core.commands.qgis.check_compliance")
+@patch("ai_context_core.cli.commands.analyze.run_analysis")
+@patch("ai_context_core.cli.commands.analyze.run_audit")
+@patch("ai_context_core.analyzer.providers.gis_utils.parse_qgis_metadata")
+@patch("ai_context_core.cli.commands.qgis.check_compliance")
 def test_full_scan_general_python(
     mock_qgis, mock_metadata, mock_audit, mock_analyze, runner
 ):
@@ -35,10 +35,10 @@ def test_full_scan_general_python(
     assert "Skipping QGIS checks" in result.output
 
 
-@patch("ai_context_core.commands.analyze.run_analysis")
-@patch("ai_context_core.commands.analyze.run_audit")
-@patch("ai_context_core.analyzer.gis_utils.parse_qgis_metadata")
-@patch("ai_context_core.commands.qgis.check_compliance")
+@patch("ai_context_core.cli.commands.analyze.run_analysis")
+@patch("ai_context_core.cli.commands.analyze.run_audit")
+@patch("ai_context_core.analyzer.providers.gis_utils.parse_qgis_metadata")
+@patch("ai_context_core.cli.commands.qgis.check_compliance")
 def test_full_scan_qgis_plugin(
     mock_qgis, mock_metadata, mock_audit, mock_analyze, runner
 ):

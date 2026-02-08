@@ -3,7 +3,7 @@
 import pathlib
 import click
 from ai_context_core.analyzer.engine import ProjectAnalyzer
-from ai_context_core.analyzer.reporting import generate_dependency_diagram
+from ai_context_core.analyzer.builders.reporting import generate_dependency_diagram
 from ai_context_core.config.loader import ConfigLoader
 
 

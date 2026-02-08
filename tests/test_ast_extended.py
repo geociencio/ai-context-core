@@ -1,6 +1,6 @@
 import ast
-from ai_context_core.analyzer.ast_utils import extract_base_name
-from ai_context_core.analyzer.ast_metrics import (
+from ai_context_core.analyzer.visitors.ast_utils import extract_base_name
+from ai_context_core.analyzer.visitors.ast_metrics import (
     calculate_type_hint_coverage,
     HalsteadVisitor,
     TypeHintVisitor,

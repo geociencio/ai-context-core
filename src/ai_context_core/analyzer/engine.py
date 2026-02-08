@@ -9,12 +9,15 @@ import time
 import pathlib
 import json
 from typing import Dict, Any, List, Optional
-from . import (
+from .providers import (
     fs_utils,
-    reporting,
-    dependencies,
     git_analysis,
+    worker,
+)
+from .builders import (
+    reporting,
     aggregator,
+    dependencies,
 )
 from ..context.manager import AIContextManager
 
@@ -133,7 +136,7 @@ class ProjectAnalyzer:
             exclude_patterns: List of glob patterns to exclude from scanning.
             ignore_cache: Whether to force a full analysis ignoring existing cache.
         """
-        from .engine_components import load_config as loader_func
+        from .providers.config_loader import load_config as loader_func
 
         self.project_path = pathlib.Path(project_path).resolve()
         self.max_workers = max_workers or (
@@ -165,15 +168,12 @@ class ProjectAnalyzer:
         start_time = time.time()
         logger.info(f"Starting analysis for {self.project_path}")
 
-        # 1. Scanning and Parallel Analysis
-        from .engine_components import AnalysisWorker
-
         scan_res = fs_utils.scan_project(self.project_path, self.exclusion_patterns)
-        worker = AnalysisWorker(
+        analysis_worker = worker.AnalysisWorker(
             self.project_path, self.config, self.max_workers, self.analysis_cache
         )
-        modules_data = worker.run_parallel(scan_res.python_files)
-        self.error_log.update(worker.error_log)
+        modules_data = analysis_worker.run_parallel(scan_res.python_files)
+        self.error_log.update(analysis_worker.error_log)
 
         # 2. Dependency Analysis
         dep_analyzer = dependencies.DependencyAnalyzer(self.project_path)

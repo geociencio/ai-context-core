@@ -1,6 +1,6 @@
 import unittest
 import ast
-from src.ai_context_core.analyzer.ast_qgis import QGISComplianceVisitor
+from ai_context_core.analyzer.ast_qgis import QGISComplianceVisitor
 
 
 class TestQGISCompliance(unittest.TestCase):

@@ -10,9 +10,7 @@ from ai_context_core.analyzer.engine_components.worker import AnalysisWorker
 def test_load_config_failed_defaults():
     # Coverage for config_loader.py line 30
     # Simulate tomllib error during defaults loading
-    with patch(
-        "ai_context_core.analyzer.engine_components.config_loader.tomllib"
-    ) as mock_toml:
+    with patch("ai_context_core.analyzer.providers.config_loader.tomllib") as mock_toml:
         # Mocking that defaults file exists but load fails
         with patch("pathlib.Path.exists", return_value=True):
             mock_toml.load.side_effect = Exception("Load fail")
@@ -24,9 +22,7 @@ def test_load_config_failed_defaults():
 def test_load_config_failed_project_override():
     # Coverage for config_loader.py line 43
     # Defaults load fine, but project override fails
-    with patch(
-        "ai_context_core.analyzer.engine_components.config_loader.tomllib"
-    ) as mock_toml:
+    with patch("ai_context_core.analyzer.providers.config_loader.tomllib") as mock_toml:
         # We need to simulate that the FIRST load (defaults) works
         # and the SECOND load (project) fails
         mock_toml.load.side_effect = [{"defaults": {}}, Exception("Project fail")]
@@ -35,7 +31,7 @@ def test_load_config_failed_project_override():
             # This is a bit complex due to how side_effect interacts with open()
             # Let's try simpler: mock logger directly
             with patch(
-                "ai_context_core.analyzer.engine_components.config_loader.logger"
+                "ai_context_core.analyzer.providers.config_loader.logger"
             ) as mock_log:
                 # Cause the open/load to fail for project config
                 with patch(
@@ -48,9 +44,7 @@ def test_load_config_failed_project_override():
 def test_load_config_non_dict_override():
     # Coverage for config_loader.py line 50
     # override_config with non-dict values for a section
-    with patch(
-        "ai_context_core.analyzer.engine_components.config_loader.tomllib"
-    ) as mock_toml:
+    with patch("ai_context_core.analyzer.providers.config_loader.tomllib") as mock_toml:
         mock_toml.load.side_effect = [
             {"section": {"k": "v"}},  # defaults
             {"section": "not-a-dict"},  # override

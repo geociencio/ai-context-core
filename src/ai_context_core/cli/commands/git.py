@@ -5,7 +5,7 @@ import sys
 import click
 from rich.console import Console
 from rich.table import Table
-from ai_context_core.analyzer import git_analysis
+from ai_context_core.analyzer.providers import git_analysis
 
 
 def show_git_evolution(path: str, days: int):

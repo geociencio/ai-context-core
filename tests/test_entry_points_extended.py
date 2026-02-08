@@ -1,6 +1,6 @@
 import ast
 from unittest.mock import MagicMock, PropertyMock
-from ai_context_core.analyzer.ast_entry_points import (
+from ai_context_core.analyzer.visitors.ast_entry_points import (
     is_entry_point,
     has_main_guard,
     EntryPointVisitor,

@@ -85,6 +85,10 @@ class TestVisualization:
             # Run with HTML format
             result = runner.invoke(cli, ["analyze", "--format", "html"])
 
+            if result.exit_code != 0:
+                print(f"CLI Output:\n{result.output}")
+                print(f"CLI Exception: {result.exception}")
+
             assert result.exit_code == 0
             assert os.path.exists("PROJECT_SUMMARY.html")
             assert not os.path.exists("PROJECT_SUMMARY.md")
@@ -103,6 +107,10 @@ class TestVisualization:
                 f.write("def foo(): pass\n")
 
             result = runner.invoke(cli, ["analyze"])  # Default is markdown
+
+            if result.exit_code != 0:
+                print(f"CLI Output:\n{result.output}")
+                print(f"CLI Exception: {result.exception}")
 
             assert result.exit_code == 0
             assert os.path.exists("PROJECT_SUMMARY.md")

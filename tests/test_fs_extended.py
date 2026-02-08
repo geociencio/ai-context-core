@@ -30,7 +30,7 @@ def test_fs_tree_optimized_exception():
     with patch("subprocess.run", side_effect=Exception("Subprocess failed")):
         # Should fallback to manual generation
         with patch(
-            "ai_context_core.analyzer.fs_tree._generate_tree_fallback"
+            "ai_context_core.analyzer.providers.fs_tree._generate_tree_fallback"
         ) as mock_fallback:
             generate_tree_optimized(pathlib.Path("/tmp"))
             mock_fallback.assert_called()

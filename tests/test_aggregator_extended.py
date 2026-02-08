@@ -17,7 +17,7 @@ def test_aggregate_security_combined():
         }
     ]
 
-    with patch("ai_context_core.analyzer.issues.find_secrets") as mock_secrets:
+    with patch("ai_context_core.analyzer.builders.issues.find_secrets") as mock_secrets:
         mock_secrets.return_value = [
             {
                 "module": "mod1.py",
@@ -43,7 +43,7 @@ def test_legacy_qgis_aggregation_wrapper():
     metadata = {"compliance_score": 100}
 
     with patch(
-        "ai_context_core.analyzer.aggregator_components.aggregate_qgis_compliance"
+        "ai_context_core.analyzer.builders.aggregator_qgis.aggregate_qgis_compliance"
     ) as mock_agg:
         mock_agg.return_value = {"score": 100}
         res = aggregator._aggregate_qgis_compliance(m_data, metadata)
@@ -53,7 +53,7 @@ def test_legacy_qgis_aggregation_wrapper():
 
 def test_qgis_aggregation_processing_framework():
     # Coverage for aggregator_components/qgis.py line 63
-    from ai_context_core.analyzer.aggregator_components.qgis import (
+    from ai_context_core.analyzer.builders.aggregator_qgis import (
         aggregate_qgis_compliance,
     )
 
@@ -87,7 +87,7 @@ def test_aggregator_timestamp():
         patch("ai_context_core.analyzer.dependencies.detect_unused_imports_in_project"),
         patch("ai_context_core.analyzer.metrics.calculate_project_metrics"),
         patch("ai_context_core.analyzer.ai_recommendations.generate_recommendations"),
-        patch("ai_context_core.analyzer.aggregator_components.format_complexity_agg"),
+        patch("ai_context_core.analyzer.builders.formatter.format_complexity_agg"),
         patch("ai_context_core.analyzer.issues.find_optimizations"),
         patch("ai_context_core.analyzer.issues.find_secrets"),
     ):

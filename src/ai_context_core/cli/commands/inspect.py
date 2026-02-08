@@ -3,7 +3,7 @@
 import pathlib
 import sys
 import click
-from ai_context_core.analyzer.engine_components.worker import AnalysisWorker
+from ai_context_core.analyzer.providers.worker import AnalysisWorker
 from ai_context_core.config.loader import ConfigLoader
 
 

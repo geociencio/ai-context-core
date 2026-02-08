@@ -4,7 +4,7 @@ import click
 import sys
 from pathlib import Path
 from . import analyze, qgis
-from ai_context_core.analyzer import gis_utils
+from ai_context_core.analyzer.providers import gis_utils
 
 
 @click.command(name="full-scan")

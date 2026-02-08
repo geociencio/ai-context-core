@@ -4,7 +4,7 @@ Allows for dynamic discovery and simplified orchestration of analysis rules.
 """
 
 import logging
-from typing import Dict, Any, List, Callable, Type
+from typing import Dict, List, Callable, Type
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +60,27 @@ def register_visitor(cls):
 
 def register_detector(name: str):
     """Decorator for registering detectors."""
+
     def wrapper(func):
         registry.register_detector(name, func)
         return func
+
     return wrapper
+
+
+# Backward compatibility re-exports
+# Delayed import to avoid circular dependencies
+# from .visitors.checker_registry import CheckerRegistry  # noqa: F401
+def get_checker_registry():
+    from .visitors.checker_registry import CheckerRegistry  # noqa: F401
+
+    return CheckerRegistry
+
+
+# Alias if possible, but might trigger import.
+# Better to remove it if not strictly needed or handle carefully.
+# Given it's for backward compatibility, maybe we just try-except?
+try:
+    from .visitors.checker_registry import CheckerRegistry  # noqa: F401
+except ImportError:
+    pass

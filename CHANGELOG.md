@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **CLI Suite Expansion**:
     - `ai-ctx doctor`: Environmental diagnostics and health checks.
@@ -44,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.1] - 2026-02-07 - QGIS Profile & Analysis Fixes
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **Integration Tests**: Added `tests/test_qgis_command.py` to verify the full QGIS compliance command flow.
 
@@ -54,6 +62,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [3.1.0] - 2026-02-07 - Quality Excellence & Extreme Fragmentation
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **README Update**: Integrated a comprehensive comparison matrix featuring contemporary tools like **Repomix**, **Code2Prompt**, and specialized QGIS checkers.
@@ -79,6 +91,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.3] - 2026-02-07 - i18n Precision & Heuristic Refinement
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **QGIS Compliance Tests**: New unit tests for i18n aggregation and heuristic validation (`tests/test_qgis_compliance.py`).
 
@@ -90,6 +106,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Excluded single-character strings from the translatable count.
 
 ## [3.0.2] - 2026-02-07 - Python 3.14 Compatibility & Analyzer Logic Fixes
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **Python 3.14 Compatibility**: Safely handle the removal of `ast.Str` in Python 3.14 by using `ast.Constant` as a fallback in SLOC calculation.
@@ -110,6 +130,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **QGIS Metadata Display**: Resolved critical bug where `ai-ctx qgis` command displayed "N/A" for metadata fields despite valid validation. Field access logic in CLI was corrected to match parsed structure.
 
 ## [3.0.0] - 2026-01-30 - CLI Expansion & Enhanced Analysis
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **5 New CLI Commands**:
@@ -145,6 +169,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.1.3] - 2026-01-30 - SLOC Engine & Metadata Fix
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **SLOC Engine**: New `calculate_sloc` function in `ast_metrics` to accurately count code excluding docstrings/comments.
 - **Reporting**: Reports now display both "Source Lines (SLOC)" and "Total Physical Lines".
@@ -160,6 +188,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.1.2] - 2026-01-30 - Engine Liquidity & Quality Peak
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **aggregator.py**: New module dedicated to project-level results aggregation and post-processing.
 - **Compatibility Layers**: Restored legacy API support in `ast_utils`, `issues`, `dependencies`, and `git_analysis` using modern facades.
@@ -174,6 +206,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CBO Metrics**: Fixed coupling calculation in `dependencies.py`.
 
 ## [2.1.1] - 2026-01-26 - Major Architectural Upgrade & Advanced CLI
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **Full Modularization**: Complete refactor of all 18 core modules into class-based, decoupled architectures across 6 phases.
@@ -219,6 +255,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.5.0] - 2026-01-26 - Performance & GIS Edition
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **Advanced QGIS Heuristics**: 
     - Full detection of **QGIS Processing Framework** (Algorithms and Providers).
@@ -241,11 +281,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **KeyError 'class'**: (Partial/Incomplete) Initial attempt at fixing the reporting crash. Release was invalid due to missing source code updates.
 
 ## [Unreleased]
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **i18n Precision**: Implemented naming pattern heuristics (snake_case, camelCase) to ignore technical identifiers in i18n analysis.
 - **AST Context Awareness**: The i18n checker now ignores dictionary keys and specific technical QGIS/Qt methods (`setObjectName`, `addItem`, etc.).
 - **Test Coverage Boost**: Increased project coverage to **80%** by adding a comprehensive new test suite (`tests/test_coverage_boost.py`) covering summarizers, metrics, and extractors.
 - **Facade Fixes**: Restored missing exports in `fs_utils.py` and `metrics/__init__.py` to resolve regressions.
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - New `patterns_detectors/` package for modular design pattern detection.
@@ -256,6 +304,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optimized `ProjectScanner` in `fs_utils.py` and improved file system traversal.
 - Replaced deprecated `find_security_issues` with modernized `find_secrets` and AST-based checks.
 - Enforced Google-style docstrings across core analyzer components.
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **Configuration**: Unit tests for config system and full documentation in `docs/CONFIGURATION.md`.
 - **CI/CD**: GitHub Actions workflow for automated testing and quality auditing.
@@ -289,6 +341,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-01-11
 
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
+
 ### Added
 - **Docstrings**: Fully standardized all core modules to Google Style (98.2% coverage).
 - **Security**: Added advanced obfuscation and false positive reduction for security scanning.
@@ -302,6 +358,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Technical Debt**: Reduced cyclomatic complexity across all core modules.
 
 ## [0.1.0] - 2026-01-11
+
+### Refactored
+- **Analyzer Architecture**: Restructured the analyzer into specialized `visitors`, `builders`, and `providers` packages for better maintainability and scalability.
+- **Backward Compatibility**: Implemented facade-based compatibility layer to support legacy imports and ensure 100% test pass rate.
 
 ### Added
 - **Core Engine**: Initial release of the modular analysis engine.

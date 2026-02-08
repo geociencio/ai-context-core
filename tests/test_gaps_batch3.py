@@ -84,9 +84,7 @@ def test_config_loader_no_tomllib():
     # Coverage for config_loader.py lines 11-15, 48
     from ai_context_core.analyzer.engine_components.config_loader import load_config
 
-    with patch(
-        "ai_context_core.analyzer.engine_components.config_loader.tomllib", None
-    ):
+    with patch("ai_context_core.analyzer.providers.config_loader.tomllib", None):
         result = load_config(pathlib.Path("/tmp"))
         # Should return defaults even without TOML support
         assert isinstance(result, dict)

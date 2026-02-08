@@ -24,7 +24,7 @@ def test_scorer_module_scoring():
 def test_sloc_calculate_exception():
     # Coverage for sloc.py exception handling
     with patch(
-        "ai_context_core.analyzer.ast_metrics_components.sloc.tokenize.generate_tokens",
+        "ai_context_core.analyzer.visitors.sloc.tokenize.generate_tokens",
         side_effect=Exception("Tokenize fail"),
     ):
         # Should fallback to _calculate_sloc_fallback
