@@ -101,7 +101,7 @@ def calculate_project_metrics(
     max_complexity = max((m.get("complexity", 0) for m in modules), default=0)
 
     # Calculate maintainability
-    total_mi = sum(m.get("maintainability_index", 100) for m in modules)
+    total_mi = sum(m.get("maintenance_index", 100) for m in modules)
     avg_mi = total_mi / len(modules) if modules else 100
 
     # Calculate Quality Score
