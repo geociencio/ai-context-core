@@ -1,10 +1,10 @@
 import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.engine_components.config_loader import (
+from ai_context_core.analyzer.providers.config_loader import (
     load_config,
     _get_hardcoded_defaults,
 )
-from ai_context_core.analyzer.engine_components.worker import AnalysisWorker
+from ai_context_core.analyzer.providers.worker import AnalysisWorker
 
 
 def test_load_config_failed_defaults():

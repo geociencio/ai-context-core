@@ -1,6 +1,6 @@
 import ast
 from ai_context_core.analyzer.html_builder import HTMLBuilder
-from ai_context_core.analyzer.ast_metrics_components.sloc import calculate_sloc
+from ai_context_core.analyzer.visitors.sloc import calculate_sloc
 from unittest.mock import patch
 
 

@@ -119,7 +119,7 @@ class MyWidget:
         import tempfile
         import pathlib
         import yaml
-        from ai_context_core.context.components.store_components.updaters import (
+        from ai_context_core.context.components.store import (
             update_context_file,
         )
 

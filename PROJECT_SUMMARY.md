@@ -1,15 +1,15 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-07 19:40:23
+Analysis Date: 2026-02-07 20:27:48
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Quality Score**: 100.0/100
-- **Source Lines (SLOC)**: 0
-- **Maintainability**: 100.0
-- **Test Coverage**: 0 test files
+- **Source Lines (SLOC)**: 9,056
+- **Maintainability**: 61.0
+- **Test Coverage**: 56 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 224
+**Total Modules**: 261
 
 ```tree
 ./
@@ -19,8 +19,8 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
     .gitignore
     .pre-commit-config.yaml
     AI_CONTEXT.md
-    ARCHITECTURE.mmd
-    ... (+26 more)
+    CHANGELOG.md
+    ... (+23 more)
     src/
         __init__.py
         ai_context_core/
@@ -64,30 +64,12 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                 metrics/
                     __init__.py
                     scorer.py
-                issues_components/
-                    __init__.py
-                    registry.py
-                patterns_components/
-                    __init__.py
-                    visitor.py
-                security_checkers/
-                    __init__.py
-                    base.py
-                    injection.py
-                    insecure_calls.py
                 summarizers/
                     __init__.py
                     base.py
                     git_patterns.py
                     issues.py
                     qgis.py
-                ast_visitors_components/
-                    __init__.py
-                    classes.py
-                    imports.py
-                engine_components/
-                    config_loader.py
-                    worker.py
                 context_builders/
                     dependencies.py
                     patterns.py
@@ -106,26 +88,16 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     observer.py
                     observer_rules.py
                     ... (+3 more)
-                ast_metrics_components/
-                    __init__.py
-                    sloc.py
                 graph/
                     __init__.py
                     builder.py
-                ignore_components/
-                    __init__.py
-                    loader.py
-                dependency_analyser_components/
-                    __init__.py
-                    classifier.py
-                    parser.py
                 qgis_checkers/
-                    __init__.py
                     base.py
                     frameworks.py
                 entry_point_detectors/
-                    __init__.py
                     framework_rules.py
+                security_checkers/
+                    base.py
             context/
                 manager.py
                 components/
@@ -199,7 +171,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+4 more)
+                ... (+5 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -255,9 +227,9 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
-- **.agent/scripts/skill_sync.py**: 2 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: HIGH)
+- **tests/test_final_100_percent.py**: 17 issues (Max: HIGH)
+- **tests/test_issues.py**: 2 issues (Max: CRITICAL)
+- **tests/test_secrets.py**: 2 issues (Max: CRITICAL)
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/algorithms.py
@@ -276,21 +248,23 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
 ### Decorator
 - **register_detector** in `src/ai_context_core/analyzer/registry.py` (50%)
+### Strategy
+- **Context** in `test_strategy.py` (100%)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 1225
-- **Additions**: +114491
-- **Deletions**: -59570
-- **Total Churn**: 174061
+- **Files Changed**: 1460
+- **Additions**: +135235
+- **Deletions**: -71171
+- **Total Churn**: 206406
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 26 commits
+- `src/ai_context_core/analyzer/engine.py`: 27 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
-- `src/ai_context_core/analyzer/issues.py`: 22 commits
+- `src/ai_context_core/analyzer/issues.py`: 23 commits
+- `src/ai_context_core/analyzer/reporting.py`: 22 commits
 - `src/ai_context_core/cli.py`: 21 commits
-- `src/ai_context_core/analyzer/reporting.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.21
+- **Average Complexity**: 4.90
 - **Max Complexity**: 33

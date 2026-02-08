@@ -1,3 +1,3 @@
 """Facade for legacy workflows commands."""
 
-# If other commands were here, import them too
+from ..cli.commands.workflows import full_scan_cmd  # noqa: F401

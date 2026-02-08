@@ -17,7 +17,7 @@ def test_aggregate_security_combined():
         }
     ]
 
-    with patch("ai_context_core.analyzer.builders.issues.find_secrets") as mock_secrets:
+    with patch("ai_context_core.analyzer.visitors.issues.find_secrets") as mock_secrets:
         mock_secrets.return_value = [
             {
                 "module": "mod1.py",
@@ -89,7 +89,7 @@ def test_aggregator_timestamp():
         patch("ai_context_core.analyzer.ai_recommendations.generate_recommendations"),
         patch("ai_context_core.analyzer.builders.formatter.format_complexity_agg"),
         patch("ai_context_core.analyzer.issues.find_optimizations"),
-        patch("ai_context_core.analyzer.issues.find_secrets"),
+        patch("ai_context_core.analyzer.visitors.issues.find_secrets"),
     ):
         res = agg.aggregate([], {}, {}, {})
         assert "timestamp" in res

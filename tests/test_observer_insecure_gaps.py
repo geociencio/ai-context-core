@@ -1,6 +1,6 @@
 import ast
 import pytest
-from ai_context_core.analyzer.security_checkers.insecure_calls import (
+from ai_context_core.analyzer.visitors.insecure_calls import (
     InsecureCallsChecker,
 )
 from ai_context_core.analyzer.security_checkers.base import BaseSecurityChecker

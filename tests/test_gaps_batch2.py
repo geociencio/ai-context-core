@@ -3,7 +3,7 @@ Tests para cubrir gaps en classes, checkers y engine.
 """
 
 import ast
-from ai_context_core.analyzer.ast_visitors_components.classes import ClassVisitor
+from ai_context_core.analyzer.visitors.ast_visitors import ClassVisitor
 from ai_context_core.analyzer.checkers.security_checker import SecurityChecker
 from ai_context_core.analyzer.checkers.tech_debt_checker import TechDebtChecker
 from ai_context_core.analyzer.checkers.optimization_checker import OptimizationChecker

@@ -8,6 +8,7 @@ from .store_components import (
     load_single_context_file,
     update_context_file,
 )
+from .store_components.updaters import _load_current_updates  # noqa: F401
 
 
 class ContextStore:

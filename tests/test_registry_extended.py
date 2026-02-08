@@ -1,5 +1,5 @@
 import pytest
-from ai_context_core.analyzer.issues_components.registry import CheckerRegistry
+from ai_context_core.analyzer.registry import CheckerRegistry
 from ai_context_core.analyzer.checkers import BaseChecker
 
 

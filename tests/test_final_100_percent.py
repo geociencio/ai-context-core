@@ -123,7 +123,7 @@ def test_engine_load_config_edge_cases():
 
 def test_config_loader_all_branches():
     # Coverage for config_loader.py lines 11-15, 48
-    from ai_context_core.analyzer.engine_components.config_loader import load_config
+    from ai_context_core.analyzer.providers.config_loader import load_config
 
     # Test without tomllib (fallback)
     with patch("ai_context_core.analyzer.providers.config_loader.tomllib", None):
@@ -166,7 +166,7 @@ async def foo():
 
 def test_remaining_edge_cases():
     # Coverage for various 1-2 line gaps
-    from ai_context_core.analyzer.ast_visitors_components.imports import extract_imports
+    from ai_context_core.analyzer.visitors.ast_visitors import extract_imports
 
     # Test imports extraction
     code = "import os\nfrom sys import path"

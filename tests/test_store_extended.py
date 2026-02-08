@@ -1,8 +1,8 @@
 import pytest
-from ai_context_core.context.components.store_components.loaders import (
+from ai_context_core.context.components.store import (
     load_single_context_file,
 )
-from ai_context_core.context.components.store_components.updaters import (
+from ai_context_core.context.components.store import (
     update_context_file,
     _load_current_updates,
 )

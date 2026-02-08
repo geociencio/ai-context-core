@@ -7,7 +7,7 @@ from ai_context_core.analyzer.patterns_detectors.singleton_rules import (
 from ai_context_core.analyzer.patterns_detectors.strategy_rules import StrategyRules
 from ai_context_core.analyzer.secrets import SecretScanner
 from ai_context_core.context.components.store import ContextStore
-from ai_context_core.context.components.store_components.loaders import (
+from ai_context_core.context.components.store import (
     load_single_context_file,
 )
 from click.testing import CliRunner

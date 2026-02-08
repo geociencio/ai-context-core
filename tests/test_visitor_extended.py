@@ -1,5 +1,5 @@
 import ast
-from ai_context_core.analyzer.patterns_components.visitor import PatternsUnifiedVisitor
+from ai_context_core.analyzer.visitors.patterns import PatternsUnifiedVisitor
 
 
 def test_visitor_decorator_detection():

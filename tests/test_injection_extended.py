@@ -1,5 +1,5 @@
 import ast
-from ai_context_core.analyzer.security_checkers.injection import InjectionChecker
+from ai_context_core.analyzer.visitors.injection import InjectionChecker
 
 
 def test_subprocess_shell_true():

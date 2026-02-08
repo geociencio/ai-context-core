@@ -6,10 +6,10 @@ import pathlib
 from unittest.mock import patch, MagicMock
 from ai_context_core.analyzer.issues import find_secrets
 from ai_context_core.analyzer.graph.builder import ImportGraphBuilder
-from ai_context_core.analyzer.dependency_analyser_components.classifier import (
+from ai_context_core.analyzer.builders.classifier import (
     classify_imports,
 )
-from ai_context_core.analyzer.dependency_analyser_components.parser import (
+from ai_context_core.analyzer.builders.parser import (
     parse_dependency_files,
 )
 
@@ -82,7 +82,7 @@ def test_fs_tree_analyze_structure():
 
 def test_config_loader_no_tomllib():
     # Coverage for config_loader.py lines 11-15, 48
-    from ai_context_core.analyzer.engine_components.config_loader import load_config
+    from ai_context_core.analyzer.providers.config_loader import load_config
 
     with patch("ai_context_core.analyzer.providers.config_loader.tomllib", None):
         result = load_config(pathlib.Path("/tmp"))
@@ -92,7 +92,7 @@ def test_config_loader_no_tomllib():
 
 def test_worker_parallel_edge_cases():
     # Coverage for worker.py lines 63-65
-    from ai_context_core.analyzer.engine_components.worker import AnalysisWorker
+    from ai_context_core.analyzer.providers.worker import AnalysisWorker
 
     worker = AnalysisWorker(pathlib.Path("/tmp"), {}, 2, {})
     # Test with exactly PARALLEL_MIN_FILES files
