@@ -8,6 +8,8 @@
 - **Dynamic Versioning**: Implemented "Single Source of Truth" for versioning using `importlib.metadata`. ⚙️
 - **Verification**: Added 11 new QGIS-specific tests and achieved 100% success across 273 tests. ✅
 - **Quality Score**: Steady at **97.8/100**. 🏆
+- **Market Intelligence**: Conducted deep analysis and comparative study of `ai-context-core` against 5 industry competitors (Repomix, Aider, Gitingest, etc.). 📊
+- **Documentation Overhaul**: Redesigned `README.md` to emphasize deep AST semantics, QGIS specialization, and technical debt tracking. 🎨
 
 ## [2026-02-08] Internationalization & Performance Peak (v3.2.1) - COMPLETED
 **THEME**: Correctness and Resilience 🛡️
