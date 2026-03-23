@@ -44,9 +44,8 @@ def test_scope_all_default(mock_modules, base_metadata):
 
     # 10/70 = 14.2% coverage
     i18n_ratio = 10 / 70
-    expected_score = (
-        40 + 10 + 10 + min(20, i18n_ratio * 40)
-    )  # Base 40 + GDAL 10 + Qt 10 + i18n
+    # New logic: metadata(30) + GDAL(10) + Qt(15) + i18n(min(15, ratio*30)) + API(10) + Qt6(5)
+    expected_score = 30 + 10 + 15 + min(15, i18n_ratio * 30) + 10 + 5
     assert agg["compliance_score"] == pytest.approx(expected_score, 0.1)
 
 
@@ -62,7 +61,8 @@ def test_scope_gui_only(mock_modules, base_metadata):
 
     # 10/20 = 50% coverage -> Higher score
     i18n_ratio = 10 / 20
-    expected_score = 40 + 10 + 10 + min(20, i18n_ratio * 40)
+    # New logic: metadata(30) + GDAL(10) + Qt(15) + i18n(min(15, ratio*30)) + API(10) + Qt6(5)
+    expected_score = 30 + 10 + 15 + min(15, i18n_ratio * 30) + 10 + 5
     assert agg["compliance_score"] == pytest.approx(expected_score, 0.1)
 
     # Verify score improved with filtering
@@ -83,7 +83,7 @@ def test_scope_custom(mock_modules, base_metadata):
     assert stats["total_strings"] == 50  # Only Core file counted
     assert stats["total_tr"] == 0
 
-    assert agg["compliance_score"] < 70  # Should be low due to 0% i18n
+    assert agg["compliance_score"] < 75  # Should be low due to 0% i18n
 
 
 def test_backward_compatibility(mock_modules, base_metadata):

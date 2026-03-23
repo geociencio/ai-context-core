@@ -1,11 +1,11 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 22:00:40
+Analysis Date: 2026-03-22 22:10:12
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 98.0/100
-- **Source Lines (SLOC)**: 9,409
-- **Total Physical Lines**: 14,354
+- **Quality Score**: 97.9/100
+- **Source Lines (SLOC)**: 9,449
+- **Total Physical Lines**: 14,407
 - **Maintainability**: 57.0
 - **Test Coverage**: 58 test files
 
@@ -155,6 +155,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         ... (+18 more)
         development/
             ARCHITECTURE.md
+            phases/
+                phase8_implementation_plan.md
+                phase8_task.md
+                phase8_walkaround.md
         releases/
             github/
             notes/
@@ -206,6 +210,9 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
             dev_feedback.md
             i18n_improvement_guide.md
             v250_fix_report.md
+            v321_fix/
+                implementation_plan.md
+                walkthrough.md
     tests/
         __init__.py
         test_absolute_final.py
@@ -255,10 +262,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 15
-- **Additions**: +2060
-- **Deletions**: -960
-- **Total Churn**: 3020
+- **Files Changed**: 40
+- **Additions**: +4775
+- **Deletions**: -2912
+- **Total Churn**: 7687
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -268,5 +275,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.55
-- **Max Complexity**: 48
+- **Average Complexity**: 5.60
+- **Max Complexity**: 49

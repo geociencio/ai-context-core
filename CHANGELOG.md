@@ -10,6 +10,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [3.3.0] - 2026-03-22 - QGIS 4.x & Metrics Fix
 ### Added
 - **QGIS 4.x Readiness**: Enhanced `QGISApiChecker` to detect legacy Qt macros (SIGNAL/SLOT) and an expanded catalog of deprecated QGIS 3.x APIs (e.g., `pendingFields`).
 - **Resource & Metadata Analysis**: Added support for `plugin.xml` parsing and automatic inconsistency detection between `metadata.txt` and `plugin.xml`.

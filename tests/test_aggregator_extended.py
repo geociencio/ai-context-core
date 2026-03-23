@@ -68,12 +68,15 @@ def test_qgis_aggregation_processing_framework():
         }
     ]
     metadata = {"compliance_score": 100}
-    # score = 100 * 0.4 = 40
-    # + 20 (processing) = 60
-    # + 10 (gdal) = 70
-    # + 10 (qt) = 80
+    # New scoring logic (Phase 8):
+    # metadata(100) * 0.3 = 30
+    # + 15 (processing) = 45
+    # + 10 (gdal) = 55
+    # + 15 (qt transition/pyqt5_count=0) = 70
+    # + 10 (no deprecated) = 80
+    # + 5 (no qt6 incompatibilities) = 85
     res = aggregate_qgis_compliance(m_data, metadata)
-    assert res["compliance_score"] == 80.0
+    assert res["compliance_score"] == 85.0
     assert res["processing_framework_detected"] is True
 
 
