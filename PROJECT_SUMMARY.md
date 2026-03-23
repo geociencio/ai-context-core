@@ -1,12 +1,12 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 22:10:12
-Analyzer Version: 3.1.1 (Ai-Context-Core)
+Analysis Date: 2026-03-22 22:20:45
+Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 97.9/100
-- **Source Lines (SLOC)**: 9,449
-- **Total Physical Lines**: 14,407
-- **Maintainability**: 57.0
+- **Quality Score**: 97.8/100
+- **Source Lines (SLOC)**: 9,451
+- **Total Physical Lines**: 14,416
+- **Maintainability**: 56.9
 - **Test Coverage**: 58 test files
 
 ## 📁 STRUCTURE
@@ -169,7 +169,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+7 more)
+                ... (+8 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -232,6 +232,8 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         .gitignore
         ai_context_core-3.2.1-py3-none-any.whl
         ai_context_core-3.2.1.tar.gz
+        ai_context_core-3.3.0-py3-none-any.whl
+        ai_context_core-3.3.0.tar.gz
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -262,10 +264,10 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 40
-- **Additions**: +4775
-- **Deletions**: -2912
-- **Total Churn**: 7687
+- **Files Changed**: 51
+- **Additions**: +5559
+- **Deletions**: -3623
+- **Total Churn**: 9182
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -275,5 +277,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.60
+- **Average Complexity**: 5.61
 - **Max Complexity**: 49

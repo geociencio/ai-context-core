@@ -1,5 +1,14 @@
 # Development Log
 
+## [2026-03-22] QGIS Edition & Metrics Core Fix (v3.3.0) - COMPLETED
+**THEME**: Deep Audit and Compliance 🗺️
+- **QGIS 4.x Readiness**: Launched `QGISApiChecker` for detecting deprecated QGIS 3.x APIs and Qt6 transition risks (`SIGNAL`/`SLOT`). 🍎
+- **Metadata & Resources**: Added full support for `plugin.xml`, including automatic consistency validation with `metadata.txt`. 📦
+- **Critical Fix**: Resolved the v3.2.1 regression where project metrics (functions, classes, etc.) were incorrectly reported as zero. 🐛
+- **Dynamic Versioning**: Implemented "Single Source of Truth" for versioning using `importlib.metadata`. ⚙️
+- **Verification**: Added 11 new QGIS-specific tests and achieved 100% success across 273 tests. ✅
+- **Quality Score**: Steady at **97.8/100**. 🏆
+
 ## [2026-02-08] Internationalization & Performance Peak (v3.2.1) - COMPLETED
 **THEME**: Correctness and Resilience 🛡️
 - **Robust i18n Matching**: Replaced path matching with a regex-based engine to support recursive patterns (`**`) across all platforms. 🌍
