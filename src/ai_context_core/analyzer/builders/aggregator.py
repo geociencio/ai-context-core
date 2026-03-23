@@ -12,7 +12,6 @@ from . import calculator as metrics
 from . import ai_recommendations
 from ..visitors import issues as v_issues
 
-
 logger = logging.getLogger(__name__)
 
 

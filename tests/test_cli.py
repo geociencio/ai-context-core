@@ -49,8 +49,7 @@ def test_specialized_report_commands():
 
         # Create a dummy file with findings
         with open("my_code.py", "w") as f:
-            f.write(
-                """
+            f.write("""
 class MySingleton:
     _instance = None
     @classmethod
@@ -84,8 +83,7 @@ def f3(): pass
 def f4(): pass
 def f5(): pass
 def f6(): pass
-"""
-            )
+""")
 
         # Test patterns
         result = runner.invoke(cli, ["patterns"])

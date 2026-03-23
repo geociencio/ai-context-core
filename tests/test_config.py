@@ -65,12 +65,10 @@ max_file_size_mb = 20 # New value
         # Setup project config
         ai_context_dir = tmp_path / ".ai-context"
         ai_context_dir.mkdir()
-        (ai_context_dir / "config.toml").write_text(
-            """
+        (ai_context_dir / "config.toml").write_text("""
 [analysis]
 parallel_workers = 99
-"""
-        )
+""")
 
         config = load_config(tmp_path)
 
@@ -94,12 +92,10 @@ parallel_workers = 99
         # Suppose defaults has quality_weights with multiple keys.
         # We override one key in quality_weights.
 
-        (ai_context_dir / "config.toml").write_text(
-            """
+        (ai_context_dir / "config.toml").write_text("""
 [quality_weights]
 complexity = 0.99
-"""
-        )
+""")
 
         config = load_config(tmp_path)
 

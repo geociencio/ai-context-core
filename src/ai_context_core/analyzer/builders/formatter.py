@@ -13,8 +13,12 @@ def format_complexity_agg(
         "total_physical_lines": project_metrics.get("total_physical_lines", 0),
         "total_functions": project_metrics.get("total_functions", 0),
         "total_classes": project_metrics.get("total_classes", 0),
-        "average_complexity": project_metrics.get("average_complexity", 0),
-        "avg_maintenance_index": project_metrics.get("avg_maintenance_index", 0),
+        "average_complexity": project_metrics.get(
+            "average_complexity", project_metrics.get("avg_complexity", 0)
+        ),
+        "avg_maintenance_index": project_metrics.get(
+            "avg_maintenance_index", project_metrics.get("avg_maintainability", 0)
+        ),
         "most_complex_modules": sorted(
             [(m["path"], m.get("complexity", 0)) for m in valid_modules],
             key=lambda x: x[1],

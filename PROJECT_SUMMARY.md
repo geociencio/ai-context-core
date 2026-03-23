@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-02-08 00:08:54
+Analysis Date: 2026-03-22 21:38:00
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 98.3/100
-- **Source Lines (SLOC)**: 9,183
-- **Total Physical Lines**: 14,040
+- **Quality Score**: 98.2/100
+- **Source Lines (SLOC)**: 9,236
+- **Total Physical Lines**: 14,101
 - **Maintainability**: 57.2
-- **Test Coverage**: 57 test files
+- **Test Coverage**: 58 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 237
+**Total Modules**: 238
 
 ```tree
 ./
@@ -199,6 +199,13 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
             ai_ctx_bug_report.md
             metadata.txt
             project_context.json
+        maintenance/
+            analysis_report.md
+            bug_report_v320.md
+            bug_report_v321_aggregation.md
+            dev_feedback.md
+            i18n_improvement_guide.md
+            v250_fix_report.md
     tests/
         __init__.py
         test_absolute_final.py
@@ -207,7 +214,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+47 more)
+        ... (+48 more)
         fixtures/
             false_positives.py
     test_project/
@@ -247,11 +254,6 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **Context** in `test_strategy.py` (100%)
 
 ## 🔄 GIT ANALYSIS
-### Code Churn (last 30 days)
-- **Files Changed**: 1643
-- **Additions**: +160344
-- **Deletions**: -86285
-- **Total Churn**: 246629
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -261,5 +263,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.41
+- **Average Complexity**: 5.40
 - **Max Complexity**: 35

@@ -97,6 +97,8 @@ def calculate_project_metrics(
     """
     total_loc = sum(m.get("sloc", m.get("loc", 0)) for m in modules)
     total_physical = sum(m.get("lines", 0) for m in modules)
+    total_functions = sum(len(m.get("functions", [])) for m in modules)
+    total_classes = sum(len(m.get("classes", [])) for m in modules)
     total_complexity = sum(m.get("complexity", 0) for m in modules)
     avg_complexity = total_complexity / len(modules) if modules else 0
     max_complexity = max((m.get("complexity", 0) for m in modules), default=0)
@@ -135,9 +137,13 @@ def calculate_project_metrics(
         "quality_score": max(0.0, min(100.0, score)),
         "total_lines_code": total_loc,
         "total_physical_lines": total_physical,
+        "total_functions": total_functions,
+        "total_classes": total_classes,
         "avg_complexity": round(avg_complexity, 2),
+        "average_complexity": round(avg_complexity, 2),
         "max_complexity": max_complexity,
         "avg_maintainability": round(avg_mi, 2),
+        "avg_maintenance_index": round(avg_mi, 2),
         "test_files_count": test_files_count,
         "entry_points_count": len(entry_points),
     }
