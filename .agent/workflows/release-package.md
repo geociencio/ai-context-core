@@ -26,7 +26,7 @@ make docker-test
 
 ## 2. Preparación del Release
 
-1.  **Versionado**: Actualiza `version` en `pyproject.toml`.
+1.  **Versionado**: Actualiza `version` en `pyproject.toml`. Asegúrate de actualizar también el `__version__` de fallback en `src/ai_context_core/__init__.py` (aunque la CLI lo extrae dinámicamente, el fallback es vital para desarrollo local).
 2.  **Changelog**: Mueve `[Unreleased]` a la nueva versión con la fecha actual.
 3.  **Release Notes**: Crea `docs/releases/notes/v[VERSION].md`.
 
