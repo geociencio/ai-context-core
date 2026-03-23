@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 22:20:45
+Analysis Date: 2026-03-22 23:17:12
 Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -230,8 +230,6 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
         test.py
     dist/
         .gitignore
-        ai_context_core-3.2.1-py3-none-any.whl
-        ai_context_core-3.2.1.tar.gz
         ai_context_core-3.3.0-py3-none-any.whl
         ai_context_core-3.3.0.tar.gz
 ```
@@ -264,10 +262,10 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 51
-- **Additions**: +5559
-- **Deletions**: -3623
-- **Total Churn**: 9182
+- **Files Changed**: 58
+- **Additions**: +6411
+- **Deletions**: -4377
+- **Total Churn**: 10788
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits

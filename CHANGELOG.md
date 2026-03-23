@@ -10,6 +10,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- **Documentation**: Performed deep analysis and comparison of `ai-context-core` vs. competitors (Repomix, Aider, Gitingest).
+- **README**: Updated with detailed comparison matrix and emphasized version 3.3.0 features and badges.
 
 ## [3.3.0] - 2026-03-22 - QGIS 4.x & Metrics Fix
 ### Added

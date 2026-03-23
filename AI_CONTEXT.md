@@ -139,46 +139,46 @@ graph TD
     test_observer_insecure_gaps --> py
     test_visualization --> py
     classDef module fill:#f9f,stroke:#333,stroke-width:2px;
-    test_aggregator_extended
-    class test_aggregator_extended module;
-    roadmap
-    class roadmap module;
+    test_coverage_final
+    class test_coverage_final module;
     stats
     class stats module;
-    test_absolute_final
-    class test_absolute_final module;
-    test_gaps_batch2
-    class test_gaps_batch2 module;
+    test_final_gaps
+    class test_final_gaps module;
     qgis
     class qgis module;
-    test_visualization
-    class test_visualization module;
-    report
-    class report module;
-    test_coverage_patterns
-    class test_coverage_patterns module;
+    graph
+    class graph module;
+    test_gaps_batch2
+    class test_gaps_batch2 module;
+    deps
+    class deps module;
+    roadmap
+    class roadmap module;
     test_coverage_boost
     class test_coverage_boost module;
     test_gaps_batch3
     class test_gaps_batch3 module;
-    test_final_gaps
-    class test_final_gaps module;
-    test_fs_extended
-    class test_fs_extended module;
-    test_final_100_percent
-    class test_final_100_percent module;
-    graph
-    class graph module;
-    test_coverage_final
-    class test_coverage_final module;
-    test_observer_insecure_gaps
-    class test_observer_insecure_gaps module;
     analyze
     class analyze module;
-    deps
-    class deps module;
+    test_absolute_final
+    class test_absolute_final module;
+    test_coverage_patterns
+    class test_coverage_patterns module;
+    report
+    class report module;
+    test_fs_extended
+    class test_fs_extended module;
+    test_observer_insecure_gaps
+    class test_observer_insecure_gaps module;
     inspect
     class inspect module;
+    test_visualization
+    class test_visualization module;
+    test_final_100_percent
+    class test_final_100_percent module;
+    test_aggregator_extended
+    class test_aggregator_extended module;
 ```
 
 ## 💡 OPTIMIZATION RECOMMENDATIONS
@@ -201,7 +201,7 @@ graph TD
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 9182
+- Total lines changed: 10788
 
 ## 🔑 PROJECT KEYWORDS
 - **Technologies**: .py, .md, .json, .yml, .toml, .yaml, .in, .zip
