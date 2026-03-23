@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 21:38:00
+Analysis Date: 2026-03-22 21:53:19
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 98.2/100
-- **Source Lines (SLOC)**: 9,236
-- **Total Physical Lines**: 14,101
-- **Maintainability**: 57.2
+- **Quality Score**: 98.0/100
+- **Source Lines (SLOC)**: 9,374
+- **Total Physical Lines**: 14,297
+- **Maintainability**: 57.0
 - **Test Coverage**: 58 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 238
+**Total Modules**: 240
 
 ```tree
 ./
@@ -40,7 +40,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     ast_entry_points.py
                     ast_metrics.py
                     ast_qgis.py
-                    ... (+50 more)
+                    ... (+51 more)
                 builders/
                     __init__.py
                     aggregator.py
@@ -58,7 +58,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     fs_cache.py
                     fs_helpers.py
                     fs_scanner.py
-                    ... (+8 more)
+                    ... (+9 more)
                 summarizers/
                     __init__.py
                     base.py
@@ -234,11 +234,11 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **tests/test_secrets.py**: 2 issues (Max: CRITICAL)
 
 ## 💡 MAIN RECOMMENDATIONS
-### src/ai_context_core/analyzer/builders/aggregator.py
-- Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/dependencies.py
+- Consider breaking down large logic
+### src/ai_context_core/analyzer/engine.py
 - Consider breaking down large logic
 
 ## 🏗️ DESIGN PATTERNS
@@ -254,6 +254,11 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **Context** in `test_strategy.py` (100%)
 
 ## 🔄 GIT ANALYSIS
+### Code Churn (last 30 days)
+- **Files Changed**: 15
+- **Additions**: +2060
+- **Deletions**: -960
+- **Total Churn**: 3020
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -263,5 +268,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.40
-- **Max Complexity**: 35
+- **Average Complexity**: 5.53
+- **Max Complexity**: 45

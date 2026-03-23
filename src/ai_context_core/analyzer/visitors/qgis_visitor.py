@@ -22,11 +22,13 @@ class GenericQGISComplianceVisitor(BaseVisitor):
         from .imports import ImportStyleChecker
         from .i18n import I18nChecker
         from .frameworks import FrameworkChecker
+        from .qgis_api import QGISApiChecker
 
         self.checkers = [
             ImportStyleChecker(self.results),
             I18nChecker(self.results),
             FrameworkChecker(self.results),
+            QGISApiChecker(self.results),
         ]
         self._i18n_checker = next(
             c for c in self.checkers if isinstance(c, I18nChecker)

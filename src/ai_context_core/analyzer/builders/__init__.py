@@ -18,6 +18,7 @@ from .structure import StructureBuilder
 from .context_metrics import MetricsBuilder
 from .patterns import PatternsBuilder
 from .git_tech import GitTechBuilder
+from .qgis import QGISBuilder
 
 __all__ = [
     "generate_project_summary",
@@ -37,4 +38,5 @@ __all__ = [
     "MetricsBuilder",
     "PatternsBuilder",
     "GitTechBuilder",
+    "QGISBuilder",
 ]

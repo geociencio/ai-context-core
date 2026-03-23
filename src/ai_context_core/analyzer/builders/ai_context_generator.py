@@ -30,6 +30,7 @@ class AIContextGenerator:
             PatternsBuilder,
             DependencyBuilder,
             GitTechBuilder,
+            QGISBuilder,
         )
 
         self.builders = [
@@ -38,6 +39,7 @@ class AIContextGenerator:
             PatternsBuilder(analyses),
             DependencyBuilder(analyses),
             GitTechBuilder(analyses),
+            QGISBuilder(analyses),
         ]
 
     def build(self) -> str:

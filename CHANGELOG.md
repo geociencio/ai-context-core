@@ -10,6 +10,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- **QGIS 4.x Readiness**: Implementation of `QGISApiChecker` to detect legacy Qt macros (SIGNAL/SLOT) and deprecated QGIS 3.x APIs.
+- **Resource Analysis**: Added `qgis_resources.py` for specialized analysis of `.qrc` files and `metadata.txt`.
+- **Automated Reporting**: Integrated `QGISBuilder` for automatic inclusion of QGIS compliance sections in `AI_CONTEXT.md` upon project detection.
+
 ### Fixed
 - **Metrics Aggregation**: Fixed critical bug in `v3.2.1` where global metrics for Functions, Classes, Complexity, and Maintenance Index were reported as zero due to key mismatches and missing logic in `calculator.py`.
 

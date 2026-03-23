@@ -101,18 +101,28 @@ class ResultsAggregator:
         self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Runs QGIS aggregation if enabled in config."""
-        qgis_enabled = (
-            self.config.get("patterns", {})
-            .get("qgis_compliance", {})
-            .get("enabled", False)
-        )
+        # Auto-delegate to QGIS aggregation if metadata exists or explicitly enabled
+        qgis_config = self.config.get("patterns", {}).get("qgis_compliance", {})
+        qgis_enabled = qgis_config.get("enabled", False)
+
+        # Override to True if metadata exists and config is the default False
+        if not qgis_enabled and metadata.get("exists", False):
+            qgis_enabled = True
+
         if not qgis_enabled:
             return {}
 
         from .aggregator_qgis import aggregate_qgis_compliance
+        from ..providers.qgis_resources import analyze_qgis_resources
 
         patterns = self.config.get("patterns", {}) or {}
         i18n_config = patterns.get("i18n", {}) or {}
+
+        # New: Analyze resources (.qrc, plugin.xml, etc.)
+        resource_data = analyze_qgis_resources(self.project_path)
+        if resource_data:
+            metadata.update({"resources": resource_data})
+
         return aggregate_qgis_compliance(m_data, metadata, i18n_config)
 
     def _aggregate_patterns(self, m_data: List[Dict[str, Any]]) -> Dict[str, Any]:

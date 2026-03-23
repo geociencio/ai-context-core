@@ -103,6 +103,20 @@ def aggregate_qgis_compliance(
     # Filter modules for i18n counting
     i18n_modules = [m for m in m_data if should_include_for_i18n(m)]
 
+    # New: Aggregate API compatibility issues
+    api_issues = {
+        "deprecated_calls": [],
+        "qt6_incompatibilities": [],
+        "best_practice_violations": [],
+    }
+    for m in m_data:
+        comp = m.get("qgis_compliance", {}).get("api_compatibility", {})
+        if comp:
+            for key in api_issues:
+                for issue in comp.get(key, []):
+                    issue["module"] = m["path"]
+                    api_issues[key].append(issue)
+
     agg = {
         "metadata": metadata,
         "processing_framework_detected": any(
@@ -112,15 +126,15 @@ def aggregate_qgis_compliance(
             "total_tr": sum(
                 m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
                 + m.get("qgis_compliance", {}).get("i18n_usage", {}).get("translate", 0)
-                for m in i18n_modules  # Use filtered modules
+                for m in i18n_modules
             ),
             "total_strings": sum(
                 m.get("qgis_compliance", {})
                 .get("i18n_usage", {})
                 .get("total_strings", 0)
-                for m in i18n_modules  # Use filtered modules
+                for m in i18n_modules
             ),
-            "scope": scope,  # Add scope metadata
+            "scope": scope,
             "modules_analyzed": len(i18n_modules),
             "modules_total": len(m_data),
         },
@@ -149,24 +163,30 @@ def aggregate_qgis_compliance(
                 )
                 for m in m_data
             ),
+            "qt6_incompatibilities_count": len(api_issues["qt6_incompatibilities"]),
         },
         "legacy_signals": sum(
             m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0)
             for m in m_data
         ),
+        "api_compatibility": api_issues,
     }
 
     # Calculate overall QGIS compliance score
-    score = metadata.get("compliance_score", 0) * 0.4
+    score = metadata.get("compliance_score", 0) * 0.3
     if agg["processing_framework_detected"]:
-        score += 20
+        score += 15
     if agg["i18n_stats"]["total_strings"] > 0:
         i18n_ratio = agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
-        score += min(20, i18n_ratio * 40)
+        score += min(15, i18n_ratio * 30)
     if agg["gdal_style"] == "Correct":
         score += 10
     if agg["qt_transition"]["pyqt5_count"] == 0:
+        score += 15
+    if not api_issues["deprecated_calls"]:
         score += 10
+    if not api_issues["qt6_incompatibilities"]:
+        score += 5
 
     agg["compliance_score"] = round(min(100, score), 1)
     return agg
@@ -183,6 +203,17 @@ class QGISSummarizer(BaseSummarizer):
         if not q:
             return ""
         res = [f"- **Compliance Score**: {q.get('compliance_score', 0):.1f}/100"]
+
+        resources = q.get("metadata", {}).get("resources", {})
+        if resources:
+            qrc_count = len(resources.get("resource_files", []))
+            if qrc_count > 0:
+                res.append(f"- 📦 **Resources**: {qrc_count} `.qrc` files detected")
+
+            if resources.get("metadata", {}).get("name"):
+                res.append(
+                    f"- ℹ️ **Plugin**: {resources['metadata']['name']} (v{resources['metadata'].get('version', '?')})"
+                )
 
         if q.get("processing_framework_detected"):
             res.append("- ✅ **Architecture**: Processing Framework detected")
@@ -201,11 +232,30 @@ class QGISSummarizer(BaseSummarizer):
         qt = q.get("qt_transition", {})
         if qt.get("pyqt5_count", 0) > 0:
             res.append(
-                f"- 🍎 **Qt6 Transition**: {qt['pyqt5_count']} PyQt5 imports (Action required for QGIS 4)"
+                f"- 🍎 **Qt6 Transition**: {qt['pyqt5_count']} PyQt5 imports (Critical for QGIS 4)"
+            )
+
+        qt6_inc = qt.get("qt6_incompatibilities_count", 0)
+        if qt6_inc > 0:
+            res.append(
+                f"- 🚩 **QGIS 4.x Risks**: {qt6_inc} incompatible patterns detected (SIGNAL/SLOT macros)"
             )
 
         if q.get("gdal_style") == "Legacy":
             res.append("- ⚠️ **GDAL Style**: Legacy imports detected (`import gdal`)")
+
+        api = q.get("api_compatibility", {})
+        dep_count = len(api.get("deprecated_calls", []))
+        if dep_count > 0:
+            res.append(
+                f"- ⚠️ **Deprecated APIs**: {dep_count} calls to obsolete QGIS 3.x APIs"
+            )
+
+        violations = api.get("best_practice_violations", [])
+        if any(v["name"] == "QSettings" for v in violations):
+            res.append(
+                "- 💡 **Best Practice**: Use `QgsSettings` instead of `QSettings`"
+            )
 
         if q.get("legacy_signals", 0) > 0:
             res.append(
