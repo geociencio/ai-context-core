@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/geociencio/ai-context-core/actions/workflows/ci.yml/badge.svg)](https://github.com/geociencio/ai-context-core/actions/workflows/ci.yml)
 [![PyPI Version](https://img.shields.io/pypi/v/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
+[![GitHub Release](https://img.shields.io/github/v/release/geociencio/ai-context-core.svg)](https://github.com/geociencio/ai-context-core/releases/latest)
 [![Python Versions](https://img.shields.io/pypi/pyversions/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
 [![Downloads](https://img.shields.io/pypi/dm/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
@@ -270,56 +271,44 @@ Technical debt prioritization engine. Calculates a "Refactor Score" based on (Co
 
 ## Comparison with Other Tools
 
-`ai-context-core` is unique because it combines **deep AST-based static analysis** with **workflow automation** and **specialized domain support**. Here's how it compares to other tools in the modern ecosystem (2024-2025):
+`ai-context-core` is more than a code packager; it is a **deep static intelligence engine** designed to maximize context fidelity for LLMs. While many tools focus on "repository dumping," we focus on **semantic extraction** and **domain-specific hygiene**.
 
-### Context & Analysis Matrix
+### Detailed Comparison Matrix (2024-2025)
 
-| Feature | `ai-context-core` | `Repomix` | `Code2Prompt` | `Aider` | `pyqgis4-checker` | `Ruff` |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Primary Goal** | **Context + Hygiene** | **Code Packager** | **Prompt Builder** | **AI Pair Programming** | **Qt6 Migration** | **Fast Linting** |
-| **AST Analysis** | ✅ Deep (Patterns/SLOC) | ❌ None | ❌ None | ⚠️ Repo Map | ✅ Specific | ⚠️ Basic |
-| **Pattern Detection**| ✅ Native (5 Patterns) | ❌ No | ❌ No | ❌ No | ❌ No | ❌ No |
-| **QGIS Auditing** | ✅ i18n/Processing | ❌ No | ❌ No | ❌ No | ✅ Qt6 Specific | ❌ No |
-| **Security Audit** | ✅ Deep (SQLi/Secrets) | ❌ No| ❌ No | ❌ No | ❌ No | ⚠️ Basic |
-| **Git Awareness** | ✅ Hotspots/Churn | ❌ No | ✅ Yes | ✅ Deep | ❌ No | ❌ No |
-| **Reporting** | ✅ HTML/JSON/Markdown | ✅ XML/JSON/MD | ✅ XML/JSON/MD | ❌ In-Chat | ❌ Console | ❌ Console |
-| **Incremental Cache**| ✅ SHA-256 | ❌ No | ❌ No | ✅ Yes | ❌ No | ✅ Yes |
-| **Zero Dependencies** | ✅ Core Analysis | ✅ Yes | ⚠️ Minimal | ❌ Many | ⚠️ Dependencies | ✅ Yes |
+| Feature | `ai-context-core` | `Repomix` | `Aider` | `Gitingest` | `Code2Prompt` |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Primary Goal** | **Context + Hygiene** | **Code Packaging** | **AI Pair Progr.** | **Quick Digest** | **Prompt Builder** |
+| **Analysis Depth**| **Deep AST** (Semantics) | Tree-sitter (Basic) | Repo Map (Signatures) | Plain Text | Plain Text |
+| **Pattern Detection**| ✅ **Native (5 Patterns)** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Anti-Patterns** | ✅ God Object/Spaghetti | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Quality Metrics** | ✅ **CC, MI, Halstead** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Security Audit** | ✅ **Deep (SQLi/Secrets)** | ⚠️ Basic (Secrets) | ❌ No | ❌ No | ❌ No |
+| **Git Awareness** | ✅ **Hotspots/Churn** | ❌ No | ⚠️ Basic Diffs | ❌ No | ✅ Yes |
+| **Domain Logic** | ✅ **QGIS/Qt6 Specialists** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Reporting** | ✅ HTML/JSON/Markdown | ✅ XML/JSON/MD | ❌ In-Chat | ❌ Console | ✅ XML/JSON/MD |
+| **Performance** | ✅ Parallel + SHA Cache | ✅ Fast | ✅ Incremental | ✅ Web-Speed | ✅ Rust-Based |
 
-### Unique Differentiators
+### Why Choose `ai-context-core`?
 
-#### 1. Deep Semantic Extraction (vs. Code Packagers)
-While tools like **Repomix** and **Code2Prompt** are excellent for "packing" your code for an LLM, `ai-context-core` extracts **semantic meaning**. We don't just dump text; we analyze the AST to identify:
-- **Design Patterns**: Singleton, Factory, Strategy, Observer, Decorator.
-- **Architectural Issues**: God Objects, Spaghetti Code, High Coupling (CBO).
-- **Security Flaws**: Insecure calls, SQL injections, and hardcoded secrets.
+#### 1. Deep Semantic Understanding vs. Simple Packaging
+Tools like **Repomix** and **Gitingest** are excellent for "packing" your code into a single file. However, `ai-context-core` goes further by extracting **architectural meaning**. We identify **Design Patterns** (Singleton, Factory, etc.) and calculate **Maintenance Index (MI)**, allowing the AI to understand the *why* behind your code structure, not just the *what*.
 
-#### 2. Domain-Specific Intelligence (QGIS & Qt)
-Unlike generic analysis tools, we have deep roots in the **QGIS ecosystem**. We provide:
-- **i18n Compliance**: Tracking `self.tr()` coverage across your plugin.
-- **Qt6 Migration**: Identifying PyQt5 vs PyQt6 discrepancies to prepare for QGIS 4.0.
-- **Processing Framework**: Validating algorithm structure and metadata.
+#### 2. Domain-Specific Intelligence (QGIS & Qt6)
+We are the only tool with first-class support for the **QGIS ecosystem**.
+- **i18n Tracking**: Real-time coverage of `self.tr()` strings.
+- **Qt6 Migration**: Automated auditing for PyQt5 to PyQt6 transitions (essential for QGIS 4.x).
+- **Processing Framework**: Structural validation of QGIS algorithms.
 
-#### 3. LLM-Agnostic "Source of Truth"
-Tools like **Aider** or **Cody** are tied to specific agents or models. `ai-context-core` provides a standalone, high-fidelity context that you can feed into **any** AI (Claude, GPT, Gemini, DeepSeek) or use for automated audits in CI/CD without model-specific locks.
+#### 3. Actionable Technical Debt Identification
+By combining **Git Churn/Hotspots** with **Cyclomatic Complexity**, we identify "Biological Debt"—files that are both complex and frequently modified. This guides your AI assistant to the most critical areas for refactoring.
 
-#### 4. Actionable Technical Debt Tracking
-By combining **Git metrics** (Churn/Hotspots) with **Static analysis** (Complexity/MSI), we identify the most critical files to refactor—the "Biological Debt" of your project—guiding your AI assistant to where it matters most.
+#### 4. Security-First Context
+Our integrated security scan detects **SQL Injection**, **Insecure Calls**, and **Hardcoded Secrets** using context-aware AST analysis, ensuring that the code you provide to an LLM is not only readable but also safe and compliant.
 
-### When to Choose `ai-context-core`
+### When to Choose
+✅ **Choose ai-context-core** for professional Python/QGIS development, deep architectural audits, pre-release quality gates, and high-fidelity AI pairing where structural context is critical.
 
-✅ **Perfect for**:
-- Preparing codebases for AI-assisted development
-- CI/CD quality gates with the `audit` command
-- QGIS plugin development (specialized compliance checks)
-- Understanding legacy codebases (patterns, dependencies, hotspots)
-- Security audits before code reviews
-- Tracking technical debt over time
-
-❌ **Not ideal for**:
-- Real-time AI pair programming (use `aider` or `cursor`)
-- Simple code formatting (use `black` or `ruff`)
-- Language-agnostic analysis (we're Python-focused)
+❌ **Choose Alternatives** for quick, one-off code dumps (Gitingest), real-time interactive terminal editing (Aider), or simple multi-language packaging (Repomix).
 
 ## Docker Support
 
@@ -348,7 +337,7 @@ make docker-lint
 - **Production** (`ai-ctx:prod`) - Minimal runtime image
 
 ---
-Generated by Ai-Context-Core
+Generated by Ai-Context-Core v3.3.0
 
 ## License
 
