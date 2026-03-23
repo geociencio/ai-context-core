@@ -1,7 +1,6 @@
-"""QGIS resource analysis (plugin.xml, .qrc)."""
-
 import os
 import pathlib
+import xml.etree.ElementTree as ET
 from typing import Dict, Any
 
 
@@ -16,19 +15,28 @@ def analyze_qgis_resources(project_path: pathlib.Path) -> Dict[str, Any]:
     """
     results = {
         "metadata": {},
+        "plugin_xml": {},
         "resource_files": [],
         "issues": [],
     }
 
-    # 1. Analyze plugin.xml / metadata.txt
-    # QGIS 3 plugins use metadata.txt as source of truth.
-
-    # Let's check for metadata.txt first as it's the standard.
+    # 1. Analyze metadata.txt (Standard QGIS 3+)
     metadata_txt = project_path / "metadata.txt"
     if metadata_txt.exists():
         results["metadata"] = _parse_metadata_txt(metadata_txt)
 
-    # 2. Look for .qrc files
+    # 2. Analyze plugin.xml (Legacy or specific distribution)
+    plugin_xml_path = project_path / "plugin.xml"
+    if plugin_xml_path.exists():
+        results["plugin_xml"] = _parse_plugin_xml(plugin_xml_path)
+
+    # 3. Check for inconsistencies
+    if results["metadata"] and results["plugin_xml"]:
+        _check_inconsistencies(
+            results["metadata"], results["plugin_xml"], results["issues"]
+        )
+
+    # 4. Look for .qrc files
     for root, _, files in os.walk(project_path):
         for file in files:
             if file.endswith(".qrc"):
@@ -51,3 +59,37 @@ def _parse_metadata_txt(path: pathlib.Path) -> Dict[str, str]:
     except Exception:
         pass
     return metadata
+
+
+def _parse_plugin_xml(path: pathlib.Path) -> Dict[str, str]:
+    """Parse QGIS plugin.xml file."""
+    metadata = {}
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+        # Common fields in plugin.xml
+        for child in root:
+            if child.text:
+                metadata[child.tag] = child.text
+    except Exception:
+        pass
+    return metadata
+
+
+def _check_inconsistencies(
+    meta_txt: Dict[str, str], meta_xml: Dict[str, str], issues: list
+) -> None:
+    """Check for name/version mismatches between metadata.txt and plugin.xml."""
+    # Version check
+    v_txt = meta_txt.get("version")
+    v_xml = meta_xml.get("version")
+    if v_txt and v_xml and v_txt != v_xml:
+        issues.append(
+            f"Version mismatch: metadata.txt ({v_txt}) vs plugin.xml ({v_xml})"
+        )
+
+    # Name check
+    n_txt = meta_txt.get("name")
+    n_xml = meta_xml.get("name")
+    if n_txt and n_xml and n_txt != n_xml:
+        issues.append(f"Name mismatch: metadata.txt ({n_txt}) vs plugin.xml ({n_xml})")

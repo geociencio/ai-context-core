@@ -188,7 +188,12 @@ def aggregate_qgis_compliance(
     if not api_issues["qt6_incompatibilities"]:
         score += 5
 
-    agg["compliance_score"] = round(min(100, score), 1)
+    # Penalize for critical metadata issues/inconsistencies
+    res_issues = metadata.get("resources", {}).get("issues", [])
+    if res_issues:
+        score -= min(20, len(res_issues) * 10)
+
+    agg["compliance_score"] = round(max(0, min(100, score)), 1)
     return agg
 
 
@@ -262,10 +267,14 @@ class QGISSummarizer(BaseSummarizer):
                 f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected"
             )
 
-        issues = q.get("metadata", {}).get("issues", [])
-        if issues:
+        # Collect all metadata related issues
+        all_issues = []
+        all_issues.extend(q.get("metadata", {}).get("issues", []))
+        all_issues.extend(q.get("metadata", {}).get("resources", {}).get("issues", []))
+
+        if all_issues:
             res.append("\n### 🚩 Metadata Issues:")
-            for issue in issues[:5]:
+            for issue in all_issues[:10]:
                 res.append(f"- {issue}")
 
         return "\n".join(res)

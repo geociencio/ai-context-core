@@ -10,6 +10,8 @@ class QGISApiChecker(BaseQGISChecker):
         "QgsMapLayerRegistry": "Removed in QGIS 3. Use QgsProject.instance() instead.",
         "QGis": "Deprecated in favor of QgsUnitTypes and other modern namespaces.",
         "setDataProvider": "Deprecated on QgsRasterLayer. Use constructor or other methods.",
+        "pendingFields": "Legacy method. Use fields() for QGIS 3+ compatibility.",
+        "selectedFeaturesIds": "Use selectedFeatureIds() for consistency with modern QGIS API.",
     }
 
     QT6_INCOMPATIBLE = {

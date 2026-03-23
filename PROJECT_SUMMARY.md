@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 21:53:19
+Analysis Date: 2026-03-22 22:00:40
 Analyzer Version: 3.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **Quality Score**: 98.0/100
-- **Source Lines (SLOC)**: 9,374
-- **Total Physical Lines**: 14,297
+- **Source Lines (SLOC)**: 9,409
+- **Total Physical Lines**: 14,354
 - **Maintainability**: 57.0
 - **Test Coverage**: 58 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 240
+**Total Modules**: 241
 
 ```tree
 ./
@@ -49,7 +49,7 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
                     ai_recommendations.py
                     algorithms.py
                     builder.py
-                    ... (+20 more)
+                    ... (+21 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -234,11 +234,11 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - **tests/test_secrets.py**: 2 issues (Max: CRITICAL)
 
 ## 💡 MAIN RECOMMENDATIONS
+### src/ai_context_core/analyzer/builders/aggregator.py
+- Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/dependencies.py
-- Consider breaking down large logic
-### src/ai_context_core/analyzer/engine.py
 - Consider breaking down large logic
 
 ## 🏗️ DESIGN PATTERNS
@@ -268,5 +268,5 @@ Analyzer Version: 3.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.53
-- **Max Complexity**: 45
+- **Average Complexity**: 5.55
+- **Max Complexity**: 48
