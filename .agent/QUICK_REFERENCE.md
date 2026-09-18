@@ -71,7 +71,7 @@ The ai-context-core project features a system of **14 skills** and **11 workflow
 
 | Script | Command |
 |--------|---------|
-| Full analysis | `uv run ai-ctx analyze .` |
+| Full analysis | `uv run ai-ctx analyze --path .` |
 | Metric sync | `uv run python scripts/sync_metrics.py` |
 | Agent system validation | `uv run python scripts/validate_agent_system.py` |
 | Memory prune | `uv run python scripts/memory_prune.py` |

@@ -1,5 +1,20 @@
 {
   "version": "1.0",
   "project": "ai-context-core",
-  "sessions": []
+  "sessions": [
+    {
+      "date": "2026-09-17",
+      "session": "sync_metrics_auto",
+      "scores": {
+        "quality_score": 97.3,
+        "maintainability": 56.5,
+        "avg_complexity": 5.73,
+        "max_complexity": 49
+      },
+      "tests": {
+        "pass": 286,
+        "total": 286
+      }
+    }
+  ]
 }

@@ -1,5 +1,15 @@
 # Development Log
 
+## [2026-09-17] Corrections & Agentic System Gen 8 - COMPLETED
+**THEME**: Consistency and opencode-native tooling 🧭
+- **Metric Contract**: Introduced canonical keys in `builders/metric_keys.py`, removed duplicate aliases, and added missing-key validation. 🔑
+- **i18n Precision**: Added `# no-i18n` inline opt-out (tokenize-based) and a punctuation-dominance heuristic. 🌍
+- **Hardening**: Safe `.get()` access across report builders; exact `pyqtSignal`/`Signal` detection. 🛡️
+- **Regression Tests**: Added coverage for pattern missing keys, recursive `**` globs, and Windows paths. 🧪
+- **Metric Clarity**: Renamed labels to `ai-ctx Quality Score` / `Avg Cyclomatic Complexity`; documented vs `qgis-analyzer`. 📊
+- **Agentic Gen 8**: Root `AGENTS.md` SSoT, `opencode.json` subagents, consolidated scripts, 3-tier memory, 14 skills / 11 workflows. 🤖
+- **Verification**: 286 tests passing, ruff clean, `validate_agent_system.py` PASS. ✅
+
 ## [2026-03-22] QGIS Edition & Metrics Core Fix (v3.3.0) - COMPLETED
 **THEME**: Deep Audit and Compliance 🗺️
 - **QGIS 4.x Readiness**: Launched `QGISApiChecker` for detecting deprecated QGIS 3.x APIs and Qt6 transition risks (`SIGNAL`/`SLOT`). 🍎

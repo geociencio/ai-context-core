@@ -80,7 +80,7 @@ uv run pytest tests/test_engine_extended.py -q   # Single module
 
 ### Self-analysis (this tool analyzes itself)
 ```bash
-uv run ai-ctx analyze .              # Full self-analysis (writes AI_CONTEXT.md, PROJECT_SUMMARY.md, project_context.json)
+uv run ai-ctx analyze --path .       # Full self-analysis (writes AI_CONTEXT.md, PROJECT_SUMMARY.md, project_context.json)
 uv run ai-ctx stats                  # Quick quality summary
 uv run ai-ctx audit --threshold 70   # Release gate
 ```
@@ -170,7 +170,7 @@ This project enforces:
 
 - **Ruff**: `ruff check .` and `ruff format .` pass with zero errors.
 - **Pytest**: full suite passes (286 tests as of 2026-09-17).
-- **Self-analysis**: `uv run ai-ctx analyze .` reports no critical regressions.
+- **Self-analysis**: `uv run ai-ctx analyze --path .` reports no critical regressions.
 - **Conventional Commits**: `type(scope): description` in English.
 
 ### Agent system validation

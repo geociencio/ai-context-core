@@ -63,7 +63,7 @@ This project enforces:
 
 - **Ruff**: Linting and formatting (`ruff check . && ruff format .`)
 - **Pytest**: Full test suite (286 tests, 100% passing)
-- **Self-analysis**: `ai-ctx analyze .` for quality metrics
+- **Self-analysis**: `ai-ctx analyze --path .` for quality metrics
 - **Conventional Commits**: Standard commit message format
 
 ## Runtime

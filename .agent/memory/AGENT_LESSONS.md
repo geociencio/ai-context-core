@@ -42,6 +42,18 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "Project metrics use canonical keys from builders/metric_keys.py."
   action: "Read metrics via metric_keys constants; never ad-hoc string literals."
 
+- date: 2026-09-17
+  category: TECHNICAL
+  topic: Metric aliases
+  lesson: "Duplicate alias keys (avg_complexity/avg_maintainability) caused silent zero-fallbacks across consumers."
+  action: "Keep a single canonical key per metric and run missing_metric_keys validation after aggregation."
+
+- date: 2026-09-17
+  category: TECHNICAL
+  topic: i18n opt-out
+  lesson: "AST nodes do not capture comments; the # no-i18n opt-out requires tokenize-based line mapping."
+  action: "Use find_no_i18n_lines(content) and attach tree.no_i18n_lines for the I18nChecker to skip."
+
 ## Architecture Rules
 
 - date: 2026-09-17
@@ -55,3 +67,9 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   topic: Docker validation
   lesson: "Each new feature must be verified in Docker (`make docker-test`) for CI consistency."
   action: "Run `make docker-test` before closing significant changes."
+
+- date: 2026-09-17
+  category: ARCHITECTURE
+  topic: Agentic SSoT
+  lesson: "The root AGENTS.md is the single source of truth; skill_sync.py generation is retired in favor of native discovery."
+  action: "Run validate_agent_system.py to catch phantom skills/workflows and keep the tables in sync."

@@ -39,7 +39,7 @@ Strings annotated with `# no-i18n` are skipped by the checker (detected via `tok
 ## Testing i18n Changes
 1. Add cases to `tests/test_i18n_opt_out.py` and `tests/test_qgis_compliance.py`.
 2. Run `uv run pytest tests/test_i18n_opt_out.py tests/test_qgis_compliance.py -q`.
-3. Run self-audit: `uv run ai-ctx analyze .`.
+3. Run self-audit: `uv run ai-ctx analyze --path .`.
 
 ## Known Limitations
 - The checker matches `tr`/`translate` by function name only, not full dotted path.

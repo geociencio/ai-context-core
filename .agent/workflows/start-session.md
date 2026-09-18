@@ -15,7 +15,7 @@ Optimizes the start of development by ensuring a synchronized, contextualized, a
 ### 1. Context Tuning (CRITICAL)
 // turbo
 ```bash
-uv run ai-ctx analyze . && cat .agent/next_steps.md && cat .agent/memory/AGENT_LESSONS.md
+uv run ai-ctx analyze --path . && cat .agent/next_steps.md && cat .agent/memory/AGENT_LESSONS.md
 ```
 
 🤖 **Agent Action**: Validate active tasks.

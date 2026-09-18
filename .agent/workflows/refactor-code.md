@@ -21,7 +21,7 @@ Guides code refactoring following project standards and specialized skill knowle
 
 1. **Identify Refactoring Target**:
    ```bash
-   uv run ai-ctx analyze .
+   uv run ai-ctx analyze --path .
    ```
    🤖 **Agent Action**: Analyze `PROJECT_SUMMARY.md` to identify hotspots and technical debt.
 
@@ -39,7 +39,7 @@ Guides code refactoring following project standards and specialized skill knowle
 
 5. **Verify Quality Metrics**:
    ```bash
-   uv run ai-ctx analyze .
+   uv run ai-ctx analyze --path .
    ```
    🤖 **Agent Action**: Confirm improvement in quality score and reduction in complexity.
 

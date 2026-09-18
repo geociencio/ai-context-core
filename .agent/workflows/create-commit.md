@@ -25,7 +25,7 @@ git add .
 
 ### 3. Quality Synchronization (Guardian)
 ```bash
-uv run ai-ctx analyze .
+uv run ai-ctx analyze --path .
 ```
 
 🤖 **Agent Action**: Analyze quality metrics and alert if cyclomatic complexity increased, docstring coverage decreased, or new compliance violations were detected.

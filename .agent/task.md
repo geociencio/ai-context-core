@@ -9,9 +9,9 @@ This task board tracks the current development phase. Reference plan: `docs/main
 - [x] Retire `skill_sync.py`; add `scripts/validate_agent_system.py` <!-- id: g8.3 -->
 - [x] Add `scripts/memory_prune.py` + `scripts/sync_metrics.py` <!-- id: g8.4 -->
 - [x] 3-tier memory: `memory_policy.md`, `agent_metrics.json`, YAML lessons, `task.md` <!-- id: g8.5 -->
-- [ ] Skills: adapt 6 + create 8 new (English, frontmatter) <!-- id: g8.6 -->
-- [ ] Workflows: rename/align/create 11 + `index.md` <!-- id: g8.7 -->
-- [ ] System docs: `.agent/README.md` + `.agent/QUICK_REFERENCE.md` <!-- id: g8.8 -->
+- [x] Skills: adapt 6 + create 8 new (English, frontmatter) <!-- id: g8.6 -->
+- [x] Workflows: rename/align/create 11 + `index.md` <!-- id: g8.7 -->
+- [x] System docs: `.agent/README.md` + `.agent/QUICK_REFERENCE.md` <!-- id: g8.8 -->
 
 ## Completed (recent)
 
@@ -23,5 +23,5 @@ This task board tracks the current development phase. Reference plan: `docs/main
 
 ## Operational Status
 
-- **Active Phase**: Agentic System Gen 8 migration
+- **Active Phase**: None (Gen 8 migration completed)
 - **Current Metrics**: Tests 286/286 passing

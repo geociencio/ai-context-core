@@ -46,7 +46,7 @@ uv run python scripts/validate_agent_system.py
 
 🤖 **Agent Action**: Update AI_CONTEXT.md and validate `next_steps.md`:
 ```bash
-uv run ai-ctx analyze . && cat .agent/next_steps.md
+uv run ai-ctx analyze --path . && cat .agent/next_steps.md
 ```
 
 ### 4. Local Commit

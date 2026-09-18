@@ -1,16 +1,16 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-03-22 23:34:07
+Analysis Date: 2026-09-17 23:51:30
 Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **Quality Score**: 97.8/100
-- **Source Lines (SLOC)**: 9,451
-- **Total Physical Lines**: 14,416
-- **Maintainability**: 56.9
-- **Test Coverage**: 58 test files
+- **ai-ctx Quality Score**: 97.3/100
+- **Source Lines (SLOC)**: 9,762
+- **Total Physical Lines**: 14,864
+- **Maintainability**: 56.5
+- **Test Coverage**: 61 test files
 
 ## 📁 STRUCTURE
-**Total Modules**: 241
+**Total Modules**: 247
 
 ```tree
 ./
@@ -19,9 +19,9 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
     .dockerignore
     .gitignore
     .pre-commit-config.yaml
+    AGENTS.md
     AI_CONTEXT.md
-    CHANGELOG.md
-    ... (+23 more)
+    ... (+25 more)
     src/
         __init__.py
         ai_context_core/
@@ -49,7 +49,7 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
                     ai_recommendations.py
                     algorithms.py
                     builder.py
-                    ... (+21 more)
+                    ... (+22 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -207,9 +207,11 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
             analysis_report.md
             bug_report_v320.md
             bug_report_v321_aggregation.md
+            corrections_implementation_plan.md
             dev_feedback.md
+            developer_recommendations.md
             i18n_improvement_guide.md
-            v250_fix_report.md
+            ... (+1 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -221,7 +223,7 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+48 more)
+        ... (+51 more)
         fixtures/
             false_positives.py
     test_project/
@@ -232,6 +234,10 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
         .gitignore
         ai_context_core-3.3.0-py3-none-any.whl
         ai_context_core-3.3.0.tar.gz
+    scripts/
+        memory_prune.py
+        sync_metrics.py
+        validate_agent_system.py
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -262,10 +268,10 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 64
-- **Additions**: +7113
-- **Deletions**: -5090
-- **Total Churn**: 12203
+- **Files Changed**: 82
+- **Additions**: +2568
+- **Deletions**: -998
+- **Total Churn**: 3566
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
@@ -275,5 +281,5 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Average Complexity**: 5.61
+- **Avg Cyclomatic Complexity**: 5.73
 - **Max Complexity**: 49

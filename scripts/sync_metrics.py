@@ -52,7 +52,7 @@ def count_tests() -> dict:
         if "passed" in line:
             parts = line.split()
             for i, part in enumerate(parts):
-                if part == "passed":
+                if "passed" in part:
                     try:
                         passed = int(parts[i - 1])
                         break
@@ -80,7 +80,7 @@ def main() -> None:
 
     # 1. Run the analyzer on itself
     print("📊 Running self-analysis...")
-    result = run_command(["uv", "run", "ai-ctx", "analyze", "."])
+    result = run_command(["uv", "run", "ai-ctx", "analyze", "--path", "."])
     if result.returncode != 0:
         print(f"⚠ Analysis completed with warnings (exit code {result.returncode})")
     else:

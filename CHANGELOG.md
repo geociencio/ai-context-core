@@ -14,6 +14,11 @@ All notable changes to this project will be documented in this file.
 - **README**: Updated with detailed comparison matrix and emphasized version 3.3.0 features and badges.
 - **Metrics**: Renamed user-facing "Quality Score" label to "ai-ctx Quality Score" and "Average Complexity" to "Avg Cyclomatic Complexity" to avoid confusion with external canonical metrics (e.g. `qgis-analyzer`). Internal JSON keys are unchanged.
 - **Docs**: Added a "Metrics" section to the README clarifying each metric's definition (average vs gate, heuristic vs canonical).
+- **Refactor**: Unified project metrics into a single key contract (`builders/metric_keys.py`); removed duplicate alias keys and added missing-key validation.
+- **Feature**: Added `# no-i18n` inline opt-out for i18n string counting and a punctuation-dominance heuristic.
+- **Fix**: Hardened Observer signal detection (exact `pyqtSignal`/`Signal` matching) and safe dict access across report builders.
+- **Tests**: Added regression tests for metric contract, i18n opt-out, pattern missing keys, and recursive `**` path matching.
+- **Chore**: Migrated the agentic system to Generation 8 (root `AGENTS.md` SSoT, native subagents, consolidated scripts, 3-tier memory, 14 skills / 11 workflows).
 
 ## [3.3.0] - 2026-03-22 - QGIS 4.x & Metrics Fix
 ### Added

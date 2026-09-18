@@ -14,7 +14,7 @@ Runs `ai-context-core` on its own source code to detect quality regressions, sec
 
 ### 1. Run Full Analysis
 ```bash
-uv run ai-ctx analyze .
+uv run ai-ctx analyze --path .
 ```
 
 ### 2. Review Results

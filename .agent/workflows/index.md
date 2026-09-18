@@ -11,7 +11,7 @@
 ### `/start-session`
 **What happens**:
 ```
-uv run ai-ctx analyze .
+uv run ai-ctx analyze --path .
 cat .agent/next_steps.md
 cat .agent/task.md
 cat .agent/memory/AGENT_LESSONS.md
@@ -50,7 +50,7 @@ git add [files] && git commit -m "[msg]"
 **What happens**: Reads coding-standards → applies changes → validates tests → ruff check.
 
 ### `/audit-plugin`
-**What happens**: `uv run ai-ctx analyze .` → review `PROJECT_SUMMARY.md`.
+**What happens**: `uv run ai-ctx analyze --path .` → review `PROJECT_SUMMARY.md`.
 
 ### `/fix-linting`
 **What happens**: `uv run ruff check --fix . && uv run ruff format .`
@@ -81,7 +81,7 @@ git add [files] && git commit -m "[msg]"
 
 | Gate | Command |
 |------|---------|
-| Full analysis | `uv run ai-ctx analyze .` |
+| Full analysis | `uv run ai-ctx analyze --path .` |
 | Lint check | `uv run ruff check .` |
 | Test suite | `uv run pytest -q` |
 | Agent validation | `uv run python scripts/validate_agent_system.py` |
