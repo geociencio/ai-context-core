@@ -55,8 +55,8 @@ def run_compare(file1: str, file2: str):
     metrics_to_compare = [
         ("Quality Score", "metrics.quality_score"),
         ("Maintenance Index", "metrics.avg_maintenance_index"),
-        ("Complexity (Avg)", "metrics.avg_complexity"),
-        ("Total Lines", "metrics.total_lines"),
+        ("Complexity (Avg)", "metrics.average_complexity"),
+        ("Total Lines", "metrics.total_lines_code"),
         ("Python Files", "structure.modules_count"),
         ("Security Issues", "metrics.security_issues"),
     ]

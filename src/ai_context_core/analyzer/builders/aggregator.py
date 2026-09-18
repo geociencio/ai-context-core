@@ -10,6 +10,7 @@ import time
 from . import dependencies
 from . import calculator as metrics
 from . import ai_recommendations
+from . import metric_keys
 from ..visitors import issues as v_issues
 
 logger = logging.getLogger(__name__)
@@ -68,6 +69,10 @@ class ResultsAggregator:
             self.config,
             {"qgis_compliance": qgis_compliance},
         )
+
+        missing = metric_keys.missing_metric_keys(project_metrics)
+        if missing:
+            logger.warning("Missing project metric keys: %s", missing)
 
         # AI Recommendations
         recommendations = ai_recommendations.generate_recommendations(

@@ -3,6 +3,8 @@
 import math
 from typing import Dict, Any
 
+from . import metric_keys
+
 
 class MetricsCalculator:
     """Class to calculate basic code metrics."""
@@ -134,16 +136,14 @@ def calculate_project_metrics(
         pass
 
     return {
-        "quality_score": max(0.0, min(100.0, score)),
-        "total_lines_code": total_loc,
-        "total_physical_lines": total_physical,
-        "total_functions": total_functions,
-        "total_classes": total_classes,
-        "avg_complexity": round(avg_complexity, 2),
-        "average_complexity": round(avg_complexity, 2),
-        "max_complexity": max_complexity,
-        "avg_maintainability": round(avg_mi, 2),
-        "avg_maintenance_index": round(avg_mi, 2),
-        "test_files_count": test_files_count,
-        "entry_points_count": len(entry_points),
+        metric_keys.QUALITY_SCORE: max(0.0, min(100.0, score)),
+        metric_keys.TOTAL_LINES_CODE: total_loc,
+        metric_keys.TOTAL_PHYSICAL_LINES: total_physical,
+        metric_keys.TOTAL_FUNCTIONS: total_functions,
+        metric_keys.TOTAL_CLASSES: total_classes,
+        metric_keys.AVERAGE_COMPLEXITY: round(avg_complexity, 2),
+        metric_keys.MAX_COMPLEXITY: max_complexity,
+        metric_keys.AVG_MAINTENANCE_INDEX: round(avg_mi, 2),
+        metric_keys.TEST_FILES_COUNT: test_files_count,
+        metric_keys.ENTRY_POINTS_COUNT: len(entry_points),
     }
