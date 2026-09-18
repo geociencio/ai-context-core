@@ -7,6 +7,7 @@ import concurrent.futures
 import pathlib
 from typing import Dict, Any, List
 from ..visitors import ast_utils
+from ..visitors.i18n_components import find_no_i18n_lines
 from ..builders import calculator as metrics
 from ..registry import registry
 from ..constants import PARALLEL_MIN_FILES
@@ -72,9 +73,7 @@ class AnalysisWorker:
 
         from ..constants import PARALLEL_BATCH_SIZE
 
-        with concurrent.futures.ProcessPoolExecutor(
-            max_workers=self.max_workers
-        ) as exc:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_workers) as exc:
             batches = [
                 to_analyze[i : i + PARALLEL_BATCH_SIZE]
                 for i in range(0, len(to_analyze), PARALLEL_BATCH_SIZE)
@@ -131,6 +130,7 @@ class AnalysisWorker:
             if not content:
                 return {}
             tree = ast.parse(content)
+            tree.no_i18n_lines = find_no_i18n_lines(content)
 
             entry_data = ast_utils.is_entry_point(tree)
             complexity = ast_utils.calculate_complexity(tree)

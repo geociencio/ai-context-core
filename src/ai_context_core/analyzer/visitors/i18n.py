@@ -13,8 +13,9 @@ class I18nChecker(BaseQGISChecker):
     Delegates string classification and call handling to specialized components.
     """
 
-    def __init__(self, results: Dict[str, Any]):
+    def __init__(self, results: Dict[str, Any], no_i18n_lines=None):
         super().__init__(results)
+        self._no_i18n_lines = frozenset(no_i18n_lines or ())
         self._in_ignored_call = False
         self._in_dict_key = False
         self._ignored_functions = {
@@ -60,6 +61,8 @@ class I18nChecker(BaseQGISChecker):
         if not isinstance(node.value, str):
             return
         if self._in_ignored_call or self._in_dict_key:
+            return
+        if node.lineno in self._no_i18n_lines:
             return
 
         if is_translatable_string(node.value):

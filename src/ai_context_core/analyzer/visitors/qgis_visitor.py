@@ -9,7 +9,7 @@ from .visitors_base import BaseVisitor
 class GenericQGISComplianceVisitor(BaseVisitor):
     """Visitor to check for QGIS coding standards and best practices."""
 
-    def __init__(self):
+    def __init__(self, no_i18n_lines=None):
         """Initialize the visitor with default results and checkers."""
         super().__init__()
         self.results = {
@@ -26,13 +26,11 @@ class GenericQGISComplianceVisitor(BaseVisitor):
 
         self.checkers = [
             ImportStyleChecker(self.results),
-            I18nChecker(self.results),
+            I18nChecker(self.results, no_i18n_lines=no_i18n_lines),
             FrameworkChecker(self.results),
             QGISApiChecker(self.results),
         ]
-        self._i18n_checker = next(
-            c for c in self.checkers if isinstance(c, I18nChecker)
-        )
+        self._i18n_checker = next(c for c in self.checkers if isinstance(c, I18nChecker))
 
     def visit_Import(self, node: ast.Import):
         """Checks for legacy imports."""

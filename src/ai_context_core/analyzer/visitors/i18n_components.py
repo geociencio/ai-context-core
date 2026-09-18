@@ -1,7 +1,16 @@
 """Helper functions for i18n analysis."""
 
 import ast
-from typing import Dict, Any
+import io
+import tokenize
+from typing import Dict, Any, FrozenSet
+
+
+def _dominated_by_punctuation(value: str) -> bool:
+    """Return True when punctuation outnumbers alphabetic characters."""
+    alpha = sum(c.isalpha() for c in value)
+    punct = sum(not c.isalnum() and not c.isspace() for c in value)
+    return punct > alpha
 
 
 def is_translatable_string(value: str, in_dict_key: bool = False) -> bool:
@@ -29,6 +38,10 @@ def is_translatable_string(value: str, in_dict_key: bool = False) -> bool:
     if "/" in value or "\\" in value:
         return False
 
+    # Ignore strings dominated by punctuation (technical tokens)
+    if _dominated_by_punctuation(value):
+        return False
+
     # If it contains spaces, it's likely a sentence (unless it's a path, checked above)
     if " " in value:
         return True
@@ -50,6 +63,18 @@ def is_translatable_string(value: str, in_dict_key: bool = False) -> bool:
     # Allow simple lowercase words (e.g. "cancel", "ok")
     # although many might be technical keys, they are valid candidates.
     return True
+
+
+def find_no_i18n_lines(source: str) -> FrozenSet[int]:
+    """Return line numbers annotated with a `# no-i18n` opt-out comment."""
+    lines = set()
+    try:
+        for tok in tokenize.generate_tokens(io.StringIO(source).readline):
+            if tok.type == tokenize.COMMENT and "no-i18n" in tok.string:
+                lines.add(tok.start[0])
+    except (tokenize.TokenError, IndentationError, SyntaxError, ValueError):
+        pass
+    return frozenset(lines)
 
 
 def handle_i18n_call(node: ast.Call, results: Dict[str, Any]) -> None:
