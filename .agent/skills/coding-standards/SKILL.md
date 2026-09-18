@@ -1,41 +1,39 @@
 ---
 name: coding-standards
-description: Estándares de codificación del proyecto, enfocados en el uso de pathlib, docstrings de Google y tipado estricto.
+description: Project coding standards (pathlib, Google docstrings, strict typing) for ai-context-core.
+trigger: when writing Python code, refactoring, or defining file paths.
 ---
 
 # Coding Standards
 
-Establece las reglas técnicas para mantener un código limpio, legible y compatible con el ecosistema Python moderno y QGIS.
+Establishes the technical rules for clean, readable, and modern Python code that integrates with the analyzer engine and the QGIS ecosystem.
 
-## Cuándo usar este skill
-- Al escribir nuevas funciones o clases.
-- Al refactorizar código existente.
-- Al realizar auditorías de calidad de código.
-- Al integrar nuevas librerías o dependencias.
+## When to use this skill
+- When writing new functions or classes.
+- When refactoring existing code.
+- When performing code quality audits.
+- When integrating new libraries or dependencies.
 
-## Grado de Libertad
-- **Estricto**: El manejo de rutas (`pathlib`) y el formato de docstrings son obligatorios.
-
-## Inputs necesarios
-- Código Python para analizar o escribir.
+## Degree of Freedom
+- **Strict**: path handling (`pathlib`) and Google-style docstrings are mandatory.
 
 ## Workflow
-1. **Validación de Rutas**: Asegurar que no existan llamadas a `os.path`.
-2. **Documentación**: Aplicar el formato Google Docstrings a cada nodo público.
-3. **Tipado**: Verificar que todos los argumentos y retornos tengan Type Hints.
-4. **Compatibilidad**: Validar que las rutas se conviertan a `str` si se pasan a APIs de Qt/QGIS.
+1. **Path validation**: Ensure no `os.path` calls remain.
+2. **Documentation**: Apply Google-style docstrings to every public node.
+3. **Typing**: Verify that all arguments and returns have type hints.
+4. **Compatibility**: Convert paths to `str` when passing to Qt/QGIS APIs.
 
-## Instrucciones y Reglas
+## Instructions and Rules
 
-### 1. Manejo de Rutas (Pathlib)
-- **Regla de Oro**: Usa siempre `pathlib.Path`.
-- **Hacer**: `Path(dir) / file`
-- **Evitar**: `os.path.join(dir, file)`
-- **Conversión**: Usa `str(path_obj)` al interactuar con QGIS/Qt si la API no acepta objetos Path.
+### 1. Path Handling (pathlib)
+- **Golden rule**: Always use `pathlib.Path`.
+- **Do**: `Path(dir) / file`
+- **Avoid**: `os.path.join(dir, file)`
+- **Conversion**: Use `str(path_obj)` when interacting with APIs that do not accept Path objects.
 
-### 2. Documentación (Google Style)
-- Los docstrings deben seguir la [Guía de Estilo de Google](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings).
-- Ejemplo:
+### 2. Documentation (Google Style)
+Docstrings must follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
+
 ```python
 def example_function(param1: int) -> bool:
     """Summary of the function.
@@ -49,16 +47,15 @@ def example_function(param1: int) -> bool:
     return True
 ```
 
-### 3. Tipado Estricto
-- Usa Type Hints en todos los argumentos y valores de retorno.
-- Preferir tipos integrados (Python 3.9+).
+### 3. Strict Typing
+- Use type hints on all arguments and return values.
+- Prefer built-in types (Python 3.9+).
 
-## Output (formato exacto)
-Código Python formateado con `black` y validado según estas reglas.
+### 4. Import Order
+- stdlib → third-party → local (absolute imports `from ai_context_core...`).
 
-## Lista de Verificación de Calidad
-- [ ] ¿Se usa `pathlib` exclusivamente para rutas?
-- [ ] ¿Todos los docstrings siguen el formato Google?
-- [ ] ¿Existen Type Hints para cada entrada y salida?
-- [ ] ¿La documentación está en el idioma correcto (Código: EN, Skill: ES)?
-- [ ] ¿Se respeta el contexto del proyecto (@project-context)?
+## Quality Checklist
+- [ ] Is `pathlib` used exclusively for paths?
+- [ ] Do all docstrings follow the Google format?
+- [ ] Are there type hints for every input and output?
+- [ ] Is the project context respected (@project-context)?

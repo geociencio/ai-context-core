@@ -1,36 +1,43 @@
 ---
-description: "Ejecuta la suite completa de pruebas unitarias para asegurar la estabilidad del código."
-agent: QA Engineer
-skills:
-  - tech-stack
-  - testing-standards
+description: How to run unit tests reliably
+agent: qa_engineer
+skills: [qa-docker, testing-standards]
+validation: |
+  - Verify that all tests pass
+  - Confirm that there are no regressions
 ---
 
-# Workflow: Ejecución de Pruebas
+# Workflow: Run Tests
 
-Este workflow garantiza que el código sea estable y cumpla con los umbrales de cobertura definidos.
+Ensures project stability is verified through unit and integration tests.
 
-## 1. Ejecución Estratégica
-
-**Opción A: Entorno Aislado (Docker - Recomendado)**
-Garantiza un entorno limpio y reproducible.
-// turbo
-```bash
-make docker-test
-```
-
-**Opción B: Entorno Local (uv - Rápido)**
-Para desarrollo activo e iteraciones rápidas.
+### 1. Run Tests (Local)
 ```bash
 uv run pytest tests/ -v --cov=src/ai_context_core --cov-report=term-missing
 ```
 
-## 2. Análisis de Resultados
+### 2. Recommended Method (Docker - Complete)
+The definitive health check runs all tests in an isolated Docker container:
+```bash
+make docker-test
+```
 
-- **Fallo de Tests**: Si un test falla, detén el desarrollo y prioriza la corrección.
-- **Cobertura**: Verifica que no haya regresiones. El objetivo global es **>70%**.
-- **Regresión**: Si la cobertura baja, se debe justificar o añadir más tests.
+**Key Notes:**
+- Ensure `uv.lock` is synchronized before running tests (`uv sync`).
+- Use `-x` to stop at the first error; `--ff` to run previously failed tests first.
 
-## Tips Útiles
-- Usar `-x` para detenerse al primer error.
-- Usar `--ff` para ejecutar primero los tests que fallaron anteriormente.
+🤖 **Agent Action**: Use `testing-standards` to interpret failures and validate the testing strategy.
+
+## Expected Result
+- Clear report of the project's stability status.
+- Identification of regressions or environment-specific failures.
+- Confirmation of whether the code is safe to integrate.
+
+## Structured Result Summary
+```yaml
+test_run: complete
+total_tests: [count]
+passed: [count]
+failed: [count]
+coverage: [percentage]
+```

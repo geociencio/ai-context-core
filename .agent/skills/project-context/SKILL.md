@@ -1,51 +1,50 @@
 ---
 name: project-context
-description: Resumen del propósito, arquitectura y estructura del proyecto ai-context-core.
+description: Purpose, architecture, and structure of ai-context-core.
+trigger: when starting tasks, requesting summaries, or explaining the architecture.
 ---
 
 # Project Context
 
-Define el núcleo de conocimiento sobre `ai-context-core`: su arquitectura, componentes clave y flujo de operación.
+Defines the core knowledge about `ai-context-core`: its architecture, key components, and operational flow.
 
-## Cuándo usar este skill
-- Al iniciar sesión en el proyecto.
-- Al explicar la arquitectura a un nuevo colaborador (humano o IA).
-- Cuando haya dudas sobre la ubicación de archivos o responsabilidades de módulos.
-- Para orientar el desarrollo hacia las metas del proyecto.
+## When to use this skill
+- When starting a session on the project.
+- When explaining the architecture to a new contributor (human or AI).
+- When unsure about file locations or module responsibilities.
+- To orient development toward the project goals.
 
-## Grado de Libertad
-- **Guiado**: La estructura del proyecto y los comandos son fijos, pero la interpretación de los flujos es abierta.
-
-## Inputs necesarios
-- Acceso a la estructura de directorios y archivos de configuración (`pyproject.toml`).
+## Degree of Freedom
+- **Guided**: Project structure and commands are fixed; flow interpretation is open.
 
 ## Workflow
-1. **Identificación**: Localizar los componentes principales (`src`, `docs`, `.agent`).
-2. **Contextualización**: Entender la relación entre el análisis AST y los perfiles.
-3. **Persistencia**: Mantener actualizados los archivos `.ai-context`.
+1. **Identify**: Locate main components (`src`, `docs`, `.agent`).
+2. **Contextualize**: Understand the AST analysis ↔ profile relationship.
+3. **Persist**: Keep `.ai-context` files updated.
 
-## Instrucciones y Reglas
+## Instructions and Rules
 
-### 1. Propósito Central
-- `ai-context-core` es el motor central para flujos de trabajo de codificación asistida por IA.
-- Proporciona análisis profundo de AST y gestión de contexto basada en perfiles (Python genérico, plugins de QGIS).
+### 1. Core Purpose
+- `ai-context-core` is the central engine for AI-assisted coding workflows.
+- Provides deep AST analysis and profile-based context management (generic Python, QGIS plugins).
 
-### 2. Estructura del Proyecto
-- `src/ai_context_core`: Fuente principal del paquete.
-- `docs/`: Documentación técnica.
-- `.agent/`: Configuración del framework agentic (skills, workflows).
-- `pyproject.toml`: Configuración global y dependencias (uv).
+### 2. Project Structure
+- `src/ai_context_core`: Main package source.
+- `docs/`: Technical documentation.
+- `.agent/`: Agentic framework configuration (skills, workflows, memory).
+- `pyproject.toml`: Global config and dependencies (uv).
 
-### 3. Comandos Críticos
-- `ai-ctx init --profile [profile]`: Inicializa un nuevo proyecto.
-- `ai-ctx analyze`: Actualiza el contexto manualmente.
+### 3. Architecture (Pipeline)
+- engine → providers → visitors/builders → reporting.
+- One AST visitor per concern; no I/O inside visitors.
 
-## Output (formato exacto)
-Información actualizada y veraz sobre el estado y estructura del proyecto.
+### 4. Critical Commands
+- `ai-ctx analyze`: Run analysis and regenerate context files.
+- `ai-ctx stats`: Quick quality summary.
+- `ai-ctx audit --threshold N`: CI/CD release gate.
 
-## Lista de Verificación de Calidad
-- [ ] ¿Se menciona la arquitectura basada en perfiles?
-- [ ] ¿La descripción de la estructura es precisa?
-- [ ] ¿Se han incluido los comandos de terminal correctos?
-- [ ] ¿El tono es operativo y profesional?
-- [ ] ¿Se referencian correctamente las rutas del workspace?
+## Quality Checklist
+- [ ] Is the engine→reporting pipeline mentioned?
+- [ ] Is the structure description accurate?
+- [ ] Are the terminal commands correct?
+- [ ] Are workspace paths referenced correctly?
