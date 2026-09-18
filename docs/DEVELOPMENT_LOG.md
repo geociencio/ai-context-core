@@ -1,6 +1,6 @@
 # Development Log
 
-## [2026-09-17] Corrections & Agentic System Gen 8 - COMPLETED
+## [2026-09-17] Corrections & Agentic System Gen 8 (v3.4.0) - COMPLETED
 **THEME**: Consistency and opencode-native tooling 🧭
 - **Metric Contract**: Introduced canonical keys in `builders/metric_keys.py`, removed duplicate aliases, and added missing-key validation. 🔑
 - **i18n Precision**: Added `# no-i18n` inline opt-out (tokenize-based) and a punctuation-dominance heuristic. 🌍

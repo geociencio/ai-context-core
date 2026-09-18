@@ -140,46 +140,46 @@ graph TD
     test_regression_patterns --> py
     test_visualization --> py
     classDef module fill:#f9f,stroke:#333,stroke-width:2px;
-    graph
-    class graph module;
-    test_fs_extended
-    class test_fs_extended module;
-    deps
-    class deps module;
-    test_visualization
-    class test_visualization module;
-    analyze
-    class analyze module;
+    test_gaps_batch2
+    class test_gaps_batch2 module;
+    test_observer_insecure_gaps
+    class test_observer_insecure_gaps module;
+    test_absolute_final
+    class test_absolute_final module;
     test_regression_patterns
     class test_regression_patterns module;
+    inspect
+    class inspect module;
+    report
+    class report module;
+    deps
+    class deps module;
+    test_fs_extended
+    class test_fs_extended module;
+    test_gaps_batch3
+    class test_gaps_batch3 module;
+    test_coverage_patterns
+    class test_coverage_patterns module;
+    test_final_gaps
+    class test_final_gaps module;
     qgis
     class qgis module;
     test_final_100_percent
     class test_final_100_percent module;
-    test_final_gaps
-    class test_final_gaps module;
-    test_observer_insecure_gaps
-    class test_observer_insecure_gaps module;
-    test_coverage_boost
-    class test_coverage_boost module;
     roadmap
     class roadmap module;
+    test_coverage_boost
+    class test_coverage_boost module;
+    test_visualization
+    class test_visualization module;
+    analyze
+    class analyze module;
     test_metric_keys
     class test_metric_keys module;
-    inspect
-    class inspect module;
-    test_gaps_batch3
-    class test_gaps_batch3 module;
-    report
-    class report module;
-    test_gaps_batch2
-    class test_gaps_batch2 module;
-    test_absolute_final
-    class test_absolute_final module;
     test_coverage_final
     class test_coverage_final module;
-    test_coverage_patterns
-    class test_coverage_patterns module;
+    graph
+    class graph module;
 ```
 
 ## 💡 OPTIMIZATION RECOMMENDATIONS
@@ -202,7 +202,7 @@ graph TD
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 3566
+- Total lines changed: 7354
 
 ## 🔑 PROJECT KEYWORDS
 - **Technologies**: .py, .md, .json, .yml, .toml, .yaml, .in, .zip

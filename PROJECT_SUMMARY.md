@@ -1,6 +1,6 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-09-17 23:51:30
-Analyzer Version: 3.3.0 (Ai-Context-Core)
+Analysis Date: 2026-09-17 23:55:35
+Analyzer Version: 3.4.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **ai-ctx Quality Score**: 97.3/100
@@ -169,7 +169,7 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+8 more)
+                ... (+9 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -268,10 +268,10 @@ Analyzer Version: 3.3.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 82
-- **Additions**: +2568
-- **Deletions**: -998
-- **Total Churn**: 3566
+- **Files Changed**: 104
+- **Additions**: +5098
+- **Deletions**: -2256
+- **Total Churn**: 7354
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 27 commits
