@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - **Documentation**: Performed deep analysis and comparison of `ai-context-core` vs. competitors (Repomix, Aider, Gitingest).
 - **README**: Updated with detailed comparison matrix and emphasized version 3.3.0 features and badges.
+- **Metrics**: Renamed user-facing "Quality Score" label to "ai-ctx Quality Score" and "Average Complexity" to "Avg Cyclomatic Complexity" to avoid confusion with external canonical metrics (e.g. `qgis-analyzer`). Internal JSON keys are unchanged.
+- **Docs**: Added a "Metrics" section to the README clarifying each metric's definition (average vs gate, heuristic vs canonical).
 
 ## [3.3.0] - 2026-03-22 - QGIS 4.x & Metrics Fix
 ### Added

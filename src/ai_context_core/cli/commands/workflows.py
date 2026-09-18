@@ -9,7 +9,7 @@ from ai_context_core.analyzer.providers import gis_utils
 
 @click.command(name="full-scan")
 @click.option("--path", default=".", help="Project path to scan")
-@click.option("--audit-threshold", default=80.0, help="Minimum Quality Score for audit")
+@click.option("--audit-threshold", default=80.0, help="Minimum ai-ctx Quality Score for audit")
 @click.option("--format", default="markdown", type=click.Choice(["markdown", "html"]))
 def full_scan_cmd(path: str, audit_threshold: float, format: str):
     """Run a complete project scan (Analyze -> Audit -> QGIS Check).
@@ -31,7 +31,7 @@ def full_scan_cmd(path: str, audit_threshold: float, format: str):
         sys.exit(1)
 
     # 2. Quality Audit
-    click.echo(f"\n🛡️ [2/3] Verifying Quality Score (Threshold: {audit_threshold})...")
+    click.echo(f"\n🛡️ [2/3] Verifying ai-ctx Quality Score (Threshold: {audit_threshold})...")
     try:
         analyze.run_audit(str(project_path), threshold=audit_threshold)
         click.echo("✅ Audit passed.")

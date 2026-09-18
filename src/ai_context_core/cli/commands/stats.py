@@ -30,11 +30,11 @@ def show_quick_stats(path: str):
     table.add_row("Modules", str(complexity.get("total_modules", 0)))
     table.add_row("Functions", str(complexity.get("total_functions", 0)))
     table.add_row("Classes", str(complexity.get("total_classes", 0)))
-    table.add_row("Avg Complexity", f"{complexity.get('average_complexity', 0):.1f}")
+    table.add_row("Avg Cyclomatic Complexity", f"{complexity.get('average_complexity', 0):.1f}")
     table.add_row(
         "Avg Maintenance Index", f"{complexity.get('avg_maintenance_index', 0):.1f}"
     )
-    table.add_row("Quality Score", f"{metrics.get('quality_score', 0):.1f}/100")
+    table.add_row("ai-ctx Quality Score", f"{metrics.get('quality_score', 0):.1f}/100")
 
     console.print(table)
 

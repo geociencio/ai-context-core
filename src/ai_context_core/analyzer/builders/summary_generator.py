@@ -45,7 +45,7 @@ class ProjectSummaryGenerator:
         m = self.analyses.get("metrics", {})
         c = self.analyses.get("complexity", {})
         m_html = f"""
-        <div class="metric">Quality Score: <span class="metric-value">{m.get("quality_score", 0)}/100</span></div>
+        <div class="metric">ai-ctx Quality Score: <span class="metric-value">{m.get("quality_score", 0)}/100</span></div>
         <div class="metric">Source Lines (SLOC): <span class="metric-value">{m.get("total_lines_code", 0):,}</span></div>
         <div class="metric">Physical Lines: <span class="metric-value">{m.get("total_physical_lines", 0):,}</span></div>
         <div class="metric">Modules: <span class="metric-value">{c.get("total_modules", 0)}</span></div>

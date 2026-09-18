@@ -46,7 +46,7 @@ def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool)
         q = m.get("quality_score", 0)
         click.echo("-" * 40)
         click.secho(
-            f"🏆 Quality Score: {q:.1f}/100", fg="green" if q > 80 else "yellow"
+            f"🏆 ai-ctx Quality Score: {q:.1f}/100", fg="green" if q > 80 else "yellow"
         )
         click.echo(
             f"📊 Lines: {m.get('total_lines_code', 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"

@@ -269,6 +269,17 @@ Design pattern generator. Bootstraps standards-compliant code templates for arch
 Technical debt prioritization engine. Calculates a "Refactor Score" based on (Code Complexity × Churn Frequency) to identify high-risk hotspots.
 - **Usage**: `ai-ctx roadmap`
 
+## Metrics
+
+`ai-context-core` reports its own set of metrics. These are heuristics computed from static analysis and are **not directly comparable** to the canonical metrics of other tools (e.g. `qgis-analyzer`).
+
+| Metric | Definition | Notes |
+| :--- | :--- | :--- |
+| **ai-ctx Quality Score** | Aggregated 0-100 heuristic: base 100 minus penalties for average complexity, low maintainability, and missing tests, plus test bonuses. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. |
+| **Avg Cyclomatic Complexity** | Arithmetic mean of per-module cyclomatic complexity. | This is an **average**. `qgis-analyzer` applies a per-function **gate** (CC ≤ 10), so the two numbers mean different things. |
+| **Avg Maintenance Index (MI)** | SEI Maintenance Index normalized to 0-100, averaged across modules. | Exclusive to `ai-context-core`. |
+| **Max Complexity** | Highest single-module cyclomatic complexity. | Complements the average to surface outliers. |
+
 ## Comparison with Other Tools
 
 `ai-context-core` is more than a code packager; it is a **deep static intelligence engine** designed to maximize context fidelity for LLMs. While many tools focus on "repository dumping," we focus on **semantic extraction** and **domain-specific hygiene**.

@@ -14,7 +14,7 @@ error = 50
 warning = 400
 error = 800
 
-# Quality Score Weights
+# ai-ctx Quality Score Weights
 # Weights differ depending on the importance of the metric for the final score.
 [quality_weights]
 docstrings = 30

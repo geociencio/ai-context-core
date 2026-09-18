@@ -57,7 +57,7 @@ class TestVisualization:
 
         # Verify Critical Project Health
         assert any(
-            r["priority"] == "Critical" and "Quality Score" in r["message"]
+            r["priority"] == "Critical" and "ai-ctx Quality Score" in r["message"]
             for r in recs
         )
         # Verify Documentation Alert

@@ -53,9 +53,9 @@ def run_compare(file1: str, file2: str):
     table.add_column("Diff", justify="right")
 
     metrics_to_compare = [
-        ("Quality Score", "metrics.quality_score"),
+        ("ai-ctx Quality Score", "metrics.quality_score"),
         ("Maintenance Index", "metrics.avg_maintenance_index"),
-        ("Complexity (Avg)", "metrics.average_complexity"),
+        ("Cyclomatic Complexity (Avg)", "metrics.average_complexity"),
         ("Total Lines", "metrics.total_lines_code"),
         ("Python Files", "structure.modules_count"),
         ("Security Issues", "metrics.security_issues"),

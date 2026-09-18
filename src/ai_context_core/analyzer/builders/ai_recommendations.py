@@ -47,7 +47,7 @@ class QualityScoreRule(RecommendationRule):
                 {
                     "category": "Project Health",
                     "priority": "Critical",
-                    "message": f"Quality Score is low ({score}/100).",
+                    "message": f"ai-ctx Quality Score is low ({score}/100).",
                 }
             ]
         if score < AI_RECOMMENDATION_QUALITY_MEDIUM_THRESHOLD:
@@ -55,7 +55,7 @@ class QualityScoreRule(RecommendationRule):
                 {
                     "category": "Project Health",
                     "priority": "High",
-                    "message": f"Quality Score ({score}/100) has room for improvement.",
+                    "message": f"ai-ctx Quality Score ({score}/100) has room for improvement.",
                 }
             ]
         return []

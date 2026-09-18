@@ -15,7 +15,7 @@ class MetricsSummarizer:
         metrics = self.analyses.get("metrics", {})
 
         lines = []
-        lines.append(f"- **Quality Score**: {metrics.get('quality_score', 0):.1f}/100")
+        lines.append(f"- **ai-ctx Quality Score**: {metrics.get('quality_score', 0):.1f}/100")
         lines.append(f"- **Source Lines (SLOC)**: {metrics.get('total_lines_code', 0):,}")
         lines.append(f"- **Total Physical Lines**: {metrics.get('total_physical_lines', 0):,}")
         lines.append(f"- **Maintainability**: {metrics.get('avg_maintenance_index', 0):.1f}")
@@ -44,7 +44,7 @@ class MetricsSummarizer:
         metrics = self.analyses.get("metrics", {})
 
         lines = []
-        lines.append(f"- **Average Complexity**: {metrics.get('average_complexity', 0):.2f}")
+        lines.append(f"- **Avg Cyclomatic Complexity**: {metrics.get('average_complexity', 0):.2f}")
         lines.append(f"- **Max Complexity**: {metrics.get('max_complexity', 0)}")
 
         high = comp.get("high_complexity", [])

@@ -192,7 +192,7 @@ def test_analyze_command_full():
 
         result = runner.invoke(cli, ["analyze", "--no-cache"])
         assert result.exit_code == 0
-        assert "Quality Score" in result.output
+        assert "ai-ctx Quality Score" in result.output
         assert "Completed" in result.output
 
 

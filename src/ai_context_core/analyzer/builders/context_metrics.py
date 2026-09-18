@@ -19,7 +19,7 @@ class MetricsBuilder(BaseContextBuilder):
         )
         lines.append(f"- **Functions**: {c.get('total_functions', 0)}")
         lines.append(f"- **Classes**: {c.get('total_classes', 0)}")
-        lines.append(f"- **Average Complexity**: {c.get('average_complexity', 0):.1f}")
+        lines.append(f"- **Avg Cyclomatic Complexity**: {c.get('average_complexity', 0):.1f}")
         lines.append(
             f"- **Avg Maintenance Index**: {c.get('avg_maintenance_index', 0) or m.get('avg_maintenance_index', 0):.1f}"
         )

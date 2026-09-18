@@ -23,10 +23,10 @@ def analyze_cmd(path: str, workers: Optional[int], format: str, no_cache: bool):
 @click.command(name="audit")
 @click.option("--path", default=".", help="Project path")
 @click.option(
-    "--threshold", "-t", default=70.0, type=float, help="Minimum Quality Score"
+    "--threshold", "-t", default=70.0, type=float, help="Minimum ai-ctx Quality Score"
 )
 def audit_cmd(path: str, threshold: float):
-    """Fails if Quality Score is below threshold."""
+    """Fails if ai-ctx Quality Score is below threshold."""
     analyze.run_audit(path, threshold)
 
 
