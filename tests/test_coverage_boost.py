@@ -81,6 +81,18 @@ class MyWidget:
         count = detect_signals(class_node)
         self.assertEqual(count, 3)
 
+    def test_detect_signals_false_positives(self):
+        code = """
+class MyWidget:
+    a = QgsSignalBlocker(self)
+    b = blockSignals(True)
+    c = pyqtSignal(int)
+"""
+        tree = ast.parse(code)
+        class_node = tree.body[0]
+        count = detect_signals(class_node)
+        self.assertEqual(count, 1)
+
     def test_halstead_metrics(self):
         # n1=4, n2=6, N1=10, N2=15
         metrics = calculate_halstead_metrics(4, 6, 10, 15)

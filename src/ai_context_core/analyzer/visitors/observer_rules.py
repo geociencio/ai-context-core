@@ -69,11 +69,16 @@ def _is_signal_definition(node: ast.AST) -> bool:
     if not (val and isinstance(val, ast.Call)):
         return False
 
-    try:
-        func_str = ast.unparse(val.func).lower()
-        return "pyqtsignal" in func_str or "signal" in func_str
-    except Exception:
-        return False
+    return _signal_call_name(val.func) in {"pyqtsignal", "signal"}
+
+
+def _signal_call_name(func: ast.AST) -> str:
+    """Return the trailing name of a signal constructor call, lowercased."""
+    if isinstance(func, ast.Name):
+        return func.id.lower()
+    if isinstance(func, ast.Attribute):
+        return func.attr.lower()
+    return ""
 
 
 # --- Class Analysis Rules ---

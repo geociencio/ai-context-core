@@ -121,17 +121,14 @@ def test_observer_class_analyzer_exception():
 
 
 def test_observer_signals_exception():
-    # Coverage for src/ai_context_core/analyzer/patterns_detectors/observer_components/signals.py 27-28
     from ai_context_core.analyzer.patterns_detectors.observer_rules import (
         _is_signal_definition,
     )
 
-    # Use a real node but trigger exception in unparse
     node = ast.Assign(
         targets=[],
         value=ast.Call(
             func=ast.Name(id="Signal", ctx=ast.Load()), args=[], keywords=[]
         ),
     )
-    with patch("ast.unparse", side_effect=Exception("Unparse fail")):
-        assert _is_signal_definition(node) is False
+    assert _is_signal_definition(node) is True

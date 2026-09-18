@@ -140,7 +140,7 @@ class ResultsAggregator:
                     all_patterns[name] = []
                 # Add module info to instances
                 for inst in instances:
-                    inst["module"] = mod["path"]
+                    inst["module"] = mod.get("path", "N/A")
                 all_patterns[name].extend(instances)
         return all_patterns
 
@@ -156,7 +156,7 @@ class ResultsAggregator:
                 # Find if module already exists in all_security
                 found = False
                 for existing in all_security:
-                    if existing["module"] == mod["path"]:
+                    if existing.get("module") == mod.get("path"):
                         existing["issues"].extend(ast_issues)
                         existing["total_issues"] = len(existing["issues"])
                         found = True

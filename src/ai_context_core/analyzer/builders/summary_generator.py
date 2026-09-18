@@ -56,7 +56,7 @@ class ProjectSummaryGenerator:
         sec = self.analyses.get("security", [])
         if sec:
             s_list = [
-                f"<strong>{i['module']}</strong>: {i['total_issues']} issues (Max: {i['max_severity']})"
+                f"<strong>{i.get('module', 'N/A')}</strong>: {i.get('total_issues', 0)} issues (Max: {str(i.get('max_severity', 'unknown')).upper()})"
                 for i in sec[:5]
             ]
             builder.add_section("🚨 SECURITY ISSUES", builder.build_list(s_list))
@@ -65,7 +65,7 @@ class ProjectSummaryGenerator:
         opt = self.analyses.get("optimizations", [])
         if opt:
             o_list = [
-                f"<strong>{o['module']}</strong>: {'; '.join(s.get('message', '') for s in o.get('suggestions', []))}"
+                f"<strong>{o.get('module', 'N/A')}</strong>: {'; '.join(s.get('message', '') for s in o.get('suggestions', []))}"
                 for o in opt[:5]
             ]
             builder.add_section("💡 RECOMMENDATIONS", builder.build_list(o_list))

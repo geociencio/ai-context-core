@@ -26,6 +26,6 @@ class PatternsBuilder(BaseContextBuilder):
         if ap:
             lines.append("\n## ⚠️ DETECTED ANTI-PATTERNS")
             for i in ap[:5]:
-                lines.append(f"- **{i['module']}**")
+                lines.append(f"- **{i.get('module', 'N/A')}**")
                 for issue in i.get("issues", [])[:2]:
                     lines.append(f"  - {issue.get('message', 'N/A')}")

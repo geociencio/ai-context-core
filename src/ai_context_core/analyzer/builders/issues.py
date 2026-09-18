@@ -12,17 +12,19 @@ class IssuesSummarizer(BaseSummarizer):
         if sec:
             lines.append("### 🔒 Security Issues:")
             for i in sec[:3]:
-                lines.append(
-                    f"- **{i['module']}**: {i['total_issues']} issues (Max: {i['max_severity'].upper()})"
-                )
+                module = i.get("module", "N/A")
+                total = i.get("total_issues", 0)
+                severity = str(i.get("max_severity", "unknown")).upper()
+                lines.append(f"- **{module}**: {total} issues (Max: {severity})")
 
         debt = self.analyses.get("debt", [])
         if debt:
             lines.append("\n### 🏗️ Critical Technical Debt:")
             for i in [d for d in debt if d.get("severity_score", 0) >= 4][:5]:
-                lines.append(
-                    f"- **{i['module']}**: {i['total_issues']} issues (Score: {i['severity_score']})"
-                )
+                module = i.get("module", "N/A")
+                total = i.get("total_issues", 0)
+                score = i.get("severity_score", 0)
+                lines.append(f"- **{module}**: {total} issues (Score: {score})")
 
         circ = self.analyses.get("dependencies", {}).get("circular_dependencies", [])
         if circ:

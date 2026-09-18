@@ -15,14 +15,14 @@ class GitPatternsSummarizer(BaseSummarizer):
         if churn.get("available"):
             res.append(f"### Code Churn (last {churn.get('period_days')} days)")
             res.append(
-                f"- **Files Changed**: {churn['files_changed']}\n- **Additions**: +{churn['added']}\n- **Deletions**: -{churn['deleted']}\n- **Total Churn**: {churn['total_churn']}"
+                f"- **Files Changed**: {churn.get('files_changed', 0)}\n- **Additions**: +{churn.get('added', 0)}\n- **Deletions**: -{churn.get('deleted', 0)}\n- **Total Churn**: {churn.get('total_churn', 0)}"
             )
 
         hot = git.get("hotspots", [])
         if hot:
             res.append("\n### 🔥 Hotspots")
             for h in hot[:5]:
-                res.append(f"- `{h['path']}`: {h['commits']} commits")
+                res.append(f"- `{h.get('path', 'N/A')}`: {h.get('commits', 0)} commits")
         return "\n".join(res)
 
     def build_patterns(self) -> str:
