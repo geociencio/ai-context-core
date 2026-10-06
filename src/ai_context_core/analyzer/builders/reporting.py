@@ -17,11 +17,11 @@ def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
         return ""
 
     node_scores = {u: len(v) for u, v in import_graph.items()}
-    top_nodes = sorted(node_scores.items(), key=lambda x: x[1], reverse=True)[:20]
+    top_nodes = sorted(node_scores.items(), key=lambda x: (-x[1], x[0]))[:20]
     top_node_names = {name for name, _ in top_nodes}
 
     added_edges = set()
-    for u, neighbors in import_graph.items():
+    for u, neighbors in sorted(import_graph.items(), key=lambda kv: kv[0]):
         if u in top_node_names or any(v in top_node_names for v in neighbors):
             u_short = u.split("/")[-1].replace(".py", "").replace("__init__", "init")
             for v in neighbors:
@@ -34,7 +34,7 @@ def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
                     added_edges.add(edge)
 
     graph.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
-    for name in top_node_names:
+    for name in sorted(top_node_names):
         short = name.split("/")[-1].replace(".py", "").replace("__init__", "init")
         graph.append(f"    {short}")
         graph.append(f"    class {short} module;")
