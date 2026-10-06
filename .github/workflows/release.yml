@@ -33,8 +33,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # 2. Publish to PyPI only when Release is Published
+  # Manual-only: PyPI publication is performed out-of-band. Keep this job
+  # available via workflow_dispatch for when CI publishing is re-enabled.
   publish-pypi:
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
