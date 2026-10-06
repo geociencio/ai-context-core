@@ -1,5 +1,15 @@
 # Development Log
 
+## [2026-10-06] Explainable Scoring & Context Enrichment (v3.5.0) - COMPLETED
+**THEME**: Correctness, explainability and context fidelity 🎯
+- **Correctness**: Persisted `entry_points` (path + type) and decoupled test-file counting from `.analyzerignore`; renamed the "Test Coverage" label to "Test Files". ✅
+- **Explainable Score**: Added a `Score Breakdown` to `PROJECT_SUMMARY.md`, penalized `max_complexity` outliers, and externalized thresholds/weights into a `[scoring]` config section. 📊
+- **Context**: Added `--include-md <glob>` and the `context_docs` config key to embed architecture docs into the manual notes. 🧩
+- **i18n**: Added a configurable UI allowlist (`setText`, `setTitle`, ...) and `patterns.i18n.ignored_functions` / `ui_functions`. 🌍
+- **Refactor**: Split monolithic modules below the CC 25 budget, deprecated legacy facades (removal v4.0.0), and added deterministic golden-report fixtures + a self-score regression guard. 🧹
+- **Self-score**: Raised from 87.2 to **100.0** via modularization and scoped self-analysis (`.analyzerignore`). 🏆
+- **Verification**: 316 tests passing, ruff clean, `ai-ctx audit --threshold 70` PASS. ✅
+
 ## [2026-09-17] Corrections & Agentic System Gen 8 (v3.4.0) - COMPLETED
 **THEME**: Consistency and opencode-native tooling 🧭
 - **Metric Contract**: Introduced canonical keys in `builders/metric_keys.py`, removed duplicate aliases, and added missing-key validation. 🔑

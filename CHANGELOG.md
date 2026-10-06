@@ -11,6 +11,29 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-10-06 - Explainable Scoring & Context Enrichment
+
+### Added
+- **Score Breakdown**: `PROJECT_SUMMARY.md` now shows an explicit breakdown of the `ai-ctx Quality Score` (base, average/outlier complexity, maintainability, tests).
+- **Configurable Scoring**: thresholds and weights are externalized to a `[scoring]` config section (with legacy `thresholds` support).
+- **`--include-md` / `context_docs`**: embed extra architecture docs (globs) into the "MANUAL ARCHITECTURE NOTES" section.
+- **i18n UI allowlist**: user-facing setter APIs (`setText`, `setTitle`, ...) are always counted; `ignored_functions` / `ui_functions` are configurable via `patterns.i18n`.
+- **Golden reports**: deterministic end-to-end report fixtures and a score regression test.
+- **Deprecation policy**: legacy facades and aliases emit `DeprecationWarning` (removal scheduled for v4.0.0); documented public vs internal API.
+
+### Changed
+- **Entry Points**: `entry_points` are now persisted and rendered with their type, fixing the always-empty `ENTRY POINTS` section.
+- **Test Counting**: decoupled from `.analyzerignore`; the label is now "Test Files" and an unknown count renders as `n/a`, removing a false `-20` penalty.
+- **Quality Score**: now penalizes `max_complexity` outliers (projects with a module above CC 25 may score lower); recommended to review the `audit --threshold` gate.
+- Renamed README config path to `[patterns.i18n]` (was `[qgis.i18n]`).
+
+### Fixed
+- Empty `ENTRY POINTS`; artificial test-count penalty; silenced invalid-glob errors are now logged; removed dead legacy QGIS wrapper and an unused i18n parameter.
+
+### Internal
+- Split monolithic modules below the CC budget and scoped self-analysis via `.analyzerignore`.
+- 316 tests passing, ruff clean; self-audit score 100.0.
+
 ## [3.4.0] - 2026-09-17 - Corrections & Agentic System Gen 8
 
 ### Added
