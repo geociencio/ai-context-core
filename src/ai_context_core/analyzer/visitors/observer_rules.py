@@ -2,86 +2,20 @@
 
 import ast
 
-# --- Collection Rules ---
-
-KEYWORDS_INIT = ("observers", "subscribers", "listeners")
-KEYWORDS_MGMT = (
-    "attach",
-    "detach",
-    "subscribe",
-    "unsubscribe",
-    "register",
-    "unregister",
+from .observer_collection_rules import (  # noqa: F401
+    KEYWORDS_INIT,
+    KEYWORDS_MGMT,
+    KEYWORDS_NOTIFY,
+    check_init_assign,
+    check_iteration,
+    check_mgmt_method,
+    check_notify_method,
 )
-KEYWORDS_NOTIFY = ("notify", "emit", "broadcast")
-
-
-def check_init_assign(node: ast.Assign) -> bool:
-    """Check if assignment is for an observer collection."""
-    for t in node.targets:
-        if isinstance(t, ast.Attribute) and any(
-            kw in t.attr.lower() for kw in KEYWORDS_INIT
-        ):
-            return True
-    return False
-
-
-def check_iteration(node: ast.AST) -> bool:
-    """Check for iteration over observer collections."""
-    for sub in ast.walk(node):
-        if isinstance(sub, ast.For):
-            iter_str = ast.unparse(sub.iter).lower()
-            if any(kw in iter_str for kw in KEYWORDS_INIT):
-                return True
-    return False
-
-
-def check_mgmt_method(name: str) -> bool:
-    """Check if method name matches management patterns."""
-    m_low = name.lower()
-    return any(kw in m_low for kw in KEYWORDS_MGMT)
-
-
-def check_notify_method(name: str) -> bool:
-    """Check if method name matches notification patterns."""
-    m_low = name.lower()
-    return any(kw in m_low for kw in KEYWORDS_NOTIFY)
-
-
-# --- Signal Rules ---
-
-
-def detect_signals(node: ast.AST) -> int:
-    """Count signal definitions in a node."""
-    signals_found = 0
-    for item in ast.iter_child_nodes(node):
-        if _is_signal_definition(item):
-            signals_found += 1
-    return signals_found
-
-
-def _is_signal_definition(node: ast.AST) -> bool:
-    """Determine if an AST node defines a signal."""
-    if not isinstance(node, (ast.Assign, ast.AnnAssign)):
-        return False
-
-    val = node.value
-    if not (val and isinstance(val, ast.Call)):
-        return False
-
-    return _signal_call_name(val.func) in {"pyqtsignal", "signal"}
-
-
-def _signal_call_name(func: ast.AST) -> str:
-    """Return the trailing name of a signal constructor call, lowercased."""
-    if isinstance(func, ast.Name):
-        return func.id.lower()
-    if isinstance(func, ast.Attribute):
-        return func.attr.lower()
-    return ""
-
-
-# --- Class Analysis Rules ---
+from .observer_signal_rules import (  # noqa: F401
+    detect_signals,
+    _is_signal_definition,
+    _signal_call_name,
+)
 
 
 def analyze_class_body(node: ast.ClassDef, add_evidence_func) -> None:

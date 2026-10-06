@@ -1,4 +1,4 @@
-from ai_context_core.analyzer.builders.aggregator_qgis import _match_path
+from ai_context_core.analyzer.builders.qgis_scope import _match_path
 from ai_context_core.analyzer.builders.git_patterns import GitPatternsSummarizer
 from ai_context_core.analyzer.builders.patterns import PatternsBuilder
 

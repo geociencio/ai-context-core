@@ -1,5 +1,5 @@
 """Compatibility facade for QGIS summarizer."""
 
-from ..builders.aggregator_qgis import QGISSummarizer
+from ..builders.qgis_summarizer import QGISSummarizer
 
 __all__ = ["QGISSummarizer"]

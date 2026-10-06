@@ -2,7 +2,7 @@
 
 from .context_base import BaseContextBuilder
 from typing import List
-from .aggregator_qgis import QGISSummarizer
+from .qgis_summarizer import QGISSummarizer
 
 
 class QGISBuilder(BaseContextBuilder):

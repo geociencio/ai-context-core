@@ -12,7 +12,7 @@ from .ai_context_generator import AIContextGenerator
 from .ai_recommendations import generate_recommendations
 from .metrics_summarizer import MetricsSummarizer
 from .issues import IssuesSummarizer
-from .aggregator_qgis import QGISSummarizer
+from .qgis_summarizer import QGISSummarizer
 from .git_patterns import GitPatternsSummarizer
 from .structure import StructureBuilder
 from .context_metrics import MetricsBuilder
