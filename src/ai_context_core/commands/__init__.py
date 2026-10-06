@@ -1,7 +1,9 @@
 """Compatibility facade for commands package.
 
-Re-exports commands from ai_context_core.cli.commands.
+Deprecated: use ``ai_context_core.cli.commands`` instead.
 """
+
+from ai_context_core.deprecations import warn_deprecated
 
 from ..cli.commands import (
     git,
@@ -16,6 +18,8 @@ from ..cli.commands import (
     doctor,
     fix,
 )
+
+warn_deprecated(__name__, "ai_context_core.cli.commands")
 
 __all__ = [
     "git",

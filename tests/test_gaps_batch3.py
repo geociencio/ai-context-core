@@ -132,9 +132,9 @@ def test_dependencies_fallback():
 
 def test_context_builders_coverage():
     # Coverage for context_builders lines
-    from ai_context_core.analyzer.context_builders.dependencies import DependencyBuilder
-    from ai_context_core.analyzer.context_builders.patterns import PatternsBuilder
-    from ai_context_core.analyzer.context_builders.structure import StructureBuilder
+    from ai_context_core.analyzer.builders.dependencies import DependencyBuilder
+    from ai_context_core.analyzer.builders.patterns import PatternsBuilder
+    from ai_context_core.analyzer.builders.structure import StructureBuilder
 
     # Test DependencyBuilder
     builder = DependencyBuilder({"dependencies": {"third_party": ["flask"]}})

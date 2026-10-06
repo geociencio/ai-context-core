@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import patch
 from click.testing import CliRunner
-from ai_context_core.cli_groups.workflows import full_scan_cmd
+from ai_context_core.cli.commands.workflows import full_scan_cmd
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 import ast
 import pytest
-from ai_context_core.analyzer.patterns_detectors.singleton_rules import (
+from ai_context_core.analyzer.visitors.singleton_rules import (
     check_singleton_method,
 )
 from ai_context_core.analyzer.qgis_checkers.base import BaseQGISChecker

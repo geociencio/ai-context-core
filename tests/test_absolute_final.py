@@ -1,10 +1,10 @@
 import ast
 import pathlib
 from unittest.mock import patch, MagicMock
-from ai_context_core.analyzer.patterns_detectors.singleton_rules import (
+from ai_context_core.analyzer.visitors.singleton_rules import (
     _is_singleton_instance_var,
 )
-from ai_context_core.analyzer.patterns_detectors.strategy_rules import StrategyRules
+from ai_context_core.analyzer.visitors.strategy_rules import StrategyRules
 from ai_context_core.analyzer.visitors.secrets import SecretScanner
 from ai_context_core.context.components.store import ContextStore
 from ai_context_core.context.components.store import (
@@ -50,7 +50,7 @@ def test_clean_no_artifacts():
 def test_gis_utils_extract_metadata():
     # Coverage for gis_utils.py lines 44-45, 48-49
     from ai_context_core.analyzer.providers.gis_utils import parse_qgis_metadata
-    from ai_context_core.commands.clean import clean_artifacts
+    from ai_context_core.cli.commands.clean import clean_artifacts
 
     # Test with missing metadata.txt
     with patch("pathlib.Path.exists", return_value=False):
@@ -105,7 +105,7 @@ def test_cli_main_entry():
 def test_observer_class_analyzer_exception():
     # Coverage for src/ai_context_core/analyzer/patterns_detectors/observer_components/class_analyzer.py 37-38
     # _check_connection_call try-except
-    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
+    from ai_context_core.analyzer.visitors.observer_rules import (
         _check_connection_call,
     )
 
@@ -121,7 +121,7 @@ def test_observer_class_analyzer_exception():
 
 
 def test_observer_signals_exception():
-    from ai_context_core.analyzer.patterns_detectors.observer_rules import (
+    from ai_context_core.analyzer.visitors.observer_rules import (
         _is_signal_definition,
     )
 

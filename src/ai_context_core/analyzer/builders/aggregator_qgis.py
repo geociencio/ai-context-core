@@ -53,6 +53,122 @@ def _match_path(path: str, pattern: str) -> bool:
     return bool(regex.match(path))
 
 
+def _should_include_for_i18n(
+    module_data: Dict[str, Any], i18n_config: Dict[str, Any], scope: str
+) -> bool:
+    """Check if a module should be included in i18n analysis based on scope.
+
+    Args:
+        module_data: Individual module analysis result.
+        i18n_config: i18n configuration with scope and patterns.
+        scope: Resolved i18n scope (``all``, ``gui_only`` or ``custom``).
+
+    Returns:
+        True if the module must be counted for i18n coverage.
+    """
+    if scope == "all":
+        return True
+
+    module_path = module_data.get("path", "")
+    if not module_path:
+        return True  # Include if no path info
+
+    if scope == "gui_only":
+        patterns = i18n_config.get(
+            "gui_patterns",
+            ["gui/**/*.py", "dialogs/**/*.py", "widgets/**/*.py", "ui/**/*.py"],
+        )
+    elif scope == "custom":
+        patterns = i18n_config.get("include_patterns", [])
+        exclude_patterns = i18n_config.get("exclude_patterns", [])
+
+        # Check exclusions first
+        for pattern in exclude_patterns:
+            if _match_path(module_path, pattern):
+                return False
+    else:
+        return True  # Unknown scope, include all
+
+    # Check inclusions
+    for pattern in patterns:
+        if _match_path(module_path, pattern):
+            return True
+
+    return False
+
+
+def _collect_api_issues(
+    m_data: List[Dict[str, Any]],
+) -> Dict[str, List[Dict[str, Any]]]:
+    """Collect QGIS API compatibility issues across all modules."""
+    api_issues: Dict[str, List[Dict[str, Any]]] = {
+        "deprecated_calls": [],
+        "qt6_incompatibilities": [],
+        "best_practice_violations": [],
+    }
+    for m in m_data:
+        comp = m.get("qgis_compliance", {}).get("api_compatibility", {})
+        if comp:
+            for key in api_issues:
+                for issue in comp.get(key, []):
+                    issue["module"] = m["path"]
+                    api_issues[key].append(issue)
+    return api_issues
+
+
+def _aggregate_i18n_stats(
+    i18n_modules: List[Dict[str, Any]],
+    all_modules: List[Dict[str, Any]],
+    scope: str,
+) -> Dict[str, Any]:
+    """Aggregate i18n usage statistics for the selected modules."""
+    return {
+        "total_tr": sum(
+            m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
+            + m.get("qgis_compliance", {}).get("i18n_usage", {}).get("translate", 0)
+            for m in i18n_modules
+        ),
+        "total_strings": sum(
+            m.get("qgis_compliance", {})
+            .get("i18n_usage", {})
+            .get("total_strings", 0)
+            for m in i18n_modules
+        ),
+        "scope": scope,
+        "modules_analyzed": len(i18n_modules),
+        "modules_total": len(all_modules),
+    }
+
+
+def _compute_compliance_score(
+    agg: Dict[str, Any],
+    metadata: Dict[str, Any],
+    api_issues: Dict[str, List[Dict[str, Any]]],
+) -> float:
+    """Compute the overall QGIS compliance score from aggregated data."""
+    score = metadata.get("compliance_score", 0) * 0.3
+    if agg["processing_framework_detected"]:
+        score += 15
+    if agg["i18n_stats"]["total_strings"] > 0:
+        i18n_ratio = agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
+        score += min(15, i18n_ratio * 30)
+    if agg["gdal_style"] == "Correct":
+        score += 10
+    if agg["qt_transition"]["pyqt5_count"] == 0:
+        score += 15
+    if not api_issues["deprecated_calls"]:
+        score += 10
+    if not api_issues["qt6_incompatibilities"]:
+        score += 5
+
+    # Penalize for critical metadata issues/inconsistencies
+    res_issues = metadata.get("resources", {}).get("issues", [])
+    if res_issues:
+        score -= min(20, len(res_issues) * 10)
+
+    return round(max(0, min(100, score)), 1)
+
+
 def aggregate_qgis_compliance(
     m_data: List[Dict[str, Any]],
     metadata: Dict[str, Any],
@@ -71,77 +187,18 @@ def aggregate_qgis_compliance(
 
     scope = i18n_config.get("scope", "all")
 
-    # Determine which modules to include for i18n analysis
-    def should_include_for_i18n(module_data: Dict[str, Any]) -> bool:
-        """Check if a module should be included in i18n analysis based on scope."""
-        if scope == "all":
-            return True
-
-        module_path = module_data.get("path", "")
-        if not module_path:
-            return True  # Include if no path info
-
-        if scope == "gui_only":
-            patterns = i18n_config.get(
-                "gui_patterns",
-                ["gui/**/*.py", "dialogs/**/*.py", "widgets/**/*.py", "ui/**/*.py"],
-            )
-        elif scope == "custom":
-            patterns = i18n_config.get("include_patterns", [])
-            exclude_patterns = i18n_config.get("exclude_patterns", [])
-
-            # Check exclusions first
-            for pattern in exclude_patterns:
-                if _match_path(module_path, pattern):
-                    return False
-        else:
-            return True  # Unknown scope, include all
-
-        # Check inclusions
-        for pattern in patterns:
-            if _match_path(module_path, pattern):
-                return True
-
-        return False
-
-    # Filter modules for i18n counting
-    i18n_modules = [m for m in m_data if should_include_for_i18n(m)]
-
-    # New: Aggregate API compatibility issues
-    api_issues = {
-        "deprecated_calls": [],
-        "qt6_incompatibilities": [],
-        "best_practice_violations": [],
-    }
-    for m in m_data:
-        comp = m.get("qgis_compliance", {}).get("api_compatibility", {})
-        if comp:
-            for key in api_issues:
-                for issue in comp.get(key, []):
-                    issue["module"] = m["path"]
-                    api_issues[key].append(issue)
+    # Filter modules for i18n counting and collect API issues
+    i18n_modules = [
+        m for m in m_data if _should_include_for_i18n(m, i18n_config, scope)
+    ]
+    api_issues = _collect_api_issues(m_data)
 
     agg = {
         "metadata": metadata,
         "processing_framework_detected": any(
             m.get("qgis_compliance", {}).get("processing_framework") for m in m_data
         ),
-        "i18n_stats": {
-            "total_tr": sum(
-                m.get("qgis_compliance", {}).get("i18n_usage", {}).get("tr", 0)
-                + m.get("qgis_compliance", {}).get("i18n_usage", {}).get("translate", 0)
-                for m in i18n_modules
-            ),
-            "total_strings": sum(
-                m.get("qgis_compliance", {})
-                .get("i18n_usage", {})
-                .get("total_strings", 0)
-                for m in i18n_modules
-            ),
-            "scope": scope,
-            "modules_analyzed": len(i18n_modules),
-            "modules_total": len(m_data),
-        },
+        "i18n_stats": _aggregate_i18n_stats(i18n_modules, m_data, scope),
         "gdal_style": (
             "Correct"
             if all(
@@ -177,27 +234,7 @@ def aggregate_qgis_compliance(
     }
 
     # Calculate overall QGIS compliance score
-    score = metadata.get("compliance_score", 0) * 0.3
-    if agg["processing_framework_detected"]:
-        score += 15
-    if agg["i18n_stats"]["total_strings"] > 0:
-        i18n_ratio = agg["i18n_stats"]["total_tr"] / agg["i18n_stats"]["total_strings"]
-        score += min(15, i18n_ratio * 30)
-    if agg["gdal_style"] == "Correct":
-        score += 10
-    if agg["qt_transition"]["pyqt5_count"] == 0:
-        score += 15
-    if not api_issues["deprecated_calls"]:
-        score += 10
-    if not api_issues["qt6_incompatibilities"]:
-        score += 5
-
-    # Penalize for critical metadata issues/inconsistencies
-    res_issues = metadata.get("resources", {}).get("issues", [])
-    if res_issues:
-        score -= min(20, len(res_issues) * 10)
-
-    agg["compliance_score"] = round(max(0, min(100, score)), 1)
+    agg["compliance_score"] = _compute_compliance_score(agg, metadata, api_issues)
     return agg
 
 

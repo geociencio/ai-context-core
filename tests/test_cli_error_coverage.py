@@ -20,7 +20,7 @@ def test_analyze_debug_mode_error():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.analyze.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.analyze.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.side_effect = Exception("Debug fail")
             # Set DEBUG env var

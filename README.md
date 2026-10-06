@@ -321,6 +321,25 @@ Our integrated security scan detects **SQL Injection**, **Insecure Calls**, and 
 
 ❌ **Choose Alternatives** for quick, one-off code dumps (Gitingest), real-time interactive terminal editing (Aider), or simple multi-language packaging (Repomix).
 
+## API Stability and Deprecations
+
+The **canonical public API** lives under `ai_context_core.analyzer` (`engine`,
+`providers`, `visitors`, `builders`) and `ai_context_core.cli.commands`. Anything
+else is considered internal.
+
+The following legacy paths are **deprecated compatibility facades**. They still
+work but emit a `DeprecationWarning` on import and are scheduled for removal in
+**v4.0.0**:
+
+| Deprecated path | Use instead |
+| :--- | :--- |
+| `ai_context_core.analyzer.patterns_detectors.*` | `ai_context_core.analyzer.visitors.*` (`analyzer.pattern_base` for `base`) |
+| `ai_context_core.analyzer.context_builders.*` | `ai_context_core.analyzer.builders.*` |
+| `ai_context_core.commands.*` | `ai_context_core.cli.commands.*` |
+| `ai_context_core.cli_groups.*` | `ai_context_core.cli.commands.*` |
+| `ContextAggregator` alias | `ResultsAggregator` |
+| `QGISComplianceVisitor` alias | `GenericQGISComplianceVisitor` |
+
 ## Docker Support
 
 The project includes Docker support for reproducible development, testing, and CI/CD.

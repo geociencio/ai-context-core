@@ -224,7 +224,7 @@ def test_git_command_success():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.git.git_analysis.GitAnalyzer"
+            "ai_context_core.cli.commands.git.git_analysis.GitAnalyzer"
         ) as mock_analyzer_cls:
             mock_analyzer = MagicMock()
             mock_analyzer_cls.return_value = mock_analyzer
@@ -253,9 +253,9 @@ def test_serve_command():
     with runner.isolated_filesystem():
         with (
             patch(
-                "ai_context_core.commands.serve.socketserver.TCPServer"
+                "ai_context_core.cli.commands.serve.socketserver.TCPServer"
             ) as mock_server_cls,
-            patch("ai_context_core.commands.serve.webbrowser.open") as mock_open,
+            patch("ai_context_core.cli.commands.serve.webbrowser.open") as mock_open,
         ):
             # Setup mock server that stops immediately
             mock_server = MagicMock()
@@ -276,7 +276,7 @@ def test_serve_command_error():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.serve.socketserver.TCPServer"
+            "ai_context_core.cli.commands.serve.socketserver.TCPServer"
         ) as mock_server_cls:
             mock_server_cls.side_effect = Exception("Port in use")
             result = runner.invoke(cli, ["serve"])
@@ -302,7 +302,7 @@ def test_analyze_error_handling():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.analyze.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.analyze.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.side_effect = Exception("Analysis failed")
             result = runner.invoke(cli, ["analyze"])
@@ -314,7 +314,7 @@ def test_deps_command_extended():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.deps.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
@@ -343,7 +343,7 @@ def test_qgis_command_extended():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.qgis.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.return_value = {
                 "qgis_compliance": {
@@ -366,7 +366,7 @@ def test_deps_command_no_findings():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.deps.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
@@ -385,7 +385,7 @@ def test_git_command_no_findings():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.git.git_analysis.GitAnalyzer"
+            "ai_context_core.cli.commands.git.git_analysis.GitAnalyzer"
         ) as mock_analyzer_cls:
             mock_analyzer = MagicMock()
             mock_analyzer_cls.return_value = mock_analyzer
@@ -402,7 +402,7 @@ def test_qgis_command_metadata_valid_content():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with patch(
-            "ai_context_core.commands.qgis.ProjectAnalyzer.analyze"
+            "ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze"
         ) as mock_analyze:
             mock_analyze.return_value = {
                 "qgis_compliance": {

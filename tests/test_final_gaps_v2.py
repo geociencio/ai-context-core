@@ -1,7 +1,7 @@
 import ast
 import pytest
-from ai_context_core.analyzer.patterns_detectors.base import PatternDetector
-from ai_context_core.analyzer.patterns_detectors.decorator_rules import DecoratorRules
+from ai_context_core.analyzer.pattern_base import PatternDetector
+from ai_context_core.analyzer.visitors.decorator_rules import DecoratorRules
 
 
 def test_pattern_detector_no_visit():

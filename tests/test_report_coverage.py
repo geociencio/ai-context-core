@@ -1,4 +1,4 @@
-from ai_context_core.commands.report import (
+from ai_context_core.cli.commands.report import (
     _show_patterns,
     _show_security,
     _show_recommendations,

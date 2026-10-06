@@ -1,10 +1,10 @@
 import ast
 import unittest
-from ai_context_core.analyzer.patterns_detectors.singleton import detect_singleton
-from ai_context_core.analyzer.patterns_detectors.observer import detect_observer
-from ai_context_core.analyzer.patterns_detectors.strategy import detect_strategy
-from ai_context_core.analyzer.patterns_detectors.factory import detect_factory
-from ai_context_core.analyzer.patterns_detectors.decorator import detect_decorator
+from ai_context_core.analyzer.visitors.singleton import detect_singleton
+from ai_context_core.analyzer.visitors.observer import detect_observer
+from ai_context_core.analyzer.visitors.strategy import detect_strategy
+from ai_context_core.analyzer.visitors.factory import detect_factory
+from ai_context_core.analyzer.visitors.decorator import detect_decorator
 
 from ai_context_core.analyzer.visitors.patterns import detect_patterns
 

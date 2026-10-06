@@ -2,7 +2,7 @@ import ast
 from click.testing import CliRunner
 from ai_context_core.analyzer.qgis_checkers.frameworks import FrameworkChecker
 from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummarizer
-from ai_context_core.cli_groups.specialized import deps_cmd
+from ai_context_core.cli.commands.specialized import deps_cmd
 
 
 def test_qgis_frameworks_get_name_fallback():
