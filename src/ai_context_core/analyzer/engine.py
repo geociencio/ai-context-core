@@ -126,6 +126,7 @@ class ProjectAnalyzer:
         max_workers: Optional[int] = None,
         exclude_patterns: Optional[List[str]] = None,
         ignore_cache: bool = False,
+        include_md: Optional[List[str]] = None,
     ):
         """Initialize the analyzer with project settings.
 
@@ -135,6 +136,8 @@ class ProjectAnalyzer:
             max_workers: Maximum number of parallel workers for analysis.
             exclude_patterns: List of glob patterns to exclude from scanning.
             ignore_cache: Whether to force a full analysis ignoring existing cache.
+            include_md: Extra markdown globs (relative to the project root) to
+                embed in the manual architecture notes.
         """
         from .providers.config_loader import load_config as loader_func
 
@@ -147,6 +150,7 @@ class ProjectAnalyzer:
         self.exclusion_patterns = fs_utils.load_exclusion_patterns(
             self.project_path, exclude_patterns
         )
+        self.include_md = list(include_md or [])
         self.context_manager = AIContextManager(project_path)
         self.analysis_cache = (
             {} if ignore_cache else fs_utils.load_cache(self.project_path)
@@ -204,17 +208,62 @@ class ProjectAnalyzer:
         return results
 
     def _read_manual_notes(self) -> str:
-        """Read manual architecture notes if they exist."""
-        notes_path = self.project_path / ".ai-context" / "architecture_notes.md"
-        if not notes_path.exists():
-            notes_path = self.project_path / ".ai-context" / "project_brain.md"
+        """Read base architecture notes plus any configured extra context docs.
 
-        if notes_path.exists():
+        Returns:
+            Concatenated markdown with the base notes first, followed by each
+            extra document under its own ``### <relative-path>`` heading.
+        """
+        sections: List[str] = []
+
+        base_notes = self._read_base_notes()
+        if base_notes:
+            sections.append(base_notes)
+
+        for doc in self._discover_context_docs():
+            rel = doc.relative_to(self.project_path)
             try:
-                return notes_path.read_text(encoding="utf-8")
-            except Exception as e:
-                logger.warning(f"Could not read manual notes: {e}")
+                content = doc.read_text(encoding="utf-8", errors="replace").strip()
+            except OSError as e:
+                logger.warning(f"Could not read context doc {rel}: {e}")
+                continue
+            if content:
+                sections.append(f"### {rel}\n\n{content}")
+
+        return "\n\n".join(sections)
+
+    def _read_base_notes(self) -> str:
+        """Read the conventional architecture notes file if present."""
+        for name in ("architecture_notes.md", "project_brain.md"):
+            notes_path = self.project_path / ".ai-context" / name
+            if notes_path.exists():
+                try:
+                    return notes_path.read_text(encoding="utf-8")
+                except Exception as e:
+                    logger.warning(f"Could not read manual notes: {e}")
         return ""
+
+    def _discover_context_docs(self) -> List[pathlib.Path]:
+        """Resolve config ``context_docs`` and CLI ``include_md`` globs.
+
+        Returns:
+            Sorted, de-duplicated list of matching files.
+        """
+        patterns: List[str] = list(self.config.get("context_docs", []) or [])
+        patterns.extend(self.include_md)
+
+        docs: List[pathlib.Path] = []
+        seen = set()
+        for pattern in patterns:
+            for path in sorted(self.project_path.glob(pattern)):
+                if not path.is_file():
+                    continue
+                resolved = path.resolve()
+                if resolved in seen:
+                    continue
+                seen.add(resolved)
+                docs.append(path)
+        return docs
 
     def _generate_outputs(self, results: Dict[str, Any], fmt: str):
         """Generate final report files based on analysis results."""

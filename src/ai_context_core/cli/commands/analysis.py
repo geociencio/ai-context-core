@@ -15,9 +15,21 @@ from . import analyze, inspect
     default="markdown",
 )
 @click.option("--no-cache", is_flag=True, help="Force full analysis, ignoring cache")
-def analyze_cmd(path: str, workers: Optional[int], format: str, no_cache: bool):
+@click.option(
+    "--include-md",
+    "include_md",
+    multiple=True,
+    help="Glob (relative to the project root) of extra markdown docs to embed; repeatable",
+)
+def analyze_cmd(
+    path: str,
+    workers: Optional[int],
+    format: str,
+    no_cache: bool,
+    include_md: tuple,
+):
     """Runs project analysis."""
-    analyze.run_analysis(path, workers, format, no_cache)
+    analyze.run_analysis(path, workers, format, no_cache, include_md=list(include_md))
 
 
 @click.command(name="audit")

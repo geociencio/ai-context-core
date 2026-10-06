@@ -1,5 +1,9 @@
 # AI-Context-Core Configuration Defaults
 
+# Extra markdown docs embedded in the "MANUAL ARCHITECTURE NOTES" section.
+# Globs are relative to the project root; extend per project or via --include-md.
+context_docs = []
+
 # Quality Thresholds
 # These values determine when an issue is flagged as a warning or error.
 [quality_thresholds.complexity]

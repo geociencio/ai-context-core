@@ -9,7 +9,13 @@ from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.config.loader import ConfigLoader
 
 
-def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool):
+def run_analysis(
+    path: str,
+    workers: Optional[int],
+    format: str,
+    no_cache: bool,
+    include_md: Optional[list] = None,
+):
     """Executes the full project analysis pipeline."""
     proj = pathlib.Path(path).resolve()
     loader = ConfigLoader()
@@ -31,6 +37,7 @@ def run_analysis(path: str, workers: Optional[int], format: str, no_cache: bool)
         config=cfg,
         max_workers=workers,
         ignore_cache=no_cache,
+        include_md=include_md,
     )
     if format != "json":
         click.echo(f"🚀 Analyzing {proj.name}...")

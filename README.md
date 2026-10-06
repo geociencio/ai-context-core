@@ -130,6 +130,9 @@ Runs the complete analysis pipeline. Generates `AI_CONTEXT.md`, `PROJECT_SUMMARY
     - `--format json`: Generates a machine-readable JSON analysis for CI/CD integration.
     - `--no-cache`: Forces a full re-analysis, ignoring incremental metadata.
     - `--workers <n>`: Override automatic parallel worker calculation.
+    - `--include-md <glob>`: Embed extra markdown docs (repeatable) into the
+      "MANUAL ARCHITECTURE NOTES" section. Also configurable per project via the
+      `context_docs` config key.
 - **Usage**: `ai-ctx analyze --format json > report.json`
 
 #### `ai-ctx profiles`
