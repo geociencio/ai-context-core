@@ -9,8 +9,14 @@ from .visitors_base import BaseVisitor
 class GenericQGISComplianceVisitor(BaseVisitor):
     """Visitor to check for QGIS coding standards and best practices."""
 
-    def __init__(self, no_i18n_lines=None):
-        """Initialize the visitor with default results and checkers."""
+    def __init__(self, no_i18n_lines=None, ignored_functions=None, ui_functions=None):
+        """Initialize the visitor with default results and checkers.
+
+        Args:
+            no_i18n_lines: Line numbers opted out via ``# no-i18n``.
+            ignored_functions: Optional override of the i18n technical denylist.
+            ui_functions: Optional override of the i18n UI allowlist.
+        """
         super().__init__()
         self.results = {
             "processing_framework": False,
@@ -26,7 +32,12 @@ class GenericQGISComplianceVisitor(BaseVisitor):
 
         self.checkers = [
             ImportStyleChecker(self.results),
-            I18nChecker(self.results, no_i18n_lines=no_i18n_lines),
+            I18nChecker(
+                self.results,
+                no_i18n_lines=no_i18n_lines,
+                ignored_functions=ignored_functions,
+                ui_functions=ui_functions,
+            ),
             FrameworkChecker(self.results),
             QGISApiChecker(self.results),
         ]
@@ -72,9 +83,12 @@ class GenericQGISComplianceVisitor(BaseVisitor):
         """Visits a call node to detect i18n usage and legacy signals."""
         func_name = self._get_func_name(node.func)
         is_ignored_func = self._i18n_checker.is_ignored_func(func_name)
+        is_ui_func = not is_ignored_func and self._i18n_checker.is_ui_func(func_name)
 
         if is_ignored_func:
             self._i18n_checker.set_ignored(True)
+        elif is_ui_func:
+            self._i18n_checker.set_ui_call(True)
 
         for checker in self.checkers:
             checker.visit(node)
@@ -83,6 +97,8 @@ class GenericQGISComplianceVisitor(BaseVisitor):
 
         if is_ignored_func:
             self._i18n_checker.set_ignored(False)
+        elif is_ui_func:
+            self._i18n_checker.set_ui_call(False)
 
     def _get_func_name(self, func: ast.expr) -> str:
         """Helper to get the name of a called function."""
