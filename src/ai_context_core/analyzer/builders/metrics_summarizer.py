@@ -2,6 +2,8 @@
 
 from typing import Dict, Any
 
+from . import metric_keys
+
 
 class MetricsSummarizer:
     """Summarizes project metrics for reporting."""
@@ -22,6 +24,23 @@ class MetricsSummarizer:
         test_count = metrics.get("test_files_count")
         test_display = "n/a" if test_count is None else f"{test_count} test files"
         lines.append(f"- **Test Files**: {test_display}")
+        lines.append(
+            "- _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._"
+        )
+
+        breakdown = metrics.get(metric_keys.SCORE_BREAKDOWN) or {}
+        if breakdown:
+            lines.append("\n**Score Breakdown**:")
+            lines.append(f"- Base: {breakdown.get('base', 0):.0f}")
+            for label, key in (
+                ("Complexity (avg)", "complexity"),
+                ("Complexity (max)", "max_complexity"),
+                ("Maintainability", "maintainability"),
+                ("Tests", "tests"),
+            ):
+                value = breakdown.get(key, 0)
+                if value:
+                    lines.append(f"- {label}: {value:+.1f}")
 
         return "\n".join(lines)
 

@@ -12,6 +12,7 @@ MAX_COMPLEXITY = "max_complexity"
 AVG_MAINTENANCE_INDEX = "avg_maintenance_index"
 TEST_FILES_COUNT = "test_files_count"
 ENTRY_POINTS_COUNT = "entry_points_count"
+SCORE_BREAKDOWN = "score_breakdown"
 
 PROJECT_METRIC_KEYS: FrozenSet[str] = frozenset(
     {
@@ -25,6 +26,7 @@ PROJECT_METRIC_KEYS: FrozenSet[str] = frozenset(
         AVG_MAINTENANCE_INDEX,
         TEST_FILES_COUNT,
         ENTRY_POINTS_COUNT,
+        SCORE_BREAKDOWN,
     }
 )
 

@@ -72,4 +72,17 @@ def _get_hardcoded_defaults() -> Dict[str, Any]:
             "size_small": 200,
             "size_medium": 500,
         },
+        "scoring": {
+            "base_score": 100.0,
+            "complexity_medium_threshold": 15.0,
+            "complexity_medium_penalty_per_point": 2.0,
+            "complexity_high_threshold": 25.0,
+            "complexity_high_penalty_per_point": 0.5,
+            "complexity_high_penalty_cap": 10.0,
+            "maintainability_threshold": 65.0,
+            "maintainability_penalty_per_point": 1.5,
+            "no_tests_penalty": 20.0,
+            "tests_bonus_per_file": 2.0,
+            "tests_bonus_cap": 10.0,
+        },
     }

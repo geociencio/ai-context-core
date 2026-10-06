@@ -275,7 +275,7 @@ Technical debt prioritization engine. Calculates a "Refactor Score" based on (Co
 
 | Metric | Definition | Notes |
 | :--- | :--- | :--- |
-| **ai-ctx Quality Score** | Aggregated 0-100 heuristic: base 100 minus penalties for average complexity, low maintainability, and missing tests, plus test bonuses. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. |
+| **ai-ctx Quality Score** | Aggregated 0-100 heuristic: base 100 minus penalties for average/outlier complexity, low maintainability, and missing tests, plus test bonuses. The report includes an explicit score breakdown. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. |
 | **Avg Cyclomatic Complexity** | Arithmetic mean of per-module cyclomatic complexity. | This is an **average**. `qgis-analyzer` applies a per-function **gate** (CC ≤ 10), so the two numbers mean different things. |
 | **Avg Maintenance Index (MI)** | SEI Maintenance Index normalized to 0-100, averaged across modules. | Exclusive to `ai-context-core`. |
 | **Max Complexity** | Highest single-module cyclomatic complexity. | Complements the average to surface outliers. |
