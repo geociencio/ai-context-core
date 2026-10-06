@@ -3,6 +3,9 @@
 from typing import List, Dict, Any
 import re
 import fnmatch
+import logging
+
+logger = logging.getLogger(__name__)
 
 _PATTERN_CACHE = {}
 
@@ -41,8 +44,9 @@ def _match_path(path: str, pattern: str) -> bool:
                     regex_str = f"^{regex_str}$"
 
                 _PATTERN_CACHE[pattern] = re.compile(regex_str)
-        except Exception:
-            # Fallback if regex generation fails
+        except Exception as exc:
+            # Fallback if regex generation fails, but never silently
+            logger.warning("Invalid glob pattern %r: %s", pattern, exc)
             return False
 
     regex = _PATTERN_CACHE[pattern]

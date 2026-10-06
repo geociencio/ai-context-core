@@ -1,7 +1,7 @@
 """Core metrics calculation logic (MI, Halstead, etc.)."""
 
 import math
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from . import metric_keys
 
@@ -81,7 +81,7 @@ def calculate_halstead_metrics(n1: int, n2: int, N1: int, N2: int) -> Dict[str, 
 def calculate_project_metrics(
     modules: list[Dict[str, Any]],
     entry_points: list[str],
-    test_files_count: int,
+    test_files_count: Optional[int],
     config: Dict[str, Any],
     extra_data: Dict[str, Any] = None,
 ) -> Dict[str, Any]:
@@ -90,7 +90,7 @@ def calculate_project_metrics(
     Args:
         modules: List of module analysis results.
         entry_points: List of entry point/main file paths.
-        test_files_count: Number of test files found.
+        test_files_count: Number of test files found, or None if unevaluated.
         config: Configuration dictionary.
         extra_data: Additional data like QGIS compliance results.
 
@@ -122,10 +122,11 @@ def calculate_project_metrics(
         score -= (65 - avg_mi) * 1.5
 
     # Bonus/Penalty for tests
-    # Simple heuristic: if test_files_count is 0 and we have code -> penalty
+    # Simple heuristic: if test_files_count is 0 and we have code -> penalty.
+    # A None count means "not evaluated", so no penalty is applied.
     if test_files_count == 0 and total_loc > 0:
         score -= 20
-    elif test_files_count > 0:
+    elif test_files_count:
         score += min(10, test_files_count * 2)
 
     # QGIS specific adjustments

@@ -14,8 +14,13 @@ class StructureBuilder(BaseContextBuilder):
 
         ep = self.analyses.get("entry_points", [])
         lines.append("## 🎯 ENTRY POINTS")
-        for p in ep[:10]:
-            lines.append(f"- `{p}`")
+        for item in ep[:10]:
+            if isinstance(item, dict):
+                path = item.get("path", "N/A")
+                etype = item.get("type") or "unknown"
+                lines.append(f"- `{path}` ({etype})")
+            else:
+                lines.append(f"- `{item}`")
         if len(ep) > 10:
             lines.append(f"... and {len(ep) - 10} more")
 

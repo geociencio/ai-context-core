@@ -36,21 +36,6 @@ def test_aggregate_security_combined():
         assert res[0]["total_issues"] == 2
 
 
-def test_legacy_qgis_aggregation_wrapper():
-    # Coverage for aggregator.py lines 159-161
-    aggregator = ResultsAggregator(pathlib.Path("/tmp/proj"), {})
-    m_data = [{"path": "m.py"}]
-    metadata = {"compliance_score": 100}
-
-    with patch(
-        "ai_context_core.analyzer.builders.aggregator_qgis.aggregate_qgis_compliance"
-    ) as mock_agg:
-        mock_agg.return_value = {"score": 100}
-        res = aggregator._aggregate_qgis_compliance(m_data, metadata)
-        assert res["score"] == 100
-        mock_agg.assert_called_once_with(m_data, metadata)
-
-
 def test_qgis_aggregation_processing_framework():
     # Coverage for aggregator_components/qgis.py line 63
     from ai_context_core.analyzer.builders.aggregator_qgis import (

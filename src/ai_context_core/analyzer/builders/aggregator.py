@@ -12,6 +12,7 @@ from . import calculator as metrics
 from . import ai_recommendations
 from . import metric_keys
 from ..visitors import issues as v_issues
+from ..providers.fs_scanner import count_test_files
 
 logger = logging.getLogger(__name__)
 
@@ -61,11 +62,22 @@ class ResultsAggregator:
         qgis_compliance = self._run_qgis_aggregation(valid_modules, qgis_metadata)
 
         # Project-level metrics
-        entry_points = [m["path"] for m in valid_modules if m.get("has_main")]
+        entry_point_modules = [m for m in valid_modules if m.get("has_main")]
+        entry_points = [m["path"] for m in entry_point_modules]
+        entry_points_detail = [
+            {
+                "path": m["path"],
+                "type": m.get("entry_point_info", {}).get("type") or "unknown",
+            }
+            for m in entry_point_modules
+        ]
+        # Count test files independently of the analysis scope so that projects
+        # excluding tests/ from analysis are not unfairly penalized.
+        test_files_count = count_test_files(self.project_path)
         project_metrics = metrics.calculate_project_metrics(
             valid_modules,
             entry_points,
-            len([m for m in valid_modules if "test" in m["path"].lower()]),
+            test_files_count,
             self.config,
             {"qgis_compliance": qgis_compliance},
         )
@@ -98,6 +110,7 @@ class ResultsAggregator:
             "optimizations": optimizations,
             "recommendations": recommendations,
             "patterns": self._aggregate_patterns(valid_modules),
+            "entry_points": entry_points_detail,
             "git": git_data,
             "timestamp": time.time() if "time" in globals() else None,
         }
@@ -171,14 +184,6 @@ class ResultsAggregator:
                         }
                     )
         return all_security
-
-    def _aggregate_qgis_compliance(
-        self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Legacy wrapper for QGIS compliance aggregation."""
-        from .aggregator_qgis import aggregate_qgis_compliance
-
-        return aggregate_qgis_compliance(m_data, metadata)
 
 
 # Alias for backward compatibility

@@ -19,7 +19,9 @@ class MetricsSummarizer:
         lines.append(f"- **Source Lines (SLOC)**: {metrics.get('total_lines_code', 0):,}")
         lines.append(f"- **Total Physical Lines**: {metrics.get('total_physical_lines', 0):,}")
         lines.append(f"- **Maintainability**: {metrics.get('avg_maintenance_index', 0):.1f}")
-        lines.append(f"- **Test Coverage**: {metrics.get('test_files_count', 0)} test files")
+        test_count = metrics.get("test_files_count")
+        test_display = "n/a" if test_count is None else f"{test_count} test files"
+        lines.append(f"- **Test Files**: {test_display}")
 
         return "\n".join(lines)
 

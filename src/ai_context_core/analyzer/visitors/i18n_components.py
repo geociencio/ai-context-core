@@ -13,21 +13,19 @@ def _dominated_by_punctuation(value: str) -> bool:
     return punct > alpha
 
 
-def is_translatable_string(value: str, in_dict_key: bool = False) -> bool:
+def is_translatable_string(value: str) -> bool:
     """Determine if a string value should be counted as translatable.
+
+    Dictionary-key context is tracked externally by the caller
+    (see ``GenericQGISComplianceVisitor.visit_Dict``).
 
     Args:
         value: String value to check
-        in_dict_key: Whether this string is a dictionary key
 
     Returns:
         True if the string should be counted as translatable
     """
     if not isinstance(value, str):
-        return False
-
-    # Ignore dictionary keys
-    if in_dict_key:
         return False
 
     # Ignore very short strings (likely not user-facing)

@@ -2,8 +2,29 @@
 
 import os
 import pathlib
-from typing import List, Dict, Any, NamedTuple
+from typing import List, Dict, Any, NamedTuple, Optional
 from .ignore_filter import IgnoreFilter
+
+# Directories that must never contain project tests and are expensive to walk.
+_TEST_SCAN_IGNORED_DIRS = frozenset(
+    {
+        ".git",
+        ".hg",
+        ".svn",
+        ".venv",
+        "venv",
+        "env",
+        "__pycache__",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".tox",
+        "node_modules",
+        ".eggs",
+        "build",
+        "dist",
+    }
+)
 
 
 class ProjectScanResult(NamedTuple):
@@ -120,3 +141,32 @@ def scan_project(project_path: pathlib.Path, patterns: List[str]) -> ProjectScan
     filt = IgnoreFilter(project_path, extra_patterns=patterns)
     scanner = ProjectScanner(project_path, filt)
     return scanner.scan()
+
+
+def count_test_files(project_path: pathlib.Path) -> Optional[int]:
+    """Count test files independently of the analysis ignore rules.
+
+    Test coverage scoring must not depend on whether ``tests/`` was excluded
+    from *analysis* (e.g. via ``.analyzerignore``). This walker therefore
+    ignores only heavyweight or VCS directories, never the user's analysis
+    patterns, so excluded test suites still count as project tests.
+
+    Args:
+        project_path: Root directory of the project to scan.
+
+    Returns:
+        The number of test files found, or ``None`` when the path is not a
+        directory (i.e. the count could not be evaluated).
+    """
+    if not project_path.is_dir():
+        return None
+
+    from .fs_helpers import is_test_file
+
+    count = 0
+    for root, dirs, files in os.walk(project_path):
+        dirs[:] = [d for d in dirs if d not in _TEST_SCAN_IGNORED_DIRS]
+        for file in files:
+            if file.endswith(".py") and is_test_file(pathlib.Path(root) / file):
+                count += 1
+    return count
