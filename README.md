@@ -98,6 +98,20 @@ pip install ai-context-core
 
 For detailed configuration options, see [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
 
+### Analysis Scope (`.analyzerignore`)
+
+`ai-ctx` reads a `.analyzerignore` file at the project root to exclude paths from
+the **analysis scope** (modules, dependency graph, security scan, code metrics).
+
+> [!IMPORTANT]
+> A project `.analyzerignore` **replaces** the built-in defaults; it does not
+> extend them. Re-list the standard environment/packaging patterns
+> (`__pycache__/`, `.git/`, `.venv/`, `build/`, `dist/`, `*.egg-info/`) if you
+> still want them ignored.
+
+Excluding `tests/` here does **not** remove the test bonus from the Quality Score:
+test files are counted by a decoupled scanner that ignores `.analyzerignore`.
+
 ### QGIS i18n Analysis
 
 Configure the scope and classification of internationalization analysis in

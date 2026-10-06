@@ -1,0 +1,31 @@
+# Auto-analysis scope for ai-context-core itself.
+#
+# NOTE: a project `.analyzerignore` REPLACES the built-in defaults, it does not
+# extend them. Keep the standard environment/packaging patterns below.
+#
+# This file only affects the *analysis* scope (modules, dependency graph,
+# security scan, code metrics). It does NOT affect the decoupled test-file
+# counter used by the Quality Score, so excluding `tests/` here keeps the test
+# bonus intact while measuring only the shipped package.
+
+# Tests are not shipped code and would skew average maintainability.
+tests/
+
+# Dev/build tooling, not part of the distributed library.
+scripts/
+
+# Standard environment, VCS and packaging artifacts.
+__pycache__/
+.git/
+.venv/
+venv/
+env/
+.tox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
