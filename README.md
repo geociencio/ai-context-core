@@ -98,17 +98,22 @@ pip install ai-context-core
 
 For detailed configuration options, see [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
 
-### QGIS i18n Analysis (New in v3.2.0)
+### QGIS i18n Analysis
 
-Configure the scope of internationalization analysis in your project's `.ai-context/config.toml` (or `src/ai_context_core/config/profiles/qgis.toml`):
+Configure the scope and classification of internationalization analysis in
+`.ai-context/config.toml` (or `src/ai_context_core/config/profiles/qgis.toml`):
 
 ```toml
-[qgis.i18n]
+[patterns.i18n]
 # Scope: "all" (default), "gui_only", or "custom"
 scope = "gui_only"
 
 # Patterns used when scope = "gui_only"
 gui_patterns = ["gui/**/*.py", "ui/**/*.py"]
+
+# Optional overrides for string classification (omit to use the built-in lists)
+# ignored_functions = ["setObjectName", "addItem"]  # technical denylist
+# ui_functions = ["setText", "setTitle"]            # user-facing allowlist
 ```
 
 ## Commands Reference

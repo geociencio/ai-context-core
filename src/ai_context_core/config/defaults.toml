@@ -65,3 +65,8 @@ enabled = false
 
 [patterns.linter]
 enabled = true
+
+# i18n analysis tuning (optional). Omit these keys to use the built-in lists.
+# ignored_functions = ["setObjectName", "addItem"]   # technical denylist override
+# ui_functions = ["setText", "setTitle"]             # user-facing allowlist override
+[patterns.i18n]

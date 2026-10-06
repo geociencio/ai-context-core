@@ -131,6 +131,7 @@ class AnalysisWorker:
                 return {}
             tree = ast.parse(content)
             tree.no_i18n_lines = find_no_i18n_lines(content)
+            tree.i18n_config = (self.config.get("patterns", {}) or {}).get("i18n", {}) or {}
 
             entry_data = ast_utils.is_entry_point(tree)
             complexity = ast_utils.calculate_complexity(tree)
