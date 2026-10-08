@@ -306,20 +306,31 @@ Technical debt prioritization engine. Calculates a "Refactor Score" based on (Co
 
 `ai-context-core` is more than a code packager; it is a **deep static intelligence engine** designed to maximize context fidelity for LLMs. While many tools focus on "repository dumping," we focus on **semantic extraction** and **domain-specific hygiene**.
 
-### Detailed Comparison Matrix (2024-2025)
+### Detailed Comparison Matrix (2025-2026)
 
 | Feature | `ai-context-core` | `Repomix` | `Aider` | `Gitingest` | `Code2Prompt` |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Primary Goal** | **Context + Hygiene** | **Code Packaging** | **AI Pair Progr.** | **Quick Digest** | **Prompt Builder** |
-| **Analysis Depth**| **Deep AST** (Semantics) | Tree-sitter (Basic) | Repo Map (Signatures) | Plain Text | Plain Text |
-| **Pattern Detection**| ✅ **Native (5 Patterns)** | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Anti-Patterns** | ✅ God Object/Spaghetti | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Quality Metrics** | ✅ **CC, MI, Halstead** | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Security Audit** | ✅ **Deep (SQLi/Secrets)** | ⚠️ Basic (Secrets) | ❌ No | ❌ No | ❌ No |
-| **Git Awareness** | ✅ **Hotspots/Churn** | ❌ No | ⚠️ Basic Diffs | ❌ No | ✅ Yes |
+| **Analysis Depth** | **Deep AST (Python semantics)** | Plain text + Tree-sitter (compress) | Repo Map (signatures) | Plain text | Plain text |
+| **Language Scope** | Python only | Multi-language | 100+ languages | Multi-language | Multi-language |
+| **Pattern Detection** | ✅ **Native (5, heuristic)** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Anti-Patterns** | ✅ God Object/Spaghetti (detection) | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Quality Metrics** | ✅ **CC, MI, Halstead** (per-module) | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Security Audit** | ✅ **AST (SQLi/Secrets/eval)** | ⚠️ Secretlint (secrets) | ❌ No | ❌ No | ❌ No |
+| **Git Awareness** | ✅ **Hotspots/Churn** | ✅ Logs/Diffs + change-sort | ⚠️ Auto-commit/undo/diffs | ❌ No | ⚠️ `.gitignore` only |
 | **Domain Logic** | ✅ **QGIS/Qt6 Specialists** | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Reporting** | ✅ HTML/JSON/Markdown | ✅ XML/JSON/MD | ❌ In-Chat | ❌ Console | ✅ XML/JSON/MD |
-| **Performance** | ✅ Parallel + SHA Cache | ✅ Fast | ✅ Incremental | ✅ Web-Speed | ✅ Rust-Based |
+| **Token Counting / Budget** | ❌ No | ✅ Yes | ✅ Context mgmt | ✅ Yes | ✅ Yes |
+| **Remote / URL Ingest** | ❌ No | ✅ Yes | ❌ No | ✅ Yes | ❌ No |
+| **Custom Templates** | ⚠️ Context docs / `AGENTS.md` | ✅ Instruction header | ⚠️ `CONVENTIONS.md` | ❌ No | ✅ **Jinja2** |
+| **MCP / Editor Integration** | ❌ No | ✅ MCP + IDE/browser ext | ✅ IDE watch | ✅ Browser ext | ❌ No |
+| **Reporting** | ✅ HTML/JSON/Markdown | ✅ XML/JSON/MD/Plain | ❌ In-Chat | ⚠️ Text digest (+web) | ✅ Markdown (Jinja2) |
+| **Performance** | ✅ Parallel + SHA Cache | ✅ Fast (Node) | ✅ Incremental | ✅ Web-Speed | ✅ Fast (Python) |
+
+> **Scope note:** the `ai-context-core` column describes a **Python-only** static-analysis
+> engine (code hygiene + QGIS focus), not a multi-language packager. Competitor cells are
+> based on their official READMEs (2026). Pattern/anti-pattern detection and quality metrics
+> are heuristics with per-module granularity; anti-patterns are exposed via
+> `project_context.json` / `--format json`.
 
 ### Why Choose `ai-context-core`?
 
@@ -330,10 +341,10 @@ Tools like **Repomix** and **Gitingest** are excellent for "packing" your code i
 We are the only tool with first-class support for the **QGIS ecosystem**.
 - **i18n Tracking**: Real-time coverage of `self.tr()` strings.
 - **Qt6 Migration**: Automated auditing for PyQt5 to PyQt6 transitions (essential for QGIS 4.x).
-- **Processing Framework**: Structural validation of QGIS algorithms.
+- **Processing Framework**: Detection of QGIS algorithm/provider base classes.
 
 #### 3. Actionable Technical Debt Identification
-By combining **Git Churn/Hotspots** with **Cyclomatic Complexity**, we identify "Biological Debt"—files that are both complex and frequently modified. This guides your AI assistant to the most critical areas for refactoring.
+By combining **Git Churn/Hotspots** with **Cyclomatic Complexity**, the `ai-ctx roadmap` command surfaces "Biological Debt"—files that are both complex and frequently modified. This guides your AI assistant to the most critical areas for refactoring.
 
 #### 4. Security-First Context
 Our integrated security scan detects **SQL Injection**, **Insecure Calls**, and **Hardcoded Secrets** using context-aware AST analysis, ensuring that the code you provide to an LLM is not only readable but also safe and compliant.
