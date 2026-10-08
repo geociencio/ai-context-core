@@ -1,7 +1,7 @@
 import unittest
 import ast
-from ai_context_core.analyzer.summarizers.issues import IssuesSummarizer
-from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummarizer
+from ai_context_core.analyzer.builders.issues import IssuesSummarizer
+from ai_context_core.analyzer.builders.git_patterns import GitPatternsSummarizer
 from ai_context_core.analyzer.visitors.observer_rules import (
     detect_signals,
 )

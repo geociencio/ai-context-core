@@ -1,6 +1,6 @@
 import ast
 from click.testing import CliRunner
-from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummarizer
+from ai_context_core.analyzer.builders.git_patterns import GitPatternsSummarizer
 from ai_context_core.analyzer.visitors.qgis_base import get_node_name
 from ai_context_core.cli.commands.specialized import deps_cmd
 

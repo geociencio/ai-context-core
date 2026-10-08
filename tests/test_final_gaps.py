@@ -3,8 +3,8 @@ import pytest
 from ai_context_core.analyzer.visitors.singleton_rules import (
     check_singleton_method,
 )
-from ai_context_core.analyzer.qgis_checkers.base import BaseQGISChecker
-from ai_context_core.analyzer.summarizers.base import BaseSummarizer
+from ai_context_core.analyzer.visitors.qgis_base import BaseQGISChecker
+from ai_context_core.analyzer.builders.summarizer_base import BaseSummarizer
 
 
 def test_singleton_method_attr_decorator_coverage():

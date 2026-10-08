@@ -41,7 +41,6 @@ ai-context-core/
 │       │   ├── 📁 visitors/    # AST Analyzers (Issues, Patterns, Complexity)
 │       │   ├── 📁 builders/    # Report & Data Construction (HTML, Markdown)
 │       │   ├── 📁 providers/   # Data Sources (FS, Git, QGIS)
-│       │   ├── 📁 context_builders/ # Knowledge base generation
 │       │   └── engine.py       # Main Orchestration Logic
 │       │
 │       ├── 📁 cli/             # CLI Implementation

@@ -5,7 +5,7 @@ Tests masivos para cubrir todos los gaps restantes.
 import pathlib
 from unittest.mock import patch
 from ai_context_core.analyzer.visitors.issues import find_secrets
-from ai_context_core.analyzer.graph.builder import ImportGraphBuilder
+from ai_context_core.analyzer.builders.builder import ImportGraphBuilder
 from ai_context_core.analyzer.builders.classifier import (
     classify_imports,
 )
@@ -115,8 +115,8 @@ def test_dependencies_fallback():
     assert "os" in STDLIB_MODULES or isinstance(STDLIB_MODULES, set)
 
 
-def test_context_builders_coverage():
-    # Coverage for context_builders lines
+def test_context_section_builders():
+    # Coverage for context/summary section builders
     from ai_context_core.analyzer.builders.dependencies import DependencyBuilder
     from ai_context_core.analyzer.builders.patterns import PatternsBuilder
     from ai_context_core.analyzer.builders.structure import StructureBuilder

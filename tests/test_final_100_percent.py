@@ -6,7 +6,7 @@ Cubre los últimos 83 líneas en engine, tech_debt, patterns, issues, etc.
 import ast
 import pathlib
 from unittest.mock import patch, mock_open
-from ai_context_core.analyzer.checkers.tech_debt_checker import TechDebtChecker
+from ai_context_core.analyzer.visitors.tech_debt_checker import TechDebtChecker
 from ai_context_core.analyzer.builders.patterns import PatternsBuilder
 from ai_context_core.analyzer.builders.structure import StructureBuilder
 from ai_context_core.analyzer.visitors.issues import find_secrets

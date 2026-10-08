@@ -5,7 +5,7 @@ from ai_context_core.analyzer.visitors.ast_entry_points import (
     has_main_guard,
     EntryPointVisitor,
 )
-from ai_context_core.analyzer.entry_point_detectors.framework_rules import DecoratorRule
+from ai_context_core.analyzer.visitors.framework_rules import DecoratorRule
 
 
 def test_entry_point_visitor_assign_early_return():

@@ -1,6 +1,6 @@
 import pytest
 from ai_context_core.analyzer.registry import CheckerRegistry
-from ai_context_core.analyzer.checkers import BaseChecker
+from ai_context_core.analyzer.visitors.checker_base import BaseChecker
 
 
 class MockChecker(BaseChecker):
@@ -28,8 +28,8 @@ def test_checker_registry_register_and_run():
 
 
 def test_base_checker_abstract():
-    # BaseChecker is in src/ai_context_core/analyzer/checkers/__init__.py or similar
-    from ai_context_core.analyzer.checkers import BaseChecker
+    # BaseChecker lives in visitors/checker_base.py
+    from ai_context_core.analyzer.visitors.checker_base import BaseChecker
 
     checker = BaseChecker({})
     with pytest.raises(NotImplementedError):

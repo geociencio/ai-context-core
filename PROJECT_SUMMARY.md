@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 17:58:58
+Analysis Date: 2026-10-08 18:03:59
 Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 100.0/100
-- **Source Lines (SLOC)**: 6,362
-- **Total Physical Lines**: 10,135
-- **Maintainability**: 60.0
+- **ai-ctx Quality Score**: 90.4/100
+- **Source Lines (SLOC)**: 6,184
+- **Total Physical Lines**: 9,780
+- **Maintainability**: 51.9
 - **Test Files**: 74 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -7.5
+- Maintainability: -19.6
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 189
+**Total Modules**: 157
 
 ```tree
 ./
@@ -66,40 +66,6 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     fs_helpers.py
                     fs_scanner.py
                     ... (+9 more)
-                summarizers/
-                    __init__.py
-                    base.py
-                    git_patterns.py
-                    issues.py
-                    qgis.py
-                context_builders/
-                    dependencies.py
-                    patterns.py
-                    structure.py
-                checkers/
-                    __init__.py
-                    optimization_checker.py
-                    security_checker.py
-                    tech_debt_checker.py
-                patterns_detectors/
-                    __init__.py
-                    base.py
-                    decorator.py
-                    decorator_rules.py
-                    factory.py
-                    observer.py
-                    observer_rules.py
-                    ... (+3 more)
-                graph/
-                    __init__.py
-                    builder.py
-                qgis_checkers/
-                    base.py
-                    frameworks.py
-                entry_point_detectors/
-                    framework_rules.py
-                security_checkers/
-                    base.py
             context/
                 manager.py
                 components/
@@ -136,14 +102,6 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     compare.py
                     deps.py
                     ... (+15 more)
-            commands/
-                __init__.py
-                clean.py
-                report.py
-            cli_groups/
-                __init__.py
-                specialized.py
-                workflows.py
         ai_context_core.egg-info/
             PKG-INFO
             SOURCES.txt
@@ -285,10 +243,10 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 258
-- **Additions**: +16878
-- **Deletions**: -23308
-- **Total Churn**: 40186
+- **Files Changed**: 278
+- **Additions**: +17535
+- **Deletions**: -24109
+- **Total Churn**: 41644
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 30 commits
@@ -298,5 +256,5 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 6.37
+- **Avg Cyclomatic Complexity**: 7.46
 - **Max Complexity**: 24

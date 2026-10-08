@@ -1,7 +1,6 @@
 """Design patterns detection module for ai-context-core.
 
 Uses AST to identify common architectural patterns through a class-based detection system.
-This module now acts as a facade for individual detectors located in `patterns_detectors`.
 """
 
 import ast

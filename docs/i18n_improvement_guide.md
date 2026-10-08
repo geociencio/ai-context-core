@@ -4,7 +4,7 @@ This document details the current state of i18n string detection in `ai-context-
 
 ## 1. Current State (v3.1.x)
 
-The detection logic resides in `ai_context_core/analyzer/qgis_checkers/i18n_components/string_utils.py`. The `is_translatable_string` function uses the following heuristics:
+The detection logic resides in `ai_context_core/analyzer/visitors/i18n_components.py`. The `is_translatable_string` function uses the following heuristics:
 
 - **Exclusion Filters**: Ignores empty strings, single characters, paths (`/`, `./`, `\\`), URLs (`http://`), and technical placeholders (`{}`).
 - **Inclusion Criteria**: Accepts strings containing **spaces** or specific punctuation (`.,!?;`).

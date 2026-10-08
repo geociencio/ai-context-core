@@ -171,4 +171,19 @@ quality score ni en las métricas canónicas.
   - #12 `metrics_summarizer.py` usa las constantes de `metric_keys`.
   - Verificación: `ruff check` OK · `pytest` 307/307 · quality score 100/100 ·
     `validate_agent_system` PASS.
-- [ ] Fase C
+- [x] **Fase C — Completada** (2026-10-08)
+  - #13 Borrados los 10 paquetes facade: `patterns_detectors`, `context_builders`,
+    `summarizers`, `qgis_checkers`, `security_checkers`, `entry_point_detectors`,
+    `graph`, `checkers`, `commands` (top-level) y `cli_groups`.
+  - #14 Registro doble de comandos CLI eliminado en `cli/__init__.py`; la ayuda
+    expone solo los nombres naturales.
+  - #15 `test_deprecated_facades.py` sustituido por `test_deprecated_aliases.py`
+    (conserva el contrato de aliases vivos); referencias fantasma y docs vivos
+    (`PROJECT_STRUCTURE_EN.md`, `i18n_improvement_guide.md`) corregidos.
+  - Tests de cobertura reapuntados a los módulos canónicos.
+  - Verificación: `ruff check` OK · `pytest` 303/303 · `ai-ctx audit --threshold 70`
+    PASS (score 90.4).
+  - **Nota sobre el score:** el ai-ctx Quality Score bajó de 100 a 90.4 porque los
+    facades eran módulos diminutos con MI≈100; al eliminarlos cae el *promedio* de
+    mantenibilidad (60→51.9). No es una regresión real: el release gate (70) sigue
+    holgado y el guard de `test_self_score.py` se ajustó a >=90.

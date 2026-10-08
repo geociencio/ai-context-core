@@ -1,4 +1,4 @@
-from ai_context_core.analyzer.summarizers.qgis import QGISSummarizer
+from ai_context_core.analyzer.builders.qgis_summarizer import QGISSummarizer
 
 
 def test_qgis_summarizer_full_coverage():

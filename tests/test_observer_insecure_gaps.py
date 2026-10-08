@@ -3,7 +3,7 @@ import pytest
 from ai_context_core.analyzer.visitors.insecure_calls import (
     InsecureCallsChecker,
 )
-from ai_context_core.analyzer.security_checkers.base import BaseSecurityChecker
+from ai_context_core.analyzer.visitors.security_base import BaseSecurityChecker
 from ai_context_core.analyzer.visitors.observer_rules import (
     analyze_class_body,
 )

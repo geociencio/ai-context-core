@@ -103,8 +103,7 @@ def test_cli_main_entry():
 
 
 def test_observer_class_analyzer_exception():
-    # Coverage for src/ai_context_core/analyzer/patterns_detectors/observer_components/class_analyzer.py 37-38
-    # _check_connection_call try-except
+    # Coverage for observer_rules._check_connection_call try-except
     from ai_context_core.analyzer.visitors.observer_rules import (
         _check_connection_call,
     )
