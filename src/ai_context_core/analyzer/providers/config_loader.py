@@ -20,9 +20,7 @@ def load_config(root_path: pathlib.Path) -> Dict[str, Any]:
     default_config = {}
     if tomllib:
         try:
-            defaults_path = (
-                pathlib.Path(__file__).parent.parent / ".." / "config" / "defaults.toml"
-            )
+            defaults_path = pathlib.Path(__file__).parent.parent / ".." / "config" / "defaults.toml"
             if defaults_path.exists():
                 with open(defaults_path, "rb") as f:
                     default_config = tomllib.load(f)

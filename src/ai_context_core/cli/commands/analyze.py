@@ -6,6 +6,7 @@ import sys
 import click
 from typing import Optional
 from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.analyzer.builders import metric_keys
 from ai_context_core.config.loader import ConfigLoader
 
 
@@ -29,9 +30,7 @@ def run_analysis(
         except Exception:
             pass
 
-    cfg = loader.load_config(
-        profile_name=local_cfg.get("profile_name"), override_config=local_cfg
-    )
+    cfg = loader.load_config(profile_name=local_cfg.get("profile_name"), override_config=local_cfg)
     analyzer = ProjectAnalyzer(
         project_path=str(proj),
         config=cfg,
@@ -50,13 +49,11 @@ def run_analysis(
             return
 
         m = res.get("metrics", {})
-        q = m.get("quality_score", 0)
+        q = m.get(metric_keys.QUALITY_SCORE, 0)
         click.echo("-" * 40)
-        click.secho(
-            f"🏆 ai-ctx Quality Score: {q:.1f}/100", fg="green" if q > 80 else "yellow"
-        )
+        click.secho(f"🏆 ai-ctx Quality Score: {q:.1f}/100", fg="green" if q > 80 else "yellow")
         click.echo(
-            f"📊 Lines: {m.get('total_lines_code', 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"
+            f"📊 Lines: {m.get(metric_keys.TOTAL_LINES_CODE, 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"
         )
         click.echo("-" * 40)
         click.secho("✅ Completed.", fg="green")
@@ -75,12 +72,10 @@ def run_audit(path: str, threshold: float):
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
     click.echo(f"🛡️  Auditing {proj.name} (Threshold: {threshold})...")
     res = analyzer.analyze()
-    score = res.get("metrics", {}).get("quality_score", 0)
+    score = res.get("metrics", {}).get(metric_keys.QUALITY_SCORE, 0)
 
     if score < threshold:
-        click.secho(
-            f"❌ Audit Failed: Score {score:.1f} is below {threshold}", fg="red"
-        )
+        click.secho(f"❌ Audit Failed: Score {score:.1f} is below {threshold}", fg="red")
         sys.exit(1)
     else:
         click.secho(f"✅ Audit Passed: Score {score:.1f}", fg="green")

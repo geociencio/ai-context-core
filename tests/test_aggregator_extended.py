@@ -36,6 +36,32 @@ def test_aggregate_security_combined():
         assert res[0]["total_issues"] == 2
 
 
+def test_aggregate_antipatterns_shapes_into_module_issues():
+    aggregator = ResultsAggregator(pathlib.Path("/tmp/proj"), {})
+
+    m_data = [
+        {
+            "path": "mod1.py",
+            "antipatterns": [
+                {
+                    "type": "magic_number",
+                    "severity": "low",
+                    "message": "Magic number",
+                    "line": 1,
+                    "value": 42,
+                },
+            ],
+        },
+        {"path": "mod2.py", "antipatterns": []},
+    ]
+
+    res = aggregator._aggregate_antipatterns(m_data)
+
+    assert len(res) == 1
+    assert res[0]["module"] == "mod1.py"
+    assert res[0]["issues"][0]["type"] == "magic_number"
+
+
 def test_qgis_aggregation_processing_framework():
     # Coverage for aggregator_components/qgis.py line 63
     from ai_context_core.analyzer.builders.aggregator_qgis import (
@@ -72,13 +98,9 @@ def test_aggregator_timestamp():
     )
     # Mocking dependencies etc to make aggregate run
     with (
-        patch(
-            "ai_context_core.analyzer.builders.dependencies.detect_unused_imports_in_project"
-        ),
+        patch("ai_context_core.analyzer.builders.dependencies.detect_unused_imports_in_project"),
         patch("ai_context_core.analyzer.builders.calculator.calculate_project_metrics"),
-        patch(
-            "ai_context_core.analyzer.builders.ai_recommendations.generate_recommendations"
-        ),
+        patch("ai_context_core.analyzer.builders.ai_recommendations.generate_recommendations"),
         patch("ai_context_core.analyzer.builders.formatter.format_complexity_agg"),
         patch("ai_context_core.analyzer.visitors.issues.find_optimizations"),
         patch("ai_context_core.analyzer.visitors.issues.find_secrets"),

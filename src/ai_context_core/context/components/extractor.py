@@ -21,11 +21,7 @@ class ContextExtractor:
         kws = [w.lower() for w in task.split() if len(w) > 3]
         found = []
         for name, content in contexts.items():
-            s = (
-                json.dumps(content)
-                if isinstance(content, (dict, list))
-                else str(content)
-            )
+            s = json.dumps(content) if isinstance(content, (dict, list)) else str(content)
             if any(k in s.lower() for k in kws):
                 found.append(f"=== {name} ===\n{s[:1000]}")
 

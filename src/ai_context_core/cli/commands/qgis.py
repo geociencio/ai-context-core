@@ -68,9 +68,7 @@ def _show_i18n_stats(qgis):
     click.echo(f"Translated strings: {total_tr}/{total_strings} ({coverage:.1f}%)")
 
     if analyzed == 0 and total_mods > 0:
-        click.secho(
-            "⚠️  Warning: No modules matched the selected i18n scope.", fg="yellow"
-        )
+        click.secho("⚠️  Warning: No modules matched the selected i18n scope.", fg="yellow")
 
 
 def _show_qt_transition(qgis):

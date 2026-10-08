@@ -11,8 +11,7 @@ def test_subprocess_shell_true():
         checker.check(node, issues)
 
     assert any(
-        "subprocess.run" in i["pattern"] and "shell=True" in i["description"]
-        for i in issues
+        "subprocess.run" in i["pattern"] and "shell=True" in i["description"] for i in issues
     )
 
 

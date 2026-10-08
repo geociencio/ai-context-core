@@ -34,9 +34,7 @@ def analyze_qgis_resources(project_path: pathlib.Path) -> Dict[str, Any]:
 
     # 3. Check for inconsistencies
     if results["metadata"] and results["plugin_xml"]:
-        _check_inconsistencies(
-            results["metadata"], results["plugin_xml"], results["issues"]
-        )
+        _check_inconsistencies(results["metadata"], results["plugin_xml"], results["issues"])
 
     # 4. Look for .qrc files
     for root, _, files in os.walk(project_path):
@@ -72,9 +70,7 @@ def _check_inconsistencies(
     v_txt = meta_txt.get("version")
     v_xml = meta_xml.get("version")
     if v_txt and v_xml and v_txt != v_xml:
-        issues.append(
-            f"Version mismatch: metadata.txt ({v_txt}) vs plugin.xml ({v_xml})"
-        )
+        issues.append(f"Version mismatch: metadata.txt ({v_txt}) vs plugin.xml ({v_xml})")
 
     # Name check
     n_txt = meta_txt.get("name")

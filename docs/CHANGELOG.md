@@ -13,6 +13,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.0.0] - 2026-10-08 - Dead Code Removal & Metric Key Contract
+
+### Removed (Breaking)
+- **Dead `CheckerRegistry` chain**: removed `visitors/checker_registry.py`,
+  `visitors/security_checker.py`, `visitors/tech_debt_checker.py`, and
+  `visitors/debt.py`, plus the `run_analysis` / `find_security_issues` /
+  `GenericIssueDetector` / `detect_ast_security_issues` symbols in
+  `visitors/issues.py`.
+- **Registry surface**: removed the unused `register_visitor`,
+  `register_post_processor`, and `get_checker_registry` APIs from
+  `analyzer/registry.py`.
+- **Facade**: removed the deprecated `analyzer/pattern_base.py` re-export
+  (import `ai_context_core.analyzer.visitors.pattern_base.PatternDetector`).
+
+### Changed
+- **Secrets scanning**: `secrets_scanner.py` moved from `visitors/` to
+  `providers/` (pure detection stays in visitors; file I/O lives in providers).
+- **Observer rules**: removed the `# noqa: F401` re-export hop between
+  `observer_rules.py` and `observer_signal_rules.py`.
+- **Metric key contract**: `stats`, `analyze`, `ai_recommendations`,
+  `context_metrics`, and `summary_generator` now read project metrics via
+  `metric_keys` constants; complexity aggregation keys are canonicalized in
+  `formatter.py`.
+
+### Fixed
+- **Anti-patterns surfaced**: anti-pattern detections (God Object, Spaghetti
+  Code, Magic Numbers, Dead Code) are now aggregated and rendered in
+  `AI_CONTEXT.md` (previously computed but never reported).
+
 ## [3.2.0] - 2026-02-08 - Scoped i18n & TOML Standardization
 
 ### Added

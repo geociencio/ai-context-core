@@ -14,9 +14,7 @@ def run_fix(path: str, sync_version: bool = False):
     # 1. Run Ruff Fix
     click.echo("🔍 Running Ruff check with --fix...")
     try:
-        subprocess.run(
-            ["uv", "run", "ruff", "check", ".", "--fix"], cwd=proj_path, check=False
-        )
+        subprocess.run(["uv", "run", "ruff", "check", ".", "--fix"], cwd=proj_path, check=False)
         click.echo("✅ Ruff fixes applied (if any).")
     except FileNotFoundError:
         click.echo("⚠️ 'uv' or 'ruff' not found. Skipping lint fixes.")

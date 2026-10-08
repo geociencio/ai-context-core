@@ -8,9 +8,7 @@ def get_docstring_ranges(tree: ast.AST) -> List[Tuple[int, int]]:
     """Identifies line ranges for all docstrings in the AST."""
     ranges = []
     for node in ast.walk(tree):
-        if not isinstance(
-            node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
-        ):
+        if not isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
             continue
 
         doc_node = _find_docstring_node(node)

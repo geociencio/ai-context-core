@@ -229,9 +229,7 @@ def test_git_command_success():
             mock_analyzer = MagicMock()
             mock_analyzer_cls.return_value = mock_analyzer
             mock_analyzer.is_repo.return_value = True
-            mock_analyzer.get_hotspots.return_value = [
-                {"path": "file1.py", "commits": 10}
-            ]
+            mock_analyzer.get_hotspots.return_value = [{"path": "file1.py", "commits": 10}]
             mock_analyzer.get_churn.return_value = {
                 "available": True,
                 "files_changed": 5,
@@ -252,9 +250,7 @@ def test_serve_command():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with (
-            patch(
-                "ai_context_core.cli.commands.serve.socketserver.TCPServer"
-            ) as mock_server_cls,
+            patch("ai_context_core.cli.commands.serve.socketserver.TCPServer") as mock_server_cls,
             patch("ai_context_core.cli.commands.serve.webbrowser.open") as mock_open,
         ):
             # Setup mock server that stops immediately
@@ -275,9 +271,7 @@ def test_serve_command():
 def test_serve_command_error():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.serve.socketserver.TCPServer"
-        ) as mock_server_cls:
+        with patch("ai_context_core.cli.commands.serve.socketserver.TCPServer") as mock_server_cls:
             mock_server_cls.side_effect = Exception("Port in use")
             result = runner.invoke(cli, ["serve"])
             assert "Server error: Port in use" in result.output
@@ -301,9 +295,7 @@ def test_analyze_local_config():
 def test_analyze_error_handling():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.analyze.ProjectAnalyzer.analyze"
-        ) as mock_analyze:
+        with patch("ai_context_core.cli.commands.analyze.ProjectAnalyzer.analyze") as mock_analyze:
             mock_analyze.side_effect = Exception("Analysis failed")
             result = runner.invoke(cli, ["analyze"])
             assert result.exit_code == 1
@@ -313,9 +305,7 @@ def test_analyze_error_handling():
 def test_deps_command_extended():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze"
-        ) as mock_analyze:
+        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze") as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
                     "unused_imports": {"mod1.py": ["os", "sys"]},
@@ -342,9 +332,7 @@ def test_deps_command_extended():
 def test_qgis_command_extended():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze"
-        ) as mock_analyze:
+        with patch("ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze") as mock_analyze:
             mock_analyze.return_value = {
                 "qgis_compliance": {
                     "metadata": {"valid": False, "errors": ["Missing field: about"]},
@@ -365,9 +353,7 @@ def test_qgis_command_extended():
 def test_deps_command_no_findings():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze"
-        ) as mock_analyze:
+        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze") as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
                     "unused_imports": {},
@@ -401,9 +387,7 @@ def test_git_command_no_findings():
 def test_qgis_command_metadata_valid_content():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch(
-            "ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze"
-        ) as mock_analyze:
+        with patch("ai_context_core.cli.commands.qgis.ProjectAnalyzer.analyze") as mock_analyze:
             mock_analyze.return_value = {
                 "qgis_compliance": {
                     "metadata": {

@@ -29,11 +29,7 @@ def load_ignore_patterns(
     if ignore_file.exists():
         try:
             with open(ignore_file, encoding="utf-8") as f:
-                patterns = [
-                    line.strip()
-                    for line in f
-                    if line.strip() and not line.startswith("#")
-                ]
+                patterns = [line.strip() for line in f if line.strip() and not line.startswith("#")]
         except Exception:
             pass
 

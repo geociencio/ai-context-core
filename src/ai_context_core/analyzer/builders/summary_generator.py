@@ -3,6 +3,8 @@
 import pathlib
 from typing import Dict, Any
 from .html_builder import HTMLReportBuilder
+from . import metric_keys
+from . import formatter
 
 
 class ProjectSummaryGenerator:
@@ -45,10 +47,10 @@ class ProjectSummaryGenerator:
         m = self.analyses.get("metrics", {})
         c = self.analyses.get("complexity", {})
         m_html = f"""
-        <div class="metric">ai-ctx Quality Score: <span class="metric-value">{m.get("quality_score", 0)}/100</span></div>
-        <div class="metric">Source Lines (SLOC): <span class="metric-value">{m.get("total_lines_code", 0):,}</span></div>
-        <div class="metric">Physical Lines: <span class="metric-value">{m.get("total_physical_lines", 0):,}</span></div>
-        <div class="metric">Modules: <span class="metric-value">{c.get("total_modules", 0)}</span></div>
+        <div class="metric">ai-ctx Quality Score: <span class="metric-value">{m.get(metric_keys.QUALITY_SCORE, 0)}/100</span></div>
+        <div class="metric">Source Lines (SLOC): <span class="metric-value">{m.get(metric_keys.TOTAL_LINES_CODE, 0):,}</span></div>
+        <div class="metric">Physical Lines: <span class="metric-value">{m.get(metric_keys.TOTAL_PHYSICAL_LINES, 0):,}</span></div>
+        <div class="metric">Modules: <span class="metric-value">{c.get(formatter.TOTAL_MODULES, 0)}</span></div>
         """
         builder.add_section("📊 KEY METRICS", m_html)
 
@@ -75,9 +77,7 @@ class ProjectSummaryGenerator:
 
         graph = generate_dependency_diagram(self.analyses.get("dependencies", {}))
         if graph:
-            builder.add_section(
-                "🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>'
-            )
+            builder.add_section("🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>')
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(builder.render())

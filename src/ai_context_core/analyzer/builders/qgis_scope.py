@@ -29,16 +29,10 @@ def _match_path(path: str, pattern: str) -> bool:
                 # 1. Escape everything
                 # 2. Replace escaped **/ with (.*/)? (matches zero or more directories)
                 # 3. Replace escaped * with [^/]* (matches within one directory)
-                regex_str = (
-                    re.escape(pattern)
-                    .replace(r"\*\*/", "(.*/)?")
-                    .replace(r"\*", "[^/]*")
-                )
+                regex_str = re.escape(pattern).replace(r"\*\*/", "(.*/)?").replace(r"\*", "[^/]*")
 
                 # Ensure it matches as a suffix if it doesn't start with a slash/glob
-                if not regex_str.startswith("(\\.\\*/)?") and not pattern.startswith(
-                    "/"
-                ):
+                if not regex_str.startswith("(\\.\\*/)?") and not pattern.startswith("/"):
                     regex_str = f"^(.*/)?{regex_str}$"
                 else:
                     regex_str = f"^{regex_str}$"

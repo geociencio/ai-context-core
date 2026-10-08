@@ -38,18 +38,12 @@ class AssignmentRule(BaseEntryPointRule):
     def check(self, node: ast.AST) -> Optional[str]:
         if self.target_id == "application":
             return "django_app"
-        if self.target_id == "urlpatterns" and isinstance(
-            self.value, (ast.List, ast.Tuple)
-        ):
+        if self.target_id == "urlpatterns" and isinstance(self.value, (ast.List, ast.Tuple)):
             return "django_urls"
-        if self.target_id == "INSTALLED_APPS" and isinstance(
-            self.value, (ast.List, ast.Tuple)
-        ):
+        if self.target_id == "INSTALLED_APPS" and isinstance(self.value, (ast.List, ast.Tuple)):
             return "django_settings"
 
-        if self.target_id in ("app", "application") and isinstance(
-            self.value, ast.Call
-        ):
+        if self.target_id in ("app", "application") and isinstance(self.value, ast.Call):
             func = self.value.func
             if isinstance(func, ast.Name):
                 if func.id == "Flask":

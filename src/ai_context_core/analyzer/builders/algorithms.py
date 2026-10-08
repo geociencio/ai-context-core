@@ -65,9 +65,7 @@ class GraphMetricsCalculator:
                 undirected[v].add(u)
         return undirected
 
-    def _bfs_visit(
-        self, start_node: str, visited: Set[str], undirected: Dict[str, Set[str]]
-    ):
+    def _bfs_visit(self, start_node: str, visited: Set[str], undirected: Dict[str, Set[str]]):
         """BFS traversal for component counting."""
         queue = [start_node]
         visited.add(start_node)

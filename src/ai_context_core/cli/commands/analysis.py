@@ -34,9 +34,7 @@ def analyze_cmd(
 
 @click.command(name="audit")
 @click.option("--path", default=".", help="Project path")
-@click.option(
-    "--threshold", "-t", default=70.0, type=float, help="Minimum ai-ctx Quality Score"
-)
+@click.option("--threshold", "-t", default=70.0, type=float, help="Minimum ai-ctx Quality Score")
 def audit_cmd(path: str, threshold: float):
     """Fails if ai-ctx Quality Score is below threshold."""
     analyze.run_audit(path, threshold)

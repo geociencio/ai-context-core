@@ -6,9 +6,7 @@ import pathlib
 from typing import Dict, Any, List
 
 
-def load_context_files(
-    project_path: pathlib.Path, file_list: List[str]
-) -> Dict[str, Any]:
+def load_context_files(project_path: pathlib.Path, file_list: List[str]) -> Dict[str, Any]:
     """Loads all relevant context files from the project path."""
     res = {}
     for f in file_list:

@@ -28,9 +28,7 @@ class BaseVisitor(ast.NodeVisitor):
         try:
             super().visit(node)
         except Exception as e:
-            self._log_error(
-                f"Error visiting node {type(node).__name__}: {str(e)}", node
-            )
+            self._log_error(f"Error visiting node {type(node).__name__}: {str(e)}", node)
 
     def _log_error(self, message: str, node: Optional[ast.AST] = None):
         """Log an error and append it to the errors list.

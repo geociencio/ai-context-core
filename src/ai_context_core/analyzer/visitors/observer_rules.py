@@ -2,19 +2,11 @@
 
 import ast
 
-from .observer_collection_rules import (  # noqa: F401
-    KEYWORDS_INIT,
-    KEYWORDS_MGMT,
-    KEYWORDS_NOTIFY,
+from .observer_collection_rules import (
     check_init_assign,
     check_iteration,
     check_mgmt_method,
     check_notify_method,
-)
-from .observer_signal_rules import (  # noqa: F401
-    detect_signals,
-    _is_signal_definition,
-    _signal_call_name,
 )
 
 

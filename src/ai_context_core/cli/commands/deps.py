@@ -8,9 +8,7 @@ from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.config.loader import ConfigLoader
 
 
-def show_dependencies(
-    path: str, show_unused: bool, show_cycles: bool, show_metrics: bool
-):
+def show_dependencies(path: str, show_unused: bool, show_cycles: bool, show_metrics: bool):
     """Shows dependency analysis results."""
     proj = pathlib.Path(path).resolve()
     loader = ConfigLoader()
@@ -69,9 +67,9 @@ def _show_metrics(deps, console):
 
     if coupling:
         click.echo("\n🔗 Top 5 Most Coupled Modules:")
-        sorted_coupling = sorted(
-            coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True
-        )[:5]
+        sorted_coupling = sorted(coupling.items(), key=lambda x: x[1].get("cbo", 0), reverse=True)[
+            :5
+        ]
         for mod, metrics_val in sorted_coupling:
             cbo = metrics_val.get("cbo", 0)
             click.echo(f"  - {mod}: CBO={cbo}")

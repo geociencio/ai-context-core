@@ -113,9 +113,7 @@ def run_patterns_flow():
     # Assuming analyze.run_analysis covers general, but specific patterns might be separate.
 
     # As a simple implementation for now, we warn it's part of analysis usually
-    console.print(
-        "[yellow]Note: Patterns are typically part of the full analysis.[/yellow]"
-    )
+    console.print("[yellow]Note: Patterns are typically part of the full analysis.[/yellow]")
     if Confirm.ask("Run specialized pattern scan?"):
         # Placeholder for specialized pattern run if we had a dedicated python API exposed
         # Currently patterns are integrated in analysis engine.

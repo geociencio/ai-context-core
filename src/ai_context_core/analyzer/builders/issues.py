@@ -30,9 +30,7 @@ class IssuesSummarizer(BaseSummarizer):
         if circ:
             lines.append("\n### 🔄 Circular Dependencies:")
             for cycle in circ[:3]:
-                lines.append(
-                    f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}"
-                )
+                lines.append(f"- {' -> '.join(cycle) if isinstance(cycle, list) else str(cycle)}")
 
         return "\n".join(lines)
 

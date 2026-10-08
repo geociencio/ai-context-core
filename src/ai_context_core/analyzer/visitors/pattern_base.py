@@ -45,9 +45,7 @@ class PatternDetector:
             return [
                 {
                     "class": name,
-                    "confidence": min(
-                        self.confidence, PATTERN_DETECTION_CONFIDENCE_MAXIMUM
-                    ),
+                    "confidence": min(self.confidence, PATTERN_DETECTION_CONFIDENCE_MAXIMUM),
                     "evidence": self.evidence,
                 }
             ]

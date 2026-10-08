@@ -222,6 +222,4 @@ class DependencyBuilder(BaseContextBuilder):
             for o in opts[:5]:
                 lines.append(f"### {o.get('module')}")
                 for sug in o.get("suggestions", [])[:2]:
-                    lines.append(
-                        f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}"
-                    )
+                    lines.append(f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}")

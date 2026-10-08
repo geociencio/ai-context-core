@@ -36,9 +36,7 @@ def calculate_sloc(tree: ast.AST, content: str) -> int:
         return _fallback_sloc(content)
 
 
-def _should_skip_token(
-    tok: tokenize.TokenInfo, doc_ranges: List[Tuple[int, int]]
-) -> bool:
+def _should_skip_token(tok: tokenize.TokenInfo, doc_ranges: List[Tuple[int, int]]) -> bool:
     """Checks if a token should be excluded from SLOC count.
 
     Args:

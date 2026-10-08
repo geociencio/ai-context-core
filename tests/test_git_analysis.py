@@ -10,16 +10,12 @@ class TestGitAnalysis(unittest.TestCase):
 
     def test_is_repo(self):
         # Test positive case (is a repo)
-        with patch(
-            "ai_context_core.analyzer.providers.analyzer.GitRunner.run"
-        ) as mock_run:
+        with patch("ai_context_core.analyzer.providers.analyzer.GitRunner.run") as mock_run:
             mock_run.return_value = "true\n"
             self.assertTrue(GitAnalyzer(self.project_path).is_repo())
 
         # Test negative case (is not a repo)
-        with patch(
-            "ai_context_core.analyzer.providers.analyzer.GitRunner.run"
-        ) as mock_run:
+        with patch("ai_context_core.analyzer.providers.analyzer.GitRunner.run") as mock_run:
             mock_run.return_value = None
             self.assertFalse(GitAnalyzer(pathlib.Path("/tmp")).is_repo())
 

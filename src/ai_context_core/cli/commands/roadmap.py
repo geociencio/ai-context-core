@@ -40,9 +40,7 @@ def run_roadmap(path: str):
     res = analyzer.analyze()
     modules = res.get("modules", [])
     git_data = res.get("git", {})
-    churn_data = {
-        item["path"]: item["commits"] for item in git_data.get("hotspots", [])
-    }
+    churn_data = {item["path"]: item["commits"] for item in git_data.get("hotspots", [])}
 
     # Calculate Refactor Score
     priorities = []

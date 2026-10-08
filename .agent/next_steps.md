@@ -41,8 +41,9 @@
 - [ ] Optional follow-up cleanup: collapse the `X.py` + `X_rules.py` split in
   `visitors/` where it is not adding value.
 - [ ] Retire the dead `CheckerRegistry` chain (`visitors/security_checker.py`,
-  `tech_debt_checker.py`, `optimization_checker.py`, `checker_registry.py`,
-  `debt.py`) once its test-only consumers are migrated.
+  `tech_debt_checker.py`, `checker_registry.py`, `debt.py`) once its test-only
+  consumers are migrated. Note: `optimization_checker.py` is NOT dead — it is
+  used by `find_optimizations`.
 - [ ] Performance profiling on large projects (10k+ files).
 - [ ] CI/CD release automation (PyPI upload from GitHub Actions).
 - [ ] Custom rule engine (user-defined AST patterns).

@@ -22,6 +22,7 @@ __all__ = [
     "check_qgis_compliance_registered",
 ]
 
+
 def __getattr__(name: str):
     """Warn on access to deprecated aliases (PEP 562)."""
     if name == "QGISComplianceVisitor":
@@ -29,8 +30,7 @@ def __getattr__(name: str):
 
         warn_deprecated(
             "ai_context_core.analyzer.visitors.ast_qgis.QGISComplianceVisitor",
-            "ai_context_core.analyzer.visitors.qgis_visitor."
-            "GenericQGISComplianceVisitor",
+            "ai_context_core.analyzer.visitors.qgis_visitor.GenericQGISComplianceVisitor",
         )
         return GenericQGISComplianceVisitor
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

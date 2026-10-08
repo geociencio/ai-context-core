@@ -37,9 +37,7 @@ def _aggregate_i18n_stats(
             for m in i18n_modules
         ),
         "total_strings": sum(
-            m.get("qgis_compliance", {})
-            .get("i18n_usage", {})
-            .get("total_strings", 0)
+            m.get("qgis_compliance", {}).get("i18n_usage", {}).get("total_strings", 0)
             for m in i18n_modules
         ),
         "scope": scope,
@@ -96,9 +94,7 @@ def aggregate_qgis_compliance(
     scope = i18n_config.get("scope", "all")
 
     # Filter modules for i18n counting and collect API issues
-    i18n_modules = [
-        m for m in m_data if _should_include_for_i18n(m, i18n_config, scope)
-    ]
+    i18n_modules = [m for m in m_data if _should_include_for_i18n(m, i18n_config, scope)]
     api_issues = _collect_api_issues(m_data)
 
     agg = {
@@ -110,33 +106,23 @@ def aggregate_qgis_compliance(
         "gdal_style": (
             "Correct"
             if all(
-                m.get("qgis_compliance", {}).get("gdal_import_style") != "Legacy"
-                for m in m_data
+                m.get("qgis_compliance", {}).get("gdal_import_style") != "Legacy" for m in m_data
             )
             else "Legacy"
         ),
         "qt_transition": {
             "pyqt5_count": sum(
-                len(
-                    m.get("qgis_compliance", {})
-                    .get("qt_transition", {})
-                    .get("pyqt5_imports", [])
-                )
+                len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt5_imports", []))
                 for m in m_data
             ),
             "pyqt6_count": sum(
-                len(
-                    m.get("qgis_compliance", {})
-                    .get("qt_transition", {})
-                    .get("pyqt6_imports", [])
-                )
+                len(m.get("qgis_compliance", {}).get("qt_transition", {}).get("pyqt6_imports", []))
                 for m in m_data
             ),
             "qt6_incompatibilities_count": len(api_issues["qt6_incompatibilities"]),
         },
         "legacy_signals": sum(
-            m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0)
-            for m in m_data
+            m.get("qgis_compliance", {}).get("signals_slots", {}).get("legacy", 0) for m in m_data
         ),
         "api_compatibility": api_issues,
     }

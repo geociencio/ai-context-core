@@ -39,7 +39,5 @@ def test_project_config_default_counts_ui_label(tmp_path):
     (tmp_path / "mod.py").write_text(
         'def f():\n    obj = None\n    obj.setText("OK")\n', encoding="utf-8"
     )
-    analyzer = ProjectAnalyzer(
-        str(tmp_path), config={"patterns": {"i18n": {}}}, ignore_cache=True
-    )
+    analyzer = ProjectAnalyzer(str(tmp_path), config={"patterns": {"i18n": {}}}, ignore_cache=True)
     assert _module_i18n(analyzer)["total_strings"] == 1

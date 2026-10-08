@@ -1,6 +1,6 @@
 import ast
 import pytest
-from ai_context_core.analyzer.pattern_base import PatternDetector
+from ai_context_core.analyzer.visitors.pattern_base import PatternDetector
 from ai_context_core.analyzer.visitors.decorator_rules import DecoratorRules
 
 

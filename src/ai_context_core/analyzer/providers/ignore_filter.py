@@ -15,9 +15,7 @@ class IgnoreFilter:
     Delegates pattern loading and regex compilation to specialized internal components.
     """
 
-    def __init__(
-        self, project_path: pathlib.Path, extra_patterns: Optional[List[str]] = None
-    ):
+    def __init__(self, project_path: pathlib.Path, extra_patterns: Optional[List[str]] = None):
         """Initialize the filter.
 
         Args:

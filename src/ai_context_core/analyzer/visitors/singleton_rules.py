@@ -60,15 +60,3 @@ def check_singleton_item(item: ast.AST, add_evidence_func) -> None:
 
     if isinstance(item, (ast.Assign, ast.AnnAssign)):
         check_singleton_assign(item, add_evidence_func)
-
-
-# Legacy wrappers for tests
-def _check_singleton_new(item: ast.AST, add_evidence_func) -> None:
-    """Overrides __new__ to control instantiation."""
-    if isinstance(item, ast.FunctionDef) and item.name == "__new__":
-        add_evidence_func("Overrides __new__ to control instantiation", 60)
-
-
-def _check_singleton_get_instance(item: ast.FunctionDef, add_evidence_func) -> None:
-    """Checks for get_instance or similar static methods."""
-    check_singleton_method(item, add_evidence_func)

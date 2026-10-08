@@ -9,15 +9,11 @@ from ai_context_core.analyzer.visitors.halstead import HalsteadVisitor
 
 def test_extract_base_name_variants():
     # Attribute
-    node_attr = ast.Attribute(
-        value=ast.Name(id="mod", ctx=ast.Load()), attr="Base", ctx=ast.Load()
-    )
+    node_attr = ast.Attribute(value=ast.Name(id="mod", ctx=ast.Load()), attr="Base", ctx=ast.Load())
     assert extract_base_name(node_attr) == "Base"
 
     # Call
-    node_call = ast.Call(
-        func=ast.Name(id="MyClass", ctx=ast.Load()), args=[], keywords=[]
-    )
+    node_call = ast.Call(func=ast.Name(id="MyClass", ctx=ast.Load()), args=[], keywords=[])
     assert extract_base_name(node_call) == "MyClass"
 
     # Unknown

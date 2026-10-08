@@ -21,11 +21,7 @@ def classify_imports(
                     is_known_internal = True
                     break
 
-        if (
-            is_known_internal
-            or imp.startswith(".")
-            or any(seg in imp for seg in ["..", "./"])
-        ):
+        if is_known_internal or imp.startswith(".") or any(seg in imp for seg in ["..", "./"]):
             results["internal"].append(imp)
         elif root_pkg in stdlib_modules:
             results["external"].append(imp)

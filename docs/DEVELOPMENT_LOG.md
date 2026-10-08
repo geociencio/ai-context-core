@@ -1,5 +1,16 @@
 # Development Log
 
+## [2026-10-08] Deep Cleanup & Metric Contract (v4.0.0) - COMPLETED
+**THEME**: Dead-code removal, architecture purity, and contract enforcement 🧹
+- **Anti-patterns surfaced**: fixed a functional bug where anti-pattern detections ran but were never aggregated/reported; now exposed in `AI_CONTEXT.md`. 🐛
+- **Dead code removed**: retired the dead `CheckerRegistry` chain (`security_checker`, `tech_debt_checker`, `checker_registry`, `debt`) and the `analyzer/pattern_base.py` facade, plus unused `registry.py`/`issues.py` symbols. `optimization_checker.py` was kept (live via `find_optimizations`). 🗑️
+- **Architecture purity**: moved `secrets_scanner.py` (file I/O) from `visitors/` to `providers/`. 🔀
+- **Metric key contract**: `stats`, `analyze`, `ai_recommendations`, `context_metrics`, `summary_generator` now read metrics via `metric_keys`; complexity aggregation keys canonicalized in `formatter.py`. 🔑
+- **Observer re-export**: removed the 2-hop `# noqa: F401` re-export between `observer_rules.py` and `observer_signal_rules.py`. 🧹
+- **Version**: bumped to `4.0.0` (breaking removal of deprecated facades/chain). 🏷️
+- **Deferred (intentionally)**: the `X.py` + `X_rules.py` split is a deliberate complexity-management pattern (keeps modules under the CC 25 budget); unifying the 4 name-resolution helpers would change their distinct semantics (leading vs trailing, lowercasing), so both were left as-is. ⚠️
+- **Verification**: 299 tests passing, `ruff check` clean, golden fixtures regenerated. ✅
+
 ## [2026-10-08] Redundancy Cleanup (Phases A–C) - COMPLETED
 **THEME**: Dead-code removal, consolidation and determinism 🧹
 - **Phase A**: Removed 6 dead modules, the broken `check_complexity.py`, and duplicate symbols (`HalsteadVisitor`, `_mask_secret`, `analyze_structure`, ...) plus their coverage-only tests. 🗑️

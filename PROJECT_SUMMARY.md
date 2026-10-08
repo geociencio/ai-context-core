@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 18:08:45
-Analyzer Version: 3.5.0 (Ai-Context-Core)
+Analysis Date: 2026-10-08 19:18:48
+Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.4/100
-- **Source Lines (SLOC)**: 6,185
-- **Total Physical Lines**: 9,781
-- **Maintainability**: 51.9
-- **Test Files**: 74 test files
+- **ai-ctx Quality Score**: 90.7/100
+- **Source Lines (SLOC)**: 5,813
+- **Total Physical Lines**: 9,219
+- **Maintainability**: 52.1
+- **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.6
+- Maintainability: -19.3
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 157
+**Total Modules**: 152
 
 ```tree
 ./
@@ -115,7 +115,6 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                 __init__.py
                 constants.py
                 engine.py
-                pattern_base.py
                 registry.py
                 builders/
                     __init__.py
@@ -134,7 +133,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     fs_cache.py
                     fs_helpers.py
                     fs_scanner.py
-                    ... (+9 more)
+                    ... (+10 more)
                 visitors/
                     __init__.py
                     antipattern_base.py
@@ -143,7 +142,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     ast_metrics.py
                     ast_qgis.py
                     ast_security.py
-                    ... (+54 more)
+                    ... (+49 more)
             cli/
                 .ai_context_cache.json
                 AI_CONTEXT.md
@@ -199,7 +198,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+59 more)
+        ... (+58 more)
         fixtures/
             false_positives.py
             golden_expected/
@@ -243,10 +242,10 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 335
-- **Additions**: +22443
-- **Deletions**: -32127
-- **Total Churn**: 54570
+- **Files Changed**: 350
+- **Additions**: +23116
+- **Deletions**: -32600
+- **Total Churn**: 55716
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 30 commits
@@ -256,5 +255,5 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.46
-- **Max Complexity**: 24
+- **Avg Cyclomatic Complexity**: 7.57
+- **Max Complexity**: 25

@@ -164,9 +164,7 @@ def calculate_project_metrics(
     max_penalty = 0.0
     high_cfg = scoring["complexity_high_threshold"]
     if max_complexity > high_cfg:
-        max_penalty = (max_complexity - high_cfg) * scoring[
-            "complexity_high_penalty_per_point"
-        ]
+        max_penalty = (max_complexity - high_cfg) * scoring["complexity_high_penalty_per_point"]
         max_penalty = min(max_penalty, scoring["complexity_high_penalty_cap"])
     breakdown["max_complexity"] = -round(max_penalty, 2)
 

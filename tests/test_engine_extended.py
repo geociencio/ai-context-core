@@ -30,13 +30,9 @@ def test_load_config_failed_project_override():
         with patch("pathlib.Path.exists", side_effect=[True, True]):
             # This is a bit complex due to how side_effect interacts with open()
             # Let's try simpler: mock logger directly
-            with patch(
-                "ai_context_core.analyzer.providers.config_loader.logger"
-            ) as mock_log:
+            with patch("ai_context_core.analyzer.providers.config_loader.logger") as mock_log:
                 # Cause the open/load to fail for project config
-                with patch(
-                    "builtins.open", side_effect=[MagicMock(), Exception("Open fail")]
-                ):
+                with patch("builtins.open", side_effect=[MagicMock(), Exception("Open fail")]):
                     load_config(pathlib.Path("/tmp"))
                     mock_log.warning.assert_called()
 
@@ -58,9 +54,7 @@ def test_load_config_non_dict_override():
 def test_worker_read_empty_file():
     # Coverage for worker.py line 94
     worker = AnalysisWorker(pathlib.Path("/tmp"), {}, 1, {})
-    with patch(
-        "ai_context_core.analyzer.providers.fs_utils.read_file_fast", return_value=""
-    ):
+    with patch("ai_context_core.analyzer.providers.fs_utils.read_file_fast", return_value=""):
         assert worker.analyze_single(pathlib.Path("/tmp/empty.py")) == {}
 
 

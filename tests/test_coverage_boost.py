@@ -2,7 +2,7 @@ import unittest
 import ast
 from ai_context_core.analyzer.builders.issues import IssuesSummarizer
 from ai_context_core.analyzer.builders.git_patterns import GitPatternsSummarizer
-from ai_context_core.analyzer.visitors.observer_rules import (
+from ai_context_core.analyzer.visitors.observer_signal_rules import (
     detect_signals,
 )
 from ai_context_core.analyzer.builders.calculator import calculate_halstead_metrics
@@ -11,17 +11,13 @@ from ai_context_core.analyzer.builders.calculator import calculate_halstead_metr
 class TestCoverageBoost(unittest.TestCase):
     def test_issues_summarizer(self):
         analyses = {
-            "security": [
-                {"module": "auth.py", "total_issues": 2, "max_severity": "high"}
-            ],
+            "security": [{"module": "auth.py", "total_issues": 2, "max_severity": "high"}],
             "debt": [
                 {"module": "legacy.py", "total_issues": 10, "severity_score": 5},
                 {"module": "minor.py", "total_issues": 1, "severity_score": 2},
             ],
             "dependencies": {"circular_dependencies": [["a", "b", "a"]]},
-            "optimizations": [
-                {"module": "api.py", "suggestions": [{"message": "Use async"}]}
-            ],
+            "optimizations": [{"module": "api.py", "suggestions": [{"message": "Use async"}]}],
         }
         summarizer = IssuesSummarizer(analyses)
         issues_text = summarizer.build_issues()
@@ -52,9 +48,7 @@ class TestCoverageBoost(unittest.TestCase):
                 "hotspots": [{"path": "core.py", "commits": 50}],
             },
             "patterns": {
-                "Singleton": [
-                    {"class": "Database", "module": "db.py", "confidence": 100}
-                ]
+                "Singleton": [{"class": "Database", "module": "db.py", "confidence": 100}]
             },
         }
         summarizer = GitPatternsSummarizer(analyses)

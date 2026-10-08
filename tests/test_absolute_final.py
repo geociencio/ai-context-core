@@ -120,14 +120,12 @@ def test_observer_class_analyzer_exception():
 
 
 def test_observer_signals_exception():
-    from ai_context_core.analyzer.visitors.observer_rules import (
+    from ai_context_core.analyzer.visitors.observer_signal_rules import (
         _is_signal_definition,
     )
 
     node = ast.Assign(
         targets=[],
-        value=ast.Call(
-            func=ast.Name(id="Signal", ctx=ast.Load()), args=[], keywords=[]
-        ),
+        value=ast.Call(func=ast.Name(id="Signal", ctx=ast.Load()), args=[], keywords=[]),
     )
     assert _is_signal_definition(node) is True

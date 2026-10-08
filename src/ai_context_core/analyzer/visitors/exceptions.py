@@ -21,9 +21,7 @@ class ExceptionsChecker(BaseSecurityChecker):
         elif isinstance(node, ast.ExceptHandler):
             self._check_except_handler(node, issues)
 
-    def _check_except_handler(
-        self, node: ast.ExceptHandler, issues: List[Dict[str, Any]]
-    ) -> None:
+    def _check_except_handler(self, node: ast.ExceptHandler, issues: List[Dict[str, Any]]) -> None:
         if node.type is None:
             issues.append(
                 {

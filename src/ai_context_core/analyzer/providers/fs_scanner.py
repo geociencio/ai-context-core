@@ -88,9 +88,7 @@ class ProjectScanner:
         return ProjectScanResult(
             python_files=sorted(self.python_files),
             test_files_count=self.test_files_count,
-            file_types=dict(
-                sorted(self.file_types.items(), key=lambda x: x[1], reverse=True)[:20]
-            ),
+            file_types=dict(sorted(self.file_types.items(), key=lambda x: x[1], reverse=True)[:20]),
             size_stats=self._finalize_stats(),
         )
 

@@ -53,9 +53,7 @@ class StrategyDetector(PatternDetector):
                 arg_name = StrategyRules.check_injection(item)
                 if arg_name:
                     has_inj = True
-                    self._add_evidence(
-                        f"Injection detected in '{item.name}' via '{arg_name}'", 30
-                    )
+                    self._add_evidence(f"Injection detected in '{item.name}' via '{arg_name}'", 30)
         return has_inj
 
     def _check_for_calls(self, node: ast.ClassDef) -> None:
@@ -67,9 +65,7 @@ class StrategyDetector(PatternDetector):
             ):
                 call_str = StrategyRules.detect_strategy_call(item)
                 if call_str:
-                    self._add_evidence(
-                        f"Strategy call in '{item.name}': {call_str}()", 40
-                    )
+                    self._add_evidence(f"Strategy call in '{item.name}': {call_str}()", 40)
 
 
 def detect_strategy(tree: ast.AST) -> List[Dict[str, Any]]:

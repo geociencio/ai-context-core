@@ -110,6 +110,7 @@ class ResultsAggregator:
             "optimizations": optimizations,
             "recommendations": recommendations,
             "patterns": self._aggregate_patterns(valid_modules),
+            "antipatterns": self._aggregate_antipatterns(valid_modules),
             "entry_points": entry_points_detail,
             "git": git_data,
             "timestamp": time.time() if "time" in globals() else None,
@@ -156,6 +157,15 @@ class ResultsAggregator:
                     inst["module"] = mod.get("path", "N/A")
                 all_patterns[name].extend(instances)
         return all_patterns
+
+    def _aggregate_antipatterns(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Aggregates anti-pattern issues from all modules."""
+        result = []
+        for mod in m_data:
+            issues = mod.get("antipatterns", [])
+            if issues:
+                result.append({"module": mod.get("path", "N/A"), "issues": issues})
+        return result
 
     def _aggregate_security(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Aggregates secrets and AST security issues."""

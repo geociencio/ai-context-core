@@ -4,7 +4,8 @@ import ast
 from typing import Dict, List, Any
 from .pattern_base import PatternDetector
 
-from .observer_rules import detect_signals, analyze_class_body
+from .observer_rules import analyze_class_body
+from .observer_signal_rules import detect_signals
 
 
 class ObserverDetector(PatternDetector):
@@ -32,9 +33,7 @@ class ObserverDetector(PatternDetector):
         if isinstance(node, (ast.ClassDef, ast.Module)):
             signals = detect_signals(node)
             if signals > 0:
-                self._add_evidence(
-                    f"Detected {signals} signals (PyQt/Signals)", signals * 20
-                )
+                self._add_evidence(f"Detected {signals} signals (PyQt/Signals)", signals * 20)
 
         if self.confidence >= 50:
             return [

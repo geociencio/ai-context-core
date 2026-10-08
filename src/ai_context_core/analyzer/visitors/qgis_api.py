@@ -53,10 +53,7 @@ class QGISApiChecker(BaseQGISChecker):
 
         # Check for iface.activeLayer() -> suggested iface.layerTreeView().currentLayer()
         if isinstance(node.func, ast.Attribute):
-            if (
-                node.func.attr == "activeLayer"
-                and get_node_name(node.func.value) == "iface"
-            ):
+            if node.func.attr == "activeLayer" and get_node_name(node.func.value) == "iface":
                 self.results["api_compatibility"]["best_practice_violations"].append(
                     {
                         "name": "iface.activeLayer()",

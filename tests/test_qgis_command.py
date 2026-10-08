@@ -9,9 +9,7 @@ def test_qgis_command_enforces_profile():
         # Setup mock project
         os.makedirs("mock_plugin")
         with open("mock_plugin/__init__.py", "w") as f:
-            f.write(
-                "class Test:\n    def __init__(self):\n        self.tr('Hello World')\n"
-            )
+            f.write("class Test:\n    def __init__(self):\n        self.tr('Hello World')\n")
 
         with open("mock_plugin/metadata.txt", "w") as f:
             f.write("[general]\nname=Mock\nqgisminimumversion=3.0\nversion=1.0\n")

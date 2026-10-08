@@ -16,9 +16,7 @@ def inspect_file(file_path: str):
 
     loader = ConfigLoader()
     cfg = loader.load_config()
-    worker = AnalysisWorker(
-        project_path=path.parent, config=cfg, max_workers=1, cache={}
-    )
+    worker = AnalysisWorker(project_path=path.parent, config=cfg, max_workers=1, cache={})
     click.echo(f"🔍 Inspecting {path.name}...")
 
     data = worker.analyze_single(path)

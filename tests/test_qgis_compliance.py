@@ -133,9 +133,7 @@ class Test:
         visitor = QGISComplianceVisitor()
         visitor.visit(tree)
         self.assertIn("PyQt5.QtCore", visitor.results["qt_transition"]["pyqt5_imports"])
-        self.assertIn(
-            "PyQt6.QtWidgets", visitor.results["qt_transition"]["pyqt6_imports"]
-        )
+        self.assertIn("PyQt6.QtWidgets", visitor.results["qt_transition"]["pyqt6_imports"])
 
     def test_processing_framework(self):
         code = "class MyAlg(QgsProcessingAlgorithm): pass"

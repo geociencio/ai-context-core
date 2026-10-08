@@ -19,9 +19,7 @@ def doctor_cmd(path: str):
 
 @click.command(name="fix")
 @click.option("--path", default=".", help="Project path to fix")
-@click.option(
-    "--sync-version", is_flag=True, help="Synchronize __init__.py with pyproject.toml"
-)
+@click.option("--sync-version", is_flag=True, help="Synchronize __init__.py with pyproject.toml")
 def fix_cmd(path: str, sync_version: bool):
     """Attempt to fix common project issues."""
     fix.run_fix(path, sync_version)

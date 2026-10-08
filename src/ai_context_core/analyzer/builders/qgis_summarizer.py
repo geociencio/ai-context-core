@@ -26,9 +26,7 @@ class QGISSummarizer(BaseSummarizer):
         if q.get("processing_framework_detected"):
             res.append("- ✅ **Architecture**: Processing Framework detected")
         else:
-            res.append(
-                "- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)"
-            )
+            res.append("- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)")
 
         i18n = q.get("i18n_stats", {})
         if i18n.get("total_strings", 0) > 0:
@@ -55,20 +53,14 @@ class QGISSummarizer(BaseSummarizer):
         api = q.get("api_compatibility", {})
         dep_count = len(api.get("deprecated_calls", []))
         if dep_count > 0:
-            res.append(
-                f"- ⚠️ **Deprecated APIs**: {dep_count} calls to obsolete QGIS 3.x APIs"
-            )
+            res.append(f"- ⚠️ **Deprecated APIs**: {dep_count} calls to obsolete QGIS 3.x APIs")
 
         violations = api.get("best_practice_violations", [])
         if any(v["name"] == "QSettings" for v in violations):
-            res.append(
-                "- 💡 **Best Practice**: Use `QgsSettings` instead of `QSettings`"
-            )
+            res.append("- 💡 **Best Practice**: Use `QgsSettings` instead of `QSettings`")
 
         if q.get("legacy_signals", 0) > 0:
-            res.append(
-                f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected"
-            )
+            res.append(f"- ⚠️ **Signals**: {q['legacy_signals']} legacy SIGNAL/SLOT macros detected")
 
         # Collect all metadata related issues
         all_issues = []

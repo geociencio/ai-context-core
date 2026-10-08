@@ -60,9 +60,7 @@ def run_doctor(path: str):
     console.print(table)
 
     if all_ok:
-        console.print(
-            "\n[bold green]Everything looks good! Keep coding! 🚀[/bold green]"
-        )
+        console.print("\n[bold green]Everything looks good! Keep coding! 🚀[/bold green]")
     else:
         console.print(
             "\n[bold red]Some issues were found. Use 'ai-ctx fix' to resolve common problems.[/bold red]"
@@ -91,17 +89,13 @@ def check_versions(path: pathlib.Path) -> Tuple[str, str]:
 
                 with open(pyproject_file, "rb") as f:
                     data = tomllib.load(f)
-                    pyproject_version = data.get("project", {}).get(
-                        "version", "Unknown"
-                    )
+                    pyproject_version = data.get("project", {}).get("version", "Unknown")
             else:
                 import tomli
 
                 with open(pyproject_file, "rb") as f:
                     data = tomli.load(f)
-                    pyproject_version = data.get("project", {}).get(
-                        "version", "Unknown"
-                    )
+                    pyproject_version = data.get("project", {}).get("version", "Unknown")
         except Exception:
             pass
 
@@ -148,11 +142,7 @@ def check_structure(path: pathlib.Path) -> Tuple[str, str]:
     # Check for __init__.py in first-level subdirs of src
     missing_init = []
     for d in src_dir.iterdir():
-        if (
-            d.is_dir()
-            and not (d / "__init__.py").exists()
-            and not d.name.startswith(".")
-        ):
+        if d.is_dir() and not (d / "__init__.py").exists() and not d.name.startswith("."):
             missing_init.append(d.name)
 
     if missing_init:

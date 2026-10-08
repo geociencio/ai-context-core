@@ -56,9 +56,7 @@ max_file_size_mb = 20 # New value
         """Verify that load_config returns at least the hardcoded or file defaults."""
         config = load_config(tmp_path)
         assert "quality_weights" in config
-        assert (
-            "analysis" in config or "thresholds" in config
-        )  # Depends on what defaults has
+        assert "analysis" in config or "thresholds" in config  # Depends on what defaults has
 
     def test_project_override(self, tmp_path):
         """Verify that project specific config.toml overrides defaults."""

@@ -34,10 +34,7 @@ def test_has_main_guard_logic():
 
 def test_entry_point_assign_frameworks():
     # Django
-    assert (
-        is_entry_point(ast.parse("application = get_wsgi_application()"))["type"]
-        == "django_app"
-    )
+    assert is_entry_point(ast.parse("application = get_wsgi_application()"))["type"] == "django_app"
     assert is_entry_point(ast.parse("urlpatterns = []"))["type"] == "django_urls"
     assert is_entry_point(ast.parse("INSTALLED_APPS = []"))["type"] == "django_settings"
     # Flask
@@ -53,9 +50,7 @@ def test_decorator_rules_coverage():
     assert rule.check(ast.BinOp()) is None
     # Call but not attribute
     # @deco -> deco is Name
-    assert (
-        rule.check(ast.parse("@deco\ndef f(): pass").body[0].decorator_list[0]) is None
-    )
+    assert rule.check(ast.parse("@deco\ndef f(): pass").body[0].decorator_list[0]) is None
 
     # Click
     click_deco = ast.parse("@click.command()\ndef f(): pass").body[0].decorator_list[0]

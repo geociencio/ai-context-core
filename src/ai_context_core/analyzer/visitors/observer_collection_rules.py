@@ -17,9 +17,7 @@ KEYWORDS_NOTIFY = ("notify", "emit", "broadcast")
 def check_init_assign(node: ast.Assign) -> bool:
     """Check if assignment is for an observer collection."""
     for t in node.targets:
-        if isinstance(t, ast.Attribute) and any(
-            kw in t.attr.lower() for kw in KEYWORDS_INIT
-        ):
+        if isinstance(t, ast.Attribute) and any(kw in t.attr.lower() for kw in KEYWORDS_INIT):
             return True
     return False
 

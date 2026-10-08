@@ -81,9 +81,7 @@ class MyObserver:
         # One of them should be MyEmitter due to signals
         emitter_results = [r for r in results if r["class"] == "MyEmitter"]
         self.assertTrue(len(emitter_results) > 0)
-        self.assertTrue(
-            any("signals" in e.lower() for e in emitter_results[0]["evidence"])
-        )
+        self.assertTrue(any("signals" in e.lower() for e in emitter_results[0]["evidence"]))
 
     def test_strategy_detection_comprehensive(self):
         code = """

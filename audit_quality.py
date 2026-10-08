@@ -25,9 +25,7 @@ def audit():
     high_comp = [m for m in modules if m.get("complexity", 0) > 10]
     print(f"\nModules with Complexity > 10: {len(high_comp)}")
     for m in sorted(high_comp, key=lambda x: x.get("complexity", 0), reverse=True):
-        print(
-            f"  - {m['path']}: {m.get('complexity')} (MSI:{m.get('maintenance_index', 0):.1f})"
-        )
+        print(f"  - {m['path']}: {m.get('complexity')} (MSI:{m.get('maintenance_index', 0):.1f})")
 
 
 if __name__ == "__main__":

@@ -35,9 +35,7 @@ class InsecureCallsChecker(BaseSecurityChecker):
         elif isinstance(node.func, ast.Attribute):
             self._check_attribute_call(node, issues)
 
-    def _check_attribute_call(
-        self, node: ast.Call, issues: List[Dict[str, Any]]
-    ) -> None:
+    def _check_attribute_call(self, node: ast.Call, issues: List[Dict[str, Any]]) -> None:
         func = node.func
         if not isinstance(func, ast.Attribute) or not isinstance(func.value, ast.Name):
             return

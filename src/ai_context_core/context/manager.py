@@ -29,9 +29,7 @@ class AIContextManager:
         self.store = ContextStore(self.project_path)
         self.contexts = self.store.load_all()
 
-    def create_optimized_prompt(
-        self, task: str, model: str = "gpt", max_tokens: int = 4000
-    ) -> str:
+    def create_optimized_prompt(self, task: str, model: str = "gpt", max_tokens: int = 4000) -> str:
         """Creates an AI-optimized prompt with relevant context.
 
         Args:
@@ -47,9 +45,7 @@ class AIContextManager:
             "gpt": GPTBuilder(),
             "claude": ClaudeBuilder(),
         }
-        builder = next(
-            (b for k, b in builders.items() if k in model.lower()), GPTBuilder()
-        )
+        builder = next((b for k, b in builders.items() if k in model.lower()), GPTBuilder())
 
         ctx_str = ContextExtractor.extract_relevant(task, self.contexts)
         return builder.build(task, ctx_str[: max_tokens * 2], self.project_path.name)

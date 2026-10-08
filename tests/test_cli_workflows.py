@@ -15,9 +15,7 @@ def runner():
 @patch("ai_context_core.cli.commands.analyze.run_audit")
 @patch("ai_context_core.analyzer.providers.gis_utils.parse_qgis_metadata")
 @patch("ai_context_core.cli.commands.qgis.check_compliance")
-def test_full_scan_general_python(
-    mock_qgis, mock_metadata, mock_audit, mock_analyze, runner
-):
+def test_full_scan_general_python(mock_qgis, mock_metadata, mock_audit, mock_analyze, runner):
     """Test full-scan on a general Python project (no QGIS metadata)."""
     # Setup mocks
     mock_metadata.return_value = {"exists": False}
@@ -39,9 +37,7 @@ def test_full_scan_general_python(
 @patch("ai_context_core.cli.commands.analyze.run_audit")
 @patch("ai_context_core.analyzer.providers.gis_utils.parse_qgis_metadata")
 @patch("ai_context_core.cli.commands.qgis.check_compliance")
-def test_full_scan_qgis_plugin(
-    mock_qgis, mock_metadata, mock_audit, mock_analyze, runner
-):
+def test_full_scan_qgis_plugin(mock_qgis, mock_metadata, mock_audit, mock_analyze, runner):
     """Test full-scan on a QGIS plugin project."""
     # Setup mocks
     mock_metadata.return_value = {"exists": True}

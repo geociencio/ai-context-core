@@ -27,9 +27,7 @@ class InjectionChecker(BaseSecurityChecker):
         elif isinstance(node, ast.JoinedStr):
             self._check_joined_str(node, issues)
 
-    def _check_joined_str(
-        self, node: ast.JoinedStr, issues: List[Dict[str, Any]]
-    ) -> None:
+    def _check_joined_str(self, node: ast.JoinedStr, issues: List[Dict[str, Any]]) -> None:
         """Heuristic for f-string SQL outside of execute()."""
         if any(
             "SELECT" in str(v.value).upper() and "FROM" in str(v.value).upper()

@@ -31,9 +31,7 @@ class OSCommandRule:
     def _check_subprocess(self, node: ast.Call, issues: List[Dict[str, Any]]) -> None:
         """Checks subprocess calls for unsafe shell=True."""
         shell_true = any(
-            kw.arg == "shell"
-            and isinstance(kw.value, ast.Constant)
-            and kw.value.value is True
+            kw.arg == "shell" and isinstance(kw.value, ast.Constant) and kw.value.value is True
             for kw in node.keywords
         )
         if shell_true:

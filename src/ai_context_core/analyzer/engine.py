@@ -53,9 +53,7 @@ class ProjectAnalyzer:
         from .providers.config_loader import load_config as loader_func
 
         self.project_path = pathlib.Path(project_path).resolve()
-        self.max_workers = max_workers or (
-            2 * (4 if hasattr(time, "get_clock_info") else 1)
-        )
+        self.max_workers = max_workers or (2 * (4 if hasattr(time, "get_clock_info") else 1))
         self.config = config or loader_func(self.project_path)
 
         self.exclusion_patterns = fs_utils.load_exclusion_patterns(
@@ -63,9 +61,7 @@ class ProjectAnalyzer:
         )
         self.include_md = list(include_md or [])
         self.context_manager = AIContextManager(project_path)
-        self.analysis_cache = (
-            {} if ignore_cache else fs_utils.load_cache(self.project_path)
-        )
+        self.analysis_cache = {} if ignore_cache else fs_utils.load_cache(self.project_path)
         self.error_log = {}
 
     def analyze(self, output_format: str = "markdown") -> Dict[str, Any]:
@@ -189,9 +185,7 @@ class ProjectAnalyzer:
             reporting.generate_ai_context(
                 results, self.project_path / "AI_CONTEXT.md", self.project_path.name
             )
-            with open(
-                self.project_path / "project_context.json", "w", encoding="utf-8"
-            ) as f:
+            with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
         except Exception as e:
             logger.error(f"Error generating outputs: {e}")

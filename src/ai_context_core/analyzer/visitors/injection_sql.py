@@ -30,11 +30,7 @@ class SQLInjectionRule:
     def _check_fstring(
         self, node: ast.Call, arg: ast.JoinedStr, issues: List[Dict[str, Any]]
     ) -> None:
-        if any(
-            "SELECT" in str(v.value).upper()
-            for v in arg.values
-            if isinstance(v, ast.Constant)
-        ):
+        if any("SELECT" in str(v.value).upper() for v in arg.values if isinstance(v, ast.Constant)):
             issues.append(
                 {
                     "pattern": "SQL Injection (f-string)",
@@ -44,9 +40,7 @@ class SQLInjectionRule:
                 }
             )
 
-    def _check_format(
-        self, node: ast.Call, arg: ast.Call, issues: List[Dict[str, Any]]
-    ) -> None:
+    def _check_format(self, node: ast.Call, arg: ast.Call, issues: List[Dict[str, Any]]) -> None:
         if (
             isinstance(arg.func.value, ast.Constant)
             and "SELECT" in str(arg.func.value.value).upper()
@@ -60,13 +54,8 @@ class SQLInjectionRule:
                 }
             )
 
-    def _check_percent(
-        self, node: ast.Call, arg: ast.BinOp, issues: List[Dict[str, Any]]
-    ) -> None:
-        if (
-            isinstance(arg.left, ast.Constant)
-            and "SELECT" in str(arg.left.value).upper()
-        ):
+    def _check_percent(self, node: ast.Call, arg: ast.BinOp, issues: List[Dict[str, Any]]) -> None:
+        if isinstance(arg.left, ast.Constant) and "SELECT" in str(arg.left.value).upper():
             issues.append(
                 {
                     "pattern": "SQL Injection (%)",

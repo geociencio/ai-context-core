@@ -37,9 +37,7 @@ class DecoratorDetector(PatternDetector):
         inner = DecoratorRules.find_inner_function(node)
 
         if inner and DecoratorRules.returns_inner(node, inner.name):
-            self._add_evidence(
-                f"Function contains and returns inner '{inner.name}'", 50
-            )
+            self._add_evidence(f"Function contains and returns inner '{inner.name}'", 50)
             if DecoratorRules.has_wraps(inner):
                 self._add_evidence("Uses @functools.wraps", 40)
 

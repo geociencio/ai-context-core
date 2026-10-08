@@ -39,9 +39,7 @@ def test_base_notes_still_read(tmp_path):
     _write(tmp_path / "app.py", "def f():\n    return 1\n")
     _write(tmp_path / ".ai-context" / "project_brain.md", "Brain notes\n")
 
-    analyzer = ProjectAnalyzer(
-        str(tmp_path), config={"context_docs": []}, ignore_cache=True
-    )
+    analyzer = ProjectAnalyzer(str(tmp_path), config={"context_docs": []}, ignore_cache=True)
     assert "Brain notes" in analyzer._read_manual_notes()
 
 

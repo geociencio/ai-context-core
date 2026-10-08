@@ -31,23 +31,14 @@ class FactoryDetector(PatternDetector):
             if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 self.evidence, self.confidence = [], base_conf
                 if base_conf:
-                    self.evidence.append(
-                        f"Class '{node.name}' contains 'Factory' in name"
-                    )
+                    self.evidence.append(f"Class '{node.name}' contains 'Factory' in name")
 
-                if any(
-                    p in item.name.lower()
-                    for p in ("create_", "build_", "make_", "factory")
-                ):
-                    self._add_evidence(
-                        f"Method '{item.name}' matches factory naming", 40
-                    )
+                if any(p in item.name.lower() for p in ("create_", "build_", "make_", "factory")):
+                    self._add_evidence(f"Method '{item.name}' matches factory naming", 40)
 
                 for sub in ast.walk(item):
                     if isinstance(sub, ast.Return) and isinstance(sub.value, ast.Call):
-                        self._add_evidence(
-                            "Method instantiates and returns an object", 30
-                        )
+                        self._add_evidence("Method instantiates and returns an object", 30)
                         break
 
                 if self.confidence >= PATTERN_DETECTION_CONFIDENCE_HIGH:

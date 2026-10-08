@@ -49,9 +49,7 @@ def test_read_file_fast_exception():
 
 def test_calculate_file_hash_empty_content():
     # Coverage for fs_helpers.py lines 47, 49-50
-    with patch(
-        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast", return_value=""
-    ):
+    with patch("ai_context_core.analyzer.providers.fs_helpers.read_file_fast", return_value=""):
         result = calculate_file_hash(pathlib.Path("/empty.py"))
         assert result == ""
 

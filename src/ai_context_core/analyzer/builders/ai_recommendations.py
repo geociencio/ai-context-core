@@ -5,6 +5,7 @@ static analysis metrics, without requiring external LLM API calls.
 """
 
 from typing import Dict, Any, List
+from . import metric_keys
 from ..constants import (
     AI_RECOMMENDATION_QUALITY_LOW_THRESHOLD,
     AI_RECOMMENDATION_QUALITY_MEDIUM_THRESHOLD,
@@ -41,7 +42,7 @@ class QualityScoreRule(RecommendationRule):
         Returns:
             Recommendations based on quality score.
         """
-        score = metrics.get("quality_score", 0)
+        score = metrics.get(metric_keys.QUALITY_SCORE, 0)
         if score < AI_RECOMMENDATION_QUALITY_LOW_THRESHOLD:
             return [
                 {
@@ -121,7 +122,7 @@ class TestingStatusRule(RecommendationRule):
         Returns:
             List of recommendations.
         """
-        if metrics.get("test_files_count", 0) == 0:
+        if metrics.get(metric_keys.TEST_FILES_COUNT, 0) == 0:
             return [
                 {
                     "category": "Testing",
@@ -153,9 +154,7 @@ class AIRecommender:
             TypeHintRule(),
         ]
 
-    def analyze_codebase(
-        self, analysis_results: Dict[str, Any]
-    ) -> List[Dict[str, Any]]:
+    def analyze_codebase(self, analysis_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Generates recommendations based on the full analysis results."""
         recs = []
         m = analysis_results.get("metrics", {})
@@ -184,9 +183,7 @@ class AIRecommender:
 
         mi = module_data.get("maintenance_index", 100)
         if mi < MAINTENANCE_INDEX_THRESHOLD:
-            res.append(
-                {"type": "maintenance", "message": f"Low Maintainability ({mi})."}
-            )
+            res.append({"type": "maintenance", "message": f"Low Maintainability ({mi})."})
         return res
 
 

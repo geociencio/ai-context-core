@@ -59,7 +59,5 @@ def calculate_file_hash(path: pathlib.Path) -> str:
         return ""
 
 
-def load_exclusion_patterns(
-    project_path: pathlib.Path, extra: List[str] = None
-) -> List[str]:
+def load_exclusion_patterns(project_path: pathlib.Path, extra: List[str] = None) -> List[str]:
     return IgnoreFilter(project_path, extra).patterns

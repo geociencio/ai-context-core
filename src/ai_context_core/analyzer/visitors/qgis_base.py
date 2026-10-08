@@ -35,15 +35,11 @@ class BaseQGISChecker:
         """Entry point for checking a node."""
         raise NotImplementedError
 
-    def generic_visit_with_docstring_skip(
-        self, visitor: ast.NodeVisitor, node: ast.AST
-    ):
+    def generic_visit_with_docstring_skip(self, visitor: ast.NodeVisitor, node: ast.AST):
         """Helper to visit children while skipping the docstring of the current node."""
         docstring = ast.get_docstring(node, clean=False)
         body = getattr(node, "body", [])
-        start_idx = (
-            1 if docstring is not None and body and isinstance(body[0], ast.Expr) else 0
-        )
+        start_idx = 1 if docstring is not None and body and isinstance(body[0], ast.Expr) else 0
 
         for child in body[start_idx:]:
             visitor.visit(child)

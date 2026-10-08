@@ -25,9 +25,7 @@ def detect_all(tree: ast.AST) -> List[Dict[str, Any]]:
     )
 
 
-def detect_god_object(
-    tree: ast.AST, threshold_methods: int = 20
-) -> List[Dict[str, Any]]:
+def detect_god_object(tree: ast.AST, threshold_methods: int = 20) -> List[Dict[str, Any]]:
     """Detects 'God Object' classes with too many methods.
 
     Args:
@@ -44,9 +42,7 @@ def detect_god_object(
     return res
 
 
-def detect_spaghetti_code(
-    tree: ast.AST, complexity_threshold: int = 25
-) -> List[Dict[str, Any]]:
+def detect_spaghetti_code(tree: ast.AST, complexity_threshold: int = 25) -> List[Dict[str, Any]]:
     """Detects 'Spaghetti Code' functions with high cyclomatic complexity.
 
     Args:

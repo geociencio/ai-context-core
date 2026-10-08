@@ -6,34 +6,9 @@ Cubre los últimos 83 líneas en engine, tech_debt, patterns, issues, etc.
 import ast
 import pathlib
 from unittest.mock import patch, mock_open
-from ai_context_core.analyzer.visitors.tech_debt_checker import TechDebtChecker
 from ai_context_core.analyzer.builders.patterns import PatternsBuilder
 from ai_context_core.analyzer.builders.structure import StructureBuilder
 from ai_context_core.analyzer.visitors.issues import find_secrets
-
-
-def test_tech_debt_checker_all_branches():
-    # Coverage for tech_debt_checker.py lines 39-52, 89, 101, 110
-    checker = TechDebtChecker()
-
-    # Test high complexity function
-    code = """
-def complex_func(a, b, c, d, e, f, g, h, i, j, k, l):
-    if a:
-        if b:
-            if c:
-                if d:
-                    if e:
-                        if f:
-                            if g:
-                                if h:
-                                    return 1
-    return 0
-"""
-    tree = ast.parse(code)
-    module_info = {"ast_tree": tree, "content": code, "path": "test.py"}
-    result = checker.check(module_info)
-    assert isinstance(result, list)
 
 
 def test_patterns_builder_with_patterns():

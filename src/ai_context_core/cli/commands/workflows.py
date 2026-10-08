@@ -22,9 +22,7 @@ def full_scan_cmd(path: str, audit_threshold: float, format: str):
     # 1. Main Analysis
     click.echo("\n🔍 [1/3] Running Static Analysis...")
     try:
-        analyze.run_analysis(
-            str(project_path), workers=None, format=format, no_cache=False
-        )
+        analyze.run_analysis(str(project_path), workers=None, format=format, no_cache=False)
         click.echo("✅ Analysis complete.")
     except Exception as e:
         click.echo(f"❌ Analysis failed: {e}", err=True)
