@@ -1,7 +1,7 @@
 import unittest
 import ast
 from ai_context_core.analyzer.visitors.ast_utils import detect_unused_imports
-from ai_context_core.analyzer.builders.dependencies import calculate_coupling_metrics
+from ai_context_core.analyzer.builders.algorithms import GraphMetricsCalculator
 
 
 class TestDependenciesAdvanced(unittest.TestCase):
@@ -21,7 +21,7 @@ print(os.name)
 
     def test_coupling_metrics(self):
         graph = {"A": {"B", "C"}, "B": {"C"}, "C": set()}
-        metrics = calculate_coupling_metrics(graph)
+        metrics = GraphMetricsCalculator(graph).calculate_coupling_metrics()
 
         # A: fan_out=2, fan_in=0, cbo=2
         # B: fan_out=1, fan_in=1, cbo=2

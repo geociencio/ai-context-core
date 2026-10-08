@@ -1,17 +1,13 @@
 import ast
 from click.testing import CliRunner
-from ai_context_core.analyzer.qgis_checkers.frameworks import FrameworkChecker
 from ai_context_core.analyzer.summarizers.git_patterns import GitPatternsSummarizer
+from ai_context_core.analyzer.visitors.qgis_base import get_node_name
 from ai_context_core.cli.commands.specialized import deps_cmd
 
 
 def test_qgis_frameworks_get_name_fallback():
-    # Coverage for frameworks.py line 34
-    results = {"processing_framework": False, "signals_slots": {"legacy": 0}}
-    checker = FrameworkChecker(results)
-    # Test with a node type that's neither Name nor Attribute
-    node = ast.Constant(value=5)
-    assert checker._get_name(node) == ""
+    # Fallback for node types that are neither Name nor Attribute
+    assert get_node_name(ast.Constant(value=5)) == ""
 
 
 def test_git_patterns_summarizer_no_git():

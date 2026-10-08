@@ -156,6 +156,19 @@ quality score ni en las métricas canónicas.
     `validate_agent_system` PASS.
   - Nota: `ruff format --check` reporta 81 archivos desalineados por un cambio
     de versión de ruff (preexistente en HEAD, no introducido por esta fase).
-- [ ] Fase B
+- [x] **Fase B — Completada** (2026-10-08)
+  - #7 `load_config`: resuelto al borrar `engine_config.py` (Fase A); solo queda
+    `providers/config_loader.py` (motor) y `config/loader.py` (perfiles), ambos
+    con propósitos distintos.
+  - #8 Parseo de `metadata.txt` unificado: nuevo `gis_utils.parse_metadata_content`
+    (con `interpolation=None`); `qgis_resources` delega y se elimina el parser naive.
+  - #9 Helper de nombres consolidado en `visitors/qgis_base.get_node_name`;
+    retirados `_get_name` (frameworks, qgis_api) y `_get_func_name` (qgis_visitor).
+  - #10 Bases de builder: constructor compartido `BaseAnalysesBuilder` en
+    `builders_base.py`; `BaseContextBuilder` y `BaseSummarizer` heredan de él.
+  - #11 Wrappers legacy retirados de `dependencies.py` (7 funciones + no-op) y
+    `git_analysis.py` (3 funciones); tests migrados a las clases canónicas.
+  - #12 `metrics_summarizer.py` usa las constantes de `metric_keys`.
+  - Verificación: `ruff check` OK · `pytest` 307/307 · quality score 100/100 ·
+    `validate_agent_system` PASS.
 - [ ] Fase C
-

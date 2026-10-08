@@ -2,12 +2,15 @@ import pathlib
 from unittest.mock import patch, MagicMock
 from ai_context_core.analyzer.builders.dependencies import (
     analyze_dependencies,
-    find_simple_cycles,
-    count_edges,
-    count_connected_components,
-    calculate_coupling_metrics,
     DependencyAnalyzer,
+    STDLIB_MODULES,
 )
+from ai_context_core.analyzer.builders.algorithms import (
+    CycleDetector,
+    GraphMetricsCalculator,
+)
+from ai_context_core.analyzer.builders.classifier import classify_imports
+from ai_context_core.analyzer.builders.parser import parse_dependency_files
 
 
 def test_analyze_dependencies_cycle_exception():
@@ -32,13 +35,13 @@ def test_analyze_dependencies_metrics_exception():
             mock_log.exception.assert_called()
 
 
-def test_dependency_legacy_wrappers():
-    # Coverage for lines 188-220
+def test_dependency_graph_metrics():
     graph = {"a": {"b"}, "b": set()}
-    assert count_edges(graph) == 1
-    assert find_simple_cycles(graph) == []
-    assert count_connected_components(graph) == 1
-    coupling = calculate_coupling_metrics(graph)
+    calc = GraphMetricsCalculator(graph)
+    assert calc.count_edges() == 1
+    assert CycleDetector(graph).find_cycles() == []
+    assert calc.count_connected_components() == 1
+    coupling = calc.calculate_coupling_metrics()
     assert "a" in coupling
 
 
@@ -53,24 +56,13 @@ def test_dependency_analyzer_legacy():
 
 
 def test_classify_imports_full_coverage():
-    # Coverage for dependency_analyser_components/classifier.py (via dependencies.py)
-    from ai_context_core.analyzer.builders.dependencies import (
-        _classify_imports,
-        STDLIB_MODULES,
-    )
-
-    # Test case where import is both internal and external (should favor internal usually, or depends on implementation)
-    res = _classify_imports({"os", "my_mod"}, STDLIB_MODULES, known_internal={"my_mod"})
-    # 'os' should be in 'stdlib' or 'external' depending on classifier implementation
-    # Let's see what keys it returns
+    # Case where an import is both internal and external
+    res = classify_imports({"os", "my_mod"}, STDLIB_MODULES, known_internal={"my_mod"})
     assert "os" in res["external"]
     assert "my_mod" in res["internal"]
 
 
 def test_parse_dependency_files_components():
-    # Coverage for parser.py
-    from ai_context_core.analyzer.builders.dependencies import _parse_dependency_files
-
     def mock_read(p):
         if p.name == "requirements.txt":
             return "flask\nrequests"
@@ -79,6 +71,6 @@ def test_parse_dependency_files_components():
         return ""
 
     with patch("pathlib.Path.exists", return_value=True):
-        res = _parse_dependency_files(pathlib.Path("/tmp"), mock_read)
+        res = parse_dependency_files(pathlib.Path("/tmp"), mock_read)
         assert "requirements.txt" in res
         assert "pyproject.toml" in res

@@ -2,9 +2,21 @@
 
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Any
+from typing import Dict, List, Any
 
 logger = logging.getLogger(__name__)
+
+
+class BaseAnalysesBuilder:
+    """Base for report section builders that consume a shared analyses mapping."""
+
+    def __init__(self, analyses: Dict[str, Any]):
+        """Initialize with analysis data.
+
+        Args:
+            analyses: Dictionary of analysis results.
+        """
+        self.analyses = analyses
 
 
 class BaseBuilder(ABC):

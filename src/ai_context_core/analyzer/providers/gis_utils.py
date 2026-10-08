@@ -1,7 +1,23 @@
 """GIS specific filesystem utilities."""
 
+import configparser
 import pathlib
 from typing import Dict, Any
+
+
+def parse_metadata_content(content: str) -> Dict[str, str]:
+    """Parse the raw text of a QGIS ``metadata.txt`` into a mapping.
+
+    Args:
+        content: Raw file content of a ``metadata.txt`` file.
+
+    Returns:
+        A dictionary of the parsed key/value pairs. Interpolation is disabled
+        so literal ``%`` characters in values do not raise.
+    """
+    config = configparser.ConfigParser(strict=False, interpolation=None)
+    config.read_string("[general]\n" + content.strip())
+    return dict(config["general"]) if "general" in config else {}
 
 
 def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
@@ -19,11 +35,7 @@ def parse_qgis_metadata(project_path: pathlib.Path) -> Dict[str, Any]:
     res["exists"] = True
     try:
         content = metadata_file.read_text(encoding="utf-8")
-        import configparser
-
-        config = configparser.ConfigParser(strict=False)
-        config.read_string("[general]\n" + content.strip())
-        metadata = dict(config["general"]) if "general" in config else {}
+        metadata = parse_metadata_content(content)
         res["content"] = metadata
         mandatory = [
             "name",

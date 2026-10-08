@@ -4,6 +4,7 @@ import ast
 
 
 from .visitors_base import BaseVisitor
+from .qgis_base import get_node_name
 
 
 class GenericQGISComplianceVisitor(BaseVisitor):
@@ -81,7 +82,7 @@ class GenericQGISComplianceVisitor(BaseVisitor):
 
     def visit_Call(self, node: ast.Call):
         """Visits a call node to detect i18n usage and legacy signals."""
-        func_name = self._get_func_name(node.func)
+        func_name = get_node_name(node.func)
         is_ignored_func = self._i18n_checker.is_ignored_func(func_name)
         is_ui_func = not is_ignored_func and self._i18n_checker.is_ui_func(func_name)
 
@@ -99,14 +100,6 @@ class GenericQGISComplianceVisitor(BaseVisitor):
             self._i18n_checker.set_ignored(False)
         elif is_ui_func:
             self._i18n_checker.set_ui_call(False)
-
-    def _get_func_name(self, func: ast.expr) -> str:
-        """Helper to get the name of a called function."""
-        if isinstance(func, ast.Name):
-            return func.id
-        if isinstance(func, ast.Attribute):
-            return func.attr
-        return ""
 
     def visit_Dict(self, node: ast.Dict):
         """Visits dictionary and ignores its keys for i18n string counting."""

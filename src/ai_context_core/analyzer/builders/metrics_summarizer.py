@@ -17,11 +17,21 @@ class MetricsSummarizer:
         metrics = self.analyses.get("metrics", {})
 
         lines = []
-        lines.append(f"- **ai-ctx Quality Score**: {metrics.get('quality_score', 0):.1f}/100")
-        lines.append(f"- **Source Lines (SLOC)**: {metrics.get('total_lines_code', 0):,}")
-        lines.append(f"- **Total Physical Lines**: {metrics.get('total_physical_lines', 0):,}")
-        lines.append(f"- **Maintainability**: {metrics.get('avg_maintenance_index', 0):.1f}")
-        test_count = metrics.get("test_files_count")
+        lines.append(
+            f"- **ai-ctx Quality Score**: {metrics.get(metric_keys.QUALITY_SCORE, 0):.1f}/100"
+        )
+        lines.append(
+            f"- **Source Lines (SLOC)**: {metrics.get(metric_keys.TOTAL_LINES_CODE, 0):,}"
+        )
+        lines.append(
+            f"- **Total Physical Lines**: "
+            f"{metrics.get(metric_keys.TOTAL_PHYSICAL_LINES, 0):,}"
+        )
+        lines.append(
+            f"- **Maintainability**: "
+            f"{metrics.get(metric_keys.AVG_MAINTENANCE_INDEX, 0):.1f}"
+        )
+        test_count = metrics.get(metric_keys.TEST_FILES_COUNT)
         test_display = "n/a" if test_count is None else f"{test_count} test files"
         lines.append(f"- **Test Files**: {test_display}")
         lines.append(
@@ -65,8 +75,13 @@ class MetricsSummarizer:
         metrics = self.analyses.get("metrics", {})
 
         lines = []
-        lines.append(f"- **Avg Cyclomatic Complexity**: {metrics.get('average_complexity', 0):.2f}")
-        lines.append(f"- **Max Complexity**: {metrics.get('max_complexity', 0)}")
+        lines.append(
+            f"- **Avg Cyclomatic Complexity**: "
+            f"{metrics.get(metric_keys.AVERAGE_COMPLEXITY, 0):.2f}"
+        )
+        lines.append(
+            f"- **Max Complexity**: {metrics.get(metric_keys.MAX_COMPLEXITY, 0)}"
+        )
 
         high = comp.get("high_complexity", [])
         if high:

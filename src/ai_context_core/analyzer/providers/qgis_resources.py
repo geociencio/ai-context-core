@@ -3,6 +3,8 @@ import pathlib
 import xml.etree.ElementTree as ET
 from typing import Dict, Any
 
+from .gis_utils import parse_qgis_metadata
+
 
 def analyze_qgis_resources(project_path: pathlib.Path) -> Dict[str, Any]:
     """Analyze non-Python QGIS resources like plugin.xml and .qrc files.
@@ -23,7 +25,7 @@ def analyze_qgis_resources(project_path: pathlib.Path) -> Dict[str, Any]:
     # 1. Analyze metadata.txt (Standard QGIS 3+)
     metadata_txt = project_path / "metadata.txt"
     if metadata_txt.exists():
-        results["metadata"] = _parse_metadata_txt(metadata_txt)
+        results["metadata"] = parse_qgis_metadata(project_path)["content"]
 
     # 2. Analyze plugin.xml (Legacy or specific distribution)
     plugin_xml_path = project_path / "plugin.xml"
@@ -45,20 +47,6 @@ def analyze_qgis_resources(project_path: pathlib.Path) -> Dict[str, Any]:
                 )
 
     return results
-
-
-def _parse_metadata_txt(path: pathlib.Path) -> Dict[str, str]:
-    """Parse standard QGIS metadata.txt file."""
-    metadata = {}
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            for line in f:
-                if "=" in line:
-                    key, value = line.split("=", 1)
-                    metadata[key.strip()] = value.strip()
-    except Exception:
-        pass
-    return metadata
 
 
 def _parse_plugin_xml(path: pathlib.Path) -> Dict[str, str]:

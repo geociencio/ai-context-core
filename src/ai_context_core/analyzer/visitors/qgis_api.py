@@ -1,6 +1,6 @@
 import ast
 from typing import Dict, Any
-from .qgis_base import BaseQGISChecker
+from .qgis_base import BaseQGISChecker, get_node_name
 
 
 class QGISApiChecker(BaseQGISChecker):
@@ -40,7 +40,7 @@ class QGISApiChecker(BaseQGISChecker):
 
     def _check_call(self, node: ast.Call):
         """Check function calls for deprecated methods and legacy macros."""
-        func_name = self._get_name(node.func)
+        func_name = get_node_name(node.func)
         if func_name in self.DEPRECATED_APIS:
             self.results["api_compatibility"]["deprecated_calls"].append(
                 {"name": func_name, "reason": self.DEPRECATED_APIS[func_name]}
@@ -55,7 +55,7 @@ class QGISApiChecker(BaseQGISChecker):
         if isinstance(node.func, ast.Attribute):
             if (
                 node.func.attr == "activeLayer"
-                and self._get_name(node.func.value) == "iface"
+                and get_node_name(node.func.value) == "iface"
             ):
                 self.results["api_compatibility"]["best_practice_violations"].append(
                     {
@@ -95,11 +95,3 @@ class QGISApiChecker(BaseQGISChecker):
                     "suggestion": "Use QgsSettings for automatic QGIS profile compatibility.",
                 }
             )
-
-    def _get_name(self, node: ast.AST) -> str:
-        """Helper to get name from AST nodes."""
-        if isinstance(node, ast.Name):
-            return node.id
-        if isinstance(node, ast.Attribute):
-            return node.attr
-        return ""

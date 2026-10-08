@@ -4,6 +4,22 @@ import ast
 from typing import Dict, Any
 
 
+def get_node_name(node: ast.AST) -> str:
+    """Return the referenced name for ``Name``/``Attribute`` nodes.
+
+    Args:
+        node: The AST node to resolve.
+
+    Returns:
+        The attribute or identifier name, or an empty string for other nodes.
+    """
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        return node.attr
+    return ""
+
+
 class BaseQGISChecker:
     """Base class for QGIS compliance detection rules."""
 

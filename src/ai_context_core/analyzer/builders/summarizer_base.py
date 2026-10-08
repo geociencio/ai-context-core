@@ -1,18 +1,10 @@
 """Base classes for report summarizers."""
 
-from typing import Dict, Any
+from .builders_base import BaseAnalysesBuilder
 
 
-class BaseSummarizer:
+class BaseSummarizer(BaseAnalysesBuilder):
     """Base class for building sections of the summary report."""
-
-    def __init__(self, analyses: Dict[str, Any]):
-        """Initialize with analysis data.
-
-        Args:
-            analyses: Dictionary of analysis results.
-        """
-        self.analyses = analyses
 
     def build(self) -> str:
         """Builds the summary section content.
