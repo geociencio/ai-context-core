@@ -36,7 +36,8 @@ def _generate_tree_fallback(project_path: pathlib.Path) -> str:
         depth = root[len(str(project_path)) :].count(os.sep)
         if depth > 4:
             continue
-        dirs[:] = [d for d in dirs if not d.startswith((".", "_"))]
+        sorted_dirs = sorted(d for d in dirs if not d.startswith((".", "_")))
+        dirs[:] = sorted_dirs
         indent = "    " * depth
         rel_root = os.path.relpath(root, project_path)
         if rel_root != ".":

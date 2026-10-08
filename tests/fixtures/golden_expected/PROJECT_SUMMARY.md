@@ -1,6 +1,6 @@
 # PROJECT SUMMARY - golden_plugin
-Analysis Date: 2026-10-06 17:04:47
-Analyzer Version: 3.4.0 (Ai-Context-Core)
+Analysis Date: <normalized>
+Analyzer Version: <normalized>
 
 ## 📊 KEY METRICS
 - **ai-ctx Quality Score**: 100.0/100
@@ -21,11 +21,11 @@ Analyzer Version: 3.4.0 (Ai-Context-Core)
 ./
     metadata.txt
     plugin.py
-    tests/
-        check_logic.py
     core/
         __init__.py
         logic.py
+    tests/
+        check_logic.py
 ```
 
 ## 🚨 CRITICAL ISSUES
