@@ -95,8 +95,3 @@ class SecretScanner:
 def detect_secrets(content: str) -> List[Dict[str, Any]]:
     """Legacy wrapper for secret detection."""
     return SecretScanner().scan(content)
-
-
-def _mask_secret(secret: str) -> str:
-    """Legacy internal wrapper for masking."""
-    return SecretScanner()._mask(secret)

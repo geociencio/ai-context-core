@@ -3,7 +3,7 @@ import pytest
 # Import the module to test
 # Adjust import based on where load_config is located.
 # It is currently in src/ai_context_core/analyzer/engine.py based on previous turns.
-from ai_context_core.analyzer.engine import load_config
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 
 class TestConfigLoading:

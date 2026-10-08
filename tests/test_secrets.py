@@ -1,13 +1,14 @@
 import unittest
-from ai_context_core.analyzer.visitors.secrets import detect_secrets, _mask_secret
+from ai_context_core.analyzer.visitors.secrets import SecretScanner, detect_secrets
 
 
 class TestSecrets(unittest.TestCase):
     def test_mask_secret(self):
-        self.assertEqual(_mask_secret("abcdef"), "ab**ef")
-        self.assertEqual(_mask_secret("12345678"), "12****78")
-        self.assertEqual(_mask_secret("short"), "sh*rt")  # 5 chars
-        self.assertEqual(_mask_secret("abcd"), "****")  # 4 chars behaves as <=4
+        mask = SecretScanner()._mask
+        self.assertEqual(mask("abcdef"), "ab**ef")
+        self.assertEqual(mask("12345678"), "12****78")
+        self.assertEqual(mask("short"), "sh*rt")  # 5 chars
+        self.assertEqual(mask("abcd"), "****")  # 4 chars behaves as <=4
 
     def test_detect_aws_access_key(self):
         content = 'aws_access_key_id = "AKIA1234567890ABCDEF"'

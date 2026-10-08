@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-06 17:25:43
+Analysis Date: 2026-10-08 17:52:41
 Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **ai-ctx Quality Score**: 100.0/100
-- **Source Lines (SLOC)**: 6,635
-- **Total Physical Lines**: 10,582
-- **Maintainability**: 59.5
-- **Test Files**: 75 test files
+- **Source Lines (SLOC)**: 6,398
+- **Total Physical Lines**: 10,196
+- **Maintainability**: 59.9
+- **Test Files**: 74 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -8.2
+- Maintainability: -7.7
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 195
+**Total Modules**: 189
 
 ```tree
 ./
@@ -27,7 +27,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
     .gitignore
     .pre-commit-config.yaml
     AGENTS.md
-    ... (+26 more)
+    ... (+25 more)
     src/
         __init__.py
         ai_context_core/
@@ -37,18 +37,17 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                 __init__.py
                 constants.py
                 engine.py
-                engine_config.py
                 pattern_base.py
                 registry.py
                 visitors/
                     __init__.py
                     antipattern_base.py
-                    antipattern_orchestrator.py
                     antipatterns.py
                     ast_entry_points.py
                     ast_metrics.py
                     ast_qgis.py
-                    ... (+56 more)
+                    ast_security.py
+                    ... (+54 more)
                 builders/
                     __init__.py
                     aggregator.py
@@ -57,7 +56,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     ai_recommendations.py
                     algorithms.py
                     builder.py
-                    ... (+25 more)
+                    ... (+23 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -219,7 +218,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
             dev_feedback.md
             developer_recommendations.md
             i18n_improvement_guide.md
-            ... (+3 more)
+            ... (+4 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -231,7 +230,7 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+60 more)
+        ... (+59 more)
         fixtures/
             false_positives.py
             golden_plugin/
@@ -254,9 +253,8 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
         sync_metrics.py
         validate_agent_system.py
     dist/
-        .gitignore
-        ai_context_core-3.4.0-py3-none-any.whl
-        ai_context_core-3.4.0.tar.gz
+        ai_context_core-3.5.0-py3-none-any.whl
+        ai_context_core-3.5.0.tar.gz
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -287,10 +285,10 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 217
-- **Additions**: +8567
-- **Deletions**: -3861
-- **Total Churn**: 12428
+- **Files Changed**: 230
+- **Additions**: +16072
+- **Deletions**: -21412
+- **Total Churn**: 37484
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 29 commits
@@ -300,5 +298,5 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 6.39
+- **Avg Cyclomatic Complexity**: 6.40
 - **Max Complexity**: 24

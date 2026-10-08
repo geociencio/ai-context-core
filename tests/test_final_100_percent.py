@@ -109,8 +109,10 @@ description=Test Description
 
 
 def test_engine_load_config_edge_cases():
-    # Coverage for engine.py lines 56-57, 61, 81, 92
-    from ai_context_core.analyzer.engine import load_config, _get_hardcoded_defaults
+    from ai_context_core.analyzer.providers.config_loader import (
+        load_config,
+        _get_hardcoded_defaults,
+    )
 
     # Test load_config
     result = load_config(pathlib.Path("/tmp"))

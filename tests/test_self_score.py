@@ -3,7 +3,7 @@
 import pathlib
 
 from ai_context_core.analyzer.builders import calculator, metric_keys
-from ai_context_core.analyzer.engine_config import load_config
+from ai_context_core.analyzer.providers.config_loader import load_config
 from ai_context_core.analyzer.providers import fs_utils, worker
 from ai_context_core.analyzer.providers.fs_scanner import count_test_files
 

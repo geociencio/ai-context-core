@@ -1,7 +1,6 @@
 """Metrics calculation for Python AST (Complexity, Halstead, Type Hints)."""
 
 import ast
-from collections import Counter
 from typing import Dict, Any
 
 
@@ -30,63 +29,6 @@ class TypeHintVisitor(ast.NodeVisitor):
             self.typed_functions += 1
 
         self.generic_visit(node)
-
-
-class HalsteadVisitor(ast.NodeVisitor):
-    """Visitor to calculate Halstead metrics."""
-
-    OPERATORS = (
-        ast.Add,
-        ast.Sub,
-        ast.Mult,
-        ast.Div,
-        ast.Mod,
-        ast.Pow,
-        ast.LShift,
-        ast.RShift,
-        ast.BitOr,
-        ast.BitXor,
-        ast.BitAnd,
-        ast.FloorDiv,
-        ast.And,
-        ast.Or,
-        ast.Not,
-        ast.Invert,
-        ast.UAdd,
-        ast.USub,
-        ast.Eq,
-        ast.NotEq,
-        ast.Lt,
-        ast.LtE,
-        ast.Gt,
-        ast.GtE,
-        ast.Is,
-        ast.IsNot,
-        ast.In,
-        ast.NotIn,
-        ast.If,
-        ast.For,
-        ast.While,
-        ast.Try,
-        ast.With,
-        ast.FunctionDef,
-        ast.ClassDef,
-    )
-
-    def __init__(self):
-        """Initialize the visitor counters."""
-        self.operators = Counter()
-        self.operands = Counter()
-
-    def visit(self, node: ast.AST):
-        """Override visit to check for operators and operands generically."""
-        if isinstance(node, self.OPERATORS):
-            self.operators[type(node).__name__] += 1
-        elif isinstance(node, ast.Name):
-            self.operands[node.id] += 1
-        elif isinstance(node, ast.Constant):
-            self.operands[str(node.value)] += 1
-        super().visit(node)
 
 
 def calculate_complexity(tree: ast.AST) -> int:

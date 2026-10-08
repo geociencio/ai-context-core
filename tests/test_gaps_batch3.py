@@ -3,7 +3,7 @@ Tests masivos para cubrir todos los gaps restantes.
 """
 
 import pathlib
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from ai_context_core.analyzer.visitors.issues import find_secrets
 from ai_context_core.analyzer.graph.builder import ImportGraphBuilder
 from ai_context_core.analyzer.builders.classifier import (
@@ -66,21 +66,6 @@ def test_fs_tree_subprocess_timeout():
         result = generate_tree_optimized(pathlib.Path("/tmp"))
         # Should fallback to manual generation
         assert isinstance(result, str)
-
-
-def test_fs_tree_analyze_structure():
-    # Coverage for fs_tree.py lines 55-58
-    from ai_context_core.analyzer.providers.fs_tree import analyze_structure
-
-    with patch(
-        "ai_context_core.analyzer.providers.fs_scanner.scan_project"
-    ) as mock_scan:
-        mock_scan.return_value = MagicMock(
-            file_types={"py": 10}, size_stats={"total_files": 10}
-        )
-        result = analyze_structure(pathlib.Path("/tmp"), 5)
-        assert "tree" in result
-        assert "modules_count" in result
 
 
 def test_config_loader_no_tomllib():

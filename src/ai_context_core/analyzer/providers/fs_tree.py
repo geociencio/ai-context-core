@@ -3,7 +3,6 @@
 import os
 import pathlib
 import subprocess
-from typing import Dict, Any
 
 
 def generate_tree_optimized(project_path: pathlib.Path) -> str:
@@ -49,15 +48,3 @@ def _generate_tree_fallback(project_path: pathlib.Path) -> str:
                 break
             tree_lines.append(f"{f_indent}{file}")
     return "\n".join(tree_lines)
-
-
-def analyze_structure(project_path: pathlib.Path, modules_count: int) -> Dict[str, Any]:
-    from .fs_scanner import scan_project
-
-    res = scan_project(project_path, [])
-    return {
-        "tree": generate_tree_optimized(project_path),
-        "modules_count": modules_count,
-        "file_types": res.file_types,
-        "size_stats": res.size_stats,
-    }

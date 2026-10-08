@@ -13,7 +13,7 @@ from ai_context_core.analyzer.builders.dependencies import (
 def test_analyze_dependencies_cycle_exception():
     # Coverage for dependencies.py line 124-125
     with patch(
-        "ai_context_core.analyzer.graph_engine.CycleDetector.find_cycles",
+        "ai_context_core.analyzer.builders.dependencies.CycleDetector.find_cycles",
         side_effect=Exception("Cycle error"),
     ):
         res = analyze_dependencies([], pathlib.Path("/tmp"), MagicMock())
@@ -23,7 +23,7 @@ def test_analyze_dependencies_cycle_exception():
 def test_analyze_dependencies_metrics_exception():
     # Coverage for dependencies.py line 142-143
     with patch(
-        "ai_context_core.analyzer.graph_engine.GraphMetricsCalculator.count_edges",
+        "ai_context_core.analyzer.builders.dependencies.GraphMetricsCalculator.count_edges",
         side_effect=Exception("Metrics error"),
     ):
         with patch("ai_context_core.analyzer.builders.dependencies.logger") as mock_log:

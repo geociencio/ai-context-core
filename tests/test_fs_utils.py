@@ -13,13 +13,6 @@ class TestFsUtils(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.test_dir)
 
-    def test_count_file_types(self):
-        (self.p_dir / "test.py").touch()
-        (self.p_dir / "readme.md").touch()
-        counts = fs_utils.count_file_types(self.p_dir)
-        self.assertEqual(counts.get(".py"), 1)
-        self.assertEqual(counts.get(".md"), 1)
-
     def test_load_exclusion_patterns(self):
         patterns = fs_utils.load_exclusion_patterns(self.p_dir)
         self.assertIn(".git", patterns)

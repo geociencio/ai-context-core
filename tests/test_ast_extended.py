@@ -2,9 +2,9 @@ import ast
 from ai_context_core.analyzer.visitors.ast_utils import extract_base_name
 from ai_context_core.analyzer.visitors.ast_metrics import (
     calculate_type_hint_coverage,
-    HalsteadVisitor,
     TypeHintVisitor,
 )
+from ai_context_core.analyzer.visitors.halstead import HalsteadVisitor
 
 
 def test_extract_base_name_variants():

@@ -9,7 +9,6 @@ from .fs_utils import (
     read_file_fast,
     parse_qgis_metadata,
 )
-from .fs_scanner import scan_project as scan_project_alt  # noqa: F401
 from .fs_tree import generate_tree_optimized
 from .fs_cache import LRUCache
 from .ignore_filter import IgnoreFilter
