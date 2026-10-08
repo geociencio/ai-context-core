@@ -58,5 +58,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "pre-commit>=3.7.1",
     "ruff>=0.14.14",
+    "build>=1.2.0",
+    "twine>=5.0.0",
     "ai-context-core",
 ]
