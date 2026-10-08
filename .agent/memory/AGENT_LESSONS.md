@@ -54,6 +54,24 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "AST nodes do not capture comments; the # no-i18n opt-out requires tokenize-based line mapping."
   action: "Use find_no_i18n_lines(content) and attach tree.no_i18n_lines for the I18nChecker to skip."
 
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Average-based quality metric
+  lesson: "The ai-ctx Quality Score uses average maintainability, so deleting small high-MI shim modules lowers the score even when the code gets cleaner (100 -> ~90 after removing facades)."
+  action: "Treat score drops from deletions as metric artifacts; keep the release gate (audit --threshold 70) and avoid pinning guards above the real baseline."
+
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Filesystem-order-dependent tests
+  lesson: "Golden/report tests that render a directory tree via os.walk depend on host readdir order and fail non-deterministically across environments."
+  action: "Sort directory entries in the tree fallback and regenerate golden fixtures; never rely on filesystem ordering in generated reports."
+
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Coverage-chasing tests
+  lesson: "Coverage-only tests that import deprecated facades keep dead code alive and block cleanup; iterating with a git worktree reproduces Docker/Python-version-specific failures."
+  action: "Repoint tests to canonical modules and delete obsolete coverage tests; verify fixes with both local pytest and make docker-test (Python 3.11)."
+
 ## Architecture Rules
 
 - date: 2026-09-17

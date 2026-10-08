@@ -1,5 +1,15 @@
 # Development Log
 
+## [2026-10-08] Redundancy Cleanup (Phases A–C) - COMPLETED
+**THEME**: Dead-code removal, consolidation and determinism 🧹
+- **Phase A**: Removed 6 dead modules, the broken `check_complexity.py`, and duplicate symbols (`HalsteadVisitor`, `_mask_secret`, `analyze_structure`, ...) plus their coverage-only tests. 🗑️
+- **Phase B**: Unified `metadata.txt` parsing (`gis_utils.parse_metadata_content`), one AST name helper (`qgis_base.get_node_name`), a shared `BaseAnalysesBuilder`, and migrated legacy wrappers to canonical classes; metrics read via `metric_keys`. 🔗
+- **Phase C**: Deleted all 10 deprecated facade packages, dropped the duplicate CLI `_cmd` aliases, and repointed tests/docs to canonical paths. 🧱
+- **Determinism**: `fs_tree` fallback now sorts directories (matching the `tree` binary); regenerated golden fixtures to fix a pre-existing environment-dependent test. 📁
+- **Score note**: the heuristic score moved 100 → ~90 because removing tiny high-MI shim modules lowered the *average* maintainability (not a regression; gate is 70). 📊
+- **Verification**: 303 tests passing locally and in Docker, ruff clean, `ai-ctx audit --threshold 70` PASS (90.4), `validate_agent_system.py` PASS. ✅
+- **Breaking**: deprecated facade import paths removed ahead of v4.0.0 (major bump recommended). ⚠️
+
 ## [2026-10-06] Explainable Scoring & Context Enrichment (v3.5.0) - COMPLETED
 **THEME**: Correctness, explainability and context fidelity 🎯
 - **Correctness**: Persisted `entry_points` (path + type) and decoupled test-file counting from `.analyzerignore`; renamed the "Test Coverage" label to "Test Files". ✅

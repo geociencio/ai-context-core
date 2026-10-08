@@ -1,11 +1,11 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 18:03:59
+Analysis Date: 2026-10-08 18:08:45
 Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
 - **ai-ctx Quality Score**: 90.4/100
-- **Source Lines (SLOC)**: 6,184
-- **Total Physical Lines**: 9,780
+- **Source Lines (SLOC)**: 6,185
+- **Total Physical Lines**: 9,781
 - **Maintainability**: 51.9
 - **Test Files**: 74 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
@@ -28,6 +28,84 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
     .pre-commit-config.yaml
     AGENTS.md
     ... (+25 more)
+    dist/
+        ai_context_core-3.5.0-py3-none-any.whl
+        ai_context_core-3.5.0.tar.gz
+    docs/
+        AGENTIC_IMPLEMENTATION_GUIDE.md
+        AGENTIC_STANDARDS_AND_SOURCES.md
+        ARCHITECTURAL_ANALYSIS.md
+        ARCHITECTURE.md
+        AiContextCore_Analysis_Report.md
+        CHANGELOG.md
+        COMMIT_GUIDELINES.md
+        ... (+18 more)
+        adr/
+            0001-use-adr-for-architecture-decisions.md
+            0002-implement-13-improvements-roadmap.md
+            0003-pattern-detection-scoring-strategy.md
+            0004-multi-framework-entry-point-detection.md
+            0005-optimization-refactoring-strategy.md
+            0006-elimination-of-root-facades-and-enforcement-of-strict-modularity.md
+            0007-scoped-i18n-analysis-for-qgis-plugins.md
+            ... (+1 more)
+        development/
+            ARCHITECTURE.md
+            phases/
+                phase8_implementation_plan.md
+                phase8_task.md
+                phase8_walkaround.md
+        maintenance/
+            analysis_report.md
+            bug_report_v320.md
+            bug_report_v321_aggregation.md
+            corrections_implementation_plan.md
+            dev_feedback.md
+            developer_recommendations.md
+            i18n_improvement_guide.md
+            ... (+5 more)
+            v321_fix/
+                implementation_plan.md
+                walkthrough.md
+        releases/
+            github/
+            notes/
+                v1.0.0.md
+                v1.0.1.md
+                v2.1.1.md
+                v2.5.0.md
+                v2.5.1.md
+                v2.5.2.md
+                v3.0.0.md
+                ... (+10 more)
+            walkthroughs/
+                v3.1.0-walkthrough.md
+        reports/
+            initial_extraction.md
+        research/
+        secinterp/
+            .ai_context_cache.json
+            AI_CONTEXT.md
+            PROJECT_SUMMARY.md
+            ai_ctx_bug_report.md
+            metadata.txt
+            project_context.json
+        sessions/
+            session_2026-01-22_fix_config_release.md
+            session_2026-01-25_analysis_planning.md
+            session_2026-01-25_complete_workflows_summary.md
+            session_2026-01-25_docker_integration.md
+            session_2026-01-25_modularization_cycle.md
+            session_2026-01-25_optimization_quality.md
+            session_2026-01-25_phase1_completion.md
+            ... (+9 more)
+        user_guide/
+            PROFILES_GUIDE.md
+            QUICK_START.md
+    scripts/
+        memory_prune.py
+        sync_metrics.py
+        validate_agent_system.py
     src/
         __init__.py
         ai_context_core/
@@ -39,15 +117,6 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                 engine.py
                 pattern_base.py
                 registry.py
-                visitors/
-                    __init__.py
-                    antipattern_base.py
-                    antipatterns.py
-                    ast_entry_points.py
-                    ast_metrics.py
-                    ast_qgis.py
-                    ast_security.py
-                    ... (+54 more)
                 builders/
                     __init__.py
                     aggregator.py
@@ -66,25 +135,15 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     fs_helpers.py
                     fs_scanner.py
                     ... (+9 more)
-            context/
-                manager.py
-                components/
+                visitors/
                     __init__.py
-                    builders.py
-                    extractor.py
-                    store.py
-            config/
-                defaults.toml
-                loader.py
-                profiles/
-                    qgis.toml
-            templates/
-                initial_prompt.md
-                workflows/
-                    create-commit.md
-                    end-session.md
-                    start-session.md
-                prompts/
+                    antipattern_base.py
+                    antipatterns.py
+                    ast_entry_points.py
+                    ast_metrics.py
+                    ast_qgis.py
+                    ast_security.py
+                    ... (+54 more)
             cli/
                 .ai_context_cache.json
                 AI_CONTEXT.md
@@ -102,6 +161,25 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     compare.py
                     deps.py
                     ... (+15 more)
+            config/
+                defaults.toml
+                loader.py
+                profiles/
+                    qgis.toml
+            context/
+                manager.py
+                components/
+                    __init__.py
+                    builders.py
+                    extractor.py
+                    store.py
+            templates/
+                initial_prompt.md
+                prompts/
+                workflows/
+                    create-commit.md
+                    end-session.md
+                    start-session.md
         ai_context_core.egg-info/
             PKG-INFO
             SOURCES.txt
@@ -109,77 +187,10 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
             entry_points.txt
             requires.txt
             top_level.txt
-    docs/
-        AGENTIC_IMPLEMENTATION_GUIDE.md
-        AGENTIC_STANDARDS_AND_SOURCES.md
-        ARCHITECTURAL_ANALYSIS.md
-        ARCHITECTURE.md
-        AiContextCore_Analysis_Report.md
-        CHANGELOG.md
-        COMMIT_GUIDELINES.md
-        ... (+18 more)
-        development/
-            ARCHITECTURE.md
-            phases/
-                phase8_implementation_plan.md
-                phase8_task.md
-                phase8_walkaround.md
-        releases/
-            github/
-            notes/
-                v1.0.0.md
-                v1.0.1.md
-                v2.1.1.md
-                v2.5.0.md
-                v2.5.1.md
-                v2.5.2.md
-                v3.0.0.md
-                ... (+10 more)
-            walkthroughs/
-                v3.1.0-walkthrough.md
-        reports/
-            initial_extraction.md
-        research/
-        user_guide/
-            PROFILES_GUIDE.md
-            QUICK_START.md
-        sessions/
-            session_2026-01-22_fix_config_release.md
-            session_2026-01-25_analysis_planning.md
-            session_2026-01-25_complete_workflows_summary.md
-            session_2026-01-25_docker_integration.md
-            session_2026-01-25_modularization_cycle.md
-            session_2026-01-25_optimization_quality.md
-            session_2026-01-25_phase1_completion.md
-            ... (+9 more)
-        adr/
-            0001-use-adr-for-architecture-decisions.md
-            0002-implement-13-improvements-roadmap.md
-            0003-pattern-detection-scoring-strategy.md
-            0004-multi-framework-entry-point-detection.md
-            0005-optimization-refactoring-strategy.md
-            0006-elimination-of-root-facades-and-enforcement-of-strict-modularity.md
-            0007-scoped-i18n-analysis-for-qgis-plugins.md
-            ... (+1 more)
-        secinterp/
-            .ai_context_cache.json
-            AI_CONTEXT.md
-            PROJECT_SUMMARY.md
-            ai_ctx_bug_report.md
-            metadata.txt
-            project_context.json
-        maintenance/
-            analysis_report.md
-            bug_report_v320.md
-            bug_report_v321_aggregation.md
-            corrections_implementation_plan.md
-            dev_feedback.md
-            developer_recommendations.md
-            i18n_improvement_guide.md
-            ... (+4 more)
-            v321_fix/
-                implementation_plan.md
-                walkthrough.md
+    test_project/
+        .ai-context-updates.yaml
+        project_context.json
+        test.py
     tests/
         __init__.py
         test_absolute_final.py
@@ -191,6 +202,9 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
         ... (+59 more)
         fixtures/
             false_positives.py
+            golden_expected/
+                AI_CONTEXT.md
+                PROJECT_SUMMARY.md
             golden_plugin/
                 metadata.txt
                 plugin.py
@@ -199,20 +213,6 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
                     logic.py
                 tests/
                     check_logic.py
-            golden_expected/
-                AI_CONTEXT.md
-                PROJECT_SUMMARY.md
-    test_project/
-        .ai-context-updates.yaml
-        project_context.json
-        test.py
-    scripts/
-        memory_prune.py
-        sync_metrics.py
-        validate_agent_system.py
-    dist/
-        ai_context_core-3.5.0-py3-none-any.whl
-        ai_context_core-3.5.0.tar.gz
 ```
 
 ## 🚨 CRITICAL ISSUES
@@ -243,10 +243,10 @@ Analyzer Version: 3.5.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 278
-- **Additions**: +17535
-- **Deletions**: -24109
-- **Total Churn**: 41644
+- **Files Changed**: 335
+- **Additions**: +22443
+- **Deletions**: -32127
+- **Total Churn**: 54570
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 30 commits

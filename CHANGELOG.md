@@ -11,6 +11,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- **Breaking**: removed the deprecated compatibility facade packages
+  (`patterns_detectors`, `context_builders`, `summarizers`, `qgis_checkers`,
+  `security_checkers`, `entry_point_detectors`, `graph`, `checkers`, `commands`,
+  `cli_groups`). Import from the canonical modules instead.
+- **CLI**: dropped the duplicate `*_cmd` command aliases; only the natural
+  command names are registered.
+- **Reports**: the project structure tree is now deterministic (directories are
+  sorted), so generated reports no longer depend on filesystem ordering.
+
+### Internal
+- Removed dead modules and duplicate symbols; consolidated `metadata.txt`
+  parsing, the AST name helper, and the builder base classes.
+- Regenerated the golden report fixtures; the self-score regression guard is now
+  robust across environments.
+
 ## [3.5.0] - 2026-10-06 - Explainable Scoring & Context Enrichment
 
 ### Added

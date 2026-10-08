@@ -20,14 +20,14 @@
       "date": "2026-10-08",
       "session": "sync_metrics_auto",
       "scores": {
-        "quality_score": 100.0,
-        "maintainability": 59.5,
-        "avg_complexity": 6.39,
+        "quality_score": 90.4,
+        "maintainability": 51.9,
+        "avg_complexity": 7.46,
         "max_complexity": 24
       },
       "tests": {
-        "pass": 316,
-        "total": 316
+        "pass": 303,
+        "total": 303
       }
     }
   ]
