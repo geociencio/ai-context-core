@@ -72,6 +72,24 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "Coverage-only tests that import deprecated facades keep dead code alive and block cleanup; iterating with a git worktree reproduces Docker/Python-version-specific failures."
   action: "Repoint tests to canonical modules and delete obsolete coverage tests; verify fixes with both local pytest and make docker-test (Python 3.11)."
 
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Module split for complexity budget
+  lesson: "The X.py + X_rules.py split in visitors/ is a deliberate cyclomatic-complexity management pattern; merging observer_rules/observer_signal_rules/observer_collection_rules into observer.py pushed it to CC 37, over the self-score budget of 25."
+  action: "Check the self-score CC budget (test_self_score.py, budget 25) before consolidating modules; treat the split as intentional, not fragmentation."
+
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Name-resolution helpers are not duplicates
+  lesson: "The four 'resolve Name/Attribute' helpers (qgis_base.get_node_name, ast_utils.extract_base_name, classes._get_base_name, observer_signal_rules._signal_call_name) differ semantically (leading vs trailing, lowercasing, Call recursion, fallback values)."
+  action: "Do not unify AST name-resolution helpers blindly; verify each call site's expected semantics first."
+
+- date: 2026-10-08
+  category: RELEASE
+  topic: Release preparation prerequisites
+  lesson: "Releasing requires build+twine in the dev dependency group, a docs/releases/notes/vX.Y.Z.md file, and the version synced across pyproject.toml, __init__.py, and uv.lock."
+  action: "Add build/twine to [dependency-groups].dev, create the release-notes file, and verify all three version locations before tagging."
+
 ## Architecture Rules
 
 - date: 2026-09-17

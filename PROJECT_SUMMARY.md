@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 19:18:48
+Analysis Date: 2026-10-08 19:33:24
 Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -29,8 +29,8 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
     AGENTS.md
     ... (+25 more)
     dist/
-        ai_context_core-3.5.0-py3-none-any.whl
-        ai_context_core-3.5.0.tar.gz
+        ai_context_core-4.0.0-py3-none-any.whl
+        ai_context_core-4.0.0.tar.gz
     docs/
         AGENTIC_IMPLEMENTATION_GUIDE.md
         AGENTIC_STANDARDS_AND_SOURCES.md
@@ -63,7 +63,7 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
             dev_feedback.md
             developer_recommendations.md
             i18n_improvement_guide.md
-            ... (+5 more)
+            ... (+6 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -77,7 +77,7 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+10 more)
+                ... (+11 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -242,13 +242,13 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 350
-- **Additions**: +23116
-- **Deletions**: -32600
-- **Total Churn**: 55716
+- **Files Changed**: 459
+- **Additions**: +27609
+- **Deletions**: -35193
+- **Total Churn**: 62802
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 30 commits
+- `src/ai_context_core/analyzer/engine.py`: 31 commits
 - `src/ai_context_core/analyzer/issues.py`: 24 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
 - `src/ai_context_core/analyzer/reporting.py`: 23 commits
