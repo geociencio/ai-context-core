@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 23:54:07
+Analysis Date: 2026-10-09 19:14:55
 Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -48,7 +48,7 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
             0005-optimization-refactoring-strategy.md
             0006-elimination-of-root-facades-and-enforcement-of-strict-modularity.md
             0007-scoped-i18n-analysis-for-qgis-plugins.md
-            ... (+1 more)
+            ... (+2 more)
         development/
             ARCHITECTURE.md
             phases/
@@ -85,6 +85,8 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
         reports/
             initial_extraction.md
         research/
+        reviews/
+            ia_critic_implementation_plan_context_only_v5.md
         secinterp/
             .ai_context_cache.json
             AI_CONTEXT.md
@@ -223,8 +225,8 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ### 🔄 Circular Dependencies:
 - src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
-- src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py
+- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/aggregator.py
@@ -248,10 +250,10 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 195
-- **Additions**: +57463
-- **Deletions**: -64349
-- **Total Churn**: 121812
+- **Files Changed**: 198
+- **Additions**: +58697
+- **Deletions**: -65001
+- **Total Churn**: 123698
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 34 commits
