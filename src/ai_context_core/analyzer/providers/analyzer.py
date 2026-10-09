@@ -31,6 +31,15 @@ class GitAnalyzer:
         """Calculates code churn over the last N days."""
         if not self.is_repo():
             return {"available": False}
-        since = f"--since='{days} days ago'"
-        log = self.runner.run(["log", "--shortstat", "--no-merges", since, "--format="])
+        log = self.runner.run(
+            [
+                "log",
+                "--numstat",
+                "--find-renames",
+                "--no-merges",
+                "--since",
+                f"{days} days ago",
+                "--format=",
+            ]
+        )
         return self.parser.parse_churn(log, days)

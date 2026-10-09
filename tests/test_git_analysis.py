@@ -35,6 +35,25 @@ class TestGitAnalysis(unittest.TestCase):
             self.assertIn("total_churn", churn)
             self.assertIn("files_changed", churn)
 
+    def test_parse_churn_numstat_with_rename(self):
+        from ai_context_core.analyzer.providers.parser import GitParser
+
+        output = "10\t2\tcore/logic.py\n0\t0\t{old => new}/moved.py\n3\t1\tcore/logic.py\n"
+        churn = GitParser.parse_churn(output, 30)
+
+        self.assertTrue(churn["available"])
+        self.assertEqual(churn["files_changed"], 2)
+        self.assertEqual(churn["added"], 13)
+        self.assertEqual(churn["deleted"], 3)
+        self.assertEqual(churn["total_churn"], 16)
+        self.assertEqual(churn["per_file"]["core/logic.py"], {"added": 13, "deleted": 3})
+        self.assertEqual(churn["per_file"]["new/moved.py"], {"added": 0, "deleted": 0})
+
+    def test_parse_churn_empty(self):
+        from ai_context_core.analyzer.providers.parser import GitParser
+
+        self.assertEqual(GitParser.parse_churn("", 30), {"available": False})
+
 
 if __name__ == "__main__":
     unittest.main()

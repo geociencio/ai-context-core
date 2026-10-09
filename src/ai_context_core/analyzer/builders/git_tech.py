@@ -21,6 +21,21 @@ class GitTechBuilder(BaseContextBuilder):
             if ch.get("available"):
                 lines.append(f"### Recent Churn ({ch.get('period_days')} days):")
                 lines.append(f"- Total lines changed: {ch.get('total_churn')}")
+                hot_paths = {h["path"] for h in hot}
+                per_file = ch.get("per_file", {})
+                top_churn = sorted(
+                    per_file.items(),
+                    key=lambda kv: kv[1]["added"] + kv[1]["deleted"],
+                    reverse=True,
+                )[:5]
+                if top_churn:
+                    lines.append("- Top churned files:")
+                    for path, counts in top_churn:
+                        total = counts["added"] + counts["deleted"]
+                        marker = " 🔥" if path in hot_paths else ""
+                        lines.append(
+                            f"  - `{path}` (+{counts['added']} -{counts['deleted']}, {total}){marker}"
+                        )
 
         s = self.analyses.get("structure", {})
         lines.append("\n## 🔑 PROJECT KEYWORDS")
