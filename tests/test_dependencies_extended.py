@@ -1,3 +1,4 @@
+import ast
 import pathlib
 from unittest.mock import patch, MagicMock
 from ai_context_core.analyzer.builders.dependencies import (
@@ -9,8 +10,11 @@ from ai_context_core.analyzer.builders.algorithms import (
     CycleDetector,
     GraphMetricsCalculator,
 )
+from ai_context_core.analyzer.builders.builder import ImportGraphBuilder
+from ai_context_core.analyzer.builders.builder_components import resolve_import
 from ai_context_core.analyzer.builders.classifier import classify_imports
 from ai_context_core.analyzer.builders.parser import parse_dependency_files
+from ai_context_core.analyzer.visitors.imports_visitor import extract_imports, get_package
 
 
 def test_analyze_dependencies_cycle_exception():
@@ -74,3 +78,34 @@ def test_parse_dependency_files_components():
         res = parse_dependency_files(pathlib.Path("/tmp"), mock_read)
         assert "requirements.txt" in res
         assert "pyproject.toml" in res
+
+
+def test_resolve_import_strips_package_prefix():
+    import_map = {"core.x": "core/x.py"}
+    top_level = {"core"}
+    assert resolve_import("sec_interp.core.x", import_map, top_level) == "core/x.py"
+    assert resolve_import("core.x", import_map, top_level) == "core/x.py"
+    assert resolve_import("os.path", import_map, top_level) is None
+
+
+def test_import_graph_builder_prefixed_import():
+    modules = [
+        {"path": "core/x.py", "imports": ["sec_interp.core.y"]},
+        {"path": "core/y.py", "imports": []},
+    ]
+    graph = ImportGraphBuilder(modules).build()
+    assert "core/y.py" in graph["core/x.py"]
+
+
+def test_relative_import_resolution():
+    tree = ast.parse("from . import sibling\nfrom ..parent import thing\n")
+    imports = extract_imports(tree, package="pkg.sub")
+    assert "pkg.sub.sibling" in imports
+    assert "pkg.parent.thing" in imports
+
+
+def test_get_package():
+    assert get_package("core/x.py") == "core"
+    assert get_package("core/__init__.py") == "core"
+    assert get_package("plugin.py") == ""
+    assert get_package("src/ai_context_core/engine.py") == "ai_context_core"

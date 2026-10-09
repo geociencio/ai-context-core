@@ -9,9 +9,30 @@ import time
 from typing import Dict, Any
 
 
+def _short_name(path: str) -> str:
+    """Derive a short, readable label from a relative file path.
+
+    Args:
+        path: Relative file path (e.g. ``core/logic.py``).
+
+    Returns:
+        A short node label without the ``.py`` suffix; ``__init__.py`` maps to
+        its package directory name.
+    """
+    clean = path.replace("\\", "/")
+    parts = [p for p in clean.split("/") if p]
+    if not parts:
+        return "root"
+    name = parts[-1]
+    if name.endswith(".py"):
+        name = name[:-3]
+    if name == "__init__":
+        name = parts[-2] if len(parts) > 1 else "root"
+    return name or "root"
+
+
 def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
     """Generates a Mermaid-formatted dependency graph for the top project modules."""
-    graph = ["graph TD"]
     import_graph = dependencies.get("import_graph", {})
     if not import_graph:
         return ""
@@ -20,26 +41,45 @@ def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
     top_nodes = sorted(node_scores.items(), key=lambda x: (-x[1], x[0]))[:20]
     top_node_names = {name for name, _ in top_nodes}
 
-    added_edges = set()
+    ids: Dict[str, str] = {}
+    used = set()
+
+    def _node_id(path: str) -> str:
+        if path in ids:
+            return ids[path]
+        base = _short_name(path)
+        node_id = base
+        counter = 0
+        while node_id in used:
+            counter += 1
+            node_id = f"{base}_{counter}"
+        ids[path] = node_id
+        used.add(node_id)
+        return node_id
+
+    lines = ["graph TD"]
+    cited = set()
+    emitted = set()
     for u, neighbors in sorted(import_graph.items(), key=lambda kv: kv[0]):
-        if u in top_node_names or any(v in top_node_names for v in neighbors):
-            u_short = u.split("/")[-1].replace(".py", "").replace("__init__", "init")
-            for v in neighbors:
-                if u == v:
-                    continue
-                v_short = v.split(".")[-1]
-                edge = f"{u_short}->{v_short}"
-                if edge not in added_edges:
-                    graph.append(f"    {u_short} --> {v_short}")
-                    added_edges.add(edge)
+        if u not in top_node_names and not any(v in top_node_names for v in neighbors):
+            continue
+        ul = _node_id(u)
+        for v in sorted(neighbors):
+            if u == v:
+                continue
+            vl = _node_id(v)
+            if (ul, vl) in emitted:
+                continue
+            emitted.add((ul, vl))
+            lines.append(f"    {ul} --> {vl}")
+            cited.add(ul)
+            cited.add(vl)
 
-    graph.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
-    for name in sorted(top_node_names):
-        short = name.split("/")[-1].replace(".py", "").replace("__init__", "init")
-        graph.append(f"    {short}")
-        graph.append(f"    class {short} module;")
+    lines.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
+    for node_id in sorted(cited):
+        lines.append(f"    class {node_id} module;")
 
-    return "\n".join(graph)
+    return "\n".join(lines)
 
 
 class MarkdownBuilder:

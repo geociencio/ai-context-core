@@ -47,16 +47,10 @@ No clear design patterns detected.
 ## 🕸️ DEPENDENCY DIAGRAM (Conceptual)
 ```mermaid
 graph TD
-    check_logic --> py
+    check_logic --> logic
     classDef module fill:#f9f,stroke:#333,stroke-width:2px;
-    init
-    class init module;
-    logic
-    class logic module;
-    plugin
-    class plugin module;
-    check_logic
     class check_logic module;
+    class logic module;
 ```
 
 ## 🔄 GIT AND EVOLUTION

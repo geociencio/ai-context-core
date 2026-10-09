@@ -10,8 +10,8 @@ class TestVisualization:
     def test_mermaid_generation(self):
         deps = {
             "import_graph": {
-                "src/module_a.py": ["src.module_b.utils"],
-                "src/module_b/utils.py": ["src.module_c"],
+                "src/module_a.py": ["src/module_b/utils.py"],
+                "src/module_b/utils.py": ["src/module_c.py"],
                 "src/module_c.py": [],
             }
         }
@@ -32,6 +32,16 @@ class TestVisualization:
         # Should NOT contain self-loop module_a --> module_a
         assert "module_a --> module_a" not in graph
         assert "module_a --> module_b" in graph
+
+    def test_mermaid_init_package_label(self):
+        deps = {
+            "import_graph": {
+                "core/__init__.py": ["core/logic.py"],
+                "core/logic.py": [],
+            }
+        }
+        graph = generate_dependency_diagram(deps)
+        assert "core --> logic" in graph
 
     def test_html_builder(self):
         builder = HTMLBuilder("Test Report")

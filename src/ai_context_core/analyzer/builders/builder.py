@@ -22,6 +22,7 @@ class ImportGraphBuilder(BaseBuilder):
         self.import_graph = {}
         self.import_map = {}
         self.known_internal_modules = set()
+        self.top_level_names = set()
 
     def build(self) -> Dict[str, Set[str]]:
         """Build and return the import graph.
@@ -48,6 +49,8 @@ class ImportGraphBuilder(BaseBuilder):
                 self.import_map[importable] = path
                 self.known_internal_modules.add(importable)
 
+        self.top_level_names = {imp.split(".")[0] for imp in self.import_map}
+
     def _resolve_imports(self):
         """Iterate through modules and resolve their imports to project files."""
         for module in self.modules_data:
@@ -56,6 +59,6 @@ class ImportGraphBuilder(BaseBuilder):
                 continue
 
             for imp in module.get("imports", []):
-                target = resolve_import(imp, self.import_map)
+                target = resolve_import(imp, self.import_map, self.top_level_names)
                 if target and target != source_path:
                     self.import_graph[source_path].add(target)

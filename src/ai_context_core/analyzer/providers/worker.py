@@ -8,6 +8,7 @@ import pathlib
 from typing import Dict, Any, List
 from ..visitors import ast_utils
 from ..visitors.i18n_components import find_no_i18n_lines
+from ..visitors.imports_visitor import get_package
 from ..builders import calculator as metrics
 from ..registry import registry
 from ..constants import PARALLEL_MIN_FILES
@@ -138,14 +139,15 @@ class AnalysisWorker:
             halstead = ast_utils.calculate_halstead_metrics(tree)
             sloc = ast_utils.calculate_sloc(tree, content)
 
+            rel_path = str(file_path.relative_to(self.project_path))
             res = {
-                "path": str(file_path.relative_to(self.project_path)),
+                "path": rel_path,
                 "lines": len(content.splitlines()),
                 "sloc": sloc,
                 "loc": sloc,
                 "file_size_kb": file_path.stat().st_size / 1024,
                 "complexity": complexity,
-                "imports": ast_utils.extract_imports(tree),
+                "imports": ast_utils.extract_imports(tree, package=get_package(rel_path)),
                 "classes": ast_utils.extract_classes(tree),
                 "functions": ast_utils.extract_functions(tree),
                 "docstrings": ast_utils.check_docstrings(tree),
