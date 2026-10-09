@@ -12,7 +12,7 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 - [x] **WS-3** — anti-pattern severity + allowlist + prioritization <!-- id: v41.ws3 -->
 - [x] **WS-4** — context-only mode (`ai-ctx context`, decouple score) <!-- id: v41.ws4 -->
 - [x] **WS-5** — selectable `AI_CONTEXT.md` sections <!-- id: v41.ws5 -->
-- [x] **Release v4.1.0** — tag + GitHub release (PyPI manual pending) <!-- id: v41.rel -->
+- [x] **Release v4.1.0** — tag + GitHub release + PyPI publish <!-- id: v41.rel -->
 
 ## Completed (recent)
 
@@ -25,4 +25,6 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 - **Active Phase**: None (v4.1.0 released)
 - **Current Metrics**: Tests 315/315 passing; `ai-ctx audit` PASS (score 90.1)
-- **Pending**: PyPI upload (manual)
+- **Pending**: none (v4.1.0 fully released: GitHub + PyPI)
+- **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
+  scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

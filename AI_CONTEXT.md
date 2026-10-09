@@ -440,10 +440,10 @@ graph TD
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 106353
+- Total lines changed: 122477
 - Top churned files:
-  - `project_context.json` (+39577 -49351, 88928)
-  - `AI_CONTEXT.md` (+715 -473, 1188)
+  - `project_context.json` (+47474 -57248, 104722)
+  - `AI_CONTEXT.md` (+734 -492, 1226)
   - `uv.lock` (+982 -46, 1028)
-  - `PROJECT_SUMMARY.md` (+369 -386, 755)
+  - `PROJECT_SUMMARY.md` (+382 -399, 781)
   - `src/ai_context_core/analyzer/builders/aggregator_qgis.py` (+137 -281, 418)

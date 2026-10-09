@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 22:37:27
+Analysis Date: 2026-10-08 22:58:55
 Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -63,7 +63,7 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
             dev_feedback.md
             developer_recommendations.md
             i18n_improvement_guide.md
-            ... (+8 more)
+            ... (+10 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -219,9 +219,9 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 - **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: HIGH)
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/engine.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/reporting.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/aggregator.py
@@ -245,10 +245,10 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 318
-- **Additions**: +49782
-- **Deletions**: -56571
-- **Total Churn**: 106353
+- **Files Changed**: 320
+- **Additions**: +57915
+- **Deletions**: -64562
+- **Total Churn**: 122477
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 33 commits

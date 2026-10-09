@@ -1,5 +1,15 @@
 # Development Log
 
+## [2026-10-08] Post-Release Housekeeping (v4.1.0) - COMPLETED
+**THEME**: Close out v4.1.0 and sync session memory 🧹
+- **Release**: v4.1.0 confirmed published to **PyPI** (previously deferred); GitHub release + tag already in place. 📦
+- **Subagents**: Verified `architect`/`qa_engineer`/`auditor` declared and `opencode.json` valid (client restart to load). 🤖
+- **Memory**: `forge.py memory prune` removed **7** expired `next_steps` snapshots (>90 days). 🧠
+- **Artifacts**: Regenerated `AI_CONTEXT.md`, `PROJECT_SUMMARY.md`, `project_context.json`. 📊
+- **Known (non-blocking)**: `forge.py metrics validate` flags 5 false positives in the `.agent/` framework scaffold/generic skills (domain/template values vs. this project's ground truth). ⚠️
+- **Maintenance**: [session_2026-10-08_session_housekeeping.md](maintenance/session_2026-10-08_session_housekeeping.md).
+- **Verification**: 315 tests passing, ruff clean, `ai-ctx audit --threshold 70` PASS (90.1). ✅
+
 ## [2026-10-08] Context Map & Debt Prioritization (v4.1.0) - COMPLETED
 **THEME**: Make the analyzer a real context map + debt prioritizer 🗺️
 - **WS-0 (config)**: unified config loading into `providers.config_loader.load_config` (TOML preferred, YAML legacy fallback); `config.loader.ConfigLoader` is now a `DeprecationWarning` facade. 🔗

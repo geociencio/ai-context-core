@@ -11,7 +11,7 @@
     },
     "last_session": {
         "date": "2026-10-09",
-        "topic": "v4.1.0_release",
+        "topic": "session_housekeeping",
         "tests_ok": 315,
         "quality_score": 90.1,
         "task_completion_rate": null,

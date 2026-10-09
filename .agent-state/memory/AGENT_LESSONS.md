@@ -102,6 +102,18 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "The `(x or {}).get(...) or {}` pattern adds cyclomatic complexity (each `or` is a BoolOp), pushing near-budget modules (aggregator.py, worker.py) over CC 25. A ternary `x if x else {}` and small helper methods are not counted by ComplexityVisitor."
   action: "Prefer `patterns if patterns else {}` and extract `_patterns_config()`-style helpers instead of chained `or {}` when editing modules already near the CC 25 budget."
 
+- date: 2026-10-08
+  category: TOOLING
+  topic: forge.py memory prune is destructive and YAML-expecting
+  lesson: "`python .agent/tools/forge.py memory prune` actually deletes expired next_steps snapshots (not a dry-run despite older docs), and it requires a YAML block in AGENT_LESSONS.md — with markdown-bullet lessons it errors and prunes no lessons."
+  action: "Review history before running memory prune; expect a 'Could not find YAML block' warning on bullet-style lesson files."
+
+- date: 2026-10-08
+  category: AGENTIC_SYSTEM
+  topic: metrics validate scans framework scaffold against project truth
+  lesson: "forge.py metrics validate walks the whole .agent/ submodule (including scaffold/qgis domain packs and generic skills), so template values (SecInterp's 763 tests / CC 10) are compared against this project's ground truth (315 tests / CC 25) and reported as violations."
+  action: "Treat scaffold/generic-skill metric flags as false positives; consider excluding scaffold/ from ground-truth checks in the framework."
+
 ## Architecture Rules
 
 - date: 2026-09-17
