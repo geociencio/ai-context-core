@@ -11,6 +11,31 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-10-08 - Context Map & Debt Prioritization
+
+### Added
+- **Context-only mode**: new `ai-ctx context` command generates `AI_CONTEXT.md`
+  + `project_context.json` without emitting or auditing the score.
+- **Configurable sections**: `[context].sections` toggles which `AI_CONTEXT.md`
+  sections render; the low-value `PROJECT KEYWORDS` section is dropped.
+- **Anti-pattern tuning**: magic-number `allowlist` and `min_severity` cutoff via
+  `[patterns.antipatterns]`; anti-patterns are sorted by severity and labeled.
+
+### Fixed
+- **Import graph**: imports with a distribution package prefix and relative
+  imports now resolve; the Mermaid diagram uses collision-free IDs and declares
+  every cited node.
+- **Churn**: `git log --numstat --find-renames` gives realistic per-file churn
+  (renames no longer inflate the total); top-5 churned files are listed.
+- **Unused imports**: `__future__` imports are no longer flagged as unused.
+
+### Internal
+- Unified configuration loading into `providers.config_loader.load_config`;
+  `config.loader.ConfigLoader` is now a `DeprecationWarning` facade.
+- `sync_metrics.py` emits the framework-compatible `summary`/`last_session` schema.
+
+## [4.0.0] - 2026-10-08 - Dead Code Removal & Metric Key Contract
+
 ### Changed
 - **Breaking**: removed the deprecated compatibility facade packages
   (`patterns_detectors`, `context_builders`, `summarizers`, `qgis_checkers`,

@@ -1,5 +1,17 @@
 # Development Log
 
+## [2026-10-08] Context Map & Debt Prioritization (v4.1.0) - COMPLETED
+**THEME**: Make the analyzer a real context map + debt prioritizer 🗺️
+- **WS-0 (config)**: unified config loading into `providers.config_loader.load_config` (TOML preferred, YAML legacy fallback); `config.loader.ConfigLoader` is now a `DeprecationWarning` facade. 🔗
+- **WS-1 (import graph)**: resolved imports with a distribution package prefix and relative imports; rewrote the Mermaid diagram (collision-free IDs, class for all cited nodes). Self-analysis edges 28 → 45. 🕸️
+- **WS-2 (churn)**: `git log --numstat --find-renames` + per-file grouping; top-5 churned files rendered. 📈
+- **WS-3 (anti-patterns)**: severity ordering, magic-number `allowlist`, and `min_severity` cutoff via `[patterns.antipatterns]`. ⚠️
+- **WS-4 (context-only)**: new `ai-ctx context` command; `analyze` score labeled heuristic; `audit` remains the sole gate. 🧭
+- **WS-5 (sections)**: `[context].sections` toggles `AI_CONTEXT.md` sections; dropped `PROJECT KEYWORDS`; `__future__` excluded from unused imports. 🧩
+- **Metrics adapter**: `sync_metrics.py` emits the framework-compatible `summary`/`last_session` schema. 🔧
+- **Version**: bumped to `4.1.0` (minor — backward-compatible features + fixes). 🏷️
+- **Verification**: 315 tests passing, ruff clean, `ai-ctx audit --threshold 70` PASS (90.1). ✅
+
 ## [2026-10-08] Agentic Forge Adoption (F1–F5) - COMPLETED
 **THEME**: Unify the agentic system on the `agentic-forge` framework 🧩
 - Adopted `agentic-forge` `v1.2.0` (Codeberg, MIT) as a git submodule at `.agent/`.
