@@ -30,10 +30,10 @@ No clear design patterns detected.
 
 ## ⚠️ DETECTED ANTI-PATTERNS
 - **core/logic.py**
-  - Magic number detected: 2
+  - [low] Magic number detected: 2
 - **tests/check_logic.py**
-  - Magic number detected: 4
-  - Magic number detected: 2
+  - [low] Magic number detected: 4
+  - [low] Magic number detected: 2
 
 ## 🔗 PRIMARY DEPENDENCIES
 ### Third Party (most frequent):

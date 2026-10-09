@@ -66,6 +66,13 @@ enabled = false
 [patterns.linter]
 enabled = true
 
+# Anti-pattern tuning. ``allowlist`` adds numeric constants exempted from
+# magic-number detection; ``min_severity`` filters out issues below the given
+# level (one of "low", "medium", "high").
+[patterns.antipatterns]
+allowlist = [100, 1000, 1024, 2048, 3600, 60, 24, 255, 256]
+min_severity = "low"
+
 # i18n analysis tuning (optional). Omit these keys to use the built-in lists.
 # ignored_functions = ["setObjectName", "addItem"]   # technical denylist override
 # ui_functions = ["setText", "setTitle"]             # user-facing allowlist override

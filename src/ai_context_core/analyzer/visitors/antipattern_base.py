@@ -3,6 +3,25 @@
 import ast
 from typing import List, Dict, Any
 
+SEVERITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+
+
+def severity_rank(severity: str) -> int:
+    """Map a severity string to an ordering rank (lower is more severe)."""
+    return SEVERITY_ORDER.get(severity, len(SEVERITY_ORDER))
+
+
+def min_severity_from_config(config: Dict[str, Any]) -> str:
+    """Extract the configured minimum anti-pattern severity (default ``low``)."""
+    patterns = config.get("patterns") or {}
+    return patterns.get("antipatterns", {}).get("min_severity", "low")
+
+
+def filter_issues(issues: List[Dict[str, Any]], min_severity: str = "low") -> List[Dict[str, Any]]:
+    """Filter issues to those at or above the given severity."""
+    min_rank = severity_rank(min_severity)
+    return [i for i in issues if severity_rank(i.get("severity", "low")) <= min_rank]
+
 
 class AntiPatternDetector:
     """Base class for anti-pattern detectors."""

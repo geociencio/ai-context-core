@@ -159,10 +159,14 @@ class ResultsAggregator:
         return all_patterns
 
     def _aggregate_antipatterns(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Aggregates anti-pattern issues from all modules."""
+        """Aggregates anti-pattern issues from all modules, honoring the severity cutoff."""
+        from ..visitors.antipattern_base import filter_issues, min_severity_from_config
+
+        min_severity = min_severity_from_config(self.config)
+
         result = []
         for mod in m_data:
-            issues = mod.get("antipatterns", [])
+            issues = filter_issues(mod.get("antipatterns", []), min_severity)
             if issues:
                 result.append({"module": mod.get("path", "N/A"), "issues": issues})
         return result

@@ -52,6 +52,43 @@ def unreachable():
         self.assertEqual(len(issues), 1)
         self.assertEqual(issues[0]["type"], "dead_code")
 
+    def test_detect_magic_numbers_respects_allowlist(self):
+        code = """
+def calc(x):
+    return x * 42 + 100
+"""
+        tree = ast.parse(code)
+        tree.antipatterns_config = {"allowlist": [100]}
+        issues = antipatterns.detect_magic_numbers(tree)
+        values = {i["value"] for i in issues}
+        self.assertIn(42, values)
+        self.assertNotIn(100, values)
+
+    def test_severity_rank_order(self):
+        from ai_context_core.analyzer.visitors.antipattern_base import severity_rank
+
+        self.assertLess(severity_rank("high"), severity_rank("medium"))
+        self.assertLess(severity_rank("medium"), severity_rank("low"))
+
+    def test_filter_issues_and_min_severity(self):
+        from ai_context_core.analyzer.visitors.antipattern_base import (
+            filter_issues,
+            min_severity_from_config,
+        )
+
+        issues = [
+            {"severity": "low", "message": "a"},
+            {"severity": "high", "message": "b"},
+        ]
+        filtered = filter_issues(issues, "medium")
+        self.assertEqual([i["message"] for i in filtered], ["b"])
+
+        self.assertEqual(min_severity_from_config({}), "low")
+        self.assertEqual(
+            min_severity_from_config({"patterns": {"antipatterns": {"min_severity": "medium"}}}),
+            "medium",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

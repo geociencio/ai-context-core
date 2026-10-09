@@ -8,6 +8,8 @@ class PatternsBuilder(BaseContextBuilder):
     """Adds detected patterns and anti-patterns."""
 
     def build(self, lines: List[str]) -> None:
+        from ..visitors.antipattern_base import severity_rank
+
         pats = self.analyses.get("patterns", {})
         lines.append("\n## 🏗️ DETECTED PATTERNS")
         if not pats:
@@ -24,8 +26,21 @@ class PatternsBuilder(BaseContextBuilder):
 
         ap = self.analyses.get("antipatterns", [])
         if ap:
+            for entry in ap:
+                entry["issues"] = sorted(
+                    entry["issues"],
+                    key=lambda i: (severity_rank(i.get("severity", "low")), i.get("line", 0)),
+                )
+            ap = sorted(
+                ap,
+                key=lambda e: (
+                    severity_rank(e["issues"][0].get("severity", "low")) if e["issues"] else 3,
+                    e.get("module", ""),
+                ),
+            )
             lines.append("\n## ⚠️ DETECTED ANTI-PATTERNS")
             for i in ap[:5]:
                 lines.append(f"- **{i.get('module', 'N/A')}**")
                 for issue in i.get("issues", [])[:2]:
-                    lines.append(f"  - {issue.get('message', 'N/A')}")
+                    severity = issue.get("severity", "low")
+                    lines.append(f"  - [{severity}] {issue.get('message', 'N/A')}")
