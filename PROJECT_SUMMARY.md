@@ -1,18 +1,18 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 22:03:54
+Analysis Date: 2026-10-08 22:08:54
 Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.3/100
-- **Source Lines (SLOC)**: 5,936
-- **Total Physical Lines**: 9,436
+- **ai-ctx Quality Score**: 90.2/100
+- **Source Lines (SLOC)**: 5,978
+- **Total Physical Lines**: 9,486
 - **Maintainability**: 51.8
 - **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.7
+- Maintainability: -19.8
 - Tests: +10.0
 
 ## 📁 STRUCTURE
@@ -214,30 +214,30 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
-- **check_docs.py**: 1 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: HIGH)
+- **src/ai_context_core/analyzer/visitors/ast_entry_points.py**: 1 issues (Max: HIGH)
 - **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: HIGH)
+- **src/ai_context_core/analyzer/providers/loader.py**: 1 issues (Max: HIGH)
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/providers/worker.py -> src/ai_context_core/analyzer/__init__.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/reporting.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/summary_generator.py
 
 ## 💡 MAIN RECOMMENDATIONS
-### src/ai_context_core/analyzer/builders/aggregator.py
+### src/ai_context_core/analyzer/visitors/ast_entry_points.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/builders/algorithms.py
+### src/ai_context_core/analyzer/providers/worker.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/builders/calculator.py
+### src/ai_context_core/analyzer/providers/config_loader.py
 - Consider breaking down large logic
 
 ## 🏗️ DESIGN PATTERNS
 ### Factory
-- **DependencyAnalyzer** in `src/ai_context_core/analyzer/builders/dependencies.py` (70%)
 - **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
 - **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
 - **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
 - **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
+- **MetricsSummarizer** in `src/ai_context_core/analyzer/builders/metrics_summarizer.py` (70%)
 ### Decorator
 - **register_detector** in `src/ai_context_core/analyzer/registry.py` (50%)
 ### Strategy
@@ -245,10 +245,10 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 312
-- **Additions**: +31799
-- **Deletions**: -38918
-- **Total Churn**: 70717
+- **Files Changed**: 315
+- **Additions**: +33991
+- **Deletions**: -41031
+- **Total Churn**: 75022
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 31 commits
@@ -258,5 +258,5 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.70
+- **Avg Cyclomatic Complexity**: 7.72
 - **Max Complexity**: 25
