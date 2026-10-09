@@ -25,6 +25,9 @@
 
 ## 🎯 Immediate Next Steps
 
+- [x] **Start v4.1.0** — plan registered (`docs/maintenance/refactoring_plan_v4.1.0.md`).
+- [ ] **WS-0** — unify config loading (canonical `providers.config_loader.load_config`).
+- [ ] **WS-1..WS-5** — import graph, churn, anti-patterns, context-only mode, section toggles.
 - [ ] **Publish to PyPI**: `uv run twine upload dist/*` (maintainer decision).
 - [ ] Run `uv run python scripts/sync_metrics.py` to snapshot the new baseline.
 - [ ] Apply `scripts/memory_prune.py --apply` to prune expired `next_steps`
@@ -40,8 +43,8 @@
 
 ## 🐛 Known Issues
 
-**None blocking** — 299 tests passing locally and in Docker; `ai-ctx audit`
-PASS (score 90.7); `validate_agent_system.py` PASS.
+**None blocking** — 302 tests passing locally and in Docker; `ai-ctx audit`
+PASS (score 90.8); `validate_agent_system.py` PASS.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real

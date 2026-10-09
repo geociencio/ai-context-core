@@ -2,23 +2,26 @@
 
 This task board tracks the current development phase.
 
-## Phase: Deep Cleanup & v4.0.0 Release
+## Phase: v4.1.0 — Context Map & Debt Prioritization
 
-- [x] **Anti-patterns surfaced** — aggregate and render anti-pattern detections <!-- id: dc.ap -->
-- [x] **Dead code removal** — retire `CheckerRegistry` chain + facades <!-- id: dc.dead -->
-- [x] **Architecture purity** — move `secrets_scanner` to providers <!-- id: dc.pure -->
-- [x] **Metric key contract** — enforce `metric_keys` in CLI/builders <!-- id: dc.mk -->
-- [x] **Hygiene** — `ruff format`, remove legacy wrappers + re-export hop <!-- id: dc.hyg -->
-- [x] **Release v4.0.0** — tag + GitHub release (PyPI manual pending) <!-- id: dc.rel -->
+Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
+
+- [ ] **WS-0** — unify config loading (canonical `providers.config_loader.load_config`) <!-- id: v41.ws0 -->
+- [ ] **WS-1** — repair import graph + mermaid diagram <!-- id: v41.ws1 -->
+- [ ] **WS-2** — realistic churn/hotspots (per-file, `--find-renames`) <!-- id: v41.ws2 -->
+- [ ] **WS-3** — anti-pattern severity + allowlist + prioritization <!-- id: v41.ws3 -->
+- [ ] **WS-4** — context-only mode (`ai-ctx context`, decouple score) <!-- id: v41.ws4 -->
+- [ ] **WS-5** — selectable `AI_CONTEXT.md` sections <!-- id: v41.ws5 -->
 
 ## Completed (recent)
 
+- [x] Deep cleanup + v4.0.0 release (tag + GitHub release; PyPI manual pending)
 - [x] Redundancy cleanup (Phases A–C)
 - [x] Metric key contract unification (canonical `metric_keys.py`)
 - [x] Agentic System Migration to Generation 8
 
 ## Operational Status
 
-- **Active Phase**: None (deep cleanup + v4.0.0 release completed)
-- **Current Metrics**: Tests 299/299 passing; `ai-ctx audit` PASS (score 90.7)
+- **Active Phase**: v4.1.0 (WS-0 in progress)
+- **Current Metrics**: Tests 302/302 passing; `ai-ctx audit` PASS (score 90.8)
 - **Pending**: PyPI upload (manual)

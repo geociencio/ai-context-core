@@ -1,18 +1,18 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 19:33:24
+Analysis Date: 2026-10-08 21:37:56
 Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.7/100
-- **Source Lines (SLOC)**: 5,813
-- **Total Physical Lines**: 9,219
-- **Maintainability**: 52.1
+- **ai-ctx Quality Score**: 90.8/100
+- **Source Lines (SLOC)**: 5,807
+- **Total Physical Lines**: 9,218
+- **Maintainability**: 52.2
 - **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.3
+- Maintainability: -19.2
 - Tests: +10.0
 
 ## 📁 STRUCTURE
@@ -25,21 +25,21 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
     .coverage
     .dockerignore
     .gitignore
+    .gitmodules
     .pre-commit-config.yaml
-    AGENTS.md
     ... (+25 more)
     dist/
         ai_context_core-4.0.0-py3-none-any.whl
         ai_context_core-4.0.0.tar.gz
     docs/
+        AGENTIC_FORGE_ADOPTION.md
         AGENTIC_IMPLEMENTATION_GUIDE.md
         AGENTIC_STANDARDS_AND_SOURCES.md
         ARCHITECTURAL_ANALYSIS.md
         ARCHITECTURE.md
         AiContextCore_Analysis_Report.md
         CHANGELOG.md
-        COMMIT_GUIDELINES.md
-        ... (+18 more)
+        ... (+19 more)
         adr/
             0001-use-adr-for-architecture-decisions.md
             0002-implement-13-improvements-roadmap.md
@@ -63,7 +63,7 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
             dev_feedback.md
             developer_recommendations.md
             i18n_improvement_guide.md
-            ... (+6 more)
+            ... (+7 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -98,14 +98,12 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
             session_2026-01-25_modularization_cycle.md
             session_2026-01-25_optimization_quality.md
             session_2026-01-25_phase1_completion.md
-            ... (+9 more)
+            ... (+10 more)
         user_guide/
             PROFILES_GUIDE.md
             QUICK_START.md
     scripts/
-        memory_prune.py
         sync_metrics.py
-        validate_agent_system.py
     src/
         __init__.py
         ai_context_core/
@@ -242,10 +240,10 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 459
-- **Additions**: +27609
-- **Deletions**: -35193
-- **Total Churn**: 62802
+- **Files Changed**: 533
+- **Additions**: +28327
+- **Deletions**: -37299
+- **Total Churn**: 65626
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 31 commits
@@ -255,5 +253,5 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.57
+- **Avg Cyclomatic Complexity**: 7.53
 - **Max Complexity**: 25
