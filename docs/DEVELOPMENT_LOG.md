@@ -1,5 +1,16 @@
 # Development Log
 
+## [2026-10-08] Report Correctness Fixes (v4.1.1) - COMPLETED
+**THEME**: Correctness of cache, severity, imports, churn and QGIS advice 🎯
+- **Source**: `docs/maintenance/improvement_report_v4.1.0.md` (findings F1–F5).
+- **F1 (cache)**: `fs_cache` persists a `_meta` block (schema, version, config fingerprint); stale caches are discarded, so upgrades/config edits no longer replay old AST results. 🔒
+- **F2 (severity)**: real `max_severity` via `security_severity.max_severity`, recomputed on AST-only and secret-merge paths; `issues.py` adds a top-3 `(+N more)` hint. 🛡️
+- **F3 (imports)**: `__all__` names treated as used; package `__init__.py` re-exports exempt via `[patterns.unused_imports].ignore_package_reexports`. 🔗
+- **F4 (churn)**: `git_churn.filter_churn` scopes churn to analyzed code, keeping git-wide `raw_*` totals. 📈
+- **F5 (QGIS)**: the "No Processing Algorithms" note now requires processing imports (`qgis_processing.has_processing_imports`). 🧭
+- **Version**: bumped to `4.1.1` (patch — backward-compatible fixes). 🏷️
+- **Verification**: 333 tests passing, ruff clean, `ai-ctx audit --threshold 70` PASS (90.2). ✅
+
 ## [2026-10-08] Post-Release Housekeeping (v4.1.0) - COMPLETED
 **THEME**: Close out v4.1.0 and sync session memory 🧹
 - **Release**: v4.1.0 confirmed published to **PyPI** (previously deferred); GitHub release + tag already in place. 📦

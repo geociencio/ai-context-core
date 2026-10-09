@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.1.1] - 2026-10-08 - Report Correctness Fixes
+
 ### Changed
 - **Code-scoped churn**: git churn now excludes paths outside the analysis
   scope (docs, build artifacts, …) and keeps the original git-wide total as an
