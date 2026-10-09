@@ -39,6 +39,8 @@ Ejemplos:
 | [0004](0004-multi-framework-entry-point-detection.md) | Detección Heterogénea de Entry Points | Aceptado | 2026-01-25 |
 | [0005](0005-optimization-refactoring-strategy.md) | Estrategia de Refactorización y Optimización | Aceptado | 2026-01-29 |
 | [0006](0006-elimination-of-root-facades-and-enforcement-of-strict-modularity.md) | Eliminación de Facades y Modularidad Estricta | Aceptado | 2026-02-07 |
+| [0007](0007-scoped-i18n-analysis-for-qgis-plugins.md) | Análisis de i18n con Alcance Configurable | Aceptado | 2026-02-07 |
+| [0008](0008-context-only-contract.md) | Contrato Context-Only (compilador de contexto) | Aceptado | 2026-10-09 |
 
 ## Crear un Nuevo ADR
 

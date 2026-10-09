@@ -1,6 +1,17 @@
 # Next Steps - ai-context-core
 
-**Last Updated:** 2026-10-08
+**Last Updated:** 2026-10-09
+
+## 🚧 Active Phase — v5.0.0 Context-Only Contract
+
+- Plan: `docs/plans/implementation_plan_ai_context_core_context_only_v5.md`
+- Review: `docs/reviews/ia_critic_implementation_plan_context_only_v5.md`
+- ADR: `docs/adr/0008-context-only-contract.md`
+- **F0 done**: ADR-0008 accepted; `REMOVAL_VERSION=5.0.0`; score→context-health
+  naming recorded (CHANGELOG `[Unreleased]`, README notice). Feature freeze active.
+- **Next**: **F1 — source layer** (`sources/` + `model/`, `--source`, make `context`
+  the primary path). Precondition: provision `qgis-plugin-analyzer` + `sec_interp`
+  checkout (or a local fixture) for the external-vs-builtin regression.
 
 ## ✅ Completed in This Session
 
@@ -51,10 +62,11 @@
 
 ## 🎯 Immediate Next Steps
 
-- [ ] **Publish v4.1.1 to PyPI**: `uv run twine upload dist/*` (maintainer; no
-  `~/.pypirc`/trusted-publishing in the agent environment).
+- [ ] **Manual (maintainer)**: publish v4.1.1 to PyPI — `uv run twine upload dist/*`.
 
-_No other blockers. Proceed with Future Enhancements below._
+_No agent-side blockers. PyPI uploads are always performed manually by the
+maintainer (see `AGENT_LESSONS.md` → User Preferences); the agent stops at
+build + `twine check` + GitHub release. Proceed with Future Enhancements below._
 
 ## 📋 Future Enhancements
 
@@ -91,4 +103,5 @@ module cache via the F1 cache-fingerprint fix.)
 
 ---
 
-**Session Status:** ✅ Complete — v4.1.1 released (GitHub); PyPI pending credentials.
+**Session Status:** v5.0.0 F0 complete (contract + freeze); F1 (source layer) next.
+(Also pending, manual: publish v4.1.1 to PyPI by the maintainer.)

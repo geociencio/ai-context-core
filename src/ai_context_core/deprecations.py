@@ -3,7 +3,7 @@
 import warnings
 
 # Version in which deprecated compatibility paths are scheduled for removal.
-REMOVAL_VERSION = "4.0.0"
+REMOVAL_VERSION = "5.0.0"
 
 
 def warn_deprecated(old_path: str, new_path: str) -> None:

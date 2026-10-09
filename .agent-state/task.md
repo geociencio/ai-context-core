@@ -2,6 +2,21 @@
 
 This task board tracks the current development phase.
 
+## Phase: v5.0.0 — Context-Only Contract (F0–F5)
+
+Plan: `docs/plans/implementation_plan_ai_context_core_context_only_v5.md`.
+Review: `docs/reviews/ia_critic_implementation_plan_context_only_v5.md`.
+ADR: `docs/adr/0008-context-only-contract.md`.
+
+- [x] **F0** — contract & freeze (ADR-0008; `REMOVAL_VERSION=5.0.0`; docs naming) <!-- id: v5.f0 -->
+- [ ] **F1** — `sources/` + `model/`; `--source`; `context` primary path <!-- id: v5.f1 -->
+- [ ] **F2** — removal (v5.0.0): commands/visitors/builders; facades; tests <!-- id: v5.f2 -->
+- [ ] **F3** — token budget + manifest <!-- id: v5.f3 -->
+- [ ] **F4** — verify + symbol index + health <!-- id: v5.f4 -->
+- [ ] **F5** — ecosystem alignment <!-- id: v5.f5 -->
+
+**Feature freeze**: no new analysis capabilities until F2 (@auditor gate).
+
 ## Phase: v4.1.1 — Report Correctness Fixes (F1–F5)
 
 Source: `docs/maintenance/improvement_report_v4.1.0.md`.
@@ -34,8 +49,8 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: None (v4.1.1 released on GitHub; PyPI pending)
+- **Active Phase**: v5.0.0 — Context-Only Contract (F0 done; F1 next)
 - **Current Metrics**: Tests 333/333 passing; `ai-ctx audit` PASS (score 90.2)
-- **Pending**: PyPI upload of v4.1.1 (maintainer credentials)
+- **Pending**: F1 source layer (`sources/` + `model/`, `--source`, `context` primary)
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
   scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

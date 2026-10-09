@@ -13,6 +13,14 @@
 
 The central nervous system for your AI-assisted coding workflow.
 
+> **Deprecation notice (v5.0.0).** `ai-context-core` is becoming a
+> **context-only compiler** (`source → transform → render → verify`). The
+> *Quality Score* surface is being renamed to **context health** (no quality
+> gate), and the analysis-domain commands move to `qgis-plugin-analyzer` /
+> `agentic-forge`. See [ADR-0008](docs/adr/0008-context-only-contract.md) and the
+> [v5.0.0 plan](docs/plans/implementation_plan_ai_context_core_context_only_v5.md).
+> Behavior in the current v4.x line is unchanged.
+
 ## Features
 
 ### Core Capabilities
@@ -297,7 +305,7 @@ Technical debt prioritization engine. Calculates a "Refactor Score" based on (Co
 
 | Metric | Definition | Notes |
 | :--- | :--- | :--- |
-| **ai-ctx Quality Score** | Aggregated 0-100 heuristic: base 100 minus penalties for average/outlier complexity, low maintainability, and missing tests, plus test bonuses. The report includes an explicit score breakdown. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. |
+| **ai-ctx Quality Score** → *context health* (v5.0.0) | Aggregated 0-100 heuristic: base 100 minus penalties for average/outlier complexity, low maintainability, and missing tests, plus test bonuses. The report includes an explicit score breakdown. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. Being renamed to **context health** in v5.0.0 (see ADR-0008). |
 | **Avg Cyclomatic Complexity** | Arithmetic mean of per-module cyclomatic complexity. | This is an **average**. `qgis-analyzer` applies a per-function **gate** (CC ≤ 10), so the two numbers mean different things. |
 | **Avg Maintenance Index (MI)** | SEI Maintenance Index normalized to 0-100, averaged across modules. | Exclusive to `ai-context-core`. |
 | **Max Complexity** | Highest single-module cyclomatic complexity. | Complements the average to surface outliers. |

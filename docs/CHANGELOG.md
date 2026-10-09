@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Deprecated
+- **Quality Score surface → "context health" (v5.0.0)**: per
+  [ADR-0008](adr/0008-context-only-contract.md), `ai-context-core` becomes a
+  **context-only compiler** (source → transform → render → verify). The
+  `ai-ctx Quality Score` and the `audit` gate are being renamed to
+  **`context health`** (no quality gate); the analysis-domain commands
+  (`audit`, `inspect`, `qgis`, `security`, `patterns`, `full-scan`, `fix`,
+  `scaffold`, `doctor`, `interactive`) will be removed or redirected to
+  `qgis-plugin-analyzer` / `agentic-forge`. `REMOVAL_VERSION` is now `5.0.0`;
+  current behavior is unchanged until F2.
+
 ## [4.1.1] - 2026-10-08 - Report Correctness Fixes
 
 ### Changed
