@@ -64,7 +64,9 @@ class ProjectAnalyzer:
         self.analysis_cache = {} if ignore_cache else fs_utils.load_cache(self.project_path)
         self.error_log = {}
 
-    def analyze(self, output_format: str = "markdown") -> Dict[str, Any]:
+    def analyze(
+        self, output_format: str = "markdown", generate_summary: bool = True
+    ) -> Dict[str, Any]:
         """Execute the complete project analysis pipeline.
 
         Orchestrates scanning, parallel module analysis, dependency graph building,
@@ -72,6 +74,8 @@ class ProjectAnalyzer:
 
         Args:
             output_format: Desired report format ('markdown' or 'html').
+            generate_summary: When False, skip the score-focused
+                ``PROJECT_SUMMARY`` output (context-only mode).
 
         Returns:
             A comprehensive dictionary containing all analysis results.
@@ -108,7 +112,7 @@ class ProjectAnalyzer:
         results["manual_notes"] = self._read_manual_notes()
 
         # 5. Finalization
-        self._generate_outputs(results, output_format)
+        self._generate_outputs(results, output_format, generate_summary)
         fs_utils.save_cache(self.project_path, self.analysis_cache)
 
         logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
@@ -172,16 +176,17 @@ class ProjectAnalyzer:
                 docs.append(path)
         return docs
 
-    def _generate_outputs(self, results: Dict[str, Any], fmt: str):
+    def _generate_outputs(self, results: Dict[str, Any], fmt: str, generate_summary: bool = True):
         """Generate final report files based on analysis results."""
         try:
-            ext = ".html" if fmt == "html" else ".md"
-            reporting.generate_project_summary(
-                results,
-                self.project_path / f"PROJECT_SUMMARY{ext}",
-                self.project_path.name,
-                format=fmt,
-            )
+            if generate_summary:
+                ext = ".html" if fmt == "html" else ".md"
+                reporting.generate_project_summary(
+                    results,
+                    self.project_path / f"PROJECT_SUMMARY{ext}",
+                    self.project_path.name,
+                    format=fmt,
+                )
             reporting.generate_ai_context(
                 results, self.project_path / "AI_CONTEXT.md", self.project_path.name
             )

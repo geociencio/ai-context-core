@@ -196,6 +196,21 @@ def test_analyze_command_full():
         assert "Completed" in result.output
 
 
+def test_context_command():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        with open("test.py", "w") as f:
+            f.write("def foo():\n    pass")
+
+        result = runner.invoke(cli, ["context", "--no-cache"])
+        assert result.exit_code == 0
+        assert "Context generated" in result.output
+        assert "ai-ctx Quality Score" not in result.output
+        assert os.path.exists("AI_CONTEXT.md")
+        assert os.path.exists("project_context.json")
+        assert not os.path.exists("PROJECT_SUMMARY.md")
+
+
 def test_inspect_command():
     runner = CliRunner()
     with runner.isolated_filesystem():

@@ -1,7 +1,7 @@
 """CLI command groups package."""
 
 from .base import init_cmd, stats_cmd, clean_cmd, serve_cmd, profiles_cmd
-from .analysis import analyze_cmd, audit_cmd, inspect_cmd
+from .analysis import analyze_cmd, audit_cmd, context_cmd, inspect_cmd
 from .reports import patterns_cmd, security_cmd, help_me_cmd
 from .specialized import deps_cmd, git_cmd, qgis_cmd
 from ..interactive import interactive_cmd
@@ -17,7 +17,7 @@ from .maintenance import (
 
 # Export lists for easier registration
 BASE_CMDS = [init_cmd, stats_cmd, clean_cmd, serve_cmd, profiles_cmd]
-ANALYSIS_CMDS = [analyze_cmd, audit_cmd, inspect_cmd]
+ANALYSIS_CMDS = [analyze_cmd, audit_cmd, context_cmd, inspect_cmd]
 REPORT_CMDS = [patterns_cmd, security_cmd, help_me_cmd]
 SPECIALIZED_CMDS = [deps_cmd, git_cmd, qgis_cmd]
 INTERACTIVE_CMDS = [interactive_cmd]

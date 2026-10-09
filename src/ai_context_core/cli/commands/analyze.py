@@ -42,12 +42,42 @@ def run_analysis(
         m = res.get("metrics", {})
         q = m.get(metric_keys.QUALITY_SCORE, 0)
         click.echo("-" * 40)
-        click.secho(f"🏆 ai-ctx Quality Score: {q:.1f}/100", fg="green" if q > 80 else "yellow")
+        click.secho(
+            f"🏆 ai-ctx Quality Score (heuristic): {q:.1f}/100",
+            fg="green" if q > 80 else "yellow",
+        )
         click.echo(
             f"📊 Lines: {m.get(metric_keys.TOTAL_LINES_CODE, 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"
         )
         click.echo("-" * 40)
         click.secho("✅ Completed.", fg="green")
+    except Exception as e:
+        click.secho(f"❌ Error: {e}", fg="red")
+        if os.environ.get("DEBUG"):
+            raise e
+        sys.exit(1)
+
+
+def run_context(
+    path: str,
+    workers: Optional[int],
+    no_cache: bool,
+    include_md: Optional[list] = None,
+):
+    """Generates context files without emitting or auditing the quality score."""
+    proj = pathlib.Path(path).resolve()
+    cfg = load_config(proj)
+    analyzer = ProjectAnalyzer(
+        project_path=str(proj),
+        config=cfg,
+        max_workers=workers,
+        ignore_cache=no_cache,
+        include_md=include_md,
+    )
+    click.echo(f"📝 Generating context for {proj.name}...")
+    try:
+        analyzer.analyze(output_format="markdown", generate_summary=False)
+        click.secho("✅ Context generated: AI_CONTEXT.md, project_context.json", fg="green")
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
         if os.environ.get("DEBUG"):
