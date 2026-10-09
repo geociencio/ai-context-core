@@ -48,6 +48,7 @@ include-package-data = true
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+exclude = [".agent", ".agent-state"]
 
 [tool.uv.sources]
 ai-context-core = { workspace = true }

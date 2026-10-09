@@ -31,7 +31,8 @@ Defines the core knowledge about `ai-context-core`: its architecture, key compon
 ### 2. Project Structure
 - `src/ai_context_core`: Main package source.
 - `docs/`: Technical documentation.
-- `.agent/`: Agentic framework configuration (skills, workflows, memory).
+- `.agent/`: Agentic framework (git submodule — `agentic-forge`).
+- `.agent-state/`: Project-owned state (memory, task, overlay skills).
 - `pyproject.toml`: Global config and dependencies (uv).
 
 ### 3. Architecture (Pipeline)

@@ -14,6 +14,14 @@ tests/
 # Dev/build tooling, not part of the distributed library.
 scripts/
 
+# Agentic framework submodule + project state (not shipped code).
+.agent/
+.agent-state/
+AGENTS.md
+opencode.json
+forge.toml
+.gitmodules
+
 # Standard environment, VCS and packaging artifacts.
 __pycache__/
 .git/

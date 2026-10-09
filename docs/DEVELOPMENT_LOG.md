@@ -1,5 +1,14 @@
 # Development Log
 
+## [2026-10-08] Agentic Forge Adoption (F1–F5) - COMPLETED
+**THEME**: Unify the agentic system on the `agentic-forge` framework 🧩
+- Adopted `agentic-forge` `v1.2.0` (Codeberg, MIT) as a git submodule at `.agent/`.
+- Moved project-owned state to `.agent-state/` (memory, history, task, next_steps) and the 5 project-specific skills (`domain-logic`, `project-context`, `debug-specialist`, `skill-authoring`, `tech-stack`) to the overlay.
+- Added `forge.toml` (`max_cc = 25`, `module_size_limit = 400`); switched tooling to `python .agent/tools/forge.py`.
+- Removed the legacy framework guide/skeleton and `scripts/{validate_agent_system,memory_prune}.py`; kept `sync_metrics.py` as the collector adapter.
+- CI now uses `submodules: recursive`; `opencode.json` discovers the overlay skills.
+- Maintenance: [session_2026-10-08_agentic_forge_adoption.md](sessions/session_2026-10-08_agentic_forge_adoption.md).
+
 ## [2026-10-08] Deep Cleanup & Metric Contract (v4.0.0) - COMPLETED
 **THEME**: Dead-code removal, architecture purity, and contract enforcement 🧹
 - **Anti-patterns surfaced**: fixed a functional bug where anti-pattern detections ran but were never aggregated/reported; now exposed in `AI_CONTEXT.md`. 🐛
