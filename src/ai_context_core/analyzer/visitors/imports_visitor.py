@@ -2,6 +2,7 @@
 
 import ast
 from typing import List, Optional
+from .import_export import collect_exported_names
 
 
 def get_package(path: str) -> str:
@@ -55,6 +56,7 @@ class ImportVisitor(ast.NodeVisitor):
         self.imports = []
         self.imported_names = {}  # alias_in_scope -> full_import_name
         self.used_names = set()
+        self.exported_names = set()  # names declared in __all__
 
     def visit_Import(self, node: ast.Import):
         """Visits an import node."""
@@ -92,6 +94,16 @@ class ImportVisitor(ast.NodeVisitor):
             self.used_names.add(curr.id)
         self.generic_visit(node)
 
+    def visit_Assign(self, node: ast.Assign):
+        """Tracks names exported via ``__all__ = [...]`` (re-export detection)."""
+        self.exported_names |= collect_exported_names(node)
+        self.generic_visit(node)
+
+    def visit_AugAssign(self, node: ast.AugAssign):
+        """Tracks names appended via ``__all__ += [...]``."""
+        self.exported_names |= collect_exported_names(node)
+        self.generic_visit(node)
+
 
 def extract_imports(tree: ast.AST, package: Optional[str] = None) -> List[str]:
     """Extracts module imports from an AST tree.
@@ -110,12 +122,18 @@ def extract_imports(tree: ast.AST, package: Optional[str] = None) -> List[str]:
 
 
 def detect_unused_imports(tree: ast.AST) -> List[str]:
-    """Identifies imports that are not used anywhere in the module."""
+    """Identifies imports that are not used anywhere in the module.
+
+    Names declared in ``__all__`` are treated as used, since assigning to
+    ``__all__`` is the canonical way to re-export a module's public API.
+    """
     visitor = ImportVisitor()
     visitor.visit(tree)
 
     unused = []
     for name_in_scope, full_import in visitor.imported_names.items():
+        if name_in_scope in visitor.exported_names:
+            continue
         if name_in_scope not in visitor.used_names:
             unused.append(full_import)
 

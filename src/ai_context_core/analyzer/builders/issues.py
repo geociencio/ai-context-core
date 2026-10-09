@@ -16,6 +16,8 @@ class IssuesSummarizer(BaseSummarizer):
                 total = i.get("total_issues", 0)
                 severity = str(i.get("max_severity", "unknown")).upper()
                 lines.append(f"- **{module}**: {total} issues (Max: {severity})")
+            if len(sec) > 3:
+                lines.append(f"- … (+{len(sec) - 3} more modules)")
 
         debt = self.analyses.get("debt", [])
         if debt:

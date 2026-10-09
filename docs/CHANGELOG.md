@@ -1,17 +1,61 @@
 # Changelog
 
-# DEVELOPMENT LOG
-
-## [2026-01-25] Modularización Completa y Reducción de Deuda Técnica
-- **Resumen**: Se completó la transformación del proyecto de una base procedimental a una arquitectura 100% modular basada en clases.
-- **Resultado**: El Quality Score se mantuvo sobre 71 y se eliminaron ~1,400 líneas de código duplicado. Los tests (65/65) están pasando en Docker.
-- **Contexto**: Este hito cierra el ciclo de limpieza profunda y prepara la base para visualizaciones avanzadas.
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
+
+### Changed
+- **Code-scoped churn**: git churn now excludes paths outside the analysis
+  scope (docs, build artifacts, …) and keeps the original git-wide total as an
+  "all tracked" reference in `ai-ctx git` and `AI_CONTEXT.md`.
+- **QGIS Processing note**: the "No Processing Algorithms found" recommendation
+  is now shown only when the plugin imports the Processing framework without
+  defining algorithms; plugins with no processing intent no longer get the advice.
+
+### Fixed
+- **Analysis cache invalidation**: the cache now stores a `_meta` block
+  (`schema`, analyzer `version`, and a config fingerprint) and is discarded when
+  any of them changes, so upgrading `ai-ctx` or editing the config can no longer
+  replay stale AST results.
+- **Real security severity**: `PROJECT_SUMMARY.md` now reports the actual highest
+  severity of a module's findings instead of always showing `HIGH`; the AST-only
+  path and secret merges both recompute it.
+- **Intentional re-exports**: names declared in `__all__` are treated as used, and
+  package `__init__.py` files are exempt from unused-import reporting by default
+  via `[patterns.unused_imports].ignore_package_reexports`.
+
+## [4.1.0] - 2026-10-08 - Context Map & Debt Prioritization
+
+### Added
+- **Import graph & dependency diagram repaired**: imports carrying a
+  distribution package prefix and relative imports resolve correctly; the Mermaid
+  diagram was rewritten (collision-free node IDs, `class` for every cited node).
+  Self-analysis edges grew 28 → 45.
+- **Realistic churn & hotspots**: churn now uses `git log --numstat
+  --find-renames` grouped per file; `AI_CONTEXT.md` shows a top-5 churned files
+  list cross-referenced with hotspots.
+- **Anti-pattern severity & allowlist**: magic-number `allowlist`, severity
+  ordering, and a `min_severity` cutoff via `[patterns.antipatterns]`.
+- **Context-only mode**: new `ai-ctx context` command; `ai-ctx analyze` labels
+  its score as heuristic; `ai-ctx audit` remains the sole gate.
+- **Configurable `AI_CONTEXT.md` sections**: `[context].sections` toggles which
+  sections are rendered.
+
+### Changed
+- Unified configuration loading into a single canonical
+  `providers.config_loader.load_config` (TOML preferred, YAML legacy fallback);
+  `config.loader.ConfigLoader` is now a `DeprecationWarning` facade.
+- `sync_metrics.py` now emits the framework-compatible `summary`/`last_session`
+  schema expected by `forge metrics validate`.
+
+### Removed
+- Dropped the low-value `PROJECT KEYWORDS` section from `AI_CONTEXT.md`.
+
+### Fixed
+- `__future__` imports are no longer flagged as unused.
 
 ## [4.0.0] - 2026-10-08 - Dead Code Removal & Metric Key Contract
 

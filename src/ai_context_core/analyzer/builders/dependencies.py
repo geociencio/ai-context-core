@@ -6,6 +6,7 @@ import logging
 import pathlib
 from .algorithms import CycleDetector, GraphMetricsCalculator
 from .context_base import BaseContextBuilder
+from .unused_imports import detect_unused_imports_in_project  # noqa: F401
 
 logger = logging.getLogger(__name__)
 
@@ -155,17 +156,6 @@ class DependencyAnalyzer:
             return p.read_text(errors="ignore")
 
         return analyze_dependencies(modules_data, self.project_path, _read_file)
-
-
-def detect_unused_imports_in_project(
-    modules_data: List[Dict[str, Any]],
-) -> Dict[str, List[str]]:
-    """Collects unused imports across all modules."""
-    unused = {}
-    for mod in modules_data:
-        if mod.get("unused_imports"):
-            unused[mod["path"]] = mod["unused_imports"]
-    return unused
 
 
 class DependencyBuilder(BaseContextBuilder):

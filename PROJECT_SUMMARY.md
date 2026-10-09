@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 22:58:55
-Analyzer Version: 4.1.0 (Ai-Context-Core)
+Analysis Date: 2026-10-08 23:23:23
+Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.1/100
-- **Source Lines (SLOC)**: 5,997
-- **Total Physical Lines**: 9,509
-- **Maintainability**: 51.7
+- **ai-ctx Quality Score**: 90.2/100
+- **Source Lines (SLOC)**: 6,149
+- **Total Physical Lines**: 9,823
+- **Maintainability**: 51.8
 - **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.9
+- Maintainability: -19.8
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 152
+**Total Modules**: 157
 
 ```tree
 ./
@@ -122,7 +122,7 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
                     ai_recommendations.py
                     algorithms.py
                     builder.py
-                    ... (+23 more)
+                    ... (+26 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -131,7 +131,7 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
                     fs_cache.py
                     fs_helpers.py
                     fs_scanner.py
-                    ... (+10 more)
+                    ... (+11 more)
                 visitors/
                     __init__.py
                     antipattern_base.py
@@ -140,7 +140,7 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
                     ast_metrics.py
                     ast_qgis.py
                     ast_security.py
-                    ... (+49 more)
+                    ... (+50 more)
             cli/
                 .ai_context_cache.json
                 AI_CONTEXT.md
@@ -214,14 +214,15 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
-- **check_docs.py**: 1 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: HIGH)
+- **check_docs.py**: 1 issues (Max: LOW)
+- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: LOW)
+- **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: LOW)
+- … (+26 more modules)
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/reporting.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
 - src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/aggregator.py
@@ -245,10 +246,10 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 320
-- **Additions**: +57915
-- **Deletions**: -64562
-- **Total Churn**: 122477
+- **Files Changed**: 187
+- **Additions**: +54742
+- **Deletions**: -61827
+- **Total Churn**: 116569
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 33 commits
@@ -258,5 +259,5 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.76
+- **Avg Cyclomatic Complexity**: 7.82
 - **Max Complexity**: 25

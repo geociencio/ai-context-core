@@ -3,6 +3,7 @@
 from typing import List, Dict, Any
 
 from .qgis_scope import _should_include_for_i18n
+from .qgis_processing import has_processing_imports
 
 
 def _collect_api_issues(
@@ -96,12 +97,14 @@ def aggregate_qgis_compliance(
     # Filter modules for i18n counting and collect API issues
     i18n_modules = [m for m in m_data if _should_include_for_i18n(m, i18n_config, scope)]
     api_issues = _collect_api_issues(m_data)
+    processing_detected = any(
+        m.get("qgis_compliance", {}).get("processing_framework") for m in m_data
+    )
 
     agg = {
         "metadata": metadata,
-        "processing_framework_detected": any(
-            m.get("qgis_compliance", {}).get("processing_framework") for m in m_data
-        ),
+        "processing_framework_detected": processing_detected,
+        "declares_processing": processing_detected or has_processing_imports(m_data),
         "i18n_stats": _aggregate_i18n_stats(i18n_modules, m_data, scope),
         "gdal_style": (
             "Correct"

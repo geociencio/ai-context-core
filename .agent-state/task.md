@@ -2,6 +2,16 @@
 
 This task board tracks the current development phase.
 
+## Phase: v4.1.1 — Report Correctness Fixes (F1–F5)
+
+Source: `docs/maintenance/improvement_report_v4.1.0.md`.
+
+- [x] **F1** — version + config-fingerprint the analysis cache <!-- id: v411.f1 -->
+- [x] **F2** — real security `max_severity` (AST-only + merge) + top-3 indicator <!-- id: v411.f2 -->
+- [x] **F3** — `__all__` awareness + `ignore_package_reexports` for `__init__.py` <!-- id: v411.f3 -->
+- [x] **F4** — scope git churn to analyzed code (code + `raw_*`) <!-- id: v411.f4 -->
+- [x] **F5** — gate the "No Processing Algorithms" note on processing intent <!-- id: v411.f5 -->
+
 ## Phase: v4.1.0 — Context Map & Debt Prioritization
 
 Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
@@ -23,8 +33,8 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: None (v4.1.0 released)
-- **Current Metrics**: Tests 315/315 passing; `ai-ctx audit` PASS (score 90.1)
-- **Pending**: none (v4.1.0 fully released: GitHub + PyPI)
+- **Active Phase**: None (v4.1.1 F1–F5 implemented; pending release)
+- **Current Metrics**: Tests 333/333 passing; `ai-ctx audit` PASS (score 90.2)
+- **Pending**: release v4.1.1 (tag + GitHub + PyPI) when approved
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
   scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

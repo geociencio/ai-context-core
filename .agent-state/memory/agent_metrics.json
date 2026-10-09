@@ -1,38 +1,27 @@
 {
-    "version": "1.0",
-    "project": "ai-context-core",
-    "summary": {
-        "test_count": 315,
-        "tests_ok": 315,
-        "quality_score_latest": 90.1,
-        "maintainability_score": 51.7,
-        "avg_complexity": 7.76,
-        "max_complexity": 25
-    },
-    "last_session": {
-        "date": "2026-10-09",
-        "topic": "session_housekeeping",
-        "tests_ok": 315,
-        "quality_score": 90.1,
-        "task_completion_rate": null,
-        "retries": 0,
-        "stop_conditions_triggered": 0,
-        "tasks": [],
-        "status": "SUCCESS"
-    },
-    "history": [
-        {
-            "date": "2026-10-08",
-            "tests_ok": 315,
-            "quality_score": 90.1,
-            "status": "SUCCESS",
-            "session": "sync_metrics_auto"
-        },
-        {
-            "date": "2026-09-17",
-            "session": "sync_metrics_auto",
-            "quality_score": 97.3,
-            "tests_ok": 286
-        }
-    ]
+  "version": "1.0",
+  "project": "ai-context-core",
+  "summary": {
+    "test_count": 333,
+    "tests_ok": 333,
+    "quality_score_latest": 90.2,
+    "maintainability_score": 51.8,
+    "avg_complexity": 7.82,
+    "max_complexity": 25
+  },
+  "last_session": {
+    "date": "2026-10-08",
+    "topic": "sync_metrics_auto",
+    "tests_ok": 333,
+    "quality_score": 90.2,
+    "status": "SUCCESS"
+  },
+  "history": [
+    {
+      "date": "2026-09-17",
+      "session": "sync_metrics_auto",
+      "quality_score": 97.3,
+      "tests_ok": 286
+    }
+  ]
 }

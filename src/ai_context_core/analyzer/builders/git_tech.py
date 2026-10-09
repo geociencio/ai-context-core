@@ -20,7 +20,10 @@ class GitTechBuilder(BaseContextBuilder):
             ch = git_data.get("churn", {})
             if ch.get("available"):
                 lines.append(f"### Recent Churn ({ch.get('period_days')} days):")
-                lines.append(f"- Total lines changed: {ch.get('total_churn')}")
+                lines.append(f"- Total lines changed: {ch.get('total_churn')} (analyzed code)")
+                raw_total = ch.get("raw_total_churn")
+                if raw_total is not None and raw_total != ch.get("total_churn"):
+                    lines.append(f"- Total lines changed (all tracked): {raw_total}")
                 hot_paths = {h["path"] for h in hot}
                 per_file = ch.get("per_file", {})
                 top_churn = sorted(

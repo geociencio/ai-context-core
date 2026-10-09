@@ -11,6 +11,7 @@ from . import dependencies
 from . import calculator as metrics
 from . import ai_recommendations
 from . import metric_keys
+from .security_severity import max_severity
 from ..visitors import issues as v_issues
 from ..providers.fs_scanner import count_test_files
 
@@ -52,7 +53,7 @@ class ResultsAggregator:
         valid_modules = [m for m in m_data if not m.get("syntax_error")]
 
         # Dependency analysis
-        unused_imports = dependencies.detect_unused_imports_in_project(valid_modules)
+        unused_imports = dependencies.detect_unused_imports_in_project(valid_modules, self.config)
         graph_data["unused_imports"] = unused_imports
 
         # Security aggregation
@@ -186,6 +187,7 @@ class ResultsAggregator:
                     if existing.get("module") == mod.get("path"):
                         existing["issues"].extend(ast_issues)
                         existing["total_issues"] = len(existing["issues"])
+                        existing["max_severity"] = max_severity(existing["issues"])
                         found = True
                         break
                 if not found:
@@ -194,7 +196,7 @@ class ResultsAggregator:
                             "module": mod["path"],
                             "issues": ast_issues,
                             "total_issues": len(ast_issues),
-                            "max_severity": "high",  # Default for AST issues for now
+                            "max_severity": max_severity(ast_issues),
                         }
                     )
         return all_security

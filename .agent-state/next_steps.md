@@ -4,6 +4,26 @@
 
 ## ✅ Completed in This Session
 
+### v4.1.1 — Report Correctness Fixes (F1–F5)
+- ✅ **F1 cache versioning**: `providers/fs_cache.py` now persists a `_meta`
+  block (`schema`, analyzer `version`, config fingerprint) and discards
+  mismatched caches; `engine.py` passes the config fingerprint. Stale results
+  after tool upgrades/config edits can no longer be replayed.
+- ✅ **F2 real security severity**: new `builders/security_severity.max_severity`
+  ranks findings; `aggregator._aggregate_security` recomputes it on the AST-only
+  and merge paths; `issues.py` adds a `… (+N more)` top-3 indicator.
+- ✅ **F3 re-exports**: `visitors/import_export.collect_exported_names` +
+  `ImportVisitor` treat `__all__` names as used; `builders/unused_imports`
+  exempts package `__init__.py` via `[patterns.unused_imports].ignore_package_reexports`.
+- ✅ **F4 code-scoped churn**: new `providers/git_churn.filter_churn` +
+  `GitAnalyzer(exclusion_patterns=...)`; churn excludes non-analyzed paths and
+  keeps `raw_*` git-wide totals; scoped from `engine` → `git_analysis`.
+- ✅ **F5 conditional Processing note**: `builders/qgis_processing.has_processing_imports`
+  drives `declares_processing`; `qgis_summarizer` only nags when processing is
+  intended but no algorithm is found.
+- ✅ **Tests**: 315 → **333** (+18). ruff clean; `ai-ctx audit` PASS (90.2).
+- ✅ **Version**: bumped `4.1.0` → `4.1.1`; CHANGELOG `[Unreleased]` updated.
+
 ### v4.1.0 — Context Map & Debt Prioritization (WS-0..WS-5)
 - ✅ **WS-0 config**: unified config loading into `providers.config_loader.load_config`
   (TOML preferred, YAML legacy fallback); `config.loader.ConfigLoader` is now a
@@ -42,21 +62,20 @@ _No immediate blockers. Proceed with Future Enhancements below._
 
 ## 🐛 Known Issues
 
-**None blocking** — 315 tests passing; `ai-ctx audit` PASS (score 90.1).
+**None blocking** — 333 tests passing; `ai-ctx audit` PASS (score 90.2).
 
 - **Metrics validator false positives**: `forge.py metrics validate` flags 5
   entries in the `.agent/` framework submodule — `scaffold/qgis/workflows/release-plugin.md`
   (CC≤10, 763 tests → SecInterp's domain values) and `skills/coding-standards/SKILL.md`
   ("complexity below 10" → generic guideline). These are template/domain values,
-  not stale ai-context-core metrics (CC≤25, 315 tests). The validator scans
+  not stale ai-context-core metrics (CC≤25, 333 tests). The validator scans
   `scaffold/` against this project's ground truth; treat as non-blocking until the
   framework excludes domain packs from ground-truth checks.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
-quality regression; the release gate is 70. Also, config changes do not
-invalidate the module cache, so `ai-ctx analyze` without `--no-cache` can show
-stale antipattern/i18n results (pre-existing).
+quality regression; the release gate is 70. (Config changes now invalidate the
+module cache via the F1 cache-fingerprint fix.)
 
 ## 🔧 Technical Debt
 

@@ -61,7 +61,10 @@ class ProjectAnalyzer:
         )
         self.include_md = list(include_md or [])
         self.context_manager = AIContextManager(project_path)
-        self.analysis_cache = {} if ignore_cache else fs_utils.load_cache(self.project_path)
+        self._config_fingerprint = fs_utils.compute_config_fingerprint(self.config)
+        self.analysis_cache = (
+            {} if ignore_cache else fs_utils.load_cache(self.project_path, self._config_fingerprint)
+        )
         self.error_log = {}
 
     def analyze(
@@ -95,7 +98,7 @@ class ProjectAnalyzer:
         graph_data = dep_analyzer.build_graph(modules_data)
 
         # 3. Evolution analysis (Git)
-        git_data = git_analysis.analyze_git_evolution(self.project_path)
+        git_data = git_analysis.analyze_git_evolution(self.project_path, self.exclusion_patterns)
 
         # 4. Aggregate results
         qgis_metadata = fs_utils.parse_qgis_metadata(self.project_path)
@@ -113,7 +116,7 @@ class ProjectAnalyzer:
 
         # 5. Finalization
         self._generate_outputs(results, output_format, generate_summary)
-        fs_utils.save_cache(self.project_path, self.analysis_cache)
+        fs_utils.save_cache(self.project_path, self.analysis_cache, self._config_fingerprint)
 
         logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
         return results

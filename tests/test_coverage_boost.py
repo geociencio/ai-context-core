@@ -34,6 +34,19 @@ class TestCoverageBoost(unittest.TestCase):
         self.assertIn("api.py", recs_text)
         self.assertIn("Use async", recs_text)
 
+    def test_issues_summarizer_reports_more_modules(self):
+        analyses = {
+            "security": [
+                {"module": f"mod{i}.py", "total_issues": 1, "max_severity": "low"} for i in range(5)
+            ]
+        }
+        issues_text = IssuesSummarizer(analyses).build_issues()
+
+        self.assertIn("mod0.py", issues_text)
+        self.assertIn("mod2.py", issues_text)
+        self.assertNotIn("mod3.py", issues_text)
+        self.assertIn("(+2 more modules)", issues_text)
+
     def test_git_patterns_summarizer(self):
         analyses = {
             "git": {

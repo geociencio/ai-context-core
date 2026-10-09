@@ -25,8 +25,11 @@ class QGISSummarizer(BaseSummarizer):
 
         if q.get("processing_framework_detected"):
             res.append("- ✅ **Architecture**: Processing Framework detected")
-        else:
-            res.append("- ⚠️ **Architecture**: No Processing Algorithms found (Recommended)")
+        elif q.get("declares_processing"):
+            res.append(
+                "- ⚠️ **Architecture**: Processing imports found but no "
+                "`QgsProcessingAlgorithm` detected"
+            )
 
         i18n = q.get("i18n_stats", {})
         if i18n.get("total_strings", 0) > 0:

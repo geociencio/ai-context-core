@@ -46,3 +46,6 @@ def _show_churn(analyzer, days):
         click.echo(f"Lines Added: {churn.get('added', 0):,}")
         click.echo(f"Lines Deleted: {churn.get('deleted', 0):,}")
         click.echo(f"Total Churn: {churn.get('total_churn', 0):,}")
+        raw_total = churn.get("raw_total_churn")
+        if raw_total is not None and raw_total != churn.get("total_churn"):
+            click.echo(f"Total Churn (all tracked): {raw_total:,}")

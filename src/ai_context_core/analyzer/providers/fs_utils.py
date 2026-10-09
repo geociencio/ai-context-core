@@ -6,7 +6,12 @@ project structure generation (tree view) with LRU caching.
 
 import logging
 from .fs_scanner import scan_project
-from .fs_cache import load_cache, save_cache  # noqa: F401
+from .fs_cache import (  # noqa: F401
+    load_cache,
+    save_cache,
+    compute_config_fingerprint,
+    CACHE_SCHEMA,
+)
 from .gis_utils import parse_qgis_metadata  # noqa: F401
 from .fs_tree import generate_tree_optimized  # noqa: F401
 from .fs_helpers import (
@@ -20,6 +25,8 @@ __all__ = [
     "scan_project",
     "load_cache",
     "save_cache",
+    "compute_config_fingerprint",
+    "CACHE_SCHEMA",
     "parse_qgis_metadata",
     "generate_tree_optimized",
     "load_exclusion_patterns",

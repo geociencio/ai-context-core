@@ -54,6 +54,44 @@ class TestGitAnalysis(unittest.TestCase):
 
         self.assertEqual(GitParser.parse_churn("", 30), {"available": False})
 
+    def test_filter_churn_scopes_to_analyzed_code(self):
+        from ai_context_core.analyzer.providers.git_churn import filter_churn
+
+        churn = {
+            "available": True,
+            "period_days": 30,
+            "added": 100,
+            "deleted": 50,
+            "total_churn": 150,
+            "files_changed": 2,
+            "per_file": {
+                "core/a.py": {"added": 60, "deleted": 20},
+                "docs/x.md": {"added": 40, "deleted": 30},
+            },
+        }
+
+        out = filter_churn(churn, lambda p: p.startswith("docs/"))
+
+        self.assertEqual(out["per_file"], {"core/a.py": {"added": 60, "deleted": 20}})
+        self.assertEqual(out["total_churn"], 80)
+        self.assertEqual(out["files_changed"], 1)
+        self.assertEqual(out["raw_total_churn"], 150)
+        self.assertTrue(out["available"])
+
+    def test_get_churn_uses_exclusion_patterns(self):
+        import tempfile
+        from ai_context_core.analyzer.providers.runner import GitRunner
+
+        numstat = "10\t5\tsrc/a.py\n3\t2\tdocs/x.md\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(GitRunner, "run", side_effect=["true\n", numstat]):
+                churn = GitAnalyzer(pathlib.Path(tmp), ["docs"]).get_churn(days=7)
+
+        self.assertEqual(churn["per_file"], {"src/a.py": {"added": 10, "deleted": 5}})
+        self.assertEqual(churn["total_churn"], 15)
+        self.assertEqual(churn["raw_total_churn"], 20)
+        self.assertEqual(churn["files_changed"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

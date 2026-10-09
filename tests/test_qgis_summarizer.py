@@ -34,4 +34,16 @@ def test_qgis_summarizer_no_processing():
     analyses = {"qgis_compliance": {"processing_framework_detected": False}}
     summarizer = QGISSummarizer(analyses)
     summary = summarizer.build()
-    assert "No Processing Algorithms found" in summary
+    assert "Processing" not in summary
+
+
+def test_qgis_summarizer_declares_processing_without_algorithm():
+    analyses = {
+        "qgis_compliance": {
+            "processing_framework_detected": False,
+            "declares_processing": True,
+        }
+    }
+    summarizer = QGISSummarizer(analyses)
+    summary = summarizer.build()
+    assert "Processing imports found but no" in summary

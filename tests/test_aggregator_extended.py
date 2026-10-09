@@ -36,6 +36,58 @@ def test_aggregate_security_combined():
         assert res[0]["total_issues"] == 2
 
 
+def test_aggregate_security_recomputes_max_severity_on_merge():
+    aggregator = ResultsAggregator(pathlib.Path("/tmp/proj"), {})
+    m_data = [
+        {
+            "path": "mod1.py",
+            "ast_security": [{"description": "broad", "severity": "low"}],
+            "syntax_error": False,
+        }
+    ]
+
+    with patch("ai_context_core.analyzer.visitors.issues.find_secrets") as mock_secrets:
+        mock_secrets.return_value = [
+            {
+                "module": "mod1.py",
+                "issues": [{"description": "Secret found", "severity": "high"}],
+                "total_issues": 1,
+                "max_severity": "high",
+            }
+        ]
+
+        res = aggregator._aggregate_security(m_data)
+
+    # A high secret must dominate the low AST issue after the merge.
+    assert res[0]["max_severity"] == "high"
+
+
+def test_aggregate_security_ast_only_uses_real_severity():
+    aggregator = ResultsAggregator(pathlib.Path("/tmp/proj"), {})
+    m_data = [
+        {
+            "path": "mod1.py",
+            "ast_security": [{"description": "broad", "severity": "low"}],
+            "syntax_error": False,
+        }
+    ]
+
+    with patch("ai_context_core.analyzer.visitors.issues.find_secrets", return_value=[]):
+        res = aggregator._aggregate_security(m_data)
+
+    assert res[0]["max_severity"] == "low"
+
+
+def test_max_severity_helper_ranking():
+    from ai_context_core.analyzer.builders.security_severity import max_severity
+
+    assert max_severity([]) == "low"
+    assert max_severity([{}]) == "low"
+    assert max_severity([{"severity": "low"}, {"severity": "high"}]) == "high"
+    assert max_severity([{"severity": "high"}, {"severity": "critical"}]) == "critical"
+    assert max_severity([{"severity": "MEDIUM"}]) == "medium"
+
+
 def test_aggregate_antipatterns_shapes_into_module_issues():
     aggregator = ResultsAggregator(pathlib.Path("/tmp/proj"), {})
 
@@ -89,6 +141,26 @@ def test_qgis_aggregation_processing_framework():
     res = aggregate_qgis_compliance(m_data, metadata)
     assert res["compliance_score"] == 85.0
     assert res["processing_framework_detected"] is True
+
+
+def test_declares_processing_detects_imports():
+    from ai_context_core.analyzer.builders.aggregator_qgis import aggregate_qgis_compliance
+
+    res = aggregate_qgis_compliance(
+        [{"path": "a.py", "imports": ["processing"], "qgis_compliance": {}}], {}
+    )
+    assert res["processing_framework_detected"] is False
+    assert res["declares_processing"] is True
+
+
+def test_declares_processing_false_without_signal():
+    from ai_context_core.analyzer.builders.aggregator_qgis import aggregate_qgis_compliance
+
+    res = aggregate_qgis_compliance(
+        [{"path": "a.py", "imports": ["os"], "qgis_compliance": {}}], {}
+    )
+    assert res["processing_framework_detected"] is False
+    assert res["declares_processing"] is False
 
 
 def test_aggregator_timestamp():
