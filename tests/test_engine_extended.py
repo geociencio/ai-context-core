@@ -27,7 +27,7 @@ def test_load_config_failed_project_override():
         # and the SECOND load (project) fails
         mock_toml.load.side_effect = [{"defaults": {}}, Exception("Project fail")]
         # Mock paths
-        with patch("pathlib.Path.exists", side_effect=[True, True]):
+        with patch("pathlib.Path.exists", side_effect=[True, True, False]):
             # This is a bit complex due to how side_effect interacts with open()
             # Let's try simpler: mock logger directly
             with patch("ai_context_core.analyzer.providers.config_loader.logger") as mock_log:

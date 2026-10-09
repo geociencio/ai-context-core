@@ -1,13 +1,15 @@
 """Analysis and audit command logic."""
 
-import pathlib
 import os
+import pathlib
 import sys
-import click
 from typing import Optional
-from ai_context_core.analyzer.engine import ProjectAnalyzer
+
+import click
+
 from ai_context_core.analyzer.builders import metric_keys
-from ai_context_core.config.loader import ConfigLoader
+from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 
 def run_analysis(
@@ -19,18 +21,7 @@ def run_analysis(
 ):
     """Executes the full project analysis pipeline."""
     proj = pathlib.Path(path).resolve()
-    loader = ConfigLoader()
-    local_cfg_path = proj / ".ai-context" / "config.yaml"
-    local_cfg = {}
-    if local_cfg_path.exists():
-        try:
-            import yaml
-
-            local_cfg = yaml.safe_load(local_cfg_path.read_text()) or {}
-        except Exception:
-            pass
-
-    cfg = loader.load_config(profile_name=local_cfg.get("profile_name"), override_config=local_cfg)
+    cfg = load_config(proj)
     analyzer = ProjectAnalyzer(
         project_path=str(proj),
         config=cfg,
@@ -67,8 +58,7 @@ def run_analysis(
 def run_audit(path: str, threshold: float):
     """Performs a security and quality audit, exits with error if below threshold."""
     proj = pathlib.Path(path).resolve()
-    loader = ConfigLoader()
-    cfg = loader.load_config()
+    cfg = load_config(proj)
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
     click.echo(f"🛡️  Auditing {proj.name} (Threshold: {threshold})...")
     res = analyzer.analyze()

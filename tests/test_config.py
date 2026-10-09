@@ -1,8 +1,5 @@
 import pytest
 
-# Import the module to test
-# Adjust import based on where load_config is located.
-# It is currently in src/ai_context_core/analyzer/engine.py based on previous turns.
 from ai_context_core.analyzer.providers.config_loader import load_config
 
 
@@ -124,3 +121,36 @@ complexity = 0.99
         # Check for warning
         # We need to check if logger caught it. Verify behavior is robust.
         # The code catches Exception and logs warning.
+
+    def test_project_config_yaml_legacy_fallback(self, tmp_path):
+        """Verify legacy .ai-context/config.yaml is read with a deprecation warning."""
+        ai_context_dir = tmp_path / ".ai-context"
+        ai_context_dir.mkdir()
+        (ai_context_dir / "config.yaml").write_text("scoring:\n  base_score: 50.0\n")
+
+        with pytest.warns(DeprecationWarning):
+            config = load_config(tmp_path)
+
+        assert config["scoring"]["base_score"] == 50.0
+
+    def test_project_config_toml_preferred_over_yaml(self, tmp_path):
+        """Verify config.toml wins and config.yaml is ignored when both exist."""
+        ai_context_dir = tmp_path / ".ai-context"
+        ai_context_dir.mkdir()
+        (ai_context_dir / "config.toml").write_text("[scoring]\nbase_score = 42.0\n")
+        (ai_context_dir / "config.yaml").write_text("scoring:\n  base_score: 99.0\n")
+
+        config = load_config(tmp_path)
+        assert config["scoring"]["base_score"] == 42.0
+
+    def test_project_config_profile_name_honored(self, tmp_path):
+        """Verify a profile_name key in project config selects a profile."""
+        ai_context_dir = tmp_path / ".ai-context"
+        ai_context_dir.mkdir()
+        (ai_context_dir / "config.toml").write_text(
+            'profile_name = "generic"\n[quality_thresholds]\nscore = 90\n'
+        )
+
+        config = load_config(tmp_path)
+        assert "profile_name" not in config
+        assert config["quality_thresholds"]["score"] == 90
