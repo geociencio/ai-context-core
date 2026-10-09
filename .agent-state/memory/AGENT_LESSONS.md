@@ -114,6 +114,18 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "forge.py metrics validate walks the whole .agent/ submodule (including scaffold/qgis domain packs and generic skills), so template values (SecInterp's 763 tests / CC 10) are compared against this project's ground truth (315 tests / CC 25) and reported as violations."
   action: "Treat scaffold/generic-skill metric flags as false positives; consider excluding scaffold/ from ground-truth checks in the framework."
 
+- date: 2026-10-08
+  category: TOOLING
+  topic: Running pytest dirties the generated root artifacts
+  lesson: "test_self_score.py analyzes the repository root during the test run, so a plain `uv run pytest` rewrites AI_CONTEXT.md, PROJECT_SUMMARY.md and project_context.json in the working tree."
+  action: "Expect those three files to change after running tests; commit them as a separate `chore(docs): refresh generated context artifacts` before/after a release."
+
+- date: 2026-10-08
+  category: RELEASE
+  topic: PyPI upload needs maintainer credentials in this environment
+  lesson: "The agent environment has no ~/.pypirc and no trusted-publishing, so `twine upload` falls through to an interactive prompt and raises EOFError; `gh` is authenticated via keyring so the GitHub release step works."
+  action: "Build + `twine check` locally, create the GitHub release with gh, and hand the `uv run twine upload dist/*` step to the maintainer (or configure TWINE_* env vars)."
+
 ## Architecture Rules
 
 - date: 2026-09-17
