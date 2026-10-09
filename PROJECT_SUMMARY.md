@@ -1,18 +1,18 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 22:08:54
+Analysis Date: 2026-10-08 22:21:49
 Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.2/100
-- **Source Lines (SLOC)**: 5,978
-- **Total Physical Lines**: 9,486
-- **Maintainability**: 51.8
+- **ai-ctx Quality Score**: 90.1/100
+- **Source Lines (SLOC)**: 5,997
+- **Total Physical Lines**: 9,509
+- **Maintainability**: 51.7
 - **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.8
+- Maintainability: -19.9
 - Tests: +10.0
 
 ## 📁 STRUCTURE
@@ -219,9 +219,9 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 - **src/ai_context_core/analyzer/providers/loader.py**: 1 issues (Max: HIGH)
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/providers/worker.py -> src/ai_context_core/analyzer/__init__.py
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/reporting.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/summary_generator.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/engine.py -> src/ai_context_core/analyzer/builders/reporting.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
+- src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/visitors/ast_entry_points.py
@@ -245,18 +245,18 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 315
-- **Additions**: +33991
-- **Deletions**: -41031
-- **Total Churn**: 75022
+- **Files Changed**: 316
+- **Additions**: +41501
+- **Deletions**: -48452
+- **Total Churn**: 89953
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 31 commits
+- `src/ai_context_core/analyzer/engine.py`: 32 commits
 - `src/ai_context_core/analyzer/issues.py`: 24 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
 - `src/ai_context_core/analyzer/reporting.py`: 23 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.72
+- **Avg Cyclomatic Complexity**: 7.76
 - **Max Complexity**: 25
