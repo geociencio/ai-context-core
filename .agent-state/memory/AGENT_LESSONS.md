@@ -22,6 +22,13 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "Commit messages follow Conventional Commits and are written in English."
   action: "Use the `type(scope): description` format."
 
+- date: 2026-10-08
+  category: USER_PREFERENCE
+  topic: PyPI releases are manual
+  lesson: "Publishing to PyPI is performed manually by the maintainer; the agent must not attempt `twine upload`."
+  action: "For a release: build + `twine check` + create the GitHub release with gh, then hand `uv run twine upload dist/*` to the user."
+
+
 ## Technical Lessons
 
 - date: 2026-09-17
@@ -124,7 +131,7 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   category: RELEASE
   topic: PyPI upload needs maintainer credentials in this environment
   lesson: "The agent environment has no ~/.pypirc and no trusted-publishing, so `twine upload` falls through to an interactive prompt and raises EOFError; `gh` is authenticated via keyring so the GitHub release step works."
-  action: "Build + `twine check` locally, create the GitHub release with gh, and hand the `uv run twine upload dist/*` step to the maintainer (or configure TWINE_* env vars)."
+  action: "Build + `twine check` locally and create the GitHub release with gh; leave `uv run twine upload dist/*` to the maintainer (PyPI releases are manual)."
 
 ## Architecture Rules
 
