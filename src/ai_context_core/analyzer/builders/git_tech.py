@@ -5,7 +5,7 @@ from typing import List
 
 
 class GitTechBuilder(BaseContextBuilder):
-    """Adds git analysis and technology summary."""
+    """Adds git analysis (hotspots and churn)."""
 
     def build(self, lines: List[str]) -> None:
         git_data = self.analyses.get("git", {})
@@ -36,8 +36,3 @@ class GitTechBuilder(BaseContextBuilder):
                         lines.append(
                             f"  - `{path}` (+{counts['added']} -{counts['deleted']}, {total}){marker}"
                         )
-
-        s = self.analyses.get("structure", {})
-        lines.append("\n## 🔑 PROJECT KEYWORDS")
-        ft = list(s.get("file_types", {}).keys())
-        lines.append(f"- **Technologies**: {', '.join(ft[:8])}")

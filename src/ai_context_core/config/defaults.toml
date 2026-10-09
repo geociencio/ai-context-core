@@ -4,6 +4,11 @@
 # Globs are relative to the project root; extend per project or via --include-md.
 context_docs = []
 
+# Which AI_CONTEXT.md sections to render. Omit a name to skip that section.
+# Available: structure, metrics, patterns, dependencies, git, qgis.
+[context]
+sections = ["structure", "metrics", "patterns", "dependencies", "git", "qgis"]
+
 # Quality Thresholds
 # These values determine when an issue is flagged as a warning or error.
 [quality_thresholds.complexity]

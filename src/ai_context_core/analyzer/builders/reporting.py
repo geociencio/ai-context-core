@@ -6,7 +6,7 @@ AI interaction (LLM prompts). Includes Mermaid graph support.
 
 import pathlib
 import time
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 
 def _short_name(path: str) -> str:
@@ -141,12 +141,15 @@ def generate_project_summary(
 
 
 def generate_ai_context(
-    analyses: Dict[str, Any], output_path: pathlib.Path, project_name: str
+    analyses: Dict[str, Any],
+    output_path: pathlib.Path,
+    project_name: str,
+    config: Optional[Dict[str, Any]] = None,
 ) -> None:
     """Generates an optimized project overview file for AI consumption."""
     from .ai_context_generator import AIContextGenerator
 
-    gen = AIContextGenerator(analyses, project_name)
+    gen = AIContextGenerator(analyses, project_name, config=config)
     content = gen.build()
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(content)

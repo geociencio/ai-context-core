@@ -54,9 +54,6 @@ graph TD
 ```
 
 ## 🔄 GIT AND EVOLUTION
-
-## 🔑 PROJECT KEYWORDS
-- **Technologies**: .py, .txt
 ## 🗺️ QGIS STANDARDS COMPLIANCE
 - **Compliance Score**: 55.0/100
 - ℹ️ **Plugin**: Golden Plugin (v1.0.0)

@@ -188,7 +188,10 @@ class ProjectAnalyzer:
                     format=fmt,
                 )
             reporting.generate_ai_context(
-                results, self.project_path / "AI_CONTEXT.md", self.project_path.name
+                results,
+                self.project_path / "AI_CONTEXT.md",
+                self.project_path.name,
+                config=self.config,
             )
             with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)

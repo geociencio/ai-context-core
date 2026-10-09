@@ -73,6 +73,8 @@ class ImportVisitor(ast.NodeVisitor):
             else:
                 full_name = f"{module}.{alias.name}" if module else alias.name
             self.imports.append(full_name)
+            if module == "__future__":
+                continue
             name_in_scope = alias.asname or alias.name
             self.imported_names[name_in_scope] = full_name
 
