@@ -1,34 +1,27 @@
 {
   "version": "1.0",
   "project": "ai-context-core",
-  "sessions": [
+  "summary": {
+    "test_count": 302,
+    "tests_ok": 302,
+    "quality_score_latest": 90.8,
+    "maintainability_score": 52.2,
+    "avg_complexity": 7.53,
+    "max_complexity": 25
+  },
+  "last_session": {
+    "date": "2026-10-08",
+    "topic": "sync_metrics_auto",
+    "tests_ok": 302,
+    "quality_score": 90.8,
+    "status": "SUCCESS"
+  },
+  "history": [
     {
       "date": "2026-09-17",
       "session": "sync_metrics_auto",
-      "scores": {
-        "quality_score": 97.3,
-        "maintainability": 56.5,
-        "avg_complexity": 5.73,
-        "max_complexity": 49
-      },
-      "tests": {
-        "pass": 286,
-        "total": 286
-      }
-    },
-    {
-      "date": "2026-10-08",
-      "session": "sync_metrics_auto",
-      "scores": {
-        "quality_score": 90.4,
-        "maintainability": 51.9,
-        "avg_complexity": 7.46,
-        "max_complexity": 24
-      },
-      "tests": {
-        "pass": 303,
-        "total": 303
-      }
+      "quality_score": 97.3,
+      "tests_ok": 286
     }
   ]
 }

@@ -2,7 +2,9 @@
 """Unified metric extraction for ai-context-core.
 
 Runs the analyzer on itself, extracts quality scores from the analysis
-output, and writes a structured snapshot to .agent-state/memory/agent_metrics.json.
+output, and writes a structured snapshot to .agent-state/memory/agent_metrics.json
+using the schema expected by the framework metrics engine (``forge metrics``):
+a ``summary`` object plus ``last_session``/``history`` for trend reporting.
 
 Usage:
     uv run python scripts/sync_metrics.py
@@ -66,11 +68,36 @@ def count_tests() -> dict:
 
 
 def load_existing_metrics() -> dict:
-    """Load existing metrics file or return empty structure."""
+    """Load existing metrics file or return an empty structure."""
     if METRICS_FILE.exists():
         with open(METRICS_FILE) as f:
             return json.load(f)
-    return {"version": "1.0", "project": "ai-context-core", "sessions": []}
+    return {"version": "1.0", "project": "ai-context-core"}
+
+
+def _migrate_history(existing: dict) -> list[dict]:
+    """Build a history list from legacy ``sessions`` plus any prior ``history``."""
+    history = [h for h in existing.get("history", []) if isinstance(h, dict)]
+
+    for s in existing.get("sessions", []):
+        history.append(
+            {
+                "date": s.get("date"),
+                "session": s.get("session", "sync_metrics_auto"),
+                "quality_score": s.get("scores", {}).get("quality_score"),
+                "tests_ok": s.get("tests", {}).get("pass"),
+            }
+        )
+
+    seen = set()
+    deduped = []
+    for entry in history:
+        key = (entry.get("date"), entry.get("session") or entry.get("topic") or "")
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(entry)
+    return deduped
 
 
 def main() -> None:
@@ -100,25 +127,39 @@ def main() -> None:
     print(f"   Tests: {tests['pass']}/{tests['total']} passing")
     print()
 
-    # 4. Update metrics file
-    metrics = load_existing_metrics()
-    session_entry = {
-        "date": date.today().isoformat(),
-        "session": "sync_metrics_auto",
-        "scores": scores,
-        "tests": tests,
-    }
+    # 4. Update metrics file with the framework-compatible schema
+    existing = load_existing_metrics()
+    history = _migrate_history(existing)
+    today = date.today().isoformat()
+    history = [h for h in history if h.get("date") != today]
 
-    metrics["sessions"] = [s for s in metrics["sessions"] if s["date"] != date.today().isoformat()]
-    metrics["sessions"].append(session_entry)
-    metrics["sessions"].sort(key=lambda s: s["date"])
+    metrics = {
+        "version": "1.0",
+        "project": "ai-context-core",
+        "summary": {
+            "test_count": tests["pass"],
+            "tests_ok": tests["pass"],
+            "quality_score_latest": scores.get("quality_score"),
+            "maintainability_score": scores.get("maintainability"),
+            "avg_complexity": scores.get("avg_complexity"),
+            "max_complexity": scores.get("max_complexity"),
+        },
+        "last_session": {
+            "date": today,
+            "topic": "sync_metrics_auto",
+            "tests_ok": tests["pass"],
+            "quality_score": scores.get("quality_score"),
+            "status": "SUCCESS",
+        },
+        "history": history,
+    }
 
     with open(METRICS_FILE, "w") as f:
         json.dump(metrics, f, indent=2)
         f.write("\n")
 
     print(f"✅ Metrics written to {METRICS_FILE}")
-    print(f"   Total sessions tracked: {len(metrics['sessions'])}")
+    print(f"   Total history entries: {len(history)}")
 
 
 if __name__ == "__main__":
