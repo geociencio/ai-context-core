@@ -90,6 +90,18 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "Releasing requires build+twine in the dev dependency group, a docs/releases/notes/vX.Y.Z.md file, and the version synced across pyproject.toml, __init__.py, and uv.lock."
   action: "Add build/twine to [dependency-groups].dev, create the release-notes file, and verify all three version locations before tagging."
 
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Config changes do not invalidate the module cache
+  lesson: "Analysis results are cached by file hash only, so changing config (e.g. the magic-number allowlist or min_severity) leaves stale module data until --no-cache is used; antipattern/i18n output appeared outdated after config-only edits."
+  action: "Run `ai-ctx analyze --no-cache` (or `ai-ctx context --no-cache`) after any config change; consider hashing config into the cache key."
+
+- date: 2026-10-08
+  category: TECHNICAL
+  topic: Complexity-friendly config access
+  lesson: "The `(x or {}).get(...) or {}` pattern adds cyclomatic complexity (each `or` is a BoolOp), pushing near-budget modules (aggregator.py, worker.py) over CC 25. A ternary `x if x else {}` and small helper methods are not counted by ComplexityVisitor."
+  action: "Prefer `patterns if patterns else {}` and extract `_patterns_config()`-style helpers instead of chained `or {}` when editing modules already near the CC 25 budget."
+
 ## Architecture Rules
 
 - date: 2026-09-17

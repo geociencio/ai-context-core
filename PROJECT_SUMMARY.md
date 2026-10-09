@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 22:28:26
+Analysis Date: 2026-10-08 22:37:27
 Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -63,7 +63,7 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
             dev_feedback.md
             developer_recommendations.md
             i18n_improvement_guide.md
-            ... (+7 more)
+            ... (+8 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -214,30 +214,30 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 🚨 CRITICAL ISSUES
 ### 🔒 Security Issues:
-- **src/ai_context_core/analyzer/visitors/ast_entry_points.py**: 1 issues (Max: HIGH)
+- **check_docs.py**: 1 issues (Max: HIGH)
+- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: HIGH)
 - **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: HIGH)
-- **src/ai_context_core/analyzer/providers/loader.py**: 1 issues (Max: HIGH)
 
 ### 🔄 Circular Dependencies:
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/engine.py -> src/ai_context_core/analyzer/providers/worker.py
 - src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 - src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py
 
 ## 💡 MAIN RECOMMENDATIONS
-### src/ai_context_core/analyzer/visitors/ast_entry_points.py
+### src/ai_context_core/analyzer/builders/aggregator.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/providers/worker.py
+### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/providers/config_loader.py
+### src/ai_context_core/analyzer/builders/calculator.py
 - Consider breaking down large logic
 
 ## 🏗️ DESIGN PATTERNS
 ### Factory
+- **DependencyAnalyzer** in `src/ai_context_core/analyzer/builders/dependencies.py` (70%)
 - **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
 - **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
 - **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
 - **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
-- **MetricsSummarizer** in `src/ai_context_core/analyzer/builders/metrics_summarizer.py` (70%)
 ### Decorator
 - **register_detector** in `src/ai_context_core/analyzer/registry.py` (50%)
 ### Strategy
@@ -245,10 +245,10 @@ Analyzer Version: 4.1.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 317
-- **Additions**: +45666
-- **Deletions**: -52559
-- **Total Churn**: 98225
+- **Files Changed**: 318
+- **Additions**: +49782
+- **Deletions**: -56571
+- **Total Churn**: 106353
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 33 commits
