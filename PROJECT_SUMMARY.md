@@ -1,18 +1,18 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 21:37:56
+Analysis Date: 2026-10-08 21:50:26
 Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.8/100
-- **Source Lines (SLOC)**: 5,807
-- **Total Physical Lines**: 9,218
-- **Maintainability**: 52.2
+- **ai-ctx Quality Score**: 90.6/100
+- **Source Lines (SLOC)**: 5,865
+- **Total Physical Lines**: 9,335
+- **Maintainability**: 52.1
 - **Test Files**: 73 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.2
+- Maintainability: -19.4
 - Tests: +10.0
 
 ## 📁 STRUCTURE
@@ -240,10 +240,10 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 533
-- **Additions**: +28327
-- **Deletions**: -37299
-- **Total Churn**: 65626
+- **Files Changed**: 547
+- **Additions**: +29223
+- **Deletions**: -38007
+- **Total Churn**: 67230
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 31 commits
@@ -253,5 +253,5 @@ Analyzer Version: 4.0.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.53
+- **Avg Cyclomatic Complexity**: 7.64
 - **Max Complexity**: 25
