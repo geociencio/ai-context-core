@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-08 23:23:23
+Analysis Date: 2026-10-08 23:25:26
 Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -77,7 +77,7 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+12 more)
+                ... (+13 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
@@ -221,8 +221,8 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ### 🔄 Circular Dependencies:
 - src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
-- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/engine.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py
+- src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/aggregator.py
@@ -246,13 +246,13 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 187
-- **Additions**: +54742
-- **Deletions**: -61827
-- **Total Churn**: 116569
+- **Files Changed**: 194
+- **Additions**: +56691
+- **Deletions**: -63665
+- **Total Churn**: 120356
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 33 commits
+- `src/ai_context_core/analyzer/engine.py`: 34 commits
 - `src/ai_context_core/analyzer/issues.py`: 24 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
 - `src/ai_context_core/analyzer/reporting.py`: 23 commits

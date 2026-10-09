@@ -445,17 +445,17 @@ graph TD
 
 ## 🔄 GIT AND EVOLUTION
 ### Top Hotspots:
-- `src/ai_context_core/analyzer/engine.py` (33 commits)
+- `src/ai_context_core/analyzer/engine.py` (34 commits)
 - `src/ai_context_core/analyzer/issues.py` (24 commits)
 - `src/ai_context_core/analyzer/fs_utils.py` (24 commits)
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 116569 (analyzed code)
-- Total lines changed (all tracked): 124480
+- Total lines changed: 120356 (analyzed code)
+- Total lines changed (all tracked): 128613
 - Top churned files:
-  - `project_context.json` (+48093 -57872, 105965)
-  - `AI_CONTEXT.md` (+738 -496, 1234)
-  - `uv.lock` (+982 -46, 1028)
-  - `PROJECT_SUMMARY.md` (+391 -408, 799)
-  - `src/ai_context_core/analyzer/builders/aggregator_qgis.py` (+137 -281, 418)
+  - `project_context.json` (+49570 -59619, 109189)
+  - `AI_CONTEXT.md` (+770 -516, 1286)
+  - `uv.lock` (+983 -47, 1030)
+  - `PROJECT_SUMMARY.md` (+413 -429, 842)
+  - `src/ai_context_core/analyzer/builders/aggregator_qgis.py` (+143 -284, 427)
