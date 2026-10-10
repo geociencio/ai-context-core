@@ -135,19 +135,3 @@ def run_context(
         if os.environ.get("DEBUG"):
             raise e
         sys.exit(1)
-
-
-def run_audit(path: str, threshold: float):
-    """Performs a security and quality audit, exits with error if below threshold."""
-    proj = pathlib.Path(path).resolve()
-    cfg = load_config(proj)
-    analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
-    click.echo(f"🛡️  Auditing {proj.name} (Threshold: {threshold})...")
-    res = analyzer.analyze()
-    score = res.get("metrics", {}).get(metric_keys.QUALITY_SCORE, 0)
-
-    if score < threshold:
-        click.secho(f"❌ Audit Failed: Score {score:.1f} is below {threshold}", fg="red")
-        sys.exit(1)
-    else:
-        click.secho(f"✅ Audit Passed: Score {score:.1f}", fg="green")

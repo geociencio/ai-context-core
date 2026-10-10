@@ -178,7 +178,7 @@ def test_analyze_error_handling():
 def test_deps_command_extended():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze") as mock_analyze:
+        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.collect") as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
                     "unused_imports": {"mod1.py": ["os", "sys"]},
@@ -205,7 +205,7 @@ def test_deps_command_extended():
 def test_deps_command_no_findings():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.analyze") as mock_analyze:
+        with patch("ai_context_core.cli.commands.deps.ProjectAnalyzer.collect") as mock_analyze:
             mock_analyze.return_value = {
                 "dependencies": {
                     "unused_imports": {},

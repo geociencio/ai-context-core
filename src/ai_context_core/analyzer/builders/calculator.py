@@ -115,6 +115,85 @@ def calculate_halstead_metrics(n1: int, n2: int, N1: int, N2: int) -> Dict[str, 
     return MetricsCalculator.halstead_metrics(n1, n2, N1, N2)
 
 
+def summarize_modules(modules: list[Dict[str, Any]]) -> Dict[str, Any]:
+    """Compute canonical module-derived aggregates.
+
+    Shared by the builtin calculator and the external source adapter so both
+    emit the same metric contract from the same module shape.
+
+    Args:
+        modules: Module analysis dictionaries.
+
+    Returns:
+        A dict of ``metric_keys`` totals (excluding score/test/entry counts).
+    """
+    total_loc = sum(m.get("sloc", m.get("loc", 0)) for m in modules)
+    total_physical = sum(m.get("lines", 0) for m in modules)
+    complexities = [m.get("complexity", 0) for m in modules]
+    total_mi = sum(m.get("maintenance_index", 100) for m in modules)
+    count = len(modules)
+    return {
+        metric_keys.TOTAL_LINES_CODE: total_loc,
+        metric_keys.TOTAL_PHYSICAL_LINES: total_physical,
+        metric_keys.TOTAL_FUNCTIONS: sum(len(m.get("functions", [])) for m in modules),
+        metric_keys.TOTAL_CLASSES: sum(len(m.get("classes", [])) for m in modules),
+        metric_keys.AVERAGE_COMPLEXITY: round(sum(complexities) / count, 2) if count else 0,
+        metric_keys.MAX_COMPLEXITY: max(complexities, default=0),
+        metric_keys.AVG_MAINTENANCE_INDEX: round(total_mi / count, 2) if count else 100,
+    }
+
+
+def _score_breakdown(
+    scoring: Dict[str, Any],
+    avg_complexity: float,
+    max_complexity: int,
+    avg_mi: float,
+    total_loc: int,
+    test_files_count: Optional[int],
+) -> tuple:
+    """Compute the heuristic quality score and its component breakdown.
+
+    Returns:
+        ``(score, breakdown)`` where ``score`` is clamped to ``[0, 100]``.
+    """
+    breakdown: Dict[str, float] = {"base": float(scoring["base_score"])}
+
+    medium_cfg = scoring["complexity_medium_threshold"]
+    if avg_complexity > medium_cfg:
+        penalty = (avg_complexity - medium_cfg) * scoring["complexity_medium_penalty_per_point"]
+    else:
+        penalty = 0.0
+    breakdown["complexity"] = -round(penalty, 2)
+
+    high_cfg = scoring["complexity_high_threshold"]
+    if max_complexity > high_cfg:
+        max_penalty = (max_complexity - high_cfg) * scoring["complexity_high_penalty_per_point"]
+        max_penalty = min(max_penalty, scoring["complexity_high_penalty_cap"])
+    else:
+        max_penalty = 0.0
+    breakdown["max_complexity"] = -round(max_penalty, 2)
+
+    mi_cfg = scoring["maintainability_threshold"]
+    if avg_mi < mi_cfg:
+        mi_penalty = (mi_cfg - avg_mi) * scoring["maintainability_penalty_per_point"]
+    else:
+        mi_penalty = 0.0
+    breakdown["maintainability"] = -round(mi_penalty, 2)
+
+    if test_files_count == 0 and total_loc > 0:
+        tests_adjustment = -scoring["no_tests_penalty"]
+    elif test_files_count:
+        tests_adjustment = min(
+            scoring["tests_bonus_cap"], test_files_count * scoring["tests_bonus_per_file"]
+        )
+    else:
+        tests_adjustment = 0.0
+    breakdown["tests"] = round(tests_adjustment, 2)
+
+    score = max(0.0, min(100.0, sum(breakdown.values())))
+    return score, breakdown
+
+
 def calculate_project_metrics(
     modules: list[Dict[str, Any]],
     entry_points: list[str],
@@ -134,66 +213,20 @@ def calculate_project_metrics(
     Returns:
         Dictionary with aggregated project metrics.
     """
-    total_loc = sum(m.get("sloc", m.get("loc", 0)) for m in modules)
-    total_physical = sum(m.get("lines", 0) for m in modules)
-    total_functions = sum(len(m.get("functions", [])) for m in modules)
-    total_classes = sum(len(m.get("classes", [])) for m in modules)
-    total_complexity = sum(m.get("complexity", 0) for m in modules)
-    avg_complexity = total_complexity / len(modules) if modules else 0
-    max_complexity = max((m.get("complexity", 0) for m in modules), default=0)
-
-    # Calculate maintainability
-    total_mi = sum(m.get("maintenance_index", 100) for m in modules)
-    avg_mi = total_mi / len(modules) if modules else 100
+    totals = summarize_modules(modules)
+    total_loc = totals[metric_keys.TOTAL_LINES_CODE]
+    total_physical = totals[metric_keys.TOTAL_PHYSICAL_LINES]
+    total_functions = totals[metric_keys.TOTAL_FUNCTIONS]
+    total_classes = totals[metric_keys.TOTAL_CLASSES]
+    avg_complexity = totals[metric_keys.AVERAGE_COMPLEXITY]
+    max_complexity = totals[metric_keys.MAX_COMPLEXITY]
+    avg_mi = totals[metric_keys.AVG_MAINTENANCE_INDEX]
 
     # Calculate Quality Score as an explicit, configurable breakdown.
     scoring = _resolve_scoring(config)
-    breakdown: Dict[str, float] = {"base": float(scoring["base_score"])}
-
-    # Deduct for average complexity.
-    complexity_penalty = 0.0
-    medium_cfg = scoring["complexity_medium_threshold"]
-    if avg_complexity > medium_cfg:
-        complexity_penalty = (avg_complexity - medium_cfg) * scoring[
-            "complexity_medium_penalty_per_point"
-        ]
-    breakdown["complexity"] = -round(complexity_penalty, 2)
-
-    # Deduct for worst-case complexity outliers (per-function gates care about
-    # the maximum, not only the average).
-    max_penalty = 0.0
-    high_cfg = scoring["complexity_high_threshold"]
-    if max_complexity > high_cfg:
-        max_penalty = (max_complexity - high_cfg) * scoring["complexity_high_penalty_per_point"]
-        max_penalty = min(max_penalty, scoring["complexity_high_penalty_cap"])
-    breakdown["max_complexity"] = -round(max_penalty, 2)
-
-    # Deduct for low maintainability.
-    mi_penalty = 0.0
-    mi_cfg = scoring["maintainability_threshold"]
-    if avg_mi < mi_cfg:
-        mi_penalty = (mi_cfg - avg_mi) * scoring["maintainability_penalty_per_point"]
-    breakdown["maintainability"] = -round(mi_penalty, 2)
-
-    # Bonus/Penalty for tests. A None count means "not evaluated", so no penalty.
-    tests_adjustment = 0.0
-    if test_files_count == 0 and total_loc > 0:
-        tests_adjustment = -scoring["no_tests_penalty"]
-    elif test_files_count:
-        tests_adjustment = min(
-            scoring["tests_bonus_cap"],
-            test_files_count * scoring["tests_bonus_per_file"],
-        )
-    breakdown["tests"] = round(tests_adjustment, 2)
-
-    score = max(0.0, min(100.0, sum(breakdown.values())))
-
-    # QGIS specific adjustments
-    extra_data = extra_data or {}
-    qgis_data = extra_data.get("qgis_compliance", {})
-    if qgis_data:
-        # Example: penalize legacy imports
-        pass
+    score, breakdown = _score_breakdown(
+        scoring, avg_complexity, max_complexity, avg_mi, total_loc, test_files_count
+    )
 
     return {
         metric_keys.QUALITY_SCORE: score,

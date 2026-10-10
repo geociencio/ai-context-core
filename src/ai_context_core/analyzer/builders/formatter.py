@@ -4,15 +4,15 @@ from typing import List, Dict, Any
 
 from . import metric_keys
 
-# Complexity aggregation keys (backward-compatible contract, distinct from
-# the canonical project metric keys in metric_keys.py).
+# Complexity aggregation keys. Keys that are part of the canonical metric
+# contract reuse the single source of truth in ``metric_keys``.
 TOTAL_MODULES = "total_modules"
 TOTAL_LINES = "total_lines"
-TOTAL_PHYSICAL_LINES = "total_physical_lines"
-TOTAL_FUNCTIONS = "total_functions"
-TOTAL_CLASSES = "total_classes"
-AVERAGE_COMPLEXITY = "average_complexity"
-AVG_MAINTENANCE_INDEX = "avg_maintenance_index"
+TOTAL_PHYSICAL_LINES = metric_keys.TOTAL_PHYSICAL_LINES
+TOTAL_FUNCTIONS = metric_keys.TOTAL_FUNCTIONS
+TOTAL_CLASSES = metric_keys.TOTAL_CLASSES
+AVERAGE_COMPLEXITY = metric_keys.AVERAGE_COMPLEXITY
+AVG_MAINTENANCE_INDEX = metric_keys.AVG_MAINTENANCE_INDEX
 MOST_COMPLEX_MODULES = "most_complex_modules"
 
 

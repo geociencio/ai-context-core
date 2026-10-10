@@ -10,7 +10,6 @@ from .summary_generator import ProjectSummaryGenerator
 from .ai_context_generator import AIContextGenerator
 from .metrics_summarizer import MetricsSummarizer
 from .issues import IssuesSummarizer
-from .git_patterns import GitSummarizer
 from .structure import StructureBuilder
 from .context_metrics import MetricsBuilder
 from .git_tech import GitTechBuilder
@@ -25,7 +24,6 @@ __all__ = [
     "AIContextGenerator",
     "MetricsSummarizer",
     "IssuesSummarizer",
-    "GitSummarizer",
     "StructureBuilder",
     "MetricsBuilder",
     "GitTechBuilder",

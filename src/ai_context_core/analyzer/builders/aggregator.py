@@ -81,7 +81,7 @@ class ResultsAggregator:
         from .formatter import format_complexity_agg
 
         complexity_agg = format_complexity_agg(valid_modules, project_metrics)
-        optimizations = find_optimizations(valid_modules)
+        optimizations = find_optimizations(valid_modules, self.config)
 
         return {
             "project_name": self.project_path.name,

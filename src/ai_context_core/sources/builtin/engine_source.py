@@ -58,5 +58,6 @@ class BuiltinSource:
                 schema=SCHEMA_VERSION,
                 tool_version=__version__,
                 git_sha=current_git_sha(self.project_path),
+                content_hash=analyzer.content_hash,
             ),
         )

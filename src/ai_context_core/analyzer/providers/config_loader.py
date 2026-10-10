@@ -134,22 +134,10 @@ def _merge_dicts(base: Dict, update: Dict) -> Dict:
 def _get_hardcoded_defaults() -> Dict[str, Any]:
     """Return fallback hardcoded configuration."""
     return {
-        "quality_weights": {
-            "docstrings": 30,
-            "complexity_low": 20,
-            "size_small": 15,
-            "has_main": 5,
-            "no_syntax_error": 30,
-            "complexity_medium": 10,
-            "complexity_high": -10,
-            "size_medium": 10,
-        },
-        "thresholds": {
-            "complexity_low": 5,
-            "complexity_medium": 15,
-            "complexity_high": 25,
-            "size_small": 200,
-            "size_medium": 500,
+        "quality_thresholds": {
+            "complexity": {"warning": 10, "error": 15},
+            "maintainability": {"warning": 65, "error": 50},
+            "lines": {"warning": 400, "error": 800},
         },
         "scoring": {
             "base_score": 100.0,

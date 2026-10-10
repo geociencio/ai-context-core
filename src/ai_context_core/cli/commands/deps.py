@@ -5,16 +5,15 @@ import click
 from rich.console import Console
 from rich.table import Table
 from ai_context_core.analyzer.engine import ProjectAnalyzer
-from ai_context_core.config.loader import ConfigLoader
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 
 def show_dependencies(path: str, show_unused: bool, show_cycles: bool, show_metrics: bool):
     """Shows dependency analysis results."""
     proj = pathlib.Path(path).resolve()
-    loader = ConfigLoader()
-    cfg = loader.load_config()
+    cfg = load_config(proj)
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
-    res = analyzer.analyze()
+    res = analyzer.collect()
     deps = res.get("dependencies", {})
     console = Console()
 

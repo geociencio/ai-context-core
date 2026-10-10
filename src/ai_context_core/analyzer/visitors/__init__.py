@@ -1,8 +1,5 @@
 """AST visitors and structural/metrics calculators (context-only)."""
 
-from .ast_utils import (
-    extract_base_name,
-)
 from .ast_visitors import (
     extract_functions,
     extract_classes,
@@ -24,7 +21,6 @@ from .complexity_visitor import ComplexityVisitor
 from .visitors_base import BaseVisitor
 
 __all__ = [
-    "extract_base_name",
     "extract_functions",
     "extract_classes",
     "check_docstrings",

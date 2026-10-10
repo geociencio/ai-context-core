@@ -52,16 +52,8 @@ class AnalysisResult:
     data: Dict[str, Any] = field(default_factory=dict)
     provenance: Provenance = field(default_factory=lambda: Provenance(source="unknown"))
 
-    def to_engine_dict(self) -> Dict[str, Any]:
-        """Return the wrapped analysis dictionary (builders keep working)."""
-        return self.data
-
     def with_meta(self) -> Dict[str, Any]:
         """Return the payload with a ``_meta`` provenance block attached."""
         out = dict(self.data)
         out["_meta"] = {"schema": SCHEMA_VERSION, **self.provenance.to_dict()}
         return out
-
-    def section(self, name: str, default: Any = None) -> Any:
-        """Return a top-level section of the payload."""
-        return self.data.get(name, default)

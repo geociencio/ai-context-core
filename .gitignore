@@ -12,3 +12,10 @@ htmlcov/
 .docker/
 *.tar
 .ai_context_cache.json
+
+# Generated context artifacts accidentally created inside the package
+src/ai_context_core/**/AI_CONTEXT.md
+src/ai_context_core/**/PROJECT_SUMMARY.md
+src/ai_context_core/**/project_context.json
+src/ai_context_core/**/context_manifest.json
+src/ai_context_core/**/symbols.json

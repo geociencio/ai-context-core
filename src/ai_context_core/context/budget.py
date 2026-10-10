@@ -148,11 +148,7 @@ def apply_budget(
             truncated = True
             break
 
-        limit = budget.per_section.get(name)
-        if remaining is not None:
-            limit = remaining if limit is None else min(limit, remaining)
-
-        kept, tokens, did_truncate = truncate_lines(lines, limit)
+        kept, tokens, did_truncate = truncate_lines(lines, _section_limit(budget, name, remaining))
 
         # A section whose truncated form still does not fit is dropped entirely.
         if remaining is not None and tokens > remaining:
@@ -170,3 +166,17 @@ def apply_budget(
 
     total = sum(tokens for _, _, tokens in counted)
     return counted, total, truncated
+
+
+def _section_limit(budget: TokenBudget, name: str, remaining: Optional[int]) -> Optional[int]:
+    """Resolve the effective token limit for one section.
+
+    The section cap is the stricter of its per-section limit and the remaining
+    global budget (or ``None`` when neither applies).
+    """
+    limit = budget.per_section.get(name)
+    if remaining is None:
+        return limit
+    if limit is None:
+        return remaining
+    return min(limit, remaining)

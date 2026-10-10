@@ -86,7 +86,6 @@ def test_analysis_result_with_meta():
     assert meta["_meta"]["schema"] == 1
     assert meta["_meta"]["tool_version"] == "1.2.3"
     assert meta["_meta"]["git_sha"] == "abc"
-    assert result.to_engine_dict() == {"project_name": "x"}
 
 
 # --- external mapping --------------------------------------------------------

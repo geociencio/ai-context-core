@@ -5,6 +5,8 @@ import pathlib
 import click
 from typing import Dict, Any
 
+from ai_context_core.analyzer.builders import metric_keys
+
 try:
     from rich.console import Console
     from rich.table import Table
@@ -53,12 +55,14 @@ def run_compare(file1: str, file2: str):
     table.add_column("Diff", justify="right")
 
     metrics_to_compare = [
-        ("ai-ctx Quality Score", "metrics.quality_score"),
-        ("Maintenance Index", "metrics.avg_maintenance_index"),
-        ("Cyclomatic Complexity (Avg)", "metrics.average_complexity"),
-        ("Total Lines", "metrics.total_lines_code"),
-        ("Python Files", "structure.modules_count"),
-        ("Security Issues", "metrics.security_issues"),
+        ("Quality Score (heuristic)", f"metrics.{metric_keys.QUALITY_SCORE}"),
+        ("Maintenance Index", f"metrics.{metric_keys.AVG_MAINTENANCE_INDEX}"),
+        ("Cyclomatic Complexity (Avg)", f"metrics.{metric_keys.AVERAGE_COMPLEXITY}"),
+        ("Max Complexity", f"metrics.{metric_keys.MAX_COMPLEXITY}"),
+        ("Total Lines", f"metrics.{metric_keys.TOTAL_LINES_CODE}"),
+        ("Functions", f"metrics.{metric_keys.TOTAL_FUNCTIONS}"),
+        ("Classes", f"metrics.{metric_keys.TOTAL_CLASSES}"),
+        ("Modules", "structure.modules_count"),
     ]
 
     for label, path in metrics_to_compare:

@@ -1,22 +1,8 @@
 import ast
-from ai_context_core.analyzer.visitors.ast_utils import extract_base_name
 from ai_context_core.analyzer.visitors.ast_metrics import (
     calculate_type_hint_coverage,
     TypeHintVisitor,
 )
-
-
-def test_extract_base_name_variants():
-    # Attribute
-    node_attr = ast.Attribute(value=ast.Name(id="mod", ctx=ast.Load()), attr="Base", ctx=ast.Load())
-    assert extract_base_name(node_attr) == "Base"
-
-    # Call
-    node_call = ast.Call(func=ast.Name(id="MyClass", ctx=ast.Load()), args=[], keywords=[])
-    assert extract_base_name(node_call) == "MyClass"
-
-    # Unknown
-    assert extract_base_name(ast.Constant(value=1)) == "Unknown"
 
 
 def test_type_hint_coverage_edge_cases():

@@ -6,7 +6,7 @@ import logging
 import pathlib
 from .algorithms import CycleDetector, GraphMetricsCalculator
 from .context_base import BaseContextBuilder
-from .unused_imports import detect_unused_imports_in_project  # noqa: F401
+from .unused_imports import detect_unused_imports_in_project
 
 logger = logging.getLogger(__name__)
 
@@ -122,12 +122,9 @@ def analyze_dependencies(
     except Exception as e:
         logger.exception(f"Error calculating graph metrics: {e}")
 
-    # 5. Collect unused imports
-    unused_imports = {}
-    for mod in modules_data:
-        if mod.get("unused_imports"):
-            unused_imports[mod["path"]] = mod["unused_imports"]
-    dependencies["unused_imports"] = unused_imports
+    # 5. Collect unused imports (single implementation; aggregator re-runs it
+    #    with the project config to honor ``patterns.unused_imports``).
+    dependencies["unused_imports"] = detect_unused_imports_in_project(modules_data)
 
     # 6. Classify imports
     all_imports = set()

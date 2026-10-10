@@ -1,4 +1,4 @@
-# AI-Context-Core Configuration Defaults
+# AI-Context-Core Configuration Defaults (context-only)
 
 # Extra markdown docs embedded in the "MANUAL ARCHITECTURE NOTES" section.
 # Globs are relative to the project root; extend per project or via --include-md.
@@ -25,8 +25,7 @@ sections = ["structure", "metrics", "dependencies", "git"]
 source = "auto"
 # external_path = "analysis_results/project_context.json"
 
-# Quality Thresholds
-# These values determine when an issue is flagged as a warning or error.
+# Quality thresholds consumed by the optimization suggester (find_optimizations).
 [quality_thresholds.complexity]
 warning = 10
 error = 15
@@ -39,19 +38,7 @@ error = 50
 warning = 400
 error = 800
 
-# ai-ctx Quality Score Weights
-# Weights differ depending on the importance of the metric for the final score.
-[quality_weights]
-docstrings = 30
-complexity_low = 20
-complexity_medium = 10
-complexity_high = -10
-size_small = 15
-size_medium = 10
-has_main = 5
-no_syntax_error = 30
-
-# ai-ctx Quality Score (heuristic, non-canonical)
+# Internal quality_score heuristic (reported by `ai-ctx stats` / `analyze`).
 # Additive adjustments applied to a 100-point base. Override per project
 # through the [scoring] section in .ai-context/config.toml.
 [scoring]
@@ -67,39 +54,7 @@ no_tests_penalty = 20.0
 tests_bonus_per_file = 2.0
 tests_bonus_cap = 10.0
 
-# Security Patterns
-# Definitions of patterns considered dangerous.
-[security_patterns]
-dangerous_functions = ["exec", "eval", "__import__", "input"]
-dangerous_modules = ["pickle", "marshal", "telnetlib"]
-sql_injection_indicators = ["execute(", "executemany("]
-
-# Analysis Configuration
-[analysis]
-parallel_workers = "auto"
-cache_enabled = true
-# Maximum file size to analyze in MB
-max_file_size_mb = 10
-
-[patterns.qgis_compliance]
-enabled = false
-
-[patterns.linter]
-enabled = true
-
-# Anti-pattern tuning. ``allowlist`` adds numeric constants exempted from
-# magic-number detection; ``min_severity`` filters out issues below the given
-# level (one of "low", "medium", "high").
-[patterns.antipatterns]
-allowlist = [100, 1000, 1024, 2048, 3600, 60, 24, 255, 256]
-min_severity = "low"
-
 # Unused-import tuning. When true, package ``__init__.py`` modules are exempt
 # from unused-import reporting because they typically re-export their public API.
 [patterns.unused_imports]
 ignore_package_reexports = true
-
-# i18n analysis tuning (optional). Omit these keys to use the built-in lists.
-# ignored_functions = ["setObjectName", "addItem"]   # technical denylist override
-# ui_functions = ["setText", "setTitle"]             # user-facing allowlist override
-[patterns.i18n]

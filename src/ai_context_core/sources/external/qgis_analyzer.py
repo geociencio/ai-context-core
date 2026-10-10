@@ -9,10 +9,10 @@ them from the builtin providers.
 
 import json
 import pathlib
-from statistics import mean
 from typing import Any, Dict, List, Optional
 
 from ...analyzer.builders import formatter, metric_keys
+from ...analyzer.builders.calculator import summarize_modules
 from ...model import AnalysisResult, Provenance
 from ..base import current_git_sha, external_output_path
 
@@ -37,35 +37,28 @@ def _map_module(mod: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _sum_lengths(modules: List[Dict[str, Any]], key: str) -> int:
-    """Total number of items across a list-valued module key."""
-    return sum(len(m.get(key, [])) for m in modules)
-
-
-def _module_complexities(modules: List[Dict[str, Any]]) -> List[int]:
-    """Complexity values for all modules."""
-    return [m.get("complexity", 0) for m in modules]
-
-
 def _map_metrics(ext_metrics: Dict[str, Any], modules: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Build the canonical project metrics dict from external metrics + modules."""
-    complexities = _module_complexities(modules)
+    """Build the canonical project metrics dict from external metrics + modules.
+
+    Starts from the shared module summaries and overlays the analyzer's own
+    project-level figures (quality, maintainability, totals).
+    """
+    metrics = summarize_modules(modules)
+
     total_lines = ext_metrics.get("total_lines")
-    if total_lines is None:
-        total_lines = sum(m.get("lines", 0) for m in modules)
-    return {
-        metric_keys.QUALITY_SCORE: ext_metrics.get("quality_score", 0.0),
-        metric_keys.TOTAL_LINES_CODE: total_lines,
-        metric_keys.TOTAL_PHYSICAL_LINES: total_lines,
-        metric_keys.TOTAL_FUNCTIONS: _sum_lengths(modules, "functions"),
-        metric_keys.TOTAL_CLASSES: _sum_lengths(modules, "classes"),
-        metric_keys.AVERAGE_COMPLEXITY: mean(complexities) if complexities else 0.0,
-        metric_keys.MAX_COMPLEXITY: max(complexities) if complexities else 0,
-        metric_keys.AVG_MAINTENANCE_INDEX: ext_metrics.get("maintainability_score", 0.0),
-        metric_keys.TEST_FILES_COUNT: ext_metrics.get("test_files_count", 0),
-        metric_keys.ENTRY_POINTS_COUNT: sum(1 for m in modules if m.get("has_main")),
-        metric_keys.SCORE_BREAKDOWN: [],
-    }
+    if total_lines is not None:
+        metrics[metric_keys.TOTAL_LINES_CODE] = total_lines
+        metrics[metric_keys.TOTAL_PHYSICAL_LINES] = total_lines
+
+    maintainability = ext_metrics.get("maintainability_score")
+    if maintainability is not None:
+        metrics[metric_keys.AVG_MAINTENANCE_INDEX] = maintainability
+
+    metrics[metric_keys.QUALITY_SCORE] = ext_metrics.get("quality_score", 0.0)
+    metrics[metric_keys.TEST_FILES_COUNT] = ext_metrics.get("test_files_count", 0)
+    metrics[metric_keys.ENTRY_POINTS_COUNT] = sum(1 for m in modules if m.get("has_main"))
+    metrics[metric_keys.SCORE_BREAKDOWN] = []
+    return metrics
 
 
 def _map_dependencies(semantic: Dict[str, Any]) -> Dict[str, Any]:

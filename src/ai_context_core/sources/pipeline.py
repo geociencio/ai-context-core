@@ -145,9 +145,10 @@ def render_context(
             format=output_format,
         )
 
-    from ..context.verify import compute_content_hash
+    if not result.provenance.content_hash:
+        from ..context.verify import compute_content_hash
 
-    result.provenance.content_hash = compute_content_hash(project_path)
+        result.provenance.content_hash = compute_content_hash(project_path)
 
     manifest = reporting.generate_ai_context(
         data,

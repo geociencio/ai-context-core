@@ -5,7 +5,7 @@ import logging
 import time
 import concurrent.futures
 import pathlib
-from typing import Dict, Any, List
+from typing import Any, Dict, List, Optional
 from ..visitors import ast_utils
 from ..visitors.imports_visitor import get_package
 from ..builders import calculator as metrics
@@ -13,6 +13,15 @@ from ..registry import registry
 from ..constants import PARALLEL_MIN_FILES
 
 logger = logging.getLogger(__name__)
+
+
+def _meta_matches(cached: Optional[Dict[str, Any]], stats: Dict[str, Any]) -> bool:
+    """Return True when a cache entry matches the file's mtime and size."""
+    return (
+        bool(cached)
+        and cached.get("mtime") == stats["mtime"]
+        and cached.get("size") == stats["size"]
+    )
 
 
 class AnalysisWorker:
@@ -31,37 +40,34 @@ class AnalysisWorker:
         self.cache = cache
         self.error_log = {}
 
-    def run_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
-        """Executes parallel analysis of modules."""
-        results, to_analyze = [], []
+    def _partition_by_cache(
+        self, files: List[pathlib.Path]
+    ) -> tuple[List[Dict[str, Any]], List[pathlib.Path]]:
+        """Split files into cached results and those needing analysis."""
         from .. import fs_utils
 
-        # DEBUG:
-        # print(f"run_parallel called with {len(files)} files")
+        results: List[Dict[str, Any]] = []
+        to_analyze: List[pathlib.Path] = []
         for f in files:
             rel = str(f.relative_to(self.project_path))
             cached = self.cache.get(rel)
-
-            # Quick check: mtime and size
             stats = fs_utils.get_file_stats(f)
-            if (
-                cached
-                and cached.get("mtime") == stats["mtime"]
-                and cached.get("size") == stats["size"]
-            ):
-                # Most likely unchanged, trust the cache
+
+            if _meta_matches(cached, stats):
                 results.append(cached["data"])
                 continue
 
-            # Fallback to hash if mtime/size differ or not in cache
-            h = fs_utils.calculate_file_hash(f)
-            if cached and cached.get("hash") == h:
-                # Content is same despite meta changes, update meta in cache but keep data
+            if cached and cached.get("hash") == fs_utils.calculate_file_hash(f):
                 cached["mtime"] = stats["mtime"]
                 cached["size"] = stats["size"]
                 results.append(cached["data"])
             else:
                 to_analyze.append(f)
+        return results, to_analyze
+
+    def run_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
+        """Executes parallel analysis of modules."""
+        results, to_analyze = self._partition_by_cache(files)
 
         if not to_analyze:
             return results
@@ -87,13 +93,9 @@ class AnalysisWorker:
                     for f, data in zip(batch_files, batch_results):
                         if data:
                             results.append(data)
-                            self.cache[str(f.relative_to(self.project_path))] = {
-                                "hash": fs_utils.calculate_file_hash(f),
-                                "mtime": f.stat().st_mtime,
-                                "size": f.stat().st_size,
-                                "data": data,
-                                "timestamp": time.time(),
-                            }
+                            self.cache[str(f.relative_to(self.project_path))] = self._cache_entry(
+                                f, data
+                            )
                 except Exception as e:
                     logger.error(f"Error analyzing batch {batch_files}: {e}")
                     for f in batch_files:
@@ -104,19 +106,23 @@ class AnalysisWorker:
         """Analyze a batch of files."""
         return [self.analyze_single(f) for f in files]
 
-    def _analyze_and_cache(self, f: pathlib.Path, results: List[Dict[str, Any]]):
+    def _cache_entry(self, f: pathlib.Path, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Build a cache entry for a freshly analyzed file."""
         from .. import fs_utils
 
+        return {
+            "hash": fs_utils.calculate_file_hash(f),
+            "mtime": f.stat().st_mtime,
+            "size": f.stat().st_size,
+            "data": data,
+            "timestamp": time.time(),
+        }
+
+    def _analyze_and_cache(self, f: pathlib.Path, results: List[Dict[str, Any]]):
         data = self.analyze_single(f)
         if data:
             results.append(data)
-            self.cache[str(f.relative_to(self.project_path))] = {
-                "hash": fs_utils.calculate_file_hash(f),
-                "mtime": f.stat().st_mtime,
-                "size": f.stat().st_size,
-                "data": data,
-                "timestamp": time.time(),
-            }
+            self.cache[str(f.relative_to(self.project_path))] = self._cache_entry(f, data)
 
     def analyze_single(self, file_path: pathlib.Path) -> Dict[str, Any]:
         """Deep analysis of a single Python module."""
@@ -164,7 +170,7 @@ class AnalysisWorker:
 
             return res
         except Exception as e:
-            print(f"DEBUG: analyze_single FAILED for {file_path}: {e}")
+            logger.warning("Analysis failed for %s: %s", file_path, e)
             return {
                 "path": str(file_path.relative_to(self.project_path)),
                 "syntax_error": True,

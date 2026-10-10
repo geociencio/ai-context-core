@@ -21,7 +21,6 @@ from .builders import (
     aggregator,
     dependencies,
 )
-from ..context.manager import AIContextManager
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +61,7 @@ class ProjectAnalyzer:
             self.project_path, exclude_patterns
         )
         self.include_md = list(include_md or [])
-        self.context_manager = AIContextManager(project_path)
+        self.content_hash: Optional[str] = None
         self._config_fingerprint = fs_utils.compute_config_fingerprint(self.config)
         self.analysis_cache = (
             {} if ignore_cache else fs_utils.load_cache(self.project_path, self._config_fingerprint)
@@ -95,9 +94,13 @@ class ProjectAnalyzer:
         git_data = git_analysis.analyze_git_evolution(self.project_path, self.exclusion_patterns)
 
         # 4. Aggregate results
-        qgis_metadata = fs_utils.parse_qgis_metadata(self.project_path)
         agg = aggregator.ResultsAggregator(self.project_path, self.config)
-        results = agg.aggregate(modules_data, graph_data, git_data, qgis_metadata)
+        results = agg.aggregate(modules_data, graph_data, git_data, {})
+
+        # Content hash for staleness verification, reusing the scan above.
+        from ..context.verify import hash_files
+
+        self.content_hash = hash_files(self.project_path, scan_res.python_files)
 
         # Add tree structure and manual notes
         results["structure"] = context_fields.build_structure(
@@ -149,12 +152,16 @@ class ProjectAnalyzer:
                 self.project_path.name,
                 config=self.config,
             )
-            from ..context.verify import compute_content_hash
+            content_hash = self.content_hash
+            if not content_hash:
+                from ..context.verify import compute_content_hash
+
+                content_hash = compute_content_hash(self.project_path)
 
             provenance = {
                 "source": "builtin",
                 "tool_version": __version__,
-                "content_hash": compute_content_hash(self.project_path),
+                "content_hash": content_hash,
             }
             reporting.write_context_manifest(self.project_path, manifest, provenance)
             with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:

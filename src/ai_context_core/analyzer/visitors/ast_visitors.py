@@ -6,7 +6,7 @@ This module is a facade that re-exports functionality from ast_visitors_componen
 from .functions import FunctionVisitor, extract_functions
 from .classes import ClassVisitor, extract_classes
 from .docstrings import DocstringVisitor, check_docstrings
-from .imports import ImportVisitor, extract_imports, detect_unused_imports
+from .imports_visitor import ImportVisitor, extract_imports, detect_unused_imports
 
 from ..registry import register_detector
 

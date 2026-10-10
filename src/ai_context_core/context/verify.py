@@ -42,10 +42,26 @@ def compute_content_hash(
         exclusion_patterns = fs_utils.load_exclusion_patterns(project_path, None)
 
     scan = fs_utils.scan_project(project_path, exclusion_patterns)
+    return hash_files(project_path, scan.python_files)
+
+
+def hash_files(project_path: pathlib.Path, files: List[pathlib.Path]) -> str:
+    """Hash a pre-scanned list of files (relative path + content hash).
+
+    Lets callers that already scanned the project avoid a redundant walk.
+
+    Args:
+        project_path: Project root.
+        files: Files to include in the hash.
+
+    Returns:
+        A ``sha256:<hex>`` string.
+    """
+    project_path = pathlib.Path(project_path).resolve()
     entries: List[List[str]] = []
-    for file_path in scan.python_files:
+    for file_path in files:
         try:
-            rel = str(file_path.relative_to(project_path))
+            rel = str(pathlib.Path(file_path).relative_to(project_path))
             entries.append([rel, _hash_file(file_path)])
         except OSError as e:  # pragma: no cover - unreadable file
             logger.warning("Skipping %s during hashing: %s", file_path, e)

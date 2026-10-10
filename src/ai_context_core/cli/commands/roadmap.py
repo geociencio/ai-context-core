@@ -3,7 +3,7 @@
 import pathlib
 import click
 from ai_context_core.analyzer.engine import ProjectAnalyzer
-from ai_context_core.config.loader import ConfigLoader
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 try:
     from rich.console import Console
@@ -33,11 +33,10 @@ def run_roadmap(path: str):
     proj_path = pathlib.Path(path).resolve()
     click.echo(f"🛣️  Generating refactoring roadmap for: {proj_path.name}")
 
-    loader = ConfigLoader()
-    cfg = loader.load_config()
+    cfg = load_config(proj_path)
     analyzer = ProjectAnalyzer(project_path=str(proj_path), config=cfg)
 
-    res = analyzer.analyze()
+    res = analyzer.collect()
     modules = res.get("modules", [])
     git_data = res.get("git", {})
     churn_data = {item["path"]: item["commits"] for item in git_data.get("hotspots", [])}

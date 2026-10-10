@@ -23,11 +23,10 @@ class ProjectSummaryGenerator:
         """
         self.analyses = analyses
         self.project_name = project_name
-        from . import GitSummarizer, IssuesSummarizer, MetricsSummarizer
+        from . import IssuesSummarizer, MetricsSummarizer
 
         self.metrics_s = MetricsSummarizer(analyses)
         self.issues_s = IssuesSummarizer(analyses)
-        self.git_s = GitSummarizer(analyses)
 
     def generate_markdown(self, output_path: pathlib.Path):
         """Generate the Markdown project summary.
@@ -45,7 +44,7 @@ class ProjectSummaryGenerator:
             ("🚨 CRITICAL ISSUES", self.issues_s.build_issues()),
             ("💡 MAIN RECOMMENDATIONS", self.issues_s.build_recommendations()),
             ("📝 ARCHITECTURE NOTES", self._build_manual_notes()),
-            ("🔄 GIT ANALYSIS", self.git_s.build_git()),
+            ("🔄 GIT ANALYSIS", self._build_git()),
             ("📈 COMPLEXITY DISTRIBUTION", self.metrics_s.build_complexity()),
         ]
 
@@ -59,6 +58,19 @@ class ProjectSummaryGenerator:
     def _build_manual_notes(self) -> str:
         """Return the manual architecture notes embedded in the analysis."""
         return self.analyses.get("manual_notes", "")
+
+    def _build_git(self) -> str:
+        """Render the git section using the shared GitTechBuilder.
+
+        Returns an empty string when there is no substantive git content, so the
+        section is omitted (matching the previous behaviour).
+        """
+        from .git_tech import GitTechBuilder
+
+        lines: list = []
+        GitTechBuilder(self.analyses).build(lines)
+        has_body = any(line.strip() and not line.strip().startswith("## ") for line in lines)
+        return "\n".join(lines) if has_body else ""
 
 
 # Alias for backward compatibility

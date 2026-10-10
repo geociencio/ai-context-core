@@ -3,7 +3,6 @@
 import pathlib
 import shutil
 import click
-from ai_context_core.config.loader import ConfigLoader
 
 
 def initialize_project(path: str, profile: str):
@@ -19,18 +18,18 @@ def initialize_project(path: str, profile: str):
     ai_ctx.mkdir(exist_ok=True)
     agent_wf.mkdir(parents=True, exist_ok=True)
 
-    loader = ConfigLoader()
+    pkg_root = pathlib.Path(__file__).parent.parent.parent
+    profiles_dir = pkg_root / "config" / "profiles"
     if profile != "generic":
         # Prefer TOML profiles
-        p_toml = loader.profiles_path / f"{profile}.toml"
-        p_yaml = loader.profiles_path / f"{profile}.yaml"
-
+        p_toml = profiles_dir / f"{profile}.toml"
+        p_yaml = profiles_dir / f"{profile}.yaml"
         if p_toml.exists():
             shutil.copy2(p_toml, ai_ctx / "config.toml")
         elif p_yaml.exists():
             shutil.copy2(p_yaml, ai_ctx / "config.yaml")
 
-    templates = pathlib.Path(__file__).parent.parent / "templates"
+    templates = pkg_root / "templates"
     for wf in (templates / "workflows").glob("*.md"):
         dest = agent_wf / wf.name
         if not dest.exists():

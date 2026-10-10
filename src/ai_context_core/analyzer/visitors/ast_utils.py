@@ -1,12 +1,10 @@
 """AST utilities for Python code analysis.
 
-This module is now a deprecated facade. Please import from the specific submodules:
+This module is a convenience facade re-exporting the specific submodules:
 - ai_context_core.analyzer.visitors.ast_visitors
 - ai_context_core.analyzer.visitors.ast_metrics
 - ai_context_core.analyzer.visitors.ast_entry_points
 """
-
-import ast
 
 # Re-exports for backward compatibility
 from .ast_visitors import (  # noqa: F401
@@ -27,25 +25,6 @@ from .ast_entry_points import (  # noqa: F401
     has_main_guard,
 )
 
-
-def extract_base_name(node: ast.AST) -> str:
-    """Helper to extract the name of a base class from a node.
-
-    Args:
-        node: The AST node to extract the name from
-
-    Returns:
-        The extracted name or 'Unknown' if extraction fails
-    """
-    if isinstance(node, ast.Name):
-        return node.id
-    elif isinstance(node, ast.Attribute):
-        return node.attr
-    elif isinstance(node, ast.Call):
-        return extract_base_name(node.func)
-    return "Unknown"
-
-
 __all__ = [
     "extract_functions",
     "extract_classes",
@@ -58,5 +37,4 @@ __all__ = [
     "calculate_sloc",
     "is_entry_point",
     "has_main_guard",
-    "extract_base_name",
 ]

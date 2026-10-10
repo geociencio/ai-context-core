@@ -59,8 +59,8 @@ def test_engine_load_config_edge_cases():
 
     # Test hardcoded defaults
     defaults = _get_hardcoded_defaults()
-    assert "quality_weights" in defaults
-    assert "thresholds" in defaults
+    assert "scoring" in defaults
+    assert "quality_thresholds" in defaults
 
 
 def test_config_loader_all_branches():
@@ -71,7 +71,7 @@ def test_config_loader_all_branches():
     with patch("ai_context_core.analyzer.providers.config_loader.tomllib", None):
         result = load_config(pathlib.Path("/tmp"))
         assert isinstance(result, dict)
-        assert "patterns" in result or "thresholds" in result
+        assert "scoring" in result or "quality_thresholds" in result
 
 
 def test_complexity_visitor_all_nodes():

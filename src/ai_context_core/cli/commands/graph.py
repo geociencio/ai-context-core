@@ -4,7 +4,7 @@ import pathlib
 import click
 from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.analyzer.builders.reporting import generate_dependency_diagram
-from ai_context_core.config.loader import ConfigLoader
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 
 def export_graph(path: str, output: str = "ARCHITECTURE.mmd"):
@@ -12,13 +12,9 @@ def export_graph(path: str, output: str = "ARCHITECTURE.mmd"):
     proj_path = pathlib.Path(path).resolve()
     click.echo(f"📊 Generating dependency graph for: {proj_path.name}")
 
-    loader = ConfigLoader()
-    cfg = loader.load_config()
+    cfg = load_config(proj_path)
     analyzer = ProjectAnalyzer(project_path=str(proj_path), config=cfg)
-
-    # We only need the dependency graph, but we run a full analysis for now
-    # to reuse the existing pipeline. In the future, we could optimize this.
-    res = analyzer.analyze()
+    res = analyzer.collect()
     deps = res.get("dependencies", {})
 
     mermaid_code = generate_dependency_diagram(deps)

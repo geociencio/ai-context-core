@@ -11,9 +11,9 @@ render layers consume. Two sources ship today:
 
 import logging
 import pathlib
-import subprocess
 from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
 
+from ..analyzer.providers.runner import GitRunner
 from ..model import AnalysisResult
 
 logger = logging.getLogger(__name__)
@@ -35,19 +35,8 @@ class AnalysisProvider(Protocol):
 
 def current_git_sha(project_path: pathlib.Path) -> Optional[str]:
     """Return the current git revision of a project, or ``None`` when unavailable."""
-    try:
-        out = subprocess.run(
-            ["git", "-C", str(project_path), "rev-parse", "HEAD"],
-            capture_output=True,
-            text=True,
-            timeout=5,
-            check=False,
-        )
-        if out.returncode == 0:
-            return out.stdout.strip() or None
-    except (OSError, subprocess.SubprocessError):
-        logger.debug("Could not read git sha for %s", project_path, exc_info=True)
-    return None
+    out = GitRunner(pathlib.Path(project_path)).run(["rev-parse", "HEAD"], check=False)
+    return out.strip() if out else None
 
 
 def external_output_path(

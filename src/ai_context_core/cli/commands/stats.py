@@ -7,16 +7,15 @@ from rich.table import Table
 from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.analyzer.builders import metric_keys
 from ai_context_core.analyzer.builders import formatter
-from ai_context_core.config.loader import ConfigLoader
+from ai_context_core.analyzer.providers.config_loader import load_config
 
 
 def show_quick_stats(path: str):
     """Shows quick project statistics."""
     proj = pathlib.Path(path).resolve()
-    loader = ConfigLoader()
-    cfg = loader.load_config()
+    cfg = load_config(proj)
     analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
-    res = analyzer.analyze()
+    res = analyzer.collect()
     console = Console()
 
     metrics = res.get("metrics", {})
