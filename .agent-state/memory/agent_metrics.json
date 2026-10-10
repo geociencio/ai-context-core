@@ -1,34 +1,45 @@
 {
-  "version": "1.0",
-  "project": "ai-context-core",
-  "summary": {
-    "test_count": 196,
-    "tests_ok": 196,
-    "quality_score_latest": 95.3,
-    "maintainability_score": 55.2,
-    "avg_complexity": 6.71,
-    "max_complexity": 24
-  },
-  "last_session": {
-    "date": "2026-10-10",
-    "topic": "sync_metrics_auto",
-    "tests_ok": 196,
-    "quality_score": 95.3,
-    "status": "SUCCESS"
-  },
-  "history": [
-    {
-      "date": "2026-10-08",
-      "tests_ok": 333,
-      "quality_score": 90.2,
-      "status": "SUCCESS",
-      "session": "sync_metrics_auto"
+    "version": "1.0",
+    "project": "ai-context-core",
+    "summary": {
+        "test_count": 196,
+        "tests_ok": 196,
+        "quality_score_latest": 95.3,
+        "maintainability_score": 55.2,
+        "avg_complexity": 6.71,
+        "max_complexity": 24
     },
-    {
-      "date": "2026-09-17",
-      "session": "sync_metrics_auto",
-      "quality_score": 97.3,
-      "tests_ok": 286
-    }
-  ]
+    "last_session": {
+        "date": "2026-10-10",
+        "topic": "v5.1_alignment_hardening",
+        "tests_ok": 196,
+        "quality_score": 95.3,
+        "task_completion_rate": null,
+        "retries": 0,
+        "stop_conditions_triggered": 0,
+        "tasks": [],
+        "status": "SUCCESS"
+    },
+    "history": [
+        {
+            "date": "2026-10-10",
+            "tests_ok": 196,
+            "quality_score": 95.3,
+            "status": "SUCCESS",
+            "session": "sync_metrics_auto"
+        },
+        {
+            "date": "2026-10-08",
+            "tests_ok": 333,
+            "quality_score": 90.2,
+            "status": "SUCCESS",
+            "session": "sync_metrics_auto"
+        },
+        {
+            "date": "2026-09-17",
+            "session": "sync_metrics_auto",
+            "quality_score": 97.3,
+            "tests_ok": 286
+        }
+    ]
 }

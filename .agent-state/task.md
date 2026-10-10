@@ -2,6 +2,20 @@
 
 This task board tracks the current development phase.
 
+## Phase: v5.1.0 — Context Alignment & Hardening (P0–P4) — ✅ COMPLETE
+
+Plan: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (ia-critic PASSED).
+
+- [x] **P0** — AGENTS.md/skills alignment + `analyzer_command` doc <!-- id: v51.p0 -->
+- [x] **P1** — token defaults + `[context].mermaid_style` (WS-3) <!-- id: v51.p1 -->
+- [x] **P2** — retire domain keys + external regression (WS-4/5) <!-- id: v51.p2 -->
+- [x] **P3** — `# noqa: F401` detector + docs + `ai-ctx init` (WS-6/7/8) <!-- id: v51.p3 -->
+- [x] **P4** — release v5.1.0 (3 version sites, CHANGELOG, notes, build, tag, GitHub) <!-- id: v51.p4 -->
+- [ ] **PyPI v5.1.0** — manual (maintainer): `uv run twine upload dist/*` <!-- id: v51.pypi -->
+
+**Cross-repo**: agentic-forge `release-package` config-driven proposal —
+`docs/maintenance/agentic_forge_release_package_proposal.md`.
+
 ## Phase: v5.0.0 — Context-Only Contract (F0–F5)
 
 Plan: `docs/plans/implementation_plan_ai_context_core_context_only_v5.md`.
@@ -51,8 +65,8 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: None — v5.0.1 released (GitHub + PyPI); F5 deferred out-of-repo
-- **Current Metrics**: Tests 182/182 passing; ruff check+format clean
-- **Pending**: none in-repo; F5 ecosystem alignment owned by sibling repos (agentic-forge / qgis-plugin-analyzer / sec_interp)
+- **Active Phase**: None — v5.1.0 released (GitHub); PyPI upload manual (pending)
+- **Current Metrics**: Tests 196/196 passing; ruff check+format clean; quality 95.3
+- **Pending**: PyPI v5.1.0 (maintainer); F5 ecosystem alignment + agentic-forge release-package proposal owned by sibling repos
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
   scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

@@ -2,6 +2,23 @@
 
 **Last Updated:** 2026-10-10
 
+## ✅ Released — v5.1.0 Context Alignment & Hardening
+
+- **Status**: ✅ **Released 2026-10-10** — tag `v5.1.0`, GitHub release (wheel +
+  sdist). **PyPI pending (manual, maintainer).**
+- Plan: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (ia-critic PASSED).
+- Surfaces aligned with the context-only contract (`AGENTS.md`, overlay skills);
+  `docs/ARCHITECTURE.md` + `docs/CONFIGURATION.md` rewritten; stale `ai-ctx init`
+  workflow templates removed (init now defers to the framework).
+- Token efficiency: `[context].mermaid_style` (default off) + default budget
+  (`8000`, `dependencies=2500`); `AI_CONTEXT.md` 2680 → 2056 tokens (-23%).
+- Contract fidelity: retired `security`/`qgis_compliance`/`patterns`/`antipatterns`
+  keys dropped (builtin + external mapping).
+- Detector: unused-import honors `# noqa`/`# noqa: F401` (`visitors/noqa.py`).
+- Release overlay (B) + agentic-forge proposal (A):
+  `docs/maintenance/agentic_forge_release_package_proposal.md`.
+- See `docs/releases/notes/v5.1.0.md`.
+
 ## ✅ Released — v5.0.1 Post-Release Cleanup
 
 - **Status**: ✅ **Released 2026-10-10** — tag `v5.0.1`, GitHub release + **PyPI**
@@ -96,9 +113,11 @@
 
 ## 🎯 Immediate Next Steps
 
-- [ ] **None in-repo** — v5.0.1 released (GitHub + PyPI); F5 ecosystem
-  alignment is owned by the sibling repos (`agentic-forge`,
-  `qgis-plugin-analyzer`, `sec_interp`).
+- [ ] **Manual (maintainer)**: publish v5.1.0 to PyPI — `uv run twine upload dist/*`.
+- [ ] **Cross-repo (agentic-forge)**: make `release-package` config-driven
+  (`docs/maintenance/agentic_forge_release_package_proposal.md`).
+- [ ] **Cross-repo (F5)**: ecosystem alignment owned by `qgis-plugin-analyzer` and
+  `sec_interp`.
 
 _No agent-side blockers. PyPI uploads are always performed manually by the
 maintainer (see `AGENT_LESSONS.md` → User Preferences); the agent stops at
@@ -118,13 +137,13 @@ build + `twine check` + GitHub release. Proceed with Future Enhancements below._
   entries in the `.agent/` framework submodule — `scaffold/qgis/workflows/release-plugin.md`
   (CC≤10, 763 tests → SecInterp's domain values) and `skills/coding-standards/SKILL.md`
   ("complexity below 10" → generic guideline). These are template/domain values,
-  not stale ai-context-core metrics (CC≤25, 182 tests). The validator scans
+  not stale ai-context-core metrics (CC≤25, 196 tests). The validator scans
   `scaffold/` against this project's ground truth; treat as non-blocking until the
   framework excludes domain packs from ground-truth checks.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
-quality regression; current self-analysis reports ~95.4. (Config changes now
+quality regression; current self-analysis reports ~95.3. (Config changes now
 invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ## 🔧 Technical Debt
@@ -139,5 +158,5 @@ invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ---
 
-**Session Status:** v5.0.1 released (GitHub + PyPI). No in-repo phase active;
-F5 ecosystem alignment deferred to sibling repos.
+**Session Status:** v5.1.0 released (GitHub; PyPI manual pending). No in-repo phase
+active; next work is cross-repo (agentic-forge release-package, F5 ecosystem).

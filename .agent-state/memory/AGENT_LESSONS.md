@@ -31,6 +31,24 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
 
 ## Technical Lessons
 
+- date: 2026-10-10
+  category: TOOLING
+  topic: Analyzer UNUSED IMPORTS false positive on re-export imports
+  lesson: "The analyzer's own unused-import detector flagged `from .cycle_detector import CycleDetector  # noqa: F401` and the detector-registration import in worker.py; these are intentional re-exports/registration side-effects, not dead code."
+  action: "Annotate intentional re-exports with `# noqa: F401`; the detector now honors it via visitors/noqa.py. Never delete such imports."
+
+- date: 2026-10-10
+  category: TOOLING
+  topic: forge.toml analyzer_command is not consumed by the framework
+  lesson: "forge.toml declares [project].analyzer_command, but no .agent/tools/*.py reads it and the generic workflows use placeholders, so self-analysis adoption is manual (AGENTS.md) plus scripts/sync_metrics.py."
+  action: "Do not rely on the analyzer_command hook for automation; the config-driven fix is proposed for agentic-forge (docs/maintenance/agentic_forge_release_package_proposal.md)."
+
+- date: 2026-10-10
+  category: TESTING
+  topic: Golden report tests do not exercise defaults.toml
+  lesson: "tests/test_golden_reports.py calls render_context(result, proj, {}) with an empty config, so changes to config/defaults.toml (budget, sections, mermaid_style) are invisible to the goldens."
+  action: "Add a dedicated defaults test (load_config() + budget_from_config) whenever defaults.toml changes; treat goldens as empty-config snapshots only."
+
 - date: 2026-09-17
   category: TECHNICAL
   topic: Pathlib
