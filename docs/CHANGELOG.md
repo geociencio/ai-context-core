@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.1] - 2026-10-10 - Post-Release Cleanup
+
 ### Changed
 - **Single render path**: `ai-ctx analyze` now runs `compile_context → render_context`
   for every source (builtin and external) instead of a separate legacy engine render.

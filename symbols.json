@@ -665,7 +665,7 @@
       "name": "_build_git",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
-      "line": 63
+      "line": 62
     },
     {
       "name": "src/ai_context_core/analyzer/builders/unused_imports.py",
@@ -2941,7 +2941,7 @@
     {
       "name": "GitTechBuilder",
       "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
-      "line": 72
+      "line": 71
     },
     {
       "name": "ignore_package_reexports",

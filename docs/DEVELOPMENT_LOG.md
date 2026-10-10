@@ -1,5 +1,15 @@
 # Development Log
 
+## [2026-10-10] Post-Release Cleanup (v5.0.1) - COMPLETED
+**THEME**: Collapse the render divergence and retire v4 residue (architectural audit P0–P4) 🧹
+- **P0 (render)**: single path `compile_context → render_context` for all sources; removed `ProjectAnalyzer.analyze()`/`_generate_outputs()` and dead HTML branches.
+- **P1 (residue)**: removed `ContextAggregator` alias + `deprecations.py`, `graph_engine`, `maintenance_group`, calculator Halstead helpers, `extra_data`, unused `get_category`, `SummaryGenerator` alias.
+- **P2 (hygiene)**: removed orphan `test_project/` and root scratch/cruft.
+- **P3 (dup)**: shared `cli/console.py` (rich fallback). Package renames deferred.
+- **P4 (robustness)**: `ast.Constant` in `sloc_helpers` (warnings 39 → 2); pyproject description + Production/Stable.
+- **Release**: v5.0.1 tagged; build + `twine check` OK; GitHub release + **PyPI**.
+- **Verification**: 182 tests passing, ruff clean, `ai-ctx context --check` fresh. ✅
+
 ## [2026-10-09] Context-Only Contract (v5.0.0) - COMPLETED
 **THEME**: `ai-context-core` becomes a context compiler; analysis delegated to siblings 🧭
 - **Contract**: ADR-0008 (`source → transform → render → verify`); `ai-context-core` consumes analysis, does not own it.
