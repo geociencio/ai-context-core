@@ -2,8 +2,9 @@
 
 **Last Updated:** 2026-10-09
 
-## 🚧 Active Phase — v5.0.0 Context-Only Contract
+## ✅ Released — v5.0.0 Context-Only Contract
 
+- **Status**: ✅ **Released 2026-10-09** — tag `v5.0.0`, GitHub release + **PyPI** (`ai-context-core==5.0.0` confirmed live).
 - Plan: `docs/plans/implementation_plan_ai_context_core_context_only_v5.md`
 - Review: `docs/reviews/ia_critic_implementation_plan_context_only_v5.md`
 - ADR: `docs/adr/0008-context-only-contract.md`
@@ -30,6 +31,9 @@
   (workflows `ai-ctx qgis`/`audit` → `qgis-analyzer` + `ai-ctx context`).
 - **ai-context-core v5.0.0 scope is complete** (F0–F4 + divergence/optimization
   P0–P4). 182 tests passing; ruff clean.
+- **Released**: version `5.0.0` synced (pyproject/`__init__`/uv.lock), build +
+  `twine check` OK, tag + GitHub release, and **published to PyPI** by the
+  maintainer (verified: PyPI reports `5.0.0` as latest).
 
 ## ✅ Completed in This Session
 

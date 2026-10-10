@@ -9,6 +9,7 @@
 - **F4 (verify/index/health)**: `verify` (content-hash staleness, exit 1), `symbols [--grep]` (`symbols.json`), `health`, `context --check`.
 - **Divergence cleanup (P0–P4)**: side-effect-free read-only commands; canonical `load_config` (retire `ConfigLoader`); deleted dead context-manager subtree, unused constants/config; deduped metric/git/unused-import logic; performance (single scan/hash reuse); complexity splits.
 - **Version**: bumped to `5.0.0` (major — breaking context-only contract). 🏷️
+- **Release**: v5.0.0 tagged; build + `twine check` OK; GitHub release + **published to PyPI** (`ai-context-core==5.0.0`). 📦
 - **Verification**: 182 tests passing, ruff clean, `ai-ctx context --check` fresh. ✅
 - **Deferred**: F5 ecosystem alignment belongs to the sibling repos (`agentic-forge`, `qgis-plugin-analyzer`, `sec_interp`).
 
