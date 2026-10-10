@@ -1,0 +1,4367 @@
+{
+  "schema": 1,
+  "symbols": [
+    {
+      "name": "audit_quality.py",
+      "kind": "module",
+      "file": "audit_quality.py",
+      "line": 1
+    },
+    {
+      "name": "audit",
+      "kind": "function",
+      "file": "audit_quality.py",
+      "line": 5
+    },
+    {
+      "name": "check_docs.py",
+      "kind": "module",
+      "file": "check_docs.py",
+      "line": 1
+    },
+    {
+      "name": "check_docstrings",
+      "kind": "function",
+      "file": "check_docs.py",
+      "line": 6
+    },
+    {
+      "name": "src/__init__.py",
+      "kind": "module",
+      "file": "src/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 1
+    },
+    {
+      "name": "ResultsAggregator",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 21
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 24
+    },
+    {
+      "name": "aggregate",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 34
+    },
+    {
+      "name": "__getattr__",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 99
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 1
+    },
+    {
+      "name": "AIContextGenerator",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 13
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 23
+    },
+    {
+      "name": "_enabled_sections",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 53
+    },
+    {
+      "name": "build_sections",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 58
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 70
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 1
+    },
+    {
+      "name": "GraphMetricsCalculator",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 8
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 11
+    },
+    {
+      "name": "count_edges",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 20
+    },
+    {
+      "name": "calculate_density",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 28
+    },
+    {
+      "name": "count_connected_components",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 40
+    },
+    {
+      "name": "_build_undirected",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 55
+    },
+    {
+      "name": "_bfs_visit",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 68
+    },
+    {
+      "name": "calculate_coupling_metrics",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 79
+    },
+    {
+      "name": "_get_all_nodes",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 105
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/builder.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 1
+    },
+    {
+      "name": "ImportGraphBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 8
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 14
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 27
+    },
+    {
+      "name": "_initialize_graph",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 37
+    },
+    {
+      "name": "_resolve_imports",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 54
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/builder_components.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/builder_components.py",
+      "line": 1
+    },
+    {
+      "name": "get_importable_path",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/builder_components.py",
+      "line": 6
+    },
+    {
+      "name": "resolve_import",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/builder_components.py",
+      "line": 26
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 1
+    },
+    {
+      "name": "BaseAnalysesBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 10
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 13
+    },
+    {
+      "name": "BaseBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 22
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 28
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 33
+    },
+    {
+      "name": "_log_error",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/builders_base.py",
+      "line": 41
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/calculator.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 1
+    },
+    {
+      "name": "_resolve_scoring",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 25
+    },
+    {
+      "name": "MetricsCalculator",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 46
+    },
+    {
+      "name": "maintenance_index",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 50
+    },
+    {
+      "name": "halstead_metrics",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 69
+    },
+    {
+      "name": "calculate_maintenance_index",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 89
+    },
+    {
+      "name": "calculate_halstead_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 103
+    },
+    {
+      "name": "summarize_modules",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 118
+    },
+    {
+      "name": "_score_breakdown",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 146
+    },
+    {
+      "name": "calculate_project_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 197
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/classifier.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/classifier.py",
+      "line": 1
+    },
+    {
+      "name": "classify_imports",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/classifier.py",
+      "line": 6
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/context_base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/context_base.py",
+      "line": 1
+    },
+    {
+      "name": "BaseContextBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/context_base.py",
+      "line": 8
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/context_base.py",
+      "line": 11
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/context_metrics.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/context_metrics.py",
+      "line": 1
+    },
+    {
+      "name": "MetricsBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/context_metrics.py",
+      "line": 9
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/context_metrics.py",
+      "line": 12
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 1
+    },
+    {
+      "name": "CycleDetector",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 6
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 9
+    },
+    {
+      "name": "find_cycles",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 23
+    },
+    {
+      "name": "_dfs",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 34
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 1
+    },
+    {
+      "name": "analyze_dependencies",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 70
+    },
+    {
+      "name": "DependencyAnalyzer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 142
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 145
+    },
+    {
+      "name": "build_graph",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 149
+    },
+    {
+      "name": "_read_file",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 152
+    },
+    {
+      "name": "DependencyBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 158
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 161
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/formatter.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/formatter.py",
+      "line": 1
+    },
+    {
+      "name": "format_complexity_agg",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/formatter.py",
+      "line": 19
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/git_tech.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/git_tech.py",
+      "line": 1
+    },
+    {
+      "name": "GitTechBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/git_tech.py",
+      "line": 7
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/git_tech.py",
+      "line": 10
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/issues.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/issues.py",
+      "line": 1
+    },
+    {
+      "name": "IssuesSummarizer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/issues.py",
+      "line": 6
+    },
+    {
+      "name": "build_issues",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/issues.py",
+      "line": 9
+    },
+    {
+      "name": "build_recommendations",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/issues.py",
+      "line": 39
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/metric_keys.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/metric_keys.py",
+      "line": 1
+    },
+    {
+      "name": "missing_metric_keys",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/metric_keys.py",
+      "line": 34
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 1
+    },
+    {
+      "name": "MetricsSummarizer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 8
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 11
+    },
+    {
+      "name": "build_metrics",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 15
+    },
+    {
+      "name": "build_structure",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 51
+    },
+    {
+      "name": "build_complexity",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/metrics_summarizer.py",
+      "line": 66
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/parser.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/parser.py",
+      "line": 1
+    },
+    {
+      "name": "parse_dependency_files",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/parser.py",
+      "line": 16
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/reporting.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 1
+    },
+    {
+      "name": "_short_name",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 12
+    },
+    {
+      "name": "generate_dependency_diagram",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 34
+    },
+    {
+      "name": "_node_id",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 47
+    },
+    {
+      "name": "MarkdownBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 85
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 91
+    },
+    {
+      "name": "add_section",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 106
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 118
+    },
+    {
+      "name": "generate_project_summary",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 127
+    },
+    {
+      "name": "generate_ai_context",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 147
+    },
+    {
+      "name": "write_context_manifest",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 180
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/structure.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/structure.py",
+      "line": 1
+    },
+    {
+      "name": "StructureBuilder",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/structure.py",
+      "line": 7
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/structure.py",
+      "line": 10
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/summarizer_base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/summarizer_base.py",
+      "line": 1
+    },
+    {
+      "name": "BaseSummarizer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/summarizer_base.py",
+      "line": 6
+    },
+    {
+      "name": "build",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/summarizer_base.py",
+      "line": 9
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 1
+    },
+    {
+      "name": "ProjectSummaryGenerator",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 11
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 17
+    },
+    {
+      "name": "generate_markdown",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 31
+    },
+    {
+      "name": "_build_manual_notes",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 58
+    },
+    {
+      "name": "_build_git",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 62
+    },
+    {
+      "name": "src/ai_context_core/analyzer/builders/unused_imports.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/builders/unused_imports.py",
+      "line": 1
+    },
+    {
+      "name": "ignore_package_reexports",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/unused_imports.py",
+      "line": 6
+    },
+    {
+      "name": "detect_unused_imports_in_project",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/builders/unused_imports.py",
+      "line": 24
+    },
+    {
+      "name": "src/ai_context_core/analyzer/constants.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/constants.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/engine.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 1
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 28
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 34
+    },
+    {
+      "name": "collect",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 71
+    },
+    {
+      "name": "analyze",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 116
+    },
+    {
+      "name": "_generate_outputs",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 138
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 1
+    },
+    {
+      "name": "GitAnalyzer",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 11
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 14
+    },
+    {
+      "name": "is_repo",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 27
+    },
+    {
+      "name": "get_hotspots",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 32
+    },
+    {
+      "name": "get_churn",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 39
+    },
+    {
+      "name": "_is_ignored",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 63
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/compiler.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/compiler.py",
+      "line": 1
+    },
+    {
+      "name": "compile_ignore_patterns",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/compiler.py",
+      "line": 8
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 1
+    },
+    {
+      "name": "load_config",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 32
+    },
+    {
+      "name": "_load_defaults",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 66
+    },
+    {
+      "name": "_load_profile",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 71
+    },
+    {
+      "name": "_load_project_config",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 85
+    },
+    {
+      "name": "_read_file",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 103
+    },
+    {
+      "name": "_merge_dicts",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 124
+    },
+    {
+      "name": "_get_hardcoded_defaults",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 134
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 1
+    },
+    {
+      "name": "build_structure",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 21
+    },
+    {
+      "name": "read_manual_notes",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 48
+    },
+    {
+      "name": "_read_base_notes",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 83
+    },
+    {
+      "name": "_discover_context_docs",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 95
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 1
+    },
+    {
+      "name": "LRUCache",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 15
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 16
+    },
+    {
+      "name": "get",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 20
+    },
+    {
+      "name": "set",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 26
+    },
+    {
+      "name": "clear",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 33
+    },
+    {
+      "name": "compute_config_fingerprint",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 40
+    },
+    {
+      "name": "load_cache",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 57
+    },
+    {
+      "name": "save_cache",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 94
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 1
+    },
+    {
+      "name": "read_file_fast",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 10
+    },
+    {
+      "name": "is_test_file",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 33
+    },
+    {
+      "name": "get_file_stats",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 43
+    },
+    {
+      "name": "calculate_file_hash",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 52
+    },
+    {
+      "name": "load_exclusion_patterns",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 62
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 1
+    },
+    {
+      "name": "ProjectScanResult",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 30
+    },
+    {
+      "name": "ProjectScanner",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 39
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 57
+    },
+    {
+      "name": "scan",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 70
+    },
+    {
+      "name": "_process_file",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 95
+    },
+    {
+      "name": "_finalize_stats",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 124
+    },
+    {
+      "name": "scan_project",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 138
+    },
+    {
+      "name": "count_test_files",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 144
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/fs_tree.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/fs_tree.py",
+      "line": 1
+    },
+    {
+      "name": "generate_tree_optimized",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_tree.py",
+      "line": 8
+    },
+    {
+      "name": "_generate_tree_fallback",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/fs_tree.py",
+      "line": 33
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/fs_utils.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/fs_utils.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/gis_utils.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/gis_utils.py",
+      "line": 1
+    },
+    {
+      "name": "parse_metadata_content",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/gis_utils.py",
+      "line": 8
+    },
+    {
+      "name": "parse_qgis_metadata",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/gis_utils.py",
+      "line": 23
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/git_analysis.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/git_analysis.py",
+      "line": 1
+    },
+    {
+      "name": "analyze_git_evolution",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/git_analysis.py",
+      "line": 13
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/git_churn.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/git_churn.py",
+      "line": 1
+    },
+    {
+      "name": "filter_churn",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/git_churn.py",
+      "line": 6
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 1
+    },
+    {
+      "name": "IgnoreFilter",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 12
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 18
+    },
+    {
+      "name": "is_ignored",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 29
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/loader.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/loader.py",
+      "line": 1
+    },
+    {
+      "name": "load_ignore_patterns",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/loader.py",
+      "line": 22
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/parser.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 1
+    },
+    {
+      "name": "_rename_new_path",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 7
+    },
+    {
+      "name": "GitParser",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 14
+    },
+    {
+      "name": "parse_hotspots",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 18
+    },
+    {
+      "name": "parse_churn",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 26
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/runner.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/runner.py",
+      "line": 1
+    },
+    {
+      "name": "GitRunner",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/runner.py",
+      "line": 8
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/runner.py",
+      "line": 11
+    },
+    {
+      "name": "run",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/runner.py",
+      "line": 15
+    },
+    {
+      "name": "src/ai_context_core/analyzer/providers/worker.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 1
+    },
+    {
+      "name": "_meta_matches",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 18
+    },
+    {
+      "name": "AnalysisWorker",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 27
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 30
+    },
+    {
+      "name": "_partition_by_cache",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 43
+    },
+    {
+      "name": "run_parallel",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 68
+    },
+    {
+      "name": "analyze_batch",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 105
+    },
+    {
+      "name": "_cache_entry",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 109
+    },
+    {
+      "name": "_analyze_and_cache",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 121
+    },
+    {
+      "name": "analyze_single",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 127
+    },
+    {
+      "name": "src/ai_context_core/analyzer/registry.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 1
+    },
+    {
+      "name": "AnalysisRegistry",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 9
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 12
+    },
+    {
+      "name": "register_detector",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 15
+    },
+    {
+      "name": "detectors",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 21
+    },
+    {
+      "name": "register_detector",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 30
+    },
+    {
+      "name": "wrapper",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 33
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 1
+    },
+    {
+      "name": "EntryPointVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 12
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 15
+    },
+    {
+      "name": "visit_If",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 19
+    },
+    {
+      "name": "_is_main_guard",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 25
+    },
+    {
+      "name": "is_entry_point",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 41
+    },
+    {
+      "name": "has_main_guard",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 55
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 1
+    },
+    {
+      "name": "TypeHintVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 7
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 10
+    },
+    {
+      "name": "visit_FunctionDef",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 15
+    },
+    {
+      "name": "calculate_complexity",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 34
+    },
+    {
+      "name": "calculate_type_hint_coverage",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 50
+    },
+    {
+      "name": "calculate_halstead_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 73
+    },
+    {
+      "name": "calculate_sloc",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 87
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/ast_utils.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/ast_utils.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
+      "line": 1
+    },
+    {
+      "name": "detect_unused_imports_registered",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
+      "line": 15
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "line": 1
+    },
+    {
+      "name": "BaseChecker",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "line": 6
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "line": 9
+    },
+    {
+      "name": "check",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "line": 17
+    },
+    {
+      "name": "get_category",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
+      "line": 28
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/classes.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 1
+    },
+    {
+      "name": "ClassVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 7
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 10
+    },
+    {
+      "name": "visit_ClassDef",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 14
+    },
+    {
+      "name": "_get_base_name",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 21
+    },
+    {
+      "name": "extract_classes",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 30
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 1
+    },
+    {
+      "name": "ComplexityVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 10
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 13
+    },
+    {
+      "name": "_add_decision",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 19
+    },
+    {
+      "name": "visit_If",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 29
+    },
+    {
+      "name": "visit_While",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 38
+    },
+    {
+      "name": "visit_For",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 47
+    },
+    {
+      "name": "visit_AsyncFor",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 56
+    },
+    {
+      "name": "visit_Try",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 65
+    },
+    {
+      "name": "visit_AsyncWith",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 73
+    },
+    {
+      "name": "visit_ExceptHandler",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 81
+    },
+    {
+      "name": "visit_BoolOp",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 90
+    },
+    {
+      "name": "visit_ListComp",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 99
+    },
+    {
+      "name": "visit_SetComp",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 109
+    },
+    {
+      "name": "visit_DictComp",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 118
+    },
+    {
+      "name": "visit_GeneratorExp",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 127
+    },
+    {
+      "name": "calculate_complexity",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 133
+    },
+    {
+      "name": "_apply_complexity_penalty",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 147
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 1
+    },
+    {
+      "name": "DocstringVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 7
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 10
+    },
+    {
+      "name": "visit_Module",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 14
+    },
+    {
+      "name": "visit_ClassDef",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 19
+    },
+    {
+      "name": "visit_FunctionDef",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 24
+    },
+    {
+      "name": "check_docstrings",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 30
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/functions.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 1
+    },
+    {
+      "name": "FunctionVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 7
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 10
+    },
+    {
+      "name": "visit_FunctionDef",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 14
+    },
+    {
+      "name": "extract_functions",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 24
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 1
+    },
+    {
+      "name": "HalsteadVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 8
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 49
+    },
+    {
+      "name": "visit",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 54
+    },
+    {
+      "name": "calculate_halstead_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 65
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 1
+    },
+    {
+      "name": "_names_from_sequence",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 7
+    },
+    {
+      "name": "collect_exported_names",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 24
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 1
+    },
+    {
+      "name": "get_package",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 8
+    },
+    {
+      "name": "_resolve_relative_package",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 25
+    },
+    {
+      "name": "ImportVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 45
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 48
+    },
+    {
+      "name": "visit_Import",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 61
+    },
+    {
+      "name": "visit_ImportFrom",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 68
+    },
+    {
+      "name": "visit_Name",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 83
+    },
+    {
+      "name": "visit_Attribute",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 88
+    },
+    {
+      "name": "visit_Assign",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 97
+    },
+    {
+      "name": "visit_AugAssign",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 102
+    },
+    {
+      "name": "extract_imports",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 108
+    },
+    {
+      "name": "detect_unused_imports",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 124
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/issues.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/issues.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "line": 1
+    },
+    {
+      "name": "OptimizationChecker",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "line": 7
+    },
+    {
+      "name": "get_category",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "line": 10
+    },
+    {
+      "name": "check",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "line": 18
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/optimizations.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/optimizations.py",
+      "line": 1
+    },
+    {
+      "name": "find_optimizations",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/optimizations.py",
+      "line": 7
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 1
+    },
+    {
+      "name": "calculate_sloc",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 11
+    },
+    {
+      "name": "_should_skip_token",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 39
+    },
+    {
+      "name": "_fallback_sloc",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 63
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/sloc_helpers.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/sloc_helpers.py",
+      "line": 1
+    },
+    {
+      "name": "get_docstring_ranges",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/sloc_helpers.py",
+      "line": 7
+    },
+    {
+      "name": "_find_docstring_node",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/sloc_helpers.py",
+      "line": 20
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "line": 1
+    },
+    {
+      "name": "BaseVisitor",
+      "kind": "class",
+      "file": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "line": 10
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "line": 18
+    },
+    {
+      "name": "visit",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "line": 23
+    },
+    {
+      "name": "_log_error",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/visitors_base.py",
+      "line": 33
+    },
+    {
+      "name": "src/ai_context_core/cli/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "cli",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/__init__.py",
+      "line": 10
+    },
+    {
+      "name": "src/ai_context_core/cli/__main__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/__main__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/analysis.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 1
+    },
+    {
+      "name": "analyze_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 30
+    },
+    {
+      "name": "context_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 72
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/analyze.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 1
+    },
+    {
+      "name": "run_analysis",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 15
+    },
+    {
+      "name": "run_context",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 88
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 1
+    },
+    {
+      "name": "init_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 11
+    },
+    {
+      "name": "stats_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 18
+    },
+    {
+      "name": "clean_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 26
+    },
+    {
+      "name": "profiles_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 32
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/clean.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/clean.py",
+      "line": 1
+    },
+    {
+      "name": "clean_artifacts",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/clean.py",
+      "line": 7
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/compare.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 1
+    },
+    {
+      "name": "Console",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 15
+    },
+    {
+      "name": "print",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 16
+    },
+    {
+      "name": "Table",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 19
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 20
+    },
+    {
+      "name": "add_column",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 23
+    },
+    {
+      "name": "add_row",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 26
+    },
+    {
+      "name": "run_compare",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 33
+    },
+    {
+      "name": "_get_nested",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 90
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/context_ops.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 1
+    },
+    {
+      "name": "verify_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 11
+    },
+    {
+      "name": "symbols_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 26
+    },
+    {
+      "name": "health_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 54
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/deprecated.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 1
+    },
+    {
+      "name": "_make_redirect",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 27
+    },
+    {
+      "name": "_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 41
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/deps.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 1
+    },
+    {
+      "name": "show_dependencies",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 11
+    },
+    {
+      "name": "_show_unused",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 28
+    },
+    {
+      "name": "_show_cycles",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 40
+    },
+    {
+      "name": "_show_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 50
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/git.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 1
+    },
+    {
+      "name": "show_git_evolution",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 11
+    },
+    {
+      "name": "_show_hotspots",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 25
+    },
+    {
+      "name": "_show_churn",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 39
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/graph.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/graph.py",
+      "line": 1
+    },
+    {
+      "name": "export_graph",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/graph.py",
+      "line": 10
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/init.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/init.py",
+      "line": 1
+    },
+    {
+      "name": "initialize_project",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/init.py",
+      "line": 8
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/maintenance.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/maintenance.py",
+      "line": 1
+    },
+    {
+      "name": "maintenance_group",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/maintenance.py",
+      "line": 8
+    },
+    {
+      "name": "graph_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/maintenance.py",
+      "line": 16
+    },
+    {
+      "name": "compare_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/maintenance.py",
+      "line": 24
+    },
+    {
+      "name": "roadmap_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/maintenance.py",
+      "line": 31
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/report.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/report.py",
+      "line": 1
+    },
+    {
+      "name": "show_context_help",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/report.py",
+      "line": 8
+    },
+    {
+      "name": "_recommendations",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/report.py",
+      "line": 24
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/reports.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/reports.py",
+      "line": 1
+    },
+    {
+      "name": "help_me_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/reports.py",
+      "line": 9
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/roadmap.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 1
+    },
+    {
+      "name": "Console",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 13
+    },
+    {
+      "name": "print",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 14
+    },
+    {
+      "name": "Table",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 17
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 18
+    },
+    {
+      "name": "add_column",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 21
+    },
+    {
+      "name": "add_row",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 24
+    },
+    {
+      "name": "run_roadmap",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 31
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/specialized.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/specialized.py",
+      "line": 1
+    },
+    {
+      "name": "deps_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/specialized.py",
+      "line": 12
+    },
+    {
+      "name": "git_cmd",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/specialized.py",
+      "line": 22
+    },
+    {
+      "name": "src/ai_context_core/cli/commands/stats.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 1
+    },
+    {
+      "name": "show_quick_stats",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 13
+    },
+    {
+      "name": "_show_complex_modules",
+      "kind": "function",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 49
+    },
+    {
+      "name": "src/ai_context_core/config/loader.py",
+      "kind": "module",
+      "file": "src/ai_context_core/config/loader.py",
+      "line": 1
+    },
+    {
+      "name": "list_profiles",
+      "kind": "function",
+      "file": "src/ai_context_core/config/loader.py",
+      "line": 11
+    },
+    {
+      "name": "src/ai_context_core/context/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/context/budget.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 1
+    },
+    {
+      "name": "estimate_tokens",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 17
+    },
+    {
+      "name": "TokenBudget",
+      "kind": "class",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 34
+    },
+    {
+      "name": "enabled",
+      "kind": "method",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 46
+    },
+    {
+      "name": "budget_from_config",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 51
+    },
+    {
+      "name": "_as_dict",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 78
+    },
+    {
+      "name": "truncate_lines",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 85
+    },
+    {
+      "name": "apply_budget",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 116
+    },
+    {
+      "name": "_section_limit",
+      "kind": "function",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 171
+    },
+    {
+      "name": "src/ai_context_core/context/health.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 1
+    },
+    {
+      "name": "compute_health",
+      "kind": "function",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 15
+    },
+    {
+      "name": "_read_json",
+      "kind": "function",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 46
+    },
+    {
+      "name": "src/ai_context_core/context/manifest.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 1
+    },
+    {
+      "name": "render_sections",
+      "kind": "function",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 11
+    },
+    {
+      "name": "enforce_hard_cap",
+      "kind": "function",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 39
+    },
+    {
+      "name": "measure_manifest",
+      "kind": "function",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 62
+    },
+    {
+      "name": "_render",
+      "kind": "function",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 90
+    },
+    {
+      "name": "src/ai_context_core/context/symbol_index.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 1
+    },
+    {
+      "name": "_collect_definitions",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 14
+    },
+    {
+      "name": "visit",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 19
+    },
+    {
+      "name": "_collect_references",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 45
+    },
+    {
+      "name": "build_symbol_index",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 54
+    },
+    {
+      "name": "write_symbol_index",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 101
+    },
+    {
+      "name": "load_symbol_index",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 109
+    },
+    {
+      "name": "search_symbols",
+      "kind": "function",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 120
+    },
+    {
+      "name": "src/ai_context_core/context/verify.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 1
+    },
+    {
+      "name": "compute_content_hash",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 27
+    },
+    {
+      "name": "hash_files",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 48
+    },
+    {
+      "name": "_hash_file",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 74
+    },
+    {
+      "name": "read_recorded_hash",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 83
+    },
+    {
+      "name": "verify_context",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 94
+    },
+    {
+      "name": "_read_json",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 133
+    },
+    {
+      "name": "src/ai_context_core/deprecations.py",
+      "kind": "module",
+      "file": "src/ai_context_core/deprecations.py",
+      "line": 1
+    },
+    {
+      "name": "warn_deprecated",
+      "kind": "function",
+      "file": "src/ai_context_core/deprecations.py",
+      "line": 9
+    },
+    {
+      "name": "src/ai_context_core/model/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/model/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/model/analysis_result.py",
+      "kind": "module",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 1
+    },
+    {
+      "name": "Provenance",
+      "kind": "class",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 16
+    },
+    {
+      "name": "to_dict",
+      "kind": "method",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 32
+    },
+    {
+      "name": "AnalysisResult",
+      "kind": "class",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 44
+    },
+    {
+      "name": "with_meta",
+      "kind": "method",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 55
+    },
+    {
+      "name": "src/ai_context_core/sources/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/sources/base.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 1
+    },
+    {
+      "name": "AnalysisProvider",
+      "kind": "class",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 26
+    },
+    {
+      "name": "collect",
+      "kind": "method",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 31
+    },
+    {
+      "name": "current_git_sha",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 36
+    },
+    {
+      "name": "external_output_path",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 42
+    },
+    {
+      "name": "requested_source",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 67
+    },
+    {
+      "name": "resolve_source",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 77
+    },
+    {
+      "name": "src/ai_context_core/sources/builtin/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/builtin/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/sources/builtin/engine_source.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 1
+    },
+    {
+      "name": "BuiltinSource",
+      "kind": "class",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 12
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 21
+    },
+    {
+      "name": "collect",
+      "kind": "method",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 44
+    },
+    {
+      "name": "src/ai_context_core/sources/external/__init__.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/external/__init__.py",
+      "line": 1
+    },
+    {
+      "name": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 1
+    },
+    {
+      "name": "_map_module",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 20
+    },
+    {
+      "name": "_map_metrics",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 40
+    },
+    {
+      "name": "_map_dependencies",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 64
+    },
+    {
+      "name": "_map_entry_points",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 85
+    },
+    {
+      "name": "map_project_context",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 94
+    },
+    {
+      "name": "ExternalSource",
+      "kind": "class",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 125
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 130
+    },
+    {
+      "name": "collect",
+      "kind": "method",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 141
+    },
+    {
+      "name": "src/ai_context_core/sources/pipeline.py",
+      "kind": "module",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 1
+    },
+    {
+      "name": "enrich_context",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 22
+    },
+    {
+      "name": "_ensure_defaults",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 60
+    },
+    {
+      "name": "compile_context",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 79
+    },
+    {
+      "name": "render_context",
+      "kind": "function",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 114
+    },
+    {
+      "name": "test_project/test.py",
+      "kind": "module",
+      "file": "test_project/test.py",
+      "line": 1
+    },
+    {
+      "name": "hello",
+      "kind": "function",
+      "file": "test_project/test.py",
+      "line": 1
+    },
+    {
+      "name": "test_strategy.py",
+      "kind": "module",
+      "file": "test_strategy.py",
+      "line": 1
+    },
+    {
+      "name": "Strategy",
+      "kind": "class",
+      "file": "test_strategy.py",
+      "line": 6
+    },
+    {
+      "name": "execute",
+      "kind": "method",
+      "file": "test_strategy.py",
+      "line": 8
+    },
+    {
+      "name": "ConcreteStrategyA",
+      "kind": "class",
+      "file": "test_strategy.py",
+      "line": 12
+    },
+    {
+      "name": "execute",
+      "kind": "method",
+      "file": "test_strategy.py",
+      "line": 13
+    },
+    {
+      "name": "Context",
+      "kind": "class",
+      "file": "test_strategy.py",
+      "line": 17
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "test_strategy.py",
+      "line": 18
+    },
+    {
+      "name": "set_strategy",
+      "kind": "method",
+      "file": "test_strategy.py",
+      "line": 21
+    },
+    {
+      "name": "run",
+      "kind": "method",
+      "file": "test_strategy.py",
+      "line": 24
+    }
+  ],
+  "references": [
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 7
+    },
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 14
+    },
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 18
+    },
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 20
+    },
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 26
+    },
+    {
+      "name": "print",
+      "file": "audit_quality.py",
+      "line": 28
+    },
+    {
+      "name": "audit",
+      "file": "audit_quality.py",
+      "line": 32
+    },
+    {
+      "name": "check_docstrings",
+      "file": "check_docs.py",
+      "line": 23
+    },
+    {
+      "name": "print",
+      "file": "check_docs.py",
+      "line": 25
+    },
+    {
+      "name": "count_test_files",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 68
+    },
+    {
+      "name": "format_complexity_agg",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 83
+    },
+    {
+      "name": "find_optimizations",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 84
+    },
+    {
+      "name": "warn_deprecated",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 104
+    },
+    {
+      "name": "ResultsAggregator",
+      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
+      "line": 108
+    },
+    {
+      "name": "StructureBuilder",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 47
+    },
+    {
+      "name": "MetricsBuilder",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 48
+    },
+    {
+      "name": "DependencyBuilder",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 49
+    },
+    {
+      "name": "GitTechBuilder",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 50
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 53
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 56
+    },
+    {
+      "name": "enabled",
+      "file": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
+      "line": 63
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 47
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 60
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 64
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/algorithms.py",
+      "line": 107
+    },
+    {
+      "name": "BaseBuilder",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 8
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 24
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 25
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 45
+    },
+    {
+      "name": "get_importable_path",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 47
+    },
+    {
+      "name": "resolve_import",
+      "file": "src/ai_context_core/analyzer/builders/builder.py",
+      "line": 62
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/builder_components.py",
+      "line": 27
+    },
+    {
+      "name": "MetricsCalculator",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 100
+    },
+    {
+      "name": "MetricsCalculator",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 115
+    },
+    {
+      "name": "summarize_modules",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 216
+    },
+    {
+      "name": "_resolve_scoring",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 226
+    },
+    {
+      "name": "_score_breakdown",
+      "file": "src/ai_context_core/analyzer/builders/calculator.py",
+      "line": 227
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/classifier.py",
+      "line": 11
+    },
+    {
+      "name": "BaseAnalysesBuilder",
+      "file": "src/ai_context_core/analyzer/builders/context_base.py",
+      "line": 8
+    },
+    {
+      "name": "BaseContextBuilder",
+      "file": "src/ai_context_core/analyzer/builders/context_metrics.py",
+      "line": 9
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 19
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/cycle_detector.py",
+      "line": 21
+    },
+    {
+      "name": "parse_dependency_files",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 89
+    },
+    {
+      "name": "ImportGraphBuilder",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 94
+    },
+    {
+      "name": "CycleDetector",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 103
+    },
+    {
+      "name": "GraphMetricsCalculator",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 111
+    },
+    {
+      "name": "CycleDetector",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 118
+    },
+    {
+      "name": "detect_unused_imports_in_project",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 127
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 130
+    },
+    {
+      "name": "classify_imports",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 136
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 155
+    },
+    {
+      "name": "analyze_dependencies",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 155
+    },
+    {
+      "name": "BaseContextBuilder",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 158
+    },
+    {
+      "name": "generate_dependency_diagram",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 202
+    },
+    {
+      "name": "BaseContextBuilder",
+      "file": "src/ai_context_core/analyzer/builders/git_tech.py",
+      "line": 7
+    },
+    {
+      "name": "BaseSummarizer",
+      "file": "src/ai_context_core/analyzer/builders/issues.py",
+      "line": 6
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 45
+    },
+    {
+      "name": "_short_name",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 50
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 61
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 62
+    },
+    {
+      "name": "_node_id",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 66
+    },
+    {
+      "name": "_node_id",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 70
+    },
+    {
+      "name": "ProjectSummaryGenerator",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 143
+    },
+    {
+      "name": "AIContextGenerator",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 171
+    },
+    {
+      "name": "budget_from_config",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 172
+    },
+    {
+      "name": "render_sections",
+      "file": "src/ai_context_core/analyzer/builders/reporting.py",
+      "line": 174
+    },
+    {
+      "name": "BaseContextBuilder",
+      "file": "src/ai_context_core/analyzer/builders/structure.py",
+      "line": 7
+    },
+    {
+      "name": "BaseAnalysesBuilder",
+      "file": "src/ai_context_core/analyzer/builders/summarizer_base.py",
+      "line": 6
+    },
+    {
+      "name": "MetricsSummarizer",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 28
+    },
+    {
+      "name": "IssuesSummarizer",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 29
+    },
+    {
+      "name": "MarkdownBuilder",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 39
+    },
+    {
+      "name": "GitTechBuilder",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 71
+    },
+    {
+      "name": "ProjectSummaryGenerator",
+      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
+      "line": 77
+    },
+    {
+      "name": "ignore_package_reexports",
+      "file": "src/ai_context_core/analyzer/builders/unused_imports.py",
+      "line": 37
+    },
+    {
+      "name": "hash_files",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 103
+    },
+    {
+      "name": "compute_content_hash",
+      "file": "src/ai_context_core/analyzer/engine.py",
+      "line": 159
+    },
+    {
+      "name": "GitRunner",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 22
+    },
+    {
+      "name": "GitParser",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 23
+    },
+    {
+      "name": "IgnoreFilter",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 25
+    },
+    {
+      "name": "filter_churn",
+      "file": "src/ai_context_core/analyzer/providers/analyzer.py",
+      "line": 61
+    },
+    {
+      "name": "_load_defaults",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 48
+    },
+    {
+      "name": "_load_project_config",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 49
+    },
+    {
+      "name": "_load_profile",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 55
+    },
+    {
+      "name": "_merge_dicts",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 55
+    },
+    {
+      "name": "_merge_dicts",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 58
+    },
+    {
+      "name": "_merge_dicts",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 61
+    },
+    {
+      "name": "_get_hardcoded_defaults",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 68
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 68
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 73
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 77
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 87
+    },
+    {
+      "name": "_read_file",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 98
+    },
+    {
+      "name": "_merge_dicts",
+      "file": "src/ai_context_core/analyzer/providers/config_loader.py",
+      "line": 128
+    },
+    {
+      "name": "ProjectScanResult",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 24
+    },
+    {
+      "name": "_read_base_notes",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 66
+    },
+    {
+      "name": "_discover_context_docs",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 70
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 109
+    },
+    {
+      "name": "LRUCache",
+      "file": "src/ai_context_core/analyzer/providers/fs_cache.py",
+      "line": 37
+    },
+    {
+      "name": "read_file_fast",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 54
+    },
+    {
+      "name": "IgnoreFilter",
+      "file": "src/ai_context_core/analyzer/providers/fs_helpers.py",
+      "line": 63
+    },
+    {
+      "name": "IgnoreFilter",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 57
+    },
+    {
+      "name": "ProjectScanResult",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 70
+    },
+    {
+      "name": "ProjectScanResult",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 88
+    },
+    {
+      "name": "is_test_file",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 120
+    },
+    {
+      "name": "ProjectScanResult",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 138
+    },
+    {
+      "name": "IgnoreFilter",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 139
+    },
+    {
+      "name": "ProjectScanner",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 140
+    },
+    {
+      "name": "is_test_file",
+      "file": "src/ai_context_core/analyzer/providers/fs_scanner.py",
+      "line": 168
+    },
+    {
+      "name": "_generate_tree_fallback",
+      "file": "src/ai_context_core/analyzer/providers/fs_tree.py",
+      "line": 30
+    },
+    {
+      "name": "parse_metadata_content",
+      "file": "src/ai_context_core/analyzer/providers/gis_utils.py",
+      "line": 38
+    },
+    {
+      "name": "GitAnalyzer",
+      "file": "src/ai_context_core/analyzer/providers/git_analysis.py",
+      "line": 26
+    },
+    {
+      "name": "load_ignore_patterns",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 26
+    },
+    {
+      "name": "compile_ignore_patterns",
+      "file": "src/ai_context_core/analyzer/providers/ignore_filter.py",
+      "line": 27
+    },
+    {
+      "name": "_rename_new_path",
+      "file": "src/ai_context_core/analyzer/providers/parser.py",
+      "line": 46
+    },
+    {
+      "name": "check",
+      "file": "src/ai_context_core/analyzer/providers/runner.py",
+      "line": 23
+    },
+    {
+      "name": "_meta_matches",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 56
+    },
+    {
+      "name": "get_package",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 153
+    },
+    {
+      "name": "AnalysisRegistry",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 27
+    },
+    {
+      "name": "wrapper",
+      "file": "src/ai_context_core/analyzer/registry.py",
+      "line": 37
+    },
+    {
+      "name": "EntryPointVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 50
+    },
+    {
+      "name": "is_entry_point",
+      "file": "src/ai_context_core/analyzer/visitors/ast_entry_points.py",
+      "line": 64
+    },
+    {
+      "name": "TypeHintVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/ast_metrics.py",
+      "line": 59
+    },
+    {
+      "name": "register_detector",
+      "file": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
+      "line": 14
+    },
+    {
+      "name": "detect_unused_imports",
+      "file": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
+      "line": 17
+    },
+    {
+      "name": "ClassVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/classes.py",
+      "line": 32
+    },
+    {
+      "name": "BaseVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 10
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 17
+    },
+    {
+      "name": "ComplexityVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 142
+    },
+    {
+      "name": "_apply_complexity_penalty",
+      "file": "src/ai_context_core/analyzer/visitors/complexity_visitor.py",
+      "line": 144
+    },
+    {
+      "name": "DocstringVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/docstrings.py",
+      "line": 32
+    },
+    {
+      "name": "FunctionVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/functions.py",
+      "line": 26
+    },
+    {
+      "name": "HalsteadVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/halstead.py",
+      "line": 67
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 16
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 40
+    },
+    {
+      "name": "_names_from_sequence",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 44
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/import_export.py",
+      "line": 45
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 58
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 59
+    },
+    {
+      "name": "_resolve_relative_package",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 73
+    },
+    {
+      "name": "collect_exported_names",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 99
+    },
+    {
+      "name": "collect_exported_names",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 104
+    },
+    {
+      "name": "ImportVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 119
+    },
+    {
+      "name": "ImportVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 130
+    },
+    {
+      "name": "BaseChecker",
+      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
+      "line": 7
+    },
+    {
+      "name": "OptimizationChecker",
+      "file": "src/ai_context_core/analyzer/visitors/optimizations.py",
+      "line": 20
+    },
+    {
+      "name": "get_docstring_ranges",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 23
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 24
+    },
+    {
+      "name": "_should_skip_token",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 29
+    },
+    {
+      "name": "_fallback_sloc",
+      "file": "src/ai_context_core/analyzer/visitors/sloc.py",
+      "line": 36
+    },
+    {
+      "name": "_find_docstring_node",
+      "file": "src/ai_context_core/analyzer/visitors/sloc_helpers.py",
+      "line": 14
+    },
+    {
+      "name": "cli",
+      "file": "src/ai_context_core/cli/__init__.py",
+      "line": 20
+    },
+    {
+      "name": "cli",
+      "file": "src/ai_context_core/cli/__init__.py",
+      "line": 24
+    },
+    {
+      "name": "cli",
+      "file": "src/ai_context_core/cli/__main__.py",
+      "line": 6
+    },
+    {
+      "name": "clean_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 12
+    },
+    {
+      "name": "init_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 12
+    },
+    {
+      "name": "profiles_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 12
+    },
+    {
+      "name": "stats_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 12
+    },
+    {
+      "name": "analyze_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 13
+    },
+    {
+      "name": "context_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 13
+    },
+    {
+      "name": "health_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 14
+    },
+    {
+      "name": "symbols_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 14
+    },
+    {
+      "name": "verify_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 14
+    },
+    {
+      "name": "help_me_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 15
+    },
+    {
+      "name": "deps_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 16
+    },
+    {
+      "name": "git_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 16
+    },
+    {
+      "name": "compare_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 17
+    },
+    {
+      "name": "graph_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 17
+    },
+    {
+      "name": "roadmap_cmd",
+      "file": "src/ai_context_core/cli/commands/__init__.py",
+      "line": 17
+    },
+    {
+      "name": "analyze",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 39
+    },
+    {
+      "name": "analyze",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 82
+    },
+    {
+      "name": "check",
+      "file": "src/ai_context_core/cli/commands/analysis.py",
+      "line": 89
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 28
+    },
+    {
+      "name": "resolve_source",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 29
+    },
+    {
+      "name": "compile_context",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 41
+    },
+    {
+      "name": "render_context",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 49
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 54
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 101
+    },
+    {
+      "name": "compile_context",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 104
+    },
+    {
+      "name": "render_context",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 112
+    },
+    {
+      "name": "check",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 125
+    },
+    {
+      "name": "verify_context",
+      "file": "src/ai_context_core/cli/commands/analyze.py",
+      "line": 128
+    },
+    {
+      "name": "list_profiles",
+      "file": "src/ai_context_core/cli/commands/base.py",
+      "line": 34
+    },
+    {
+      "name": "print",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 17
+    },
+    {
+      "name": "Console",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 30
+    },
+    {
+      "name": "Table",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 51
+    },
+    {
+      "name": "_get_nested",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 69
+    },
+    {
+      "name": "_get_nested",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 70
+    },
+    {
+      "name": "verify_context",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 15
+    },
+    {
+      "name": "build_symbol_index",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 35
+    },
+    {
+      "name": "write_symbol_index",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 36
+    },
+    {
+      "name": "search_symbols",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 39
+    },
+    {
+      "name": "compute_health",
+      "file": "src/ai_context_core/cli/commands/context_ops.py",
+      "line": 58
+    },
+    {
+      "name": "_cmd",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 45
+    },
+    {
+      "name": "_cmd",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 46
+    },
+    {
+      "name": "_make_redirect",
+      "file": "src/ai_context_core/cli/commands/deprecated.py",
+      "line": 50
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 14
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 15
+    },
+    {
+      "name": "Console",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 18
+    },
+    {
+      "name": "_show_unused",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 21
+    },
+    {
+      "name": "_show_cycles",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 23
+    },
+    {
+      "name": "_show_metrics",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 25
+    },
+    {
+      "name": "Table",
+      "file": "src/ai_context_core/cli/commands/deps.py",
+      "line": 55
+    },
+    {
+      "name": "Console",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 15
+    },
+    {
+      "name": "_show_hotspots",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 21
+    },
+    {
+      "name": "_show_churn",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 22
+    },
+    {
+      "name": "Table",
+      "file": "src/ai_context_core/cli/commands/git.py",
+      "line": 31
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/graph.py",
+      "line": 15
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/graph.py",
+      "line": 16
+    },
+    {
+      "name": "generate_dependency_diagram",
+      "file": "src/ai_context_core/cli/commands/graph.py",
+      "line": 20
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/report.py",
+      "line": 17
+    },
+    {
+      "name": "_recommendations",
+      "file": "src/ai_context_core/cli/commands/report.py",
+      "line": 20
+    },
+    {
+      "name": "print",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 15
+    },
+    {
+      "name": "Console",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 28
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 36
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 37
+    },
+    {
+      "name": "Table",
+      "file": "src/ai_context_core/cli/commands/roadmap.py",
+      "line": 66
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 16
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 17
+    },
+    {
+      "name": "Console",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 19
+    },
+    {
+      "name": "Table",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 25
+    },
+    {
+      "name": "_show_complex_modules",
+      "file": "src/ai_context_core/cli/commands/stats.py",
+      "line": 46
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/config/loader.py",
+      "line": 25
+    },
+    {
+      "name": "TokenBudget",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 53
+    },
+    {
+      "name": "_as_dict",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 63
+    },
+    {
+      "name": "_as_dict",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 64
+    },
+    {
+      "name": "_as_dict",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 66
+    },
+    {
+      "name": "_as_dict",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 69
+    },
+    {
+      "name": "_as_dict",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 69
+    },
+    {
+      "name": "TokenBudget",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 72
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 101
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 108
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 110
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 113
+    },
+    {
+      "name": "TokenBudget",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 118
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 136
+    },
+    {
+      "name": "_section_limit",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 151
+    },
+    {
+      "name": "truncate_lines",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 151
+    },
+    {
+      "name": "TokenBudget",
+      "file": "src/ai_context_core/context/budget.py",
+      "line": 171
+    },
+    {
+      "name": "verify_context",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 25
+    },
+    {
+      "name": "_read_json",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 26
+    },
+    {
+      "name": "_read_json",
+      "file": "src/ai_context_core/context/health.py",
+      "line": 27
+    },
+    {
+      "name": "TokenBudget",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 14
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 27
+    },
+    {
+      "name": "apply_budget",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 28
+    },
+    {
+      "name": "enforce_hard_cap",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 32
+    },
+    {
+      "name": "measure_manifest",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 34
+    },
+    {
+      "name": "_render",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 46
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 46
+    },
+    {
+      "name": "_render",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 57
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 57
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 73
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 77
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 82
+    },
+    {
+      "name": "estimate_tokens",
+      "file": "src/ai_context_core/context/manifest.py",
+      "line": 83
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 14
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 17
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 17
+    },
+    {
+      "name": "visit",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 26
+    },
+    {
+      "name": "visit",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 37
+    },
+    {
+      "name": "visit",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 39
+    },
+    {
+      "name": "visit",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 41
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 45
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 74
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 74
+    },
+    {
+      "name": "scan",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 76
+    },
+    {
+      "name": "_collect_definitions",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 82
+    },
+    {
+      "name": "_collect_references",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 89
+    },
+    {
+      "name": "hash_files",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 45
+    },
+    {
+      "name": "scan",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 45
+    },
+    {
+      "name": "_hash_file",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 65
+    },
+    {
+      "name": "_read_json",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 87
+    },
+    {
+      "name": "read_recorded_hash",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 104
+    },
+    {
+      "name": "compute_content_hash",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 105
+    },
+    {
+      "name": "Provenance",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 53
+    },
+    {
+      "name": "Provenance",
+      "file": "src/ai_context_core/model/analysis_result.py",
+      "line": 53
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 31
+    },
+    {
+      "name": "GitRunner",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 38
+    },
+    {
+      "name": "AnalysisProvider",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 85
+    },
+    {
+      "name": "requested_source",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 102
+    },
+    {
+      "name": "external_output_path",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 111
+    },
+    {
+      "name": "ExternalSource",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 117
+    },
+    {
+      "name": "BuiltinSource",
+      "file": "src/ai_context_core/sources/base.py",
+      "line": 121
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 44
+    },
+    {
+      "name": "ProjectAnalyzer",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 46
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 54
+    },
+    {
+      "name": "Provenance",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 56
+    },
+    {
+      "name": "current_git_sha",
+      "file": "src/ai_context_core/sources/builtin/engine_source.py",
+      "line": 60
+    },
+    {
+      "name": "summarize_modules",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 46
+    },
+    {
+      "name": "_map_module",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 104
+    },
+    {
+      "name": "_map_metrics",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 105
+    },
+    {
+      "name": "_map_dependencies",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 113
+    },
+    {
+      "name": "_map_entry_points",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 120
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 141
+    },
+    {
+      "name": "external_output_path",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 147
+    },
+    {
+      "name": "map_project_context",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 154
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 155
+    },
+    {
+      "name": "Provenance",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 157
+    },
+    {
+      "name": "current_git_sha",
+      "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
+      "line": 161
+    },
+    {
+      "name": "_ensure_defaults",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 56
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 87
+    },
+    {
+      "name": "resolve_source",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 101
+    },
+    {
+      "name": "enrich_context",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 110
+    },
+    {
+      "name": "AnalysisResult",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 115
+    },
+    {
+      "name": "compute_content_hash",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 151
+    },
+    {
+      "name": "Strategy",
+      "file": "test_strategy.py",
+      "line": 12
+    },
+    {
+      "name": "print",
+      "file": "test_strategy.py",
+      "line": 14
+    },
+    {
+      "name": "Strategy",
+      "file": "test_strategy.py",
+      "line": 18
+    },
+    {
+      "name": "Strategy",
+      "file": "test_strategy.py",
+      "line": 21
+    }
+  ]
+}

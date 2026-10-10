@@ -1,17 +1,19 @@
 {
-  "total_tokens": 149,
+  "total_tokens": 2728,
   "header_tokens": 19,
-  "budget": 150,
+  "budget": null,
   "sections": {
-    "structure": 14,
+    "structure": 354,
     "metrics": 101,
-    "dependencies": 15
+    "dependencies": 2076,
+    "git": 178
   },
-  "truncated": true,
+  "truncated": false,
   "_meta": {
     "source": "builtin",
     "schema": 1,
     "tool_version": "4.1.1",
-    "git_sha": "c758c86cc4efe4c45330016ce0959a95ce7227e9"
+    "git_sha": "6d5b80ef6a8abe5dcdfcf96288bb56d797a0a947",
+    "content_hash": "sha256:88aa9b933c80f5e2f2bb572c34cdb8cc5d068e2347b0bd124b408de5bbc7f8bc"
   }
 }
