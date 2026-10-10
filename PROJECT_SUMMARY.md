@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-09 20:38:13
+Analysis Date: 2026-10-09 20:50:47
 Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 91.2/100
-- **Source Lines (SLOC)**: 6,584
-- **Total Physical Lines**: 10,555
-- **Maintainability**: 52.5
-- **Test Files**: 74 test files
+- **ai-ctx Quality Score**: 97.7/100
+- **Source Lines (SLOC)**: 3,950
+- **Total Physical Lines**: 6,405
+- **Maintainability**: 56.8
+- **Test Files**: 40 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -18.8
+- Maintainability: -12.3
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 167
+**Total Modules**: 111
 
 ```tree
 ./
@@ -121,12 +121,12 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                 builders/
                     __init__.py
                     aggregator.py
-                    aggregator_qgis.py
                     ai_context_generator.py
-                    ai_recommendations.py
                     algorithms.py
                     builder.py
-                    ... (+26 more)
+                    builder_components.py
+                    builders_base.py
+                    ... (+17 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -135,23 +135,22 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     context_fields.py
                     fs_cache.py
                     fs_helpers.py
-                    ... (+12 more)
+                    ... (+10 more)
                 visitors/
                     __init__.py
-                    antipattern_base.py
-                    antipatterns.py
                     ast_entry_points.py
                     ast_metrics.py
-                    ast_qgis.py
-                    ast_security.py
-                    ... (+50 more)
+                    ast_utils.py
+                    ast_visitors.py
+                    checker_base.py
+                    classes.py
+                    ... (+12 more)
             cli/
                 .ai_context_cache.json
                 AI_CONTEXT.md
                 PROJECT_SUMMARY.md
                 __init__.py
                 __main__.py
-                interactive.py
                 project_context.json
                 commands/
                     __init__.py
@@ -160,13 +159,12 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     base.py
                     clean.py
                     compare.py
-                    deps.py
-                    ... (+15 more)
+                    deprecated.py
+                    ... (+9 more)
             config/
                 defaults.toml
                 loader.py
                 profiles/
-                    qgis.toml
             context/
                 manager.py
                 components/
@@ -207,13 +205,13 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
         test.py
     tests/
         __init__.py
-        test_absolute_final.py
-        test_aggregator_extended.py
-        test_antipatterns.py
         test_ast_extended.py
         test_ast_metrics_compatibility.py
-        test_ast_security_extended.py
-        ... (+59 more)
+        test_ast_utils.py
+        test_cache_integration.py
+        test_cli.py
+        test_cli_error_coverage.py
+        ... (+25 more)
         fixtures/
             false_positives.py
             golden_expected/
@@ -230,51 +228,34 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 ```
 
 ## 🚨 CRITICAL ISSUES
-### 🔒 Security Issues:
-- **check_docs.py**: 1 issues (Max: LOW)
-- **src/ai_context_core/analyzer/builders/dependencies.py**: 2 issues (Max: LOW)
-- **src/ai_context_core/analyzer/builders/parser.py**: 1 issues (Max: LOW)
-- … (+26 more modules)
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/summary_generator.py
 
 ## 💡 MAIN RECOMMENDATIONS
-### src/ai_context_core/analyzer/builders/aggregator.py
-- Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
 ### src/ai_context_core/analyzer/builders/calculator.py
 - Consider breaking down large logic
-
-## 🏗️ DESIGN PATTERNS
-### Factory
-- **DependencyAnalyzer** in `src/ai_context_core/analyzer/builders/dependencies.py` (70%)
-- **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
-- **GitPatternsSummarizer** in `src/ai_context_core/analyzer/builders/git_patterns.py` (70%)
-- **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
-- **IssuesSummarizer** in `src/ai_context_core/analyzer/builders/issues.py` (70%)
-### Decorator
-- **register_detector** in `src/ai_context_core/analyzer/registry.py` (50%)
-### Strategy
-- **Context** in `test_strategy.py` (100%)
+### src/ai_context_core/analyzer/builders/reporting.py
+- Consider breaking down large logic
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 200
-- **Additions**: +59625
-- **Deletions**: -65713
-- **Total Churn**: 125338
+- **Files Changed**: 210
+- **Additions**: +62304
+- **Deletions**: -66706
+- **Total Churn**: 129010
 
 ### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 34 commits
+- `src/ai_context_core/analyzer/engine.py`: 35 commits
 - `src/ai_context_core/analyzer/issues.py`: 24 commits
 - `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
 - `src/ai_context_core/analyzer/reporting.py`: 23 commits
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.63
-- **Max Complexity**: 25
+- **Avg Cyclomatic Complexity**: 6.05
+- **Max Complexity**: 23
