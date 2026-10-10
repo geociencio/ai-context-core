@@ -42,6 +42,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Modules**: ~50 visitors/builders and their CLI/dependency modules; `serve`
   HTTP server and `html_builder`.
 
+### Fixed
+- **Read-only commands no longer write artifacts**: `stats`, `deps`, `roadmap`
+  and `graph` use the side-effect-free `ProjectAnalyzer.collect()` instead of
+  `analyze()` (which rewrote `AI_CONTEXT.md`, `project_context.json`,
+  `context_manifest.json`, `PROJECT_SUMMARY.md`).
+- **Project config is honored everywhere**: the deprecated `ConfigLoader`
+  facade (which silently ignored `.ai-context/config.toml` and profiles) was
+  removed; all commands use the canonical `load_config(root_path)`.
+- **`ai-ctx init` templates**: the workflow/prompt template path pointed at a
+  non-existent `cli/templates` directory and copied nothing; it now resolves to
+  the packaged `templates/` directory.
+- **`ai-ctx compare`** now reads metrics via `metric_keys` and no longer
+  references the removed `security_issues` key.
+
+### Changed
+- **Divergence cleanup**: single source of truth for module metric aggregates
+  (`calculator.summarize_modules` shared by the builtin calculator and the
+  external adapter), one unused-imports implementation, one git access path
+  (`GitRunner`) and one git renderer (`GitTechBuilder`), and `formatter`
+  constants aliased to `metric_keys`.
+- **Dead code removed**: legacy `context/manager.py` + `context/components/*`
+  (prompt builders, store, extractor — constructed but never used, and it read
+  stale artifacts on every analyzer init), unused `constants.py` entries, dead
+  `defaults.toml` blocks, and unused `AnalysisResult` helpers.
+- **Performance**: the content hash reuses the analysis scan
+  (`engine.collect()` → `hash_files`), and the discarded QGIS-metadata parse was
+  dropped from the engine.
+
 ### Deprecated
 - Removed commands are kept as **hidden redirect stubs** for one release
   (invoke the old name to see where the capability moved); they exit 0.
