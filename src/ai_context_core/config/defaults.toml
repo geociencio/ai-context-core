@@ -8,15 +8,17 @@ context_docs = []
 # Available: structure, metrics, dependencies, git.
 [context]
 sections = ["structure", "metrics", "dependencies", "git"]
+# Append Mermaid ``classDef``/``class`` styling lines to the dependency diagram.
+# Off by default: the unstyled diagram is much smaller and stays legible to LLMs.
+mermaid_style = false
 
 # Token budget for AI_CONTEXT.md. ``max_tokens`` caps the whole document
 # (override per-run with ``ai-ctx context --max-tokens N``); ``[context.budget.sections]``
-# adds per-section caps. Omit/uncomment to disable.
+# adds per-section caps. Remove a key (or set it to 0) to disable that cap.
 [context.budget]
-# max_tokens = 8000
-# [context.budget.sections]
-# structure = 1500
-# dependencies = 2500
+max_tokens = 8000
+[context.budget.sections]
+dependencies = 2500
 
 # Analysis source selection. ``auto`` prefers external qgis-analyzer output
 # (``analysis_results/project_context.json``) when present, else the builtin

@@ -13,6 +13,19 @@ def test_init_command_with_generic_profile():
         assert not os.path.exists(".ai-context/config.yaml")
 
 
+def test_init_defers_workflows_to_framework():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        result = runner.invoke(cli, ["init"])
+        assert result.exit_code == 0
+        # No stale workflow templates are scaffolded; the framework owns them.
+        assert "agentic-forge" in result.output
+        assert not os.path.exists(".agent/workflows/start-session.md")
+        assert not os.path.exists(".agent/workflows/end-session.md")
+        # The initial prompt is still generated under .ai-context/.
+        assert os.path.exists(".ai-context/prompt_inicial.md")
+
+
 def test_analyze_command():
     runner = CliRunner()
     with runner.isolated_filesystem():

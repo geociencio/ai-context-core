@@ -63,7 +63,7 @@ class AIContextGenerator:
             if name not in enabled:
                 continue
             lines: List[str] = []
-            self._builder_classes[name](self.analyses).build(lines)
+            self._builder_classes[name](self.analyses, self.config).build(lines)
             sections.append((name, lines))
         return sections
 

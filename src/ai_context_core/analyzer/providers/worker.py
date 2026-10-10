@@ -164,9 +164,11 @@ class AnalysisWorker:
                 "syntax_error": False,
             }
 
-            # Inject dynamic detectors from registry
+            # Inject dynamic detectors from registry. Detectors receive the
+            # parsed tree and the raw source so comment-based opt-outs (ruff
+            # noqa directives) can be honored.
             for name, detector in registry.detectors.items():
-                res[name] = detector(tree)
+                res[name] = detector(tree, content)
 
             return res
         except Exception as e:

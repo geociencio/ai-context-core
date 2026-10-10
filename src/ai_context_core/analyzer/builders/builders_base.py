@@ -2,7 +2,7 @@
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -10,13 +10,16 @@ logger = logging.getLogger(__name__)
 class BaseAnalysesBuilder:
     """Base for report section builders that consume a shared analyses mapping."""
 
-    def __init__(self, analyses: Dict[str, Any]):
-        """Initialize with analysis data.
+    def __init__(self, analyses: Dict[str, Any], config: Optional[Dict[str, Any]] = None):
+        """Initialize with analysis data and optional configuration.
 
         Args:
             analyses: Dictionary of analysis results.
+            config: Optional analyzer configuration (e.g. ``context`` keys) that
+                builders may read to shape their output.
         """
         self.analyses = analyses
+        self.config = config or {}
 
 
 class BaseBuilder(ABC):

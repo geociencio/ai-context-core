@@ -31,8 +31,18 @@ def _short_name(path: str) -> str:
     return name or "root"
 
 
-def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
-    """Generates a Mermaid-formatted dependency graph for the top project modules."""
+def generate_dependency_diagram(dependencies: Dict[str, Any], include_style: bool = True) -> str:
+    """Generates a Mermaid-formatted dependency graph for the top project modules.
+
+    Args:
+        dependencies: Dependency analysis payload (``import_graph``).
+        include_style: When ``True`` (default) the ``classDef``/``class`` styling
+            block is appended; set ``False`` for a compact, token-efficient
+            diagram (used by ``AI_CONTEXT.md``).
+
+    Returns:
+        The Mermaid diagram text (empty when there are no imports).
+    """
     import_graph = dependencies.get("import_graph", {})
     if not import_graph:
         return ""
@@ -75,9 +85,10 @@ def generate_dependency_diagram(dependencies: Dict[str, Any]) -> str:
             cited.add(ul)
             cited.add(vl)
 
-    lines.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
-    for node_id in sorted(cited):
-        lines.append(f"    class {node_id} module;")
+    if include_style:
+        lines.append("    classDef module fill:#f9f,stroke:#333,stroke-width:2px;")
+        for node_id in sorted(cited):
+            lines.append(f"    class {node_id} module;")
 
     return "\n".join(lines)
 

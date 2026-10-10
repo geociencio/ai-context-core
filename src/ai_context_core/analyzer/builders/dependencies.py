@@ -199,7 +199,7 @@ class DependencyBuilder(BaseContextBuilder):
                 f"- **Nodes**: {g_m.get('nodes', 0)}\n- **Edges**: {g_m.get('edges', 0)}\n- **Density**: {g_m.get('density', 0):.3f}"
             )
             lines.append("\n## 🕸️ DEPENDENCY DIAGRAM (Conceptual)\n```mermaid")
-            lines.append(generate_dependency_diagram(deps))
+            lines.append(generate_dependency_diagram(deps, include_style=self._mermaid_style()))
             lines.append("```")
 
         # Optimizations
@@ -210,3 +210,13 @@ class DependencyBuilder(BaseContextBuilder):
                 lines.append(f"### {o.get('module')}")
                 for sug in o.get("suggestions", [])[:2]:
                     lines.append(f"- **{sug.get('type', 'Opt')}**: {sug.get('message', 'N/A')}")
+
+    def _mermaid_style(self) -> bool:
+        """Whether to render the Mermaid styling block (``[context].mermaid_style``).
+
+        Returns:
+            ``True`` only when styling is explicitly enabled; the default is a
+            compact, unstyled diagram to keep ``AI_CONTEXT.md`` token-efficient.
+        """
+        context_cfg = self.config.get("context") or {}
+        return bool(context_cfg.get("mermaid_style", False))

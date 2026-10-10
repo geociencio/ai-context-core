@@ -116,6 +116,21 @@ def test_map_project_context_fallback_name():
     assert map_project_context(payload, fallback_name="fallback")["project_name"] == "fallback"
 
 
+def test_map_project_context_drops_retired_domains():
+    """Security/QGIS/pattern domains belong to qgis-analyzer and are not mapped."""
+    data = map_project_context(_external_payload(), fallback_name="x")
+    for key in ("security", "qgis_compliance", "patterns", "antipatterns"):
+        assert key not in data
+
+
+def test_builtin_payload_has_no_retired_domains(tmp_path):
+    """The builtin pipeline must not seed retired-domain keys either."""
+    (tmp_path / "m.py").write_text("def f():\n    pass\n", encoding="utf-8")
+    result = compile_context(tmp_path, {}, "builtin", ignore_cache=True)
+    for key in ("security", "qgis_compliance", "patterns", "antipatterns"):
+        assert key not in result.data
+
+
 # --- resolution --------------------------------------------------------------
 
 

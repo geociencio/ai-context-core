@@ -12,9 +12,17 @@ from ..registry import register_detector
 
 
 @register_detector("unused_imports")
-def detect_unused_imports_registered(tree):
-    """Registered unused imports detector."""
-    return detect_unused_imports(tree)
+def detect_unused_imports_registered(tree, content=None):
+    """Registered unused imports detector.
+
+    Args:
+        tree: The parsed AST tree.
+        content: Optional module source used to honor ``# noqa`` opt-outs.
+
+    Returns:
+        The list of unused imports for the module.
+    """
+    return detect_unused_imports(tree, content)
 
 
 __all__ = [
