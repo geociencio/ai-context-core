@@ -17,8 +17,12 @@
   `serve` (~50 analysis modules + qgis profile); hidden redirect stubs (one cycle);
   generator/aggregator re-scoped; `visitors/issues.py` split; golden regenerated.
   **Measured tests: 349 → 165.**
-- **Next**: **F3 — token budget + manifest** (`context/budget.py`, `[context.budget]`,
-  `--max-tokens`, `context_manifest.json`).
+- **F3 done**: `context/budget.py` + `context/manifest.py`; `ai-ctx context
+  --max-tokens N` (deterministic, strict cap) and `[context.budget]` per-section
+  limits; `context_manifest.json` with exact per-section deltas
+  (`total == header + sum(sections)`) + `_meta` provenance. Tests 165 → **177**.
+- **Next**: **F4 — verify + symbol index + health** (`context/verify.py`,
+  `context/symbol_index.py`; commands `verify`, `symbols`, `health`; exit 1 on drift).
 
 ## ✅ Completed in This Session
 

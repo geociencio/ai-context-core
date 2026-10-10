@@ -261,6 +261,7 @@ output.
   reviewed; `ruff check` clean.
 
 ### F3 — Token budget + manifest
+**Status**: ✅ COMPLETED (2026-10-09) — `context/budget.py` + `context/manifest.py`; `ai-ctx context --max-tokens N` (strict, deterministic) + `[context.budget]` per-section caps; `context_manifest.json` (`total == header + sum(sections)`, `_meta` provenance). **Measured tests: 177.**
 - Implement §4B; add manifest (`context_manifest.json`) with per-section token counts.
 - **Exit**: `context --max-tokens` truncates deterministically; manifest matches rendered sizes.
 

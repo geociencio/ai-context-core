@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Token budget + manifest (F3)**: `ai-ctx context --max-tokens N` caps
+  `AI_CONTEXT.md` with deterministic truncation; per-section limits via
+  `[context.budget]`. Every render writes `context_manifest.json` with exact
+  per-section token deltas, budget and total (`total == header + sum(sections)`),
+  plus `_meta` provenance when available. Heuristic `chars/4` estimator.
+
 ### Changed
 - **Context-only contract (v5.0.0)**: `ai-context-core` is now a **context
   compiler** (`source → transform → render → verify`), a consumer of analysis
