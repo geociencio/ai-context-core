@@ -24,8 +24,12 @@
 - **F4 done**: `verify` (content-hash staleness, exit 1 on drift),
   `symbols [--grep]` (`symbols.json` with `file:line`), `health`
   (freshness/tokens/provenance), `context --check` CI gate. Tests 177 → **189**.
-- **Next**: **F5 — ecosystem alignment** (cross-link READMEs, `agentic-forge`
-  `project-context` skill, SecInterp workflows `ai-ctx qgis`/`audit` → analyzer).
+- **F5 deferred**: ecosystem alignment is owned by the sibling repos, not
+  `ai-context-core` — `agentic-forge` (`project-context` skill),
+  `qgis-plugin-analyzer` (README/cross-link), `sec_interp`
+  (workflows `ai-ctx qgis`/`audit` → `qgis-analyzer` + `ai-ctx context`).
+- **ai-context-core v5.0.0 scope is complete** (F0–F4 + divergence/optimization
+  P0–P4). 182 tests passing; ruff clean.
 
 ## ✅ Completed in This Session
 

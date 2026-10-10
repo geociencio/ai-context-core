@@ -6,110 +6,140 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
 [![Downloads](https://img.shields.io/pypi/dm/ai-context-core.svg)](https://pypi.org/project/ai-context-core/)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
-[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![QGIS Plugin Ready](https://img.shields.io/badge/QGIS-Plugin%20Ready-green?logo=qgis)](https://qgis.org)
-[![AI-Context Driven](https://img.shields.io/badge/AI-Context%20Driven-blue?logo=openai)](https://github.com/geociencio/ai-context-core)
 
-The central nervous system for your AI-assisted coding workflow.
+**Compile token-efficient, verifiable context for AI-assisted coding.**
 
-> **Context-only (v5.0.0).** `ai-context-core` is now a **context compiler**
-> (`source → transform → render → verify`): it consumes analysis instead of
+`ai-context-core` (CLI `ai-ctx`) turns a Python project into **context
+artifacts** an AI agent can consume: a structured `AI_CONTEXT.md`, a
+machine-readable `project_context.json`, a token `context_manifest.json` and a
+symbol index. Everything is versioned, provenance-tagged and optionally
+token-budgeted.
+
+> **Context-only contract (v5.0.0).** `ai-context-core` is a **context compiler**
+> (`source → transform → render → verify`): it *consumes* analysis instead of
 > owning it. QGIS compliance, i18n, security scanning and quality gates live in
-> `qgis-plugin-analyzer`; scaffolding in `agentic-forge`. The former `audit`,
-> `qgis`, `security`, `patterns`, `inspect`, `full-scan`, `fix`, `scaffold`,
-> `doctor`, `interactive` and `serve` commands were removed (hidden redirect
-> stubs remain for one release). See [ADR-0008](docs/adr/0008-context-only-contract.md),
+> [`qgis-plugin-analyzer`](https://github.com/geociencio/qgis-plugin-analyzer);
+> scaffolding in `agentic-forge`. Commands such as `audit`, `qgis`, `security`,
+> `patterns`, `inspect`, `full-scan`, `fix`, `scaffold`, `doctor`, `interactive`
+> and `serve` were removed (hidden redirect stubs remain for one release). See
+> [ADR-0008](docs/adr/0008-context-only-contract.md),
 > the [v5.0.0 plan](docs/plans/implementation_plan_ai_context_core_context_only_v5.md)
 > and the [CHANGELOG](docs/CHANGELOG.md).
 
 ## Features
 
-### Core Capabilities
-- **Context Compilation**: Extracts and renders token-efficient, versioned
-  context artifacts (`AI_CONTEXT.md`, `project_context.json`) for AI agents.
-- **Pluggable Sources**: `--source auto|external|builtin` — consume
-  `qgis-plugin-analyzer` output or fall back to the built-in engine.
-- **Context Commands**: `context`, `analyze`, `stats`, `deps`, `git`, `graph`,
-  `roadmap`, `compare`, `help-me`, `init`, `profiles`, `clean`.
-- **Verifiable & budgeted**: `verify` (staleness), `symbols` (index + `--grep`),
-  `health` (freshness/tokens/provenance), `context --max-tokens N`,
-  `context --check` for CI.
-- **Profiles**: `python-generic` (the `qgis-plugin` profile moved to
-  `qgis-plugin-analyzer`).
+### Context compilation
+- **Pluggable sources**: `--source auto|external|builtin`. `external` consumes
+  `qgis-plugin-analyzer` output (`analysis_results/project_context.json`);
+  `builtin` runs the internal AST engine. `auto` prefers external when present.
+- **Hybrid by design**: structure tree, git evolution and manual notes are always
+  computed by `ai-context-core`; the analysis fields come from the selected source.
+- **Provenance**: every artifact carries a `_meta` block (`source`, `schema`,
+  `tool_version`, `git_sha`, `content_hash`).
 
-### Context Analysis
-- **Entry Point Detection**: `__main__`-guard entry points.
-- **Dependency Analysis**: 
-    - Import graph with cycle detection
-    - Unused imports identification
-    - Coupling metrics (CBO - Coupling Between Objects)
-    - Graph density and DAG validation
-- **Git Evolution Tracking**:
-    - Hotspots (most frequently modified files)
-    - Code churn analysis (lines added/deleted over time)
-- **Advanced Metrics**: 
-    - **Maintenance Index (MI)** for code maintainability
-    - **Halstead Metrics** for code complexity
-    - **Cyclomatic Complexity** per module
-    - **Type Hint Coverage** analysis
+### Token budget & manifest
+- `ai-ctx context --max-tokens N` caps `AI_CONTEXT.md` with **deterministic**
+  truncation; per-section caps via `[context.budget]`.
+- `context_manifest.json` records exact per-section token deltas, the budget and
+  the total (`total == header + sum(sections)`).
 
-### Reporting & Visualization
-- **Interactive HTML**: Generate interactive project summaries with `--format html`.
-- **Dependency Graphs**: Automated **Mermaid.js** diagrams integrated into reports.
-- **Quick Stats**: Terminal-based formatted tables using `rich` for rapid insights.
-- **Multiple Formats**: Markdown, HTML, and JSON outputs for specialized data extraction.
-- **Visual Analytics**: Direct terminal visualization of hotspots, churn, and architectural priorities.
+### Verification & index
+- `ai-ctx verify` exits `1` when the tracked sources changed since the last
+  render (content hash); `ai-ctx context --check` gates CI.
+- `ai-ctx symbols [--grep]` writes a versioned `symbols.json` (definitions and
+  references with `file:line`).
+- `ai-ctx health` reports freshness, token usage, symbol coverage and provenance
+  — no quality gate; it fails only on staleness.
 
-### Performance & Optimization
-- **FastIgnore**: Ultra-fast file filtering using compiled Regex.
-- **Smart Parallelism**: Dynamic switching between sequential and parallel execution based on project size.
-- **Single-Pass AST**: Unified pattern detection for maximum performance.
-- **Incremental Cache**: Hybrid `mtime` and SHA-256 based file caching with `--no-cache` option.
-- **Batch Processing**: Task batching in parallel mode to minimize inter-process communication overhead.
+### Context analysis (builtin source)
+- **Structure**: project tree, slide-of-code and file statistics.
+- **Entry points**: `__main__`-guard detection.
+- **Dependencies**: import graph, circular dependencies, unused imports, coupling
+  (CBO), graph density/DAG, Mermaid diagram.
+- **Git evolution**: hotspots and code churn.
+- **Metrics**: cyclomatic complexity, Maintenance Index, type-hint coverage.
 
-### Workflow Integration
-- **CI/CD Ready**: verify context freshness and enforce token budgets (see the v5.0.0 roadmap).
-- **Workflow Automation**: Standardized scripts for session management.
-- **AI Recommendations**: Heuristic-based actionable advice for code hygiene.
-- **Clean Command**: Automated cleanup of cache and generated artifacts.
+### Performance & robustness
+- **Incremental cache**: hybrid `mtime` + SHA-256 file cache (`--no-cache` to bypass).
+- **Smart parallelism**: sequential below a threshold, batched `ProcessPoolExecutor` above it.
+- **Fast ignore**: compiled-regex file filtering via `.analyzerignore`.
+- **Staleness-safe hashing**: verification bypasses the in-process read cache.
 
 ## Installation
 
-### Using `uv` (Recommended)
+### Using `uv` (recommended)
 
-`uv` is extremely fast and the preferred way to manage this tool.
-
-**As a global tool**:
 ```bash
+# As a global tool
 uv tool install ai-context-core
-```
 
-**In a virtual environment**:
-```bash
-uv venv
-source .venv/bin/activate
+# Or inside a virtual environment
+uv venv && source .venv/bin/activate
 uv pip install ai-context-core
 ```
 
 ### Using `pip`
 
-You can install `ai-context-core` using standard `pip`:
-
 ```bash
 pip install ai-context-core
 ```
 
-*Note: It is always recommended to use a virtual environment.*
+*It is always recommended to use a virtual environment.*
+
+## Quick start
+
+```bash
+# 1. Initialize the .ai-context structure (optional)
+ai-ctx init
+
+# 2. Compile context artifacts
+ai-ctx context                       # AI_CONTEXT.md + project_context.json + context_manifest.json
+ai-ctx context --source external     # consume qgis-plugin-analyzer output
+ai-ctx context --max-tokens 8000     # enforce a token budget
+ai-ctx context --check               # generate and assert freshness (CI)
+
+# 3. Verify and inspect
+ai-ctx verify                        # exit 1 if sources changed since render
+ai-ctx symbols --grep my_function    # file:line index lookup
+ai-ctx health                        # freshness + tokens + symbols + provenance
+```
+
+## Generated artifacts
+
+| Artifact | Description |
+| :--- | :--- |
+| `AI_CONTEXT.md` | Structured, token-budgeted context for LLMs. |
+| `project_context.json` | Machine-readable analysis payload + `_meta` provenance. |
+| `context_manifest.json` | Per-section token counts, budget and total. |
+| `symbols.json` | Versioned symbol index (definitions + references). |
+| `PROJECT_SUMMARY.md` | Human-readable summary (emitted by `analyze`). |
 
 ## Configuration
 
-For detailed configuration options, see [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
+Full reference: [docs/CONFIGURATION.md](docs/CONFIGURATION.md). Defaults live in
+`src/ai_context_core/config/defaults.toml`.
 
-### Analysis Scope (`.analyzerignore`)
+```toml
+context_docs = []                      # extra markdown to embed as architecture notes
 
-`ai-ctx` reads a `.analyzerignore` file at the project root to exclude paths from
-the **analysis scope** (modules, dependency graph, security scan, code metrics).
+[context]
+sections = ["structure", "metrics", "dependencies", "git"]
+
+[context.budget]
+max_tokens = 8000                      # override per run with --max-tokens N
+# [context.budget.sections]
+# structure = 1500
+
+[sources]
+source = "auto"                        # auto | external | builtin
+# external_path = "analysis_results/project_context.json"
+```
+
+### Analysis scope (`.analyzerignore`)
+
+`ai-ctx` reads `.analyzerignore` at the project root to exclude paths from the
+analysis scope (modules, dependency graph, code metrics).
 
 > [!IMPORTANT]
 > A project `.analyzerignore` **replaces** the built-in defaults; it does not
@@ -117,237 +147,76 @@ the **analysis scope** (modules, dependency graph, security scan, code metrics).
 > (`__pycache__/`, `.git/`, `.venv/`, `build/`, `dist/`, `*.egg-info/`) if you
 > still want them ignored.
 
-Excluding `tests/` here does **not** remove the test bonus from the Quality Score:
-test files are counted by a decoupled scanner that ignores `.analyzerignore`.
+## Commands reference
 
-### QGIS i18n Analysis
+### Compile & verify
 
-Configure the scope and classification of internationalization analysis in
-`.ai-context/config.toml` (or `src/ai_context_core/config/profiles/qgis.toml`):
+| Command | Description |
+| :--- | :--- |
+| `ai-ctx context` | Compile `AI_CONTEXT.md`, `project_context.json`, `context_manifest.json` (primary path). Options: `--source`, `--max-tokens`, `--check`, `--include-md`, `--no-cache`, `--workers`. |
+| `ai-ctx analyze` | Run the pipeline and emit `AI_CONTEXT.md`, `PROJECT_SUMMARY.md`, `project_context.json`. Options: `--source`, `--format markdown\|json`, `--include-md`, `--no-cache`, `--workers`. |
+| `ai-ctx verify` | Exit `1` when artifacts are stale relative to the tracked sources. |
+| `ai-ctx symbols` | Build `symbols.json`; `--grep <text>` prints matching `file:line` entries. |
+| `ai-ctx health` | Context freshness, token usage, symbol coverage, provenance. |
 
-```toml
-[patterns.i18n]
-# Scope: "all" (default), "gui_only", or "custom"
-scope = "gui_only"
+### Inspect
 
-# Patterns used when scope = "gui_only"
-gui_patterns = ["gui/**/*.py", "ui/**/*.py"]
+| Command | Description |
+| :--- | :--- |
+| `ai-ctx stats` | Quick project statistics (SLOC, modules, complexity, maintenance index). |
+| `ai-ctx deps` | Dependency analysis: `--unused`, `--cycles`, `--metrics` (CBO, density, DAG). |
+| `ai-ctx git` | Git evolution: hotspots and churn (`--days N`). |
+| `ai-ctx graph` | Export the dependency model as a Mermaid diagram (`--output ARC.mmd`). |
+| `ai-ctx roadmap` | Refactor priority (complexity × churn). |
+| `ai-ctx compare <a> <b>` | Diff two analysis JSON reports by metric. |
+| `ai-ctx help-me` | Context-health recommendations. |
 
-# Optional overrides for string classification (omit to use the built-in lists)
-# ignored_functions = ["setObjectName", "addItem"]  # technical denylist
-# ui_functions = ["setText", "setTitle"]            # user-facing allowlist
-```
+### Project setup
 
-## Commands Reference
-
-### Core Commands
-
-#### `ai-ctx --version`
-Displays the current version of the tool.
-- **Usage**: `ai-ctx --version`
-
-#### `ai-ctx init`
-Initializes the `.ai-context` structure in your project. It creates configuration files and initial prompt templates.
-- **Usage**: `ai-ctx init --profile <name>`
-- **Example**: `ai-ctx init --profile qgis-plugin`
-
-#### `ai-ctx analyze`
-Runs the complete analysis pipeline. Generates `AI_CONTEXT.md`, `PROJECT_SUMMARY.md/html`, and `project_context.json`.
-- **Options**:
-    - `--format json`: Generates a machine-readable JSON analysis for CI/CD integration.
-    - `--no-cache`: Forces a full re-analysis, ignoring incremental metadata.
-    - `--workers <n>`: Override automatic parallel worker calculation.
-    - `--include-md <glob>`: Embed extra markdown docs (repeatable) into the
-      "MANUAL ARCHITECTURE NOTES" section. Also configurable per project via the
-      `context_docs` config key.
-- **Usage**: `ai-ctx analyze --format json > report.json`
-
-#### `ai-ctx profiles`
-Lists all available configuration profiles.
-- **Usage**: `ai-ctx profiles`
-
----
-
-### Analysis Commands
-
-#### `ai-ctx stats`
-Shows quick project statistics in a formatted table. Perfect for getting a rapid overview without generating full reports.
-- **Displays**:
-    - Source Lines (SLOC) vs Physical Lines
-    - Module, Function, and Class counts
-    - Average Complexity and Maintenance Index
-    - Quality Score
-    - Top 5 most complex modules
-- **Usage**: `ai-ctx stats`
-
-#### `ai-ctx deps`
-Analyzes project dependencies with detailed insights.
-- **Options**:
-    - `--unused`: Shows all unused imports across the project
-    - `--cycles`: Detects circular dependencies
-    - `--metrics`: Displays coupling metrics (CBO, graph density, DAG status)
-    - *(No flags = shows all)*
-- **Usage**: 
-    ```bash
-    ai-ctx deps --unused
-    ai-ctx deps --cycles
-    ai-ctx deps --metrics
-    ai-ctx deps  # Shows everything
-    ```
-
-#### `ai-ctx git`
-Shows git evolution analysis including hotspots and code churn.
-- **Options**:
-    - `--days <n>`: Number of days for churn analysis (default: 30)
-- **Displays**:
-    - Most frequently modified files (hotspots)
-    - Lines added/deleted in the specified period
-    - Total code churn
-- **Usage**: `ai-ctx git --days 30`
-
----
-
-### Context & Maintenance Commands
-
-#### `ai-ctx help-me`
-Provides context-health recommendations (missing architecture notes, git history, structure).
-- **Usage**: `ai-ctx help-me`
-
-#### `ai-ctx clean`
-Cleans cache and generated artifacts from the project directory.
-- **Options**:
-    - `--dry-run`: Preview what would be deleted without actually deleting
-- **Removes**:
-    - `.ai_context_cache.json`
-    - `AI_CONTEXT.md`
-    - `project_context.json`
-    - `PROJECT_SUMMARY.md` and `PROJECT_SUMMARY.html`
-    - `ANALYSIS_REPORT.md`
-- **Usage**: 
-    ```bash
-    ai-ctx clean --dry-run  # Preview
-    ai-ctx clean            # Actually delete
-    ```
-
----
-
-### Exploration Commands
-
-#### `ai-ctx graph`
-Architectural visualization tool. Exports the project's internal dependency model to a Mermaid-formatted file.
-- **Usage**: `ai-ctx graph --output ARC.mmd`
-
-#### `ai-ctx compare <file1> <file2>`
-Regression tracking utility. Compares two JSON reports and highlights deltas in metrics and complexity.
-- **Usage**: `ai-ctx compare base.json current.json`
-
-#### `ai-ctx roadmap`
-Technical debt prioritization engine. Calculates a "Refactor Score" based on (Code Complexity × Churn Frequency) to identify high-risk hotspots.
-- **Usage**: `ai-ctx roadmap`
+| Command | Description |
+| :--- | :--- |
+| `ai-ctx init` | Create `.ai-context` config and workflow templates (`--profile <name>`). |
+| `ai-ctx profiles` | List available profiles (`python-generic`). |
+| `ai-ctx clean` | Remove cache and generated artifacts (`--dry-run` to preview). |
 
 ## Metrics
 
-`ai-context-core` reports its own set of metrics. These are heuristics computed from static analysis and are **not directly comparable** to the canonical metrics of other tools (e.g. `qgis-analyzer`).
+Metrics are heuristics computed from static analysis and are **not directly
+comparable** to the canonical metrics of other tools (e.g. `qgis-analyzer`).
 
 | Metric | Definition | Notes |
 | :--- | :--- | :--- |
-| **ai-ctx Quality Score** → *context health* (v5.0.0) | Aggregated 0-100 heuristic: base 100 minus penalties for average/outlier complexity, low maintainability, and missing tests, plus test bonuses. The report includes an explicit score breakdown. | Tool-specific; not comparable to `qgis-analyzer`'s Quality Score. Being renamed to **context health** in v5.0.0 (see ADR-0008). |
-| **Avg Cyclomatic Complexity** | Arithmetic mean of per-module cyclomatic complexity. | This is an **average**. `qgis-analyzer` applies a per-function **gate** (CC ≤ 10), so the two numbers mean different things. |
-| **Avg Maintenance Index (MI)** | SEI Maintenance Index normalized to 0-100, averaged across modules. | Exclusive to `ai-context-core`. |
+| **ai-ctx Quality Score** → *context health* | Aggregated 0–100 heuristic: base 100 minus penalties for average/outlier complexity, low maintainability and missing tests, plus test bonuses. Includes an explicit score breakdown. | Tool-specific; not a gate. Being reframed as **context health** (see ADR-0008). |
+| **Avg Cyclomatic Complexity** | Arithmetic mean of per-module cyclomatic complexity. | An **average**; `qgis-analyzer` applies a per-function **gate** (CC ≤ 10). |
+| **Avg Maintenance Index (MI)** | SEI Maintenance Index normalized to 0–100, averaged across modules. | Exclusive to `ai-context-core`. |
 | **Max Complexity** | Highest single-module cyclomatic complexity. | Complements the average to surface outliers. |
 
-## Comparison with Other Tools
-
-`ai-context-core` is more than a code packager; it is a **deep static intelligence engine** designed to maximize context fidelity for LLMs. While many tools focus on "repository dumping," we focus on **semantic extraction** and **domain-specific hygiene**.
-
-### How It Differs
-
-| Aspect | `ai-context-core` |
-| :--- | :--- |
-| **Primary Goal** | **Compile context** (`source → transform → render → verify`), not analyze. |
-| **Sources** | `qgis-plugin-analyzer` output (external) or a built-in AST fallback. |
-| **Outputs** | `AI_CONTEXT.md`, `project_context.json` (with `_meta` provenance). |
-| **Analysis Depth** | Delegated: hygiene, QGIS, i18n, security and CC gates live in `qgis-plugin-analyzer`. |
-| **Git Awareness** | Hotspots / churn, rendered into the context. |
-| **Dependencies / Graph** | Import graph, unused imports, coupling, Mermaid diagram. |
-| **Language Scope** | Python. |
-
-> **Scope note:** `ai-context-core` is a **consumer** of analysis. By design it no longer
-> performs security scanning, QGIS/i18n compliance, design-pattern detection or quality
-> gates — those are owned by `qgis-plugin-analyzer`. It focuses on producing compact,
-> versioned, provenance-tagged context artifacts for AI agents.
-
-### Why `ai-context-core`?
-
-#### 1. Pluggable Context Compilation
-Point it at `qgis-plugin-analyzer` output (`--source external`) or let it run its built-in
-engine (`--source builtin`); either way you get the same rendered context with provenance
-recorded in `project_context.json`.
-
-#### 2. Clean Ecosystem Boundaries
-Hygiene (QGIS, i18n, security, quality gates) is single-sourced in
-`qgis-plugin-analyzer`; scaffolding in `agentic-forge`. `ai-context-core` stays focused on
-the context it compiles.
-
-#### 3. Actionable Technical Debt Identification
-By combining **Git Churn/Hotspots** with **Cyclomatic Complexity**, the `ai-ctx roadmap` command surfaces "Biological Debt"—files that are both complex and frequently modified. This guides your AI assistant to the most critical areas for refactoring.
-
-#### 4. Security-First Context
-Our integrated security scan detects **SQL Injection**, **Insecure Calls**, and **Hardcoded Secrets** using context-aware AST analysis, ensuring that the code you provide to an LLM is not only readable but also safe and compliant.
-
-### When to Choose
-✅ **Choose ai-context-core** for professional Python/QGIS development, deep architectural audits, pre-release quality gates, and high-fidelity AI pairing where structural context is critical.
-
-❌ **Choose Alternatives** for quick, one-off code dumps (Gitingest), real-time interactive terminal editing (Aider), or simple multi-language packaging (Repomix).
-
-## API Stability and Deprecations
+## API stability and deprecations
 
 The **canonical public API** lives under `ai_context_core.analyzer` (`engine`,
-`providers`, `visitors`, `builders`) and `ai_context_core.cli.commands`. Anything
-else is considered internal.
+`providers`, `visitors`, `builders`), `ai_context_core.sources`,
+`ai_context_core.context`, `ai_context_core.model` and
+`ai_context_core.cli.commands`. Anything else is internal.
 
-The following legacy paths are **deprecated compatibility facades**. They still
-work but emit a `DeprecationWarning` on import and are scheduled for removal in
-**v4.0.0**:
+Deprecated compatibility aliases emit a `DeprecationWarning` and are scheduled
+for removal in **v5.0.0** (`REMOVAL_VERSION`):
 
 | Deprecated path | Use instead |
 | :--- | :--- |
-| `ai_context_core.analyzer.patterns_detectors.*` | `ai_context_core.analyzer.visitors.*` (`analyzer.pattern_base` for `base`) |
-| `ai_context_core.analyzer.context_builders.*` | `ai_context_core.analyzer.builders.*` |
-| `ai_context_core.commands.*` | `ai_context_core.cli.commands.*` |
-| `ai_context_core.cli_groups.*` | `ai_context_core.cli.commands.*` |
-| `ContextAggregator` alias | `ResultsAggregator` |
-| `QGISComplianceVisitor` alias | `GenericQGISComplianceVisitor` |
+| `analyzer.builders.aggregator.ContextAggregator` | `analyzer.builders.aggregator.ResultsAggregator` |
 
-## Docker Support
+## Docker support
 
-The project includes Docker support for reproducible development, testing, and CI/CD.
-
-### Quick Start with Docker
+Reproducible development, testing and CI via Docker:
 
 ```bash
-# Build all images
-make docker-build
-
-# Run tests in Docker
-make docker-test
-
-# Interactive development shell
-make docker-shell
-
-# Run linter
-make docker-lint
+make docker-build    # Build all images
+make docker-test     # Run the test suite with coverage
+make docker-shell    # Interactive development shell
+make docker-lint     # Run the linter
 ```
-
-### Docker Images
-
-- **Development** (`ai-ctx:dev`) - Full environment with dev dependencies
-- **Test** (`ai-ctx:test`) - Runs test suite with coverage
-- **Production** (`ai-ctx:prod`) - Minimal runtime image
-
----
-Generated by Ai-Context-Core v3.5.0
 
 ## License
 
-This project is licensed under the **GNU General Public License v3 (GPLv3)**. See the [LICENSE](LICENSE) file for the full license text.
+This project is licensed under the **GNU General Public License v3 (GPLv3)**.
+See the [LICENSE](LICENSE) file for the full license text.

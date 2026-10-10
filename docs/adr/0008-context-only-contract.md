@@ -152,7 +152,7 @@ Detalle completo en
 - [x] **F2** — Eliminación (v5.0.0): comandos/visitantes/builders; facades; tests.
 - [x] **F3** — Presupuesto de tokens + manifest.
 - [x] **F4** — `verify` + symbol index + `health`.
-- [ ] **F5** — Alineación de ecosistema (READMEs, `agentic-forge`, SecInterp).
+- [ ] **F5** — Alineación de ecosistema — **DIFERIDA a los repos hermanos** (fuera del alcance de `ai-context-core`): `agentic-forge` (skill `project-context`), `qgis-plugin-analyzer` (README/cross-link), `sec_interp` (workflows `/start-session`, `/close-session`). Cada repo gestiona su propio cambio.
 
 **Congelación de features**: desde F0 no se añaden nuevas capacidades de análisis
 a `ai-context-core`; cualquier propuesta de ese tipo se rechaza en F2

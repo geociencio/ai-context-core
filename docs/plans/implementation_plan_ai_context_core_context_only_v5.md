@@ -272,10 +272,11 @@ output.
   `symbols --grep` returns `file:line`.
 
 ### F5 — Ecosystem alignment
-- Cross-link READMEs (`qgis-plugin-analyzer` ↔ `ai-context-core`).
-- Update `agentic-forge` skill `project-context` references.
+**Status**: ⏸ DEFERRED to sibling repositories (out of scope for `ai-context-core`). The changes below are owned and executed by each consumer repo, not here.
+- Cross-link READMEs (`qgis-plugin-analyzer` ↔ `ai-context-core`) — owned by `qgis-plugin-analyzer`.
+- Update `agentic-forge` skill `project-context` references — owned by `agentic-forge`.
 - Update SecInterp workflows (`/start-session`, `/close-session`) and docs referencing
-  `ai-ctx qgis`/`audit` → `qgis-analyzer` + `ai-ctx context`.
+  `ai-ctx qgis`/`audit` → `qgis-analyzer` + `ai-ctx context` — owned by `sec_interp`.
 
 ---
 
