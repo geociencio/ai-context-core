@@ -5,10 +5,8 @@ from typing import Dict, Any, Optional, Tuple
 DEFAULT_SECTIONS: Tuple[str, ...] = (
     "structure",
     "metrics",
-    "patterns",
     "dependencies",
     "git",
-    "qgis",
 )
 
 
@@ -39,19 +37,15 @@ class AIContextGenerator:
         from . import (
             StructureBuilder,
             MetricsBuilder,
-            PatternsBuilder,
             DependencyBuilder,
             GitTechBuilder,
-            QGISBuilder,
         )
 
         self._builder_classes = {
             "structure": StructureBuilder,
             "metrics": MetricsBuilder,
-            "patterns": PatternsBuilder,
             "dependencies": DependencyBuilder,
             "git": GitTechBuilder,
-            "qgis": QGISBuilder,
         }
 
     def _enabled_sections(self) -> set:

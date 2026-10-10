@@ -29,7 +29,6 @@ def test_aggregate_persists_entry_points(tmp_path):
         patch("ai_context_core.analyzer.builders.dependencies.detect_unused_imports_in_project"),
         patch("ai_context_core.analyzer.builders.formatter.format_complexity_agg"),
         patch("ai_context_core.analyzer.visitors.issues.find_optimizations"),
-        patch("ai_context_core.analyzer.visitors.issues.find_secrets"),
     ):
         res = agg.aggregate([module], {}, {}, {})
 

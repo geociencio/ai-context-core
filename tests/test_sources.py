@@ -223,16 +223,24 @@ def test_external_and_builtin_sections_are_equivalent(tmp_path):
     (proj / "pkg" / "__init__.py").write_text("", encoding="utf-8")
     _write_external(proj, _external_payload())
 
-    builtin = compile_context(proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}, "builtin")
-    external = compile_context(proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}, "external")
+    builtin = compile_context(
+        proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}, "builtin"
+    )
+    external = compile_context(
+        proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}, "external"
+    )
     assert external.provenance.source == "external"
     assert builtin.provenance.source == "builtin"
 
     from ai_context_core.sources.pipeline import render_context
 
-    render_context(builtin, proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}})
+    render_context(
+        builtin, proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}
+    )
     builtin_heads = _headings(proj / "AI_CONTEXT.md")
-    render_context(external, proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}})
+    render_context(
+        external, proj, {"context": {"sections": ["structure", "metrics", "dependencies", "git"]}}
+    )
     external_heads = _headings(proj / "AI_CONTEXT.md")
 
     # The configured top-level sections must render for both sources. External

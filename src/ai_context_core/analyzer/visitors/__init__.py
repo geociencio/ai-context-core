@@ -1,4 +1,4 @@
-"""AST visitors, metrics calculators, and specialized detectors (Security, QGIS)."""
+"""AST visitors and structural/metrics calculators (context-only)."""
 
 from .ast_utils import (
     extract_base_name,
@@ -20,12 +20,6 @@ from .ast_entry_points import (
     is_entry_point,
     has_main_guard,
 )
-from .ast_qgis import (
-    check_qgis_compliance,
-)
-from .antipatterns import detect_all as detect_antipatterns
-from .issues import detect as detect_security_issues
-from .patterns import detect_patterns
 from .complexity_visitor import ComplexityVisitor
 from .visitors_base import BaseVisitor
 
@@ -42,10 +36,6 @@ __all__ = [
     "calculate_sloc",
     "is_entry_point",
     "has_main_guard",
-    "check_qgis_compliance",
-    "detect_antipatterns",
-    "detect_security_issues",
-    "detect_patterns",
     "ComplexityVisitor",
     "BaseVisitor",
 ]

@@ -6,25 +6,7 @@ Cubre los últimos 83 líneas en engine, tech_debt, patterns, issues, etc.
 import ast
 import pathlib
 from unittest.mock import patch, mock_open
-from ai_context_core.analyzer.builders.patterns import PatternsBuilder
 from ai_context_core.analyzer.builders.structure import StructureBuilder
-from ai_context_core.analyzer.visitors.issues import find_secrets
-
-
-def test_patterns_builder_with_patterns():
-    # Coverage for patterns.py lines 27-31
-    builder = PatternsBuilder(
-        {
-            "patterns": {
-                "singleton": [{"class": "MySingleton", "module": "test.py"}],
-                "factory": [{"class": "MyFactory", "module": "test.py"}],
-            }
-        }
-    )
-    lines = []
-    builder.build(lines)
-    assert len(lines) > 0
-    assert any("singleton" in str(line).lower() for line in lines)
 
 
 def test_structure_builder_with_data():
@@ -41,24 +23,6 @@ def test_structure_builder_with_data():
     lines = []
     builder.build(lines)
     assert len(lines) > 0
-
-
-def test_issues_find_secrets_with_secrets():
-    # Coverage for issues.py lines 36, 51, 66-71
-    modules = [{"path": "test1.py"}, {"path": "test2.py"}]
-
-    # Mock file content with a potential secret
-    def mock_read(path):
-        if "test1" in str(path):
-            return "API_KEY = 'sk-1234567890abcdef'"
-        return "x = 1"
-
-    with patch(
-        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast",
-        side_effect=mock_read,
-    ):
-        result = find_secrets(modules, "/tmp")
-        assert isinstance(result, list)
 
 
 def test_gis_utils_extract_metadata():

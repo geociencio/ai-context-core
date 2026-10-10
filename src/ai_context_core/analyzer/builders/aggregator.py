@@ -1,19 +1,19 @@
 """Aggregation logic for analyzer results.
 
-Extracted from engine.py to reduce complexity and improve modularity.
+Context-only (v5.0.0): security, QGIS compliance, design patterns and
+anti-patterns are no longer aggregated; those domains belong to
+``qgis-plugin-analyzer``.
 """
 
-from typing import List, Dict, Any
-import pathlib
 import logging
-import time
-from . import dependencies
+import pathlib
+from typing import Any, Dict, List
+
 from . import calculator as metrics
-from . import ai_recommendations
+from . import dependencies
 from . import metric_keys
-from .security_severity import max_severity
-from ..visitors import issues as v_issues
 from ..providers.fs_scanner import count_test_files
+from ..visitors.issues import find_optimizations
 
 logger = logging.getLogger(__name__)
 
@@ -36,31 +36,24 @@ class ResultsAggregator:
         m_data: List[Dict[str, Any]],
         graph_data: Dict[str, Any],
         git_data: Dict[str, Any],
-        qgis_metadata: Dict[str, Any],
+        _qgis_metadata: Dict[str, Any],
     ) -> Dict[str, Any]:
-        """Performs a full aggregation of module data and project-level metrics.
+        """Perform a full aggregation of module data and project-level metrics.
 
         Args:
             m_data: List of individual module analysis results.
             graph_data: Global dependency graph information.
             git_data: Evolution and churn data from git.
-            qgis_metadata: Metadata from metadata.txt if available.
+            _qgis_metadata: Unused; retained for call-site compatibility.
 
         Returns:
             A post-processed results dictionary ready for reporting.
         """
-        # Filter out modules with syntax errors for metric calculations
         valid_modules = [m for m in m_data if not m.get("syntax_error")]
 
         # Dependency analysis
         unused_imports = dependencies.detect_unused_imports_in_project(valid_modules, self.config)
         graph_data["unused_imports"] = unused_imports
-
-        # Security aggregation
-        security_issues = self._aggregate_security(m_data)
-
-        # QGIS compliance aggregation
-        qgis_compliance = self._run_qgis_aggregation(valid_modules, qgis_metadata)
 
         # Project-level metrics
         entry_point_modules = [m for m in valid_modules if m.get("has_main")]
@@ -72,33 +65,23 @@ class ResultsAggregator:
             }
             for m in entry_point_modules
         ]
-        # Count test files independently of the analysis scope so that projects
-        # excluding tests/ from analysis are not unfairly penalized.
         test_files_count = count_test_files(self.project_path)
         project_metrics = metrics.calculate_project_metrics(
             valid_modules,
             entry_points,
             test_files_count,
             self.config,
-            {"qgis_compliance": qgis_compliance},
+            {},
         )
 
         missing = metric_keys.missing_metric_keys(project_metrics)
         if missing:
             logger.warning("Missing project metric keys: %s", missing)
 
-        # AI Recommendations
-        recommendations = ai_recommendations.generate_recommendations(
-            valid_modules, project_metrics
-        )
-
-        # Complexity aggregation (for backward compatibility)
         from .formatter import format_complexity_agg
 
         complexity_agg = format_complexity_agg(valid_modules, project_metrics)
-
-        # Module-level optimizations
-        optimizations = v_issues.find_optimizations(valid_modules)
+        optimizations = find_optimizations(valid_modules)
 
         return {
             "project_name": self.project_path.name,
@@ -106,100 +89,11 @@ class ResultsAggregator:
             "complexity": complexity_agg,
             "modules": m_data,
             "dependencies": graph_data,
-            "security": security_issues,
-            "qgis_compliance": qgis_compliance,
             "optimizations": optimizations,
-            "recommendations": recommendations,
-            "patterns": self._aggregate_patterns(valid_modules),
-            "antipatterns": self._aggregate_antipatterns(valid_modules),
             "entry_points": entry_points_detail,
             "git": git_data,
-            "timestamp": time.time() if "time" in globals() else None,
+            "timestamp": None,
         }
-
-    def _run_qgis_aggregation(
-        self, m_data: List[Dict[str, Any]], metadata: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Runs QGIS aggregation if enabled in config."""
-        # Auto-delegate to QGIS aggregation if metadata exists or explicitly enabled
-        qgis_config = self.config.get("patterns", {}).get("qgis_compliance", {})
-        qgis_enabled = qgis_config.get("enabled", False)
-
-        # Override to True if metadata exists and config is the default False
-        if not qgis_enabled and metadata.get("exists", False):
-            qgis_enabled = True
-
-        if not qgis_enabled:
-            return {}
-
-        from .aggregator_qgis import aggregate_qgis_compliance
-        from ..providers.qgis_resources import analyze_qgis_resources
-
-        patterns = self.config.get("patterns", {}) or {}
-        i18n_config = patterns.get("i18n", {}) or {}
-
-        # New: Analyze resources (.qrc, plugin.xml, etc.)
-        resource_data = analyze_qgis_resources(self.project_path)
-        if resource_data:
-            metadata.update({"resources": resource_data})
-
-        return aggregate_qgis_compliance(m_data, metadata, i18n_config)
-
-    def _aggregate_patterns(self, m_data: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Aggregates design patterns from all modules."""
-        all_patterns = {}
-        for mod in m_data:
-            pats = mod.get("patterns", {})
-            for name, instances in pats.items():
-                if name not in all_patterns:
-                    all_patterns[name] = []
-                # Add module info to instances
-                for inst in instances:
-                    inst["module"] = mod.get("path", "N/A")
-                all_patterns[name].extend(instances)
-        return all_patterns
-
-    def _aggregate_antipatterns(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Aggregates anti-pattern issues from all modules, honoring the severity cutoff."""
-        from ..visitors.antipattern_base import filter_issues, min_severity_from_config
-
-        min_severity = min_severity_from_config(self.config)
-
-        result = []
-        for mod in m_data:
-            issues = filter_issues(mod.get("antipatterns", []), min_severity)
-            if issues:
-                result.append({"module": mod.get("path", "N/A"), "issues": issues})
-        return result
-
-    def _aggregate_security(self, m_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Aggregates secrets and AST security issues."""
-        # Get secrets first (file-based)
-        all_security = v_issues.find_secrets(m_data, str(self.project_path))
-
-        # Add AST security issues from module data
-        for mod in m_data:
-            ast_issues = mod.get("ast_security", [])
-            if ast_issues:
-                # Find if module already exists in all_security
-                found = False
-                for existing in all_security:
-                    if existing.get("module") == mod.get("path"):
-                        existing["issues"].extend(ast_issues)
-                        existing["total_issues"] = len(existing["issues"])
-                        existing["max_severity"] = max_severity(existing["issues"])
-                        found = True
-                        break
-                if not found:
-                    all_security.append(
-                        {
-                            "module": mod["path"],
-                            "issues": ast_issues,
-                            "total_issues": len(ast_issues),
-                            "max_severity": max_severity(ast_issues),
-                        }
-                    )
-        return all_security
 
 
 def __getattr__(name: str):

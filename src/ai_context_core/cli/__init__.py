@@ -8,9 +8,9 @@ from .commands import ALL_CMDS
 @click.group()
 @click.version_option(package_name="ai-context-core")
 def cli():
-    """CLI tool for AI context management.
+    """CLI for compiling token-efficient, verifiable AI context.
 
-    Provides commands for analysis, design patterns, security and QGIS compliance.
+    Context-only (v5.0.0): sources -> transform -> render -> verify.
     """
     pass
 

@@ -130,14 +130,18 @@ def generate_project_summary(
     project_name: str,
     format: str = "markdown",
 ) -> None:
-    """Generates an executive summary of the project."""
+    """Generates an executive summary of the project (markdown-only in v5.0.0).
+
+    Args:
+        analyses: Analysis results.
+        output_path: Destination path.
+        project_name: Project name used as the title.
+        format: Retained for API compatibility; only markdown is produced.
+    """
     from .summary_generator import ProjectSummaryGenerator
 
     gen = ProjectSummaryGenerator(analyses, project_name)
-    if format == "html":
-        gen.generate_html(output_path)
-    else:
-        gen.generate_markdown(output_path)
+    gen.generate_markdown(output_path)
 
 
 def generate_ai_context(

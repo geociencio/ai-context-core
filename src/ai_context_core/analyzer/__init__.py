@@ -1,4 +1,11 @@
+"""Analyzer engine package (context-only, v5.0.0)."""
+
 from .. import __version__
+from .builders import (
+    aggregator,
+    dependencies,
+    reporting,
+)
 from .engine import ProjectAnalyzer
 from .providers import (
     fs_utils,
@@ -6,23 +13,11 @@ from .providers import (
     gis_utils,
     worker,
 )
-from .builders import (
-    aggregator,
-    reporting,
-    ai_recommendations,
-    dependencies,
-    issues as builder_issues,  # noqa: F401
-)
-from .visitors import (
-    ast_utils,
-    antipatterns,
-    issues as visitor_issues,
-)
+from .visitors import ast_utils
 
 # For backward compatibility with existing tests and CLI imports
 AnalysisWorker = worker.AnalysisWorker
 graph_engine = dependencies
-issues = visitor_issues  # Typically tests expect the detectors here
 
 __all__ = [
     "ProjectAnalyzer",
@@ -33,9 +28,6 @@ __all__ = [
     "aggregator",
     "dependencies",
     "reporting",
-    "ai_recommendations",
     "ast_utils",
-    "antipatterns",
-    "issues",
     "__version__",
 ]

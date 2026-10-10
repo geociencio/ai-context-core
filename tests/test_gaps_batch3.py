@@ -4,7 +4,6 @@ Tests masivos para cubrir todos los gaps restantes.
 
 import pathlib
 from unittest.mock import patch
-from ai_context_core.analyzer.visitors.issues import find_secrets
 from ai_context_core.analyzer.builders.builder import ImportGraphBuilder
 from ai_context_core.analyzer.builders.classifier import (
     classify_imports,
@@ -12,17 +11,6 @@ from ai_context_core.analyzer.builders.classifier import (
 from ai_context_core.analyzer.builders.parser import (
     parse_dependency_files,
 )
-
-
-def test_find_secrets_no_secrets():
-    # Coverage for issues.py lines 36, 51, 66-71
-    modules = [{"path": "test.py"}]
-    with patch(
-        "ai_context_core.analyzer.providers.fs_helpers.read_file_fast",
-        return_value="x = 1",
-    ):
-        result = find_secrets(modules, "/tmp")
-        assert isinstance(result, list)
 
 
 def test_import_graph_builder_resolve_import():
@@ -118,7 +106,6 @@ def test_dependencies_fallback():
 def test_context_section_builders():
     # Coverage for context/summary section builders
     from ai_context_core.analyzer.builders.dependencies import DependencyBuilder
-    from ai_context_core.analyzer.builders.patterns import PatternsBuilder
     from ai_context_core.analyzer.builders.structure import StructureBuilder
 
     # Test DependencyBuilder
@@ -126,12 +113,6 @@ def test_context_section_builders():
     lines = []
     builder.build(lines)
     assert len(lines) > 0
-
-    # Test PatternsBuilder
-    builder2 = PatternsBuilder({"patterns": {}})
-    lines2 = []
-    builder2.build(lines2)
-    assert isinstance(lines2, list)
 
     # Test StructureBuilder
     builder3 = StructureBuilder({"structure": {"classes": ["MyClass"]}})

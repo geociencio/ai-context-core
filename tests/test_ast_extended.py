@@ -4,7 +4,6 @@ from ai_context_core.analyzer.visitors.ast_metrics import (
     calculate_type_hint_coverage,
     TypeHintVisitor,
 )
-from ai_context_core.analyzer.visitors.halstead import HalsteadVisitor
 
 
 def test_extract_base_name_variants():
@@ -36,27 +35,6 @@ def test_type_hint_coverage_edge_cases():
     # All typed including return
     code_all = "def f(a: int) -> int: pass"
     assert calculate_type_hint_coverage(ast.parse(code_all))["coverage"] == 100.0
-
-
-def test_halstead_visitor_generic():
-    # Coverage for HalsteadVisitor line 83-89
-    visitor = HalsteadVisitor()
-    tree = ast.parse("x = 1 + 2")
-    visitor.visit(tree)
-    # 1 (+) operator
-    assert "Add" in visitor.operators
-    # x, 1, 2 operands
-    assert "x" in visitor.operands
-    assert "1" in visitor.operands
-    assert "2" in visitor.operands
-
-    # Test unknown node type in Halstead (should still visit children)
-    # Using a Module node (which is not in OPERATORS usually, but we check for specific roles)
-    # Actually OPERATORS has mostly specific types.
-    # Constant coverage
-    node_const = ast.Constant(value="hello")
-    visitor.visit(node_const)
-    assert "hello" in visitor.operands
 
 
 def test_type_hint_visitor_init():

@@ -7,7 +7,6 @@ import concurrent.futures
 import pathlib
 from typing import Dict, Any, List
 from ..visitors import ast_utils
-from ..visitors.i18n_components import find_no_i18n_lines
 from ..visitors.imports_visitor import get_package
 from ..builders import calculator as metrics
 from ..registry import registry
@@ -31,11 +30,6 @@ class AnalysisWorker:
         self.max_workers = max_workers
         self.cache = cache
         self.error_log = {}
-
-    def _patterns_config(self) -> Dict[str, Any]:
-        """Return the ``patterns`` config section, defaulting to an empty dict."""
-        patterns = self.config.get("patterns")
-        return patterns if patterns else {}
 
     def run_parallel(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
         """Executes parallel analysis of modules."""
@@ -129,17 +123,13 @@ class AnalysisWorker:
         from . import fs_utils
 
         # Ensure detectors are registered
-        from ..visitors import antipatterns, issues, patterns, ast_qgis  # noqa: F401
+        from ..visitors import ast_visitors  # noqa: F401
 
         try:
             content = fs_utils.read_file_fast(file_path)
             if not content:
                 return {}
             tree = ast.parse(content)
-            tree.no_i18n_lines = find_no_i18n_lines(content)
-            patterns_cfg = self._patterns_config()
-            tree.i18n_config = patterns_cfg.get("i18n") or {}
-            tree.antipatterns_config = patterns_cfg.get("antipatterns") or {}
 
             entry_data = ast_utils.is_entry_point(tree)
             complexity = ast_utils.calculate_complexity(tree)

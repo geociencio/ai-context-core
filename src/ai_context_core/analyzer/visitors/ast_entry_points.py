@@ -1,56 +1,25 @@
-"""Entry point detection for various frameworks (QGIS, Click, Flask, FastAPI)."""
+"""Entry point detection (context).
+
+Context-only (v5.0.0): detection is limited to the standard ``__main__`` guard.
+Framework-specific (Flask/FastAPI/Django/QGIS) entry-point heuristics moved to
+``qgis-plugin-analyzer`` (supersedes ADR-0004).
+"""
 
 import ast
-from typing import Dict, Any
-from .ast_qgis import is_qgis_entry_point_node
+from typing import Any, Dict
 
 
 class EntryPointVisitor(ast.NodeVisitor):
-    """Visitor to detect if a module is an entry point.
-
-    Analyzes various patterns like __main__ guards, QGIS plugin entry points,
-    and framework-specific decorators or assignments.
-    """
+    """Detect whether a module is an entry point via the ``__main__`` guard."""
 
     def __init__(self):
         """Initialize the entry point visitor."""
-        self.result = {"is_entry_point": False, "type": None}
-        from .framework_rules import DecoratorRule
-
-        self._deco_rule = DecoratorRule()
+        self.result: Dict[str, Any] = {"is_entry_point": False, "type": None}
 
     def visit_If(self, node: ast.If):
-        """Checks for __main__ guards."""
+        """Check for ``if __name__ == "__main__":`` guards."""
         if not self.result["is_entry_point"] and self._is_main_guard(node):
             self.result = {"is_entry_point": True, "type": "main_guard"}
-        self.generic_visit(node)
-
-    def visit_FunctionDef(self, node: ast.FunctionDef):
-        """Checks for QGIS entry points or framework decorators."""
-        if self.result["is_entry_point"]:
-            return
-        if is_qgis_entry_point_node(node):
-            self.result = {"is_entry_point": True, "type": "qgis_plugin"}
-            return
-        for deco in node.decorator_list:
-            res_type = self._deco_rule.check(deco)
-            if res_type:
-                self.result = {"is_entry_point": True, "type": res_type}
-                return
-        self.generic_visit(node)
-
-    def visit_Assign(self, node: ast.Assign):
-        """Checks for application assignments (Django, Flask, FastAPI)."""
-        if self.result["is_entry_point"]:
-            return
-        from .framework_rules import AssignmentRule
-
-        for target in node.targets:
-            if isinstance(target, ast.Name):
-                res_type = AssignmentRule(target.id, node.value).check(node)
-                if res_type:
-                    self.result = {"is_entry_point": True, "type": res_type}
-                    return
         self.generic_visit(node)
 
     def _is_main_guard(self, node: ast.If) -> bool:
@@ -70,15 +39,13 @@ class EntryPointVisitor(ast.NodeVisitor):
 
 
 def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
-    """Analyzes a module to determine if it acts as an entry point.
-
-    Checks for __main__ guards and common CLI or QGIS plugin entry points.
+    """Analyze a module to determine if it acts as an entry point.
 
     Args:
         tree: The AST to analyze.
 
     Returns:
-        Dictionary with is_entry_point (bool) and entry_point_type (str).
+        Dictionary with ``is_entry_point`` (bool) and ``type`` (str).
     """
     visitor = EntryPointVisitor()
     visitor.visit(tree)
@@ -86,7 +53,7 @@ def is_entry_point(tree: ast.AST) -> Dict[str, Any]:
 
 
 def has_main_guard(tree: ast.AST) -> bool:
-    """Checks if the module contains the standard 'if __name__ == "__main__":' guard.
+    """Return True when the module contains the standard ``__main__`` guard.
 
     Args:
         tree: The AST to analyze.

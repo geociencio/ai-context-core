@@ -5,9 +5,9 @@
 context_docs = []
 
 # Which AI_CONTEXT.md sections to render. Omit a name to skip that section.
-# Available: structure, metrics, patterns, dependencies, git, qgis.
+# Available: structure, metrics, dependencies, git.
 [context]
-sections = ["structure", "metrics", "patterns", "dependencies", "git", "qgis"]
+sections = ["structure", "metrics", "dependencies", "git"]
 
 # Analysis source selection. ``auto`` prefers external qgis-analyzer output
 # (``analysis_results/project_context.json``) when present, else the builtin

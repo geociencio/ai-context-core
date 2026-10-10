@@ -5,7 +5,6 @@ from ai_context_core.analyzer.visitors.ast_entry_points import (
     has_main_guard,
     EntryPointVisitor,
 )
-from ai_context_core.analyzer.visitors.framework_rules import DecoratorRule
 
 
 def test_entry_point_visitor_assign_early_return():
@@ -32,34 +31,6 @@ def test_has_main_guard_logic():
     assert has_main_guard(ast.parse("x = 1")) is False
 
 
-def test_entry_point_assign_frameworks():
-    # Django
-    assert is_entry_point(ast.parse("application = get_wsgi_application()"))["type"] == "django_app"
-    assert is_entry_point(ast.parse("urlpatterns = []"))["type"] == "django_urls"
-    assert is_entry_point(ast.parse("INSTALLED_APPS = []"))["type"] == "django_settings"
-    # Flask
-    assert is_entry_point(ast.parse("app = Flask(__name__)"))["type"] == "flask_app"
-    # FastAPI
-    assert is_entry_point(ast.parse("app = FastAPI()"))["type"] == "fastapi_app"
-
-
-def test_decorator_rules_coverage():
-    # Coverage for DecoratorRule lines 12-17 and types
-    rule = DecoratorRule()
-    # Not call/attr/name
-    assert rule.check(ast.BinOp()) is None
-    # Call but not attribute
-    # @deco -> deco is Name
-    assert rule.check(ast.parse("@deco\ndef f(): pass").body[0].decorator_list[0]) is None
-
-    # Click
-    click_deco = ast.parse("@click.command()\ndef f(): pass").body[0].decorator_list[0]
-    assert rule.check(click_deco) == "click_cli"
-
-    # Flask route
-    flask_deco = ast.parse("@app.route('/')\ndef f(): pass").body[0].decorator_list[0]
-    assert rule.check(flask_deco) == "flask_app"
-
-    # FastAPI
-    fastapi_deco = ast.parse("@app.get('/')\ndef f(): pass").body[0].decorator_list[0]
-    assert rule.check(fastapi_deco) == "fastapi_app"
+def test_entry_point_main_guard_detection():
+    assert is_entry_point(ast.parse('if __name__ == "__main__": pass'))["type"] == "main_guard"
+    assert is_entry_point(ast.parse("app = Flask(__name__)"))["type"] is None

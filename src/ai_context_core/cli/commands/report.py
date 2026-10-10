@@ -1,60 +1,45 @@
-"""Reporting and recommendations command logic."""
+"""Context-health recommendations for the ``help-me`` command."""
 
 import pathlib
+
 import click
-from ai_context_core.analyzer.engine import ProjectAnalyzer
-from ai_context_core.config.loader import ConfigLoader
 
 
-def show_specific(path: str, category: str):
-    """Shows specific analysis category results."""
+def show_context_help(path: str) -> None:
+    """Print context-oriented recommendations for a project.
+
+    Args:
+        path: Project root to analyze.
+    """
+    from ai_context_core.analyzer.engine import ProjectAnalyzer
+
     proj = pathlib.Path(path).resolve()
-    loader = ConfigLoader()
-    cfg = loader.load_config()
-    analyzer = ProjectAnalyzer(project_path=str(proj), config=cfg)
-    res = analyzer.analyze()
+    res = ProjectAnalyzer(str(proj)).collect()
 
-    if category == "patterns":
-        _show_patterns(res)
-    elif category == "security":
-        _show_security(res)
-    elif category == "recommendations":
-        _show_recommendations(res)
+    click.secho("CONTEXT RECOMMENDATIONS", fg="cyan", bold=True)
+    for tip in _recommendations(res):
+        click.echo(f"- {tip}")
 
 
-def _show_patterns(res):
-    click.secho("🏗️  DETECTED PATTERNS", fg="cyan", bold=True)
-    pats = res.get("patterns", {})
-    if not pats:
-        click.echo("No patterns detected.")
-    for name, occs in pats.items():
-        for o in occs:
-            class_name = o.get("class", o.get("name", "N/A"))
-            module_path = o.get("module", "N/A")
-            confidence = o.get("confidence", 0)
-            click.echo(f"- {name}: {class_name} in {module_path} ({confidence}%)")
+def _recommendations(res: dict) -> list:
+    """Derive context-health tips from an analysis payload."""
+    tips = []
 
+    if not (res.get("manual_notes") or ""):
+        tips.append(
+            "Add .ai-context/architecture_notes.md (or project_brain.md) so the "
+            "context carries curated architecture guidance, not just extracted facts."
+        )
 
-def _show_security(res):
-    click.secho("🚨 SECURITY ISSUES", fg="red", bold=True)
-    sec = res.get("security", [])
-    if not sec:
-        click.echo("No issues found.")
-    for mod in sec:
-        for issue in mod.get("issues", []):
-            severity = issue.get("severity", "unknown").upper()
-            module_name = mod.get("module", "N/A")
-            message = issue.get("message", issue.get("description", "No description"))
-            click.echo(f"- [{severity}] {module_name}: {message}")
+    git = res.get("git") or {}
+    if not git.get("is_repo"):
+        tips.append("No git history detected; churn/hotspot context will be empty.")
 
+    if not (res.get("structure") or {}).get("tree"):
+        tips.append("No structure tree generated; check the analysis scope.")
 
-def _show_recommendations(res):
-    click.secho("💡 AI RECOMMENDATIONS", fg="yellow", bold=True)
-    opts = res.get("optimizations", [])
-    if not opts:
-        click.echo("No recommendations.")
-    for o in opts:
-        module_name = o.get("module", "N/A")
-        for sug in o.get("suggestions", []):
-            message = sug.get("message", "N/A")
-            click.echo(f"- [{module_name}] {message}")
+    if not tips:
+        tips.append(
+            "Context looks healthy. Regenerate after significant changes with 'ai-ctx context'."
+        )
+    return tips

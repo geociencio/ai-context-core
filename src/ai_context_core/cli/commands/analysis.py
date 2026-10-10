@@ -1,8 +1,8 @@
-"""Analysis commands for the CLI (analyze, audit, inspect)."""
+"""Analysis commands for the CLI (analyze, context)."""
 
 import click
 from typing import Optional
-from . import analyze, inspect
+from . import analyze
 
 
 @click.command(name="analyze")
@@ -41,14 +41,6 @@ def analyze_cmd(
     )
 
 
-@click.command(name="audit")
-@click.option("--path", default=".", help="Project path")
-@click.option("--threshold", "-t", default=70.0, type=float, help="Minimum ai-ctx Quality Score")
-def audit_cmd(path: str, threshold: float):
-    """Fails if ai-ctx Quality Score is below threshold."""
-    analyze.run_audit(path, threshold)
-
-
 @click.command(name="context")
 @click.option("--path", default=".", help="Project path")
 @click.option("--workers", "-w", default=None, type=int, help="Parallel workers")
@@ -65,17 +57,6 @@ def audit_cmd(path: str, threshold: float):
     multiple=True,
     help="Glob (relative to the project root) of extra markdown docs to embed; repeatable",
 )
-def context_cmd(
-    path: str, workers: Optional[int], no_cache: bool, source: str, include_md: tuple
-):
+def context_cmd(path: str, workers: Optional[int], no_cache: bool, source: str, include_md: tuple):
     """Generates AI_CONTEXT.md and project_context.json without the quality score."""
-    analyze.run_context(
-        path, workers, no_cache, include_md=list(include_md), source=source
-    )
-
-
-@click.command(name="inspect")
-@click.argument("file_path")
-def inspect_cmd(file_path: str):
-    """Deep analysis of a single file."""
-    inspect.inspect_file(file_path)
+    analyze.run_context(path, workers, no_cache, include_md=list(include_md), source=source)

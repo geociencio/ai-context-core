@@ -1,7 +1,7 @@
-"""Specialized commands for the CLI (deps, git, qgis)."""
+"""Specialized commands for the CLI (deps, git)."""
 
 import click
-from . import deps, git, qgis
+from . import deps, git
 
 
 @click.command(name="deps")
@@ -22,15 +22,3 @@ def deps_cmd(path: str, unused: bool, cycles: bool, metrics: bool):
 def git_cmd(path: str, days: int):
     """Shows git evolution analysis (hotspots and churn)."""
     git.show_git_evolution(path, days)
-
-
-@click.command(name="qgis")
-@click.option("--path", default=".", help="Project path")
-@click.option(
-    "--i18n-scope",
-    type=click.Choice(["all", "gui_only"]),
-    help="Limit i18n analysis scope (e.g., 'gui_only' to filter technical modules)",
-)
-def qgis_cmd(path: str, i18n_scope: str):
-    """Validates QGIS plugin compliance."""
-    qgis.validate_qgis(path, i18n_scope)

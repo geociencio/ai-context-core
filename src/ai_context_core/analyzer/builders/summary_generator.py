@@ -1,17 +1,17 @@
-"""Summary generation utilities for ai-context-core reporting."""
+"""Summary generation utilities for ai-context-core reporting.
+
+Context-only (v5.0.0): the summary is markdown-only and no longer embeds QGIS,
+design-pattern or HTML-dashboard sections.
+"""
 
 import pathlib
-from typing import Dict, Any
-from .html_builder import HTMLReportBuilder
-from . import metric_keys
-from . import formatter
+from typing import Any, Dict
 
 
 class ProjectSummaryGenerator:
-    """Orchestrates the generation of project summaries in different formats.
+    """Orchestrates the generation of the project summary.
 
-    Uses specialized summarizers to build sections of the reports, following
-    the strategy pattern for report composition.
+    Uses specialized summarizers to compose the report sections.
     """
 
     def __init__(self, analyses: Dict[str, Any], project_name: str):
@@ -23,67 +23,14 @@ class ProjectSummaryGenerator:
         """
         self.analyses = analyses
         self.project_name = project_name
-        from . import (
-            MetricsSummarizer,
-            IssuesSummarizer,
-            QGISSummarizer,
-            GitPatternsSummarizer,
-        )
+        from . import GitSummarizer, IssuesSummarizer, MetricsSummarizer
 
         self.metrics_s = MetricsSummarizer(analyses)
         self.issues_s = IssuesSummarizer(analyses)
-        self.qgis_s = QGISSummarizer(analyses)
-        self.git_p_s = GitPatternsSummarizer(analyses)
-
-    def generate_html(self, output_path: pathlib.Path):
-        """Generates the HTML report.
-
-        Args:
-            output_path: Path where the HTML report will be saved.
-        """
-        builder = HTMLReportBuilder(f"PROJECT SUMMARY - {self.project_name}")
-
-        # Metrics
-        m = self.analyses.get("metrics", {})
-        c = self.analyses.get("complexity", {})
-        m_html = f"""
-        <div class="metric">ai-ctx Quality Score: <span class="metric-value">{m.get(metric_keys.QUALITY_SCORE, 0)}/100</span></div>
-        <div class="metric">Source Lines (SLOC): <span class="metric-value">{m.get(metric_keys.TOTAL_LINES_CODE, 0):,}</span></div>
-        <div class="metric">Physical Lines: <span class="metric-value">{m.get(metric_keys.TOTAL_PHYSICAL_LINES, 0):,}</span></div>
-        <div class="metric">Modules: <span class="metric-value">{c.get(formatter.TOTAL_MODULES, 0)}</span></div>
-        """
-        builder.add_section("📊 KEY METRICS", m_html)
-
-        # Issues
-        sec = self.analyses.get("security", [])
-        if sec:
-            s_list = [
-                f"<strong>{i.get('module', 'N/A')}</strong>: {i.get('total_issues', 0)} issues (Max: {str(i.get('max_severity', 'unknown')).upper()})"
-                for i in sec[:5]
-            ]
-            builder.add_section("🚨 SECURITY ISSUES", builder.build_list(s_list))
-
-        # Recommendations
-        opt = self.analyses.get("optimizations", [])
-        if opt:
-            o_list = [
-                f"<strong>{o.get('module', 'N/A')}</strong>: {'; '.join(s.get('message', '') for s in o.get('suggestions', []))}"
-                for o in opt[:5]
-            ]
-            builder.add_section("💡 RECOMMENDATIONS", builder.build_list(o_list))
-
-        # Graph
-        from .reporting import generate_dependency_diagram
-
-        graph = generate_dependency_diagram(self.analyses.get("dependencies", {}))
-        if graph:
-            builder.add_section("🕸️ DEPENDENCY GRAPH", f'<div class="mermaid">{graph}</div>')
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(builder.render())
+        self.git_s = GitSummarizer(analyses)
 
     def generate_markdown(self, output_path: pathlib.Path):
-        """Generates the Markdown report.
+        """Generate the Markdown project summary.
 
         Args:
             output_path: Path where the Markdown report will be saved.
@@ -96,11 +43,9 @@ class ProjectSummaryGenerator:
             ("📊 KEY METRICS", self.metrics_s.build_metrics()),
             ("📁 STRUCTURE", self.metrics_s.build_structure()),
             ("🚨 CRITICAL ISSUES", self.issues_s.build_issues()),
-            ("📦 QGIS STANDARDS", self.qgis_s.build()),
             ("💡 MAIN RECOMMENDATIONS", self.issues_s.build_recommendations()),
-            ("🏗️ DESIGN PATTERNS", self.git_p_s.build_patterns()),
             ("📝 ARCHITECTURE NOTES", self._build_manual_notes()),
-            ("🔄 GIT ANALYSIS", self.git_p_s.build_git()),
+            ("🔄 GIT ANALYSIS", self.git_s.build_git()),
             ("📈 COMPLEXITY DISTRIBUTION", self.metrics_s.build_complexity()),
         ]
 
@@ -112,7 +57,7 @@ class ProjectSummaryGenerator:
             f.write(builder.build())
 
     def _build_manual_notes(self) -> str:
-        """Reads manual architecture notes from the project configuration."""
+        """Return the manual architecture notes embedded in the analysis."""
         return self.analyses.get("manual_notes", "")
 
 

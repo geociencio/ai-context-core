@@ -4,7 +4,6 @@ This module is now a deprecated facade. Please import from the specific submodul
 - ai_context_core.analyzer.visitors.ast_visitors
 - ai_context_core.analyzer.visitors.ast_metrics
 - ai_context_core.analyzer.visitors.ast_entry_points
-- ai_context_core.analyzer.visitors.ast_qgis
 """
 
 import ast
@@ -26,9 +25,6 @@ from .ast_metrics import (  # noqa: F401
 from .ast_entry_points import (  # noqa: F401
     is_entry_point,
     has_main_guard,
-)
-from .ast_qgis import (  # noqa: F401
-    check_qgis_compliance,
 )
 
 
@@ -62,6 +58,5 @@ __all__ = [
     "calculate_sloc",
     "is_entry_point",
     "has_main_guard",
-    "check_qgis_compliance",
     "extract_base_name",
 ]

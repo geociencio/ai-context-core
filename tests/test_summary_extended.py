@@ -1,7 +1,7 @@
 from ai_context_core.analyzer.builders.summary_generator import SummaryGenerator
 
 
-def test_generate_html_with_findings(tmp_path):
+def test_generate_markdown_with_optimizations(tmp_path):
     analyses = {
         "metrics": {
             "quality_score": 90,
@@ -9,7 +9,6 @@ def test_generate_html_with_findings(tmp_path):
             "total_physical_lines": 120,
         },
         "complexity": {"total_modules": 5},
-        "security": [{"module": "main.py", "total_issues": 2, "max_severity": "high"}],
         "optimizations": [
             {
                 "module": "utils.py",
@@ -18,18 +17,14 @@ def test_generate_html_with_findings(tmp_path):
         ],
         "dependencies": {"import_graph": {"main.py": ["utils.py"], "utils.py": []}},
     }
-    output_file = tmp_path / "report.html"
+    output_file = tmp_path / "report.md"
     generator = SummaryGenerator(analyses, "TestProject")
-    generator.generate_html(output_file)
+    generator.generate_markdown(output_file)
 
     assert output_file.exists()
     content = output_file.read_text()
-    assert "SECURITY ISSUES" in content
-    assert "main.py" in content
-    assert "RECOMMENDATIONS" in content
+    assert "KEY METRICS" in content
     assert "utils.py" in content
-    assert "DEPENDENCY GRAPH" in content
-    assert "mermaid" in content
 
 
 def test_build_manual_notes():
