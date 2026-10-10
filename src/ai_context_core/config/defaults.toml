@@ -9,6 +9,15 @@ context_docs = []
 [context]
 sections = ["structure", "metrics", "dependencies", "git"]
 
+# Token budget for AI_CONTEXT.md. ``max_tokens`` caps the whole document
+# (override per-run with ``ai-ctx context --max-tokens N``); ``[context.budget.sections]``
+# adds per-section caps. Omit/uncomment to disable.
+[context.budget]
+# max_tokens = 8000
+# [context.budget.sections]
+# structure = 1500
+# dependencies = 2500
+
 # Analysis source selection. ``auto`` prefers external qgis-analyzer output
 # (``analysis_results/project_context.json``) when present, else the builtin
 # engine. ``external_path`` overrides the default output location.

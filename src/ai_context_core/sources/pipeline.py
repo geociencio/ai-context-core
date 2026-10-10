@@ -118,15 +118,20 @@ def render_context(
     *,
     generate_summary: bool = False,
     output_format: str = "markdown",
-) -> None:
+    max_tokens: Optional[int] = None,
+) -> Dict[str, Any]:
     """Render the context artifacts for an analysis result.
 
     Args:
         result: The analysis result to render.
         project_path: Project root.
-        config: Analyzer configuration (``context.sections``).
+        config: Analyzer configuration (``context.sections`` / ``context.budget``).
         generate_summary: Also emit ``PROJECT_SUMMARY`` (score-focused).
         output_format: ``markdown`` or ``html`` (affects the summary extension).
+        max_tokens: Optional global token cap override.
+
+    Returns:
+        The rendered token manifest.
     """
     project_path = pathlib.Path(project_path).resolve()
     data = result.data
@@ -140,13 +145,18 @@ def render_context(
             format=output_format,
         )
 
-    reporting.generate_ai_context(
+    manifest = reporting.generate_ai_context(
         data,
         project_path / "AI_CONTEXT.md",
         project_path.name,
         config=config,
+        max_tokens=max_tokens,
     )
+    reporting.write_context_manifest(project_path, manifest, result.provenance.to_dict())
+    manifest["_meta"] = result.provenance.to_dict()
 
     meta_payload = result.with_meta()
     with open(project_path / "project_context.json", "w", encoding="utf-8") as f:
         json.dump(meta_payload, f, indent=2, ensure_ascii=False, default=str)
+
+    return manifest

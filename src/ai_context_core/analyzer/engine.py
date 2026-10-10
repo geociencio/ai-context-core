@@ -9,6 +9,7 @@ import time
 import pathlib
 import json
 from typing import Dict, Any, List, Optional
+from .. import __version__
 from .providers import (
     context_fields,
     fs_utils,
@@ -142,13 +143,17 @@ class ProjectAnalyzer:
                     self.project_path.name,
                     format=fmt,
                 )
-            reporting.generate_ai_context(
+            manifest = reporting.generate_ai_context(
                 results,
                 self.project_path / "AI_CONTEXT.md",
                 self.project_path.name,
                 config=self.config,
             )
+            provenance = {"source": "builtin", "tool_version": __version__}
+            reporting.write_context_manifest(self.project_path, manifest, provenance)
             with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
-                json.dump(results, f, indent=2, ensure_ascii=False, default=str)
+                payload = dict(results)
+                payload["_meta"] = provenance
+                json.dump(payload, f, indent=2, ensure_ascii=False, default=str)
         except Exception as e:
             logger.error(f"Error generating outputs: {e}")

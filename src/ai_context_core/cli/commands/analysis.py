@@ -52,11 +52,31 @@ def analyze_cmd(
     help="Analysis source: auto (external if present, else builtin), external, builtin",
 )
 @click.option(
+    "--max-tokens",
+    type=int,
+    default=None,
+    help="Global token cap for AI_CONTEXT.md (deterministic truncation)",
+)
+@click.option(
     "--include-md",
     "include_md",
     multiple=True,
     help="Glob (relative to the project root) of extra markdown docs to embed; repeatable",
 )
-def context_cmd(path: str, workers: Optional[int], no_cache: bool, source: str, include_md: tuple):
-    """Generates AI_CONTEXT.md and project_context.json without the quality score."""
-    analyze.run_context(path, workers, no_cache, include_md=list(include_md), source=source)
+def context_cmd(
+    path: str,
+    workers: Optional[int],
+    no_cache: bool,
+    source: str,
+    max_tokens: Optional[int],
+    include_md: tuple,
+):
+    """Generates AI_CONTEXT.md, project_context.json and context_manifest.json."""
+    analyze.run_context(
+        path,
+        workers,
+        no_cache,
+        include_md=list(include_md),
+        source=source,
+        max_tokens=max_tokens,
+    )

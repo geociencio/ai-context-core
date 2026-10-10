@@ -91,6 +91,7 @@ def run_context(
     no_cache: bool,
     include_md: Optional[list] = None,
     source: Optional[str] = None,
+    max_tokens: Optional[int] = None,
 ):
     """Generates context files without emitting or auditing the quality score."""
     from ai_context_core.sources.pipeline import compile_context, render_context
@@ -107,10 +108,17 @@ def run_context(
             ignore_cache=no_cache,
             include_md=include_md,
         )
-        render_context(result, proj, cfg, generate_summary=False)
+        manifest = render_context(result, proj, cfg, generate_summary=False, max_tokens=max_tokens)
+        total = manifest["total_tokens"]
+        budget = manifest["budget"]
+        if budget:
+            pct = int(round(total * 100 / budget))
+            click.echo(f"   context: {total:,} / {budget:,} tokens ({pct}%)")
+        else:
+            click.echo(f"   context: {total:,} tokens")
         click.secho(
             f"✅ Context generated ({result.provenance.source}): "
-            "AI_CONTEXT.md, project_context.json",
+            "AI_CONTEXT.md, project_context.json, context_manifest.json",
             fg="green",
         )
     except Exception as e:

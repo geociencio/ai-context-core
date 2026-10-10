@@ -6,7 +6,7 @@ AI interaction (LLM prompts). Includes Mermaid graph support.
 
 import pathlib
 import time
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 
 def _short_name(path: str) -> str:
@@ -149,11 +149,55 @@ def generate_ai_context(
     output_path: pathlib.Path,
     project_name: str,
     config: Optional[Dict[str, Any]] = None,
-) -> None:
-    """Generates an optimized project overview file for AI consumption."""
+    max_tokens: Optional[int] = None,
+) -> Dict[str, Any]:
+    """Generate ``AI_CONTEXT.md`` (optionally token-budgeted) and return a manifest.
+
+    Args:
+        analyses: Analysis results.
+        output_path: Destination path for ``AI_CONTEXT.md``.
+        project_name: Project name used as the title.
+        config: Analyzer configuration (``context.sections`` / ``context.budget``).
+        max_tokens: CLI override for the global token cap.
+
+    Returns:
+        A manifest with exact per-section token deltas, header tokens and total
+        (``total == header + sum(sections)``), matching the rendered file.
+    """
+    from ...context.budget import budget_from_config
+    from ...context.manifest import render_sections
     from .ai_context_generator import AIContextGenerator
 
     gen = AIContextGenerator(analyses, project_name, config=config)
-    content = gen.build()
+    budget = budget_from_config(config, max_tokens=max_tokens)
+
+    lines, manifest = render_sections(gen.header, gen.build_sections(), budget)
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write(content)
+        f.write("\n".join(lines))
+    return manifest
+
+
+def write_context_manifest(
+    project_path: pathlib.Path,
+    manifest: Dict[str, Any],
+    provenance: Optional[Dict[str, Any]] = None,
+) -> pathlib.Path:
+    """Write ``context_manifest.json`` and return its path.
+
+    Args:
+        project_path: Project root.
+        manifest: Token manifest returned by :func:`generate_ai_context`.
+        provenance: Optional ``_meta`` block (source, tool_version, ...).
+
+    Returns:
+        The path of the written manifest.
+    """
+    import json
+
+    payload = dict(manifest)
+    if provenance:
+        payload["_meta"] = provenance
+    target = pathlib.Path(project_path) / "context_manifest.json"
+    with open(target, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False, default=str)
+    return target

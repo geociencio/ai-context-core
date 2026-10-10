@@ -12,6 +12,7 @@ def clean_artifacts(path: str, dry_run: bool):
         proj / ".ai_context_cache.json",
         proj / "AI_CONTEXT.md",
         proj / "project_context.json",
+        proj / "context_manifest.json",
         proj / "PROJECT_SUMMARY.md",
         proj / "PROJECT_SUMMARY.html",
         proj / "ANALYSIS_REPORT.md",
