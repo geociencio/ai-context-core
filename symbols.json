@@ -2,30 +2,6 @@
   "schema": 1,
   "symbols": [
     {
-      "name": "audit_quality.py",
-      "kind": "module",
-      "file": "audit_quality.py",
-      "line": 1
-    },
-    {
-      "name": "audit",
-      "kind": "function",
-      "file": "audit_quality.py",
-      "line": 5
-    },
-    {
-      "name": "check_docs.py",
-      "kind": "module",
-      "file": "check_docs.py",
-      "line": 1
-    },
-    {
-      "name": "check_docstrings",
-      "kind": "function",
-      "file": "check_docs.py",
-      "line": 6
-    },
-    {
       "name": "src/__init__.py",
       "kind": "module",
       "file": "src/__init__.py",
@@ -72,12 +48,6 @@
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
       "line": 34
-    },
-    {
-      "name": "__getattr__",
-      "kind": "function",
-      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 99
     },
     {
       "name": "src/ai_context_core/analyzer/builders/ai_context_generator.py",
@@ -296,40 +266,28 @@
       "line": 50
     },
     {
-      "name": "halstead_metrics",
-      "kind": "method",
-      "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 69
-    },
-    {
       "name": "calculate_maintenance_index",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 89
-    },
-    {
-      "name": "calculate_halstead_metrics",
-      "kind": "function",
-      "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 103
+      "line": 69
     },
     {
       "name": "summarize_modules",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 118
+      "line": 83
     },
     {
       "name": "_score_breakdown",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 146
+      "line": 111
     },
     {
       "name": "calculate_project_metrics",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 197
+      "line": 162
     },
     {
       "name": "src/ai_context_core/analyzer/builders/classifier.py",
@@ -629,13 +587,13 @@
       "name": "generate_ai_context",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 147
+      "line": 145
     },
     {
       "name": "write_context_manifest",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 180
+      "line": 178
     },
     {
       "name": "src/ai_context_core/analyzer/builders/structure.py",
@@ -707,7 +665,7 @@
       "name": "_build_git",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
-      "line": 62
+      "line": 63
     },
     {
       "name": "src/ai_context_core/analyzer/builders/unused_imports.py",
@@ -743,31 +701,19 @@
       "name": "ProjectAnalyzer",
       "kind": "class",
       "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 28
+      "line": 25
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 34
+      "line": 31
     },
     {
       "name": "collect",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 71
-    },
-    {
-      "name": "analyze",
-      "kind": "method",
-      "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 116
-    },
-    {
-      "name": "_generate_outputs",
-      "kind": "method",
-      "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 138
+      "line": 68
     },
     {
       "name": "src/ai_context_core/analyzer/providers/__init__.py",
@@ -1448,12 +1394,6 @@
       "line": 17
     },
     {
-      "name": "get_category",
-      "kind": "method",
-      "file": "src/ai_context_core/analyzer/visitors/checker_base.py",
-      "line": 28
-    },
-    {
       "name": "src/ai_context_core/analyzer/visitors/classes.py",
       "kind": "module",
       "file": "src/ai_context_core/analyzer/visitors/classes.py",
@@ -1814,16 +1754,10 @@
       "line": 7
     },
     {
-      "name": "get_category",
-      "kind": "method",
-      "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
-      "line": 10
-    },
-    {
       "name": "check",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
-      "line": 18
+      "line": 10
     },
     {
       "name": "src/ai_context_core/analyzer/visitors/optimizations.py",
@@ -1961,13 +1895,13 @@
       "name": "run_analysis",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 15
+      "line": 14
     },
     {
       "name": "run_context",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 88
+      "line": 67
     },
     {
       "name": "src/ai_context_core/cli/commands/base.py",
@@ -2018,52 +1952,16 @@
       "line": 1
     },
     {
-      "name": "Console",
-      "kind": "class",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 15
-    },
-    {
-      "name": "print",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 16
-    },
-    {
-      "name": "Table",
-      "kind": "class",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 19
-    },
-    {
-      "name": "__init__",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 20
-    },
-    {
-      "name": "add_column",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 23
-    },
-    {
-      "name": "add_row",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 26
-    },
-    {
       "name": "run_compare",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 33
+      "line": 14
     },
     {
       "name": "_get_nested",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 90
+      "line": 71
     },
     {
       "name": "src/ai_context_core/cli/commands/context_ops.py",
@@ -2192,28 +2090,22 @@
       "line": 1
     },
     {
-      "name": "maintenance_group",
-      "kind": "function",
-      "file": "src/ai_context_core/cli/commands/maintenance.py",
-      "line": 8
-    },
-    {
       "name": "graph_cmd",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/maintenance.py",
-      "line": 16
+      "line": 10
     },
     {
       "name": "compare_cmd",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/maintenance.py",
-      "line": 24
+      "line": 18
     },
     {
       "name": "roadmap_cmd",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/maintenance.py",
-      "line": 31
+      "line": 25
     },
     {
       "name": "src/ai_context_core/cli/commands/report.py",
@@ -2252,46 +2144,10 @@
       "line": 1
     },
     {
-      "name": "Console",
-      "kind": "class",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 13
-    },
-    {
-      "name": "print",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 14
-    },
-    {
-      "name": "Table",
-      "kind": "class",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 17
-    },
-    {
-      "name": "__init__",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 18
-    },
-    {
-      "name": "add_column",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 21
-    },
-    {
-      "name": "add_row",
-      "kind": "method",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 24
-    },
-    {
       "name": "run_roadmap",
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 31
+      "line": 12
     },
     {
       "name": "src/ai_context_core/cli/commands/specialized.py",
@@ -2328,6 +2184,48 @@
       "kind": "function",
       "file": "src/ai_context_core/cli/commands/stats.py",
       "line": 49
+    },
+    {
+      "name": "src/ai_context_core/cli/console.py",
+      "kind": "module",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 1
+    },
+    {
+      "name": "Console",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 12
+    },
+    {
+      "name": "print",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 15
+    },
+    {
+      "name": "Table",
+      "kind": "class",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 18
+    },
+    {
+      "name": "__init__",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 21
+    },
+    {
+      "name": "add_column",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 24
+    },
+    {
+      "name": "add_row",
+      "kind": "method",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 27
     },
     {
       "name": "src/ai_context_core/config/loader.py",
@@ -2540,18 +2438,6 @@
       "line": 133
     },
     {
-      "name": "src/ai_context_core/deprecations.py",
-      "kind": "module",
-      "file": "src/ai_context_core/deprecations.py",
-      "line": 1
-    },
-    {
-      "name": "warn_deprecated",
-      "kind": "function",
-      "file": "src/ai_context_core/deprecations.py",
-      "line": 9
-    },
-    {
       "name": "src/ai_context_core/model/__init__.py",
       "kind": "module",
       "file": "src/ai_context_core/model/__init__.py",
@@ -2754,120 +2640,9 @@
       "kind": "function",
       "file": "src/ai_context_core/sources/pipeline.py",
       "line": 114
-    },
-    {
-      "name": "test_project/test.py",
-      "kind": "module",
-      "file": "test_project/test.py",
-      "line": 1
-    },
-    {
-      "name": "hello",
-      "kind": "function",
-      "file": "test_project/test.py",
-      "line": 1
-    },
-    {
-      "name": "test_strategy.py",
-      "kind": "module",
-      "file": "test_strategy.py",
-      "line": 1
-    },
-    {
-      "name": "Strategy",
-      "kind": "class",
-      "file": "test_strategy.py",
-      "line": 6
-    },
-    {
-      "name": "execute",
-      "kind": "method",
-      "file": "test_strategy.py",
-      "line": 8
-    },
-    {
-      "name": "ConcreteStrategyA",
-      "kind": "class",
-      "file": "test_strategy.py",
-      "line": 12
-    },
-    {
-      "name": "execute",
-      "kind": "method",
-      "file": "test_strategy.py",
-      "line": 13
-    },
-    {
-      "name": "Context",
-      "kind": "class",
-      "file": "test_strategy.py",
-      "line": 17
-    },
-    {
-      "name": "__init__",
-      "kind": "method",
-      "file": "test_strategy.py",
-      "line": 18
-    },
-    {
-      "name": "set_strategy",
-      "kind": "method",
-      "file": "test_strategy.py",
-      "line": 21
-    },
-    {
-      "name": "run",
-      "kind": "method",
-      "file": "test_strategy.py",
-      "line": 24
     }
   ],
   "references": [
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 7
-    },
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 14
-    },
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 18
-    },
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 20
-    },
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 26
-    },
-    {
-      "name": "print",
-      "file": "audit_quality.py",
-      "line": 28
-    },
-    {
-      "name": "audit",
-      "file": "audit_quality.py",
-      "line": 32
-    },
-    {
-      "name": "check_docstrings",
-      "file": "check_docs.py",
-      "line": 23
-    },
-    {
-      "name": "print",
-      "file": "check_docs.py",
-      "line": 25
-    },
     {
       "name": "count_test_files",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
@@ -2876,22 +2651,12 @@
     {
       "name": "format_complexity_agg",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 83
+      "line": 82
     },
     {
       "name": "find_optimizations",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 84
-    },
-    {
-      "name": "warn_deprecated",
-      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 104
-    },
-    {
-      "name": "ResultsAggregator",
-      "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 108
+      "line": 83
     },
     {
       "name": "StructureBuilder",
@@ -2986,27 +2751,22 @@
     {
       "name": "MetricsCalculator",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 100
-    },
-    {
-      "name": "MetricsCalculator",
-      "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 115
+      "line": 80
     },
     {
       "name": "summarize_modules",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 216
+      "line": 179
     },
     {
       "name": "_resolve_scoring",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 226
+      "line": 189
     },
     {
       "name": "_score_breakdown",
       "file": "src/ai_context_core/analyzer/builders/calculator.py",
-      "line": 227
+      "line": 190
     },
     {
       "name": "set",
@@ -3136,22 +2896,22 @@
     {
       "name": "ProjectSummaryGenerator",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 143
+      "line": 141
     },
     {
       "name": "AIContextGenerator",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 171
+      "line": 169
     },
     {
       "name": "budget_from_config",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 172
+      "line": 170
     },
     {
       "name": "render_sections",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 174
+      "line": 172
     },
     {
       "name": "BaseContextBuilder",
@@ -3181,12 +2941,7 @@
     {
       "name": "GitTechBuilder",
       "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
-      "line": 71
-    },
-    {
-      "name": "ProjectSummaryGenerator",
-      "file": "src/ai_context_core/analyzer/builders/summary_generator.py",
-      "line": 77
+      "line": 72
     },
     {
       "name": "ignore_package_reexports",
@@ -3196,12 +2951,7 @@
     {
       "name": "hash_files",
       "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 103
-    },
-    {
-      "name": "compute_content_hash",
-      "file": "src/ai_context_core/analyzer/engine.py",
-      "line": 159
+      "line": 100
     },
     {
       "name": "GitRunner",
@@ -3664,16 +3414,6 @@
       "line": 17
     },
     {
-      "name": "analyze",
-      "file": "src/ai_context_core/cli/commands/analysis.py",
-      "line": 39
-    },
-    {
-      "name": "analyze",
-      "file": "src/ai_context_core/cli/commands/analysis.py",
-      "line": 82
-    },
-    {
       "name": "check",
       "file": "src/ai_context_core/cli/commands/analysis.py",
       "line": 89
@@ -3681,52 +3421,42 @@
     {
       "name": "load_config",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 28
-    },
-    {
-      "name": "resolve_source",
-      "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 29
+      "line": 26
     },
     {
       "name": "compile_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 41
+      "line": 31
     },
     {
       "name": "render_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 49
-    },
-    {
-      "name": "ProjectAnalyzer",
-      "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 54
+      "line": 39
     },
     {
       "name": "load_config",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 101
+      "line": 80
     },
     {
       "name": "compile_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 104
+      "line": 83
     },
     {
       "name": "render_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 112
+      "line": 91
     },
     {
       "name": "check",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 125
+      "line": 104
     },
     {
       "name": "verify_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 128
+      "line": 107
     },
     {
       "name": "list_profiles",
@@ -3734,29 +3464,24 @@
       "line": 34
     },
     {
-      "name": "print",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 17
-    },
-    {
       "name": "Console",
       "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 30
+      "line": 11
     },
     {
       "name": "Table",
       "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 32
+    },
+    {
+      "name": "_get_nested",
+      "file": "src/ai_context_core/cli/commands/compare.py",
+      "line": 50
+    },
+    {
+      "name": "_get_nested",
+      "file": "src/ai_context_core/cli/commands/compare.py",
       "line": 51
-    },
-    {
-      "name": "_get_nested",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 69
-    },
-    {
-      "name": "_get_nested",
-      "file": "src/ai_context_core/cli/commands/compare.py",
-      "line": 70
     },
     {
       "name": "verify_context",
@@ -3879,29 +3604,24 @@
       "line": 20
     },
     {
-      "name": "print",
-      "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 15
-    },
-    {
       "name": "Console",
       "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 28
+      "line": 9
     },
     {
       "name": "load_config",
       "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 36
+      "line": 17
     },
     {
       "name": "ProjectAnalyzer",
       "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 37
+      "line": 18
     },
     {
       "name": "Table",
       "file": "src/ai_context_core/cli/commands/roadmap.py",
-      "line": 66
+      "line": 47
     },
     {
       "name": "load_config",
@@ -3927,6 +3647,11 @@
       "name": "_show_complex_modules",
       "file": "src/ai_context_core/cli/commands/stats.py",
       "line": 46
+    },
+    {
+      "name": "print",
+      "file": "src/ai_context_core/cli/console.py",
+      "line": 16
     },
     {
       "name": "set",
@@ -4341,27 +4066,7 @@
     {
       "name": "compute_content_hash",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 151
-    },
-    {
-      "name": "Strategy",
-      "file": "test_strategy.py",
-      "line": 12
-    },
-    {
-      "name": "print",
-      "file": "test_strategy.py",
-      "line": 14
-    },
-    {
-      "name": "Strategy",
-      "file": "test_strategy.py",
-      "line": 18
-    },
-    {
-      "name": "Strategy",
-      "file": "test_strategy.py",
-      "line": 21
+      "line": 147
     }
   ]
 }
