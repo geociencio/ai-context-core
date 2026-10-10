@@ -18,44 +18,71 @@ def run_analysis(
     format: str,
     no_cache: bool,
     include_md: Optional[list] = None,
+    source: Optional[str] = None,
 ):
     """Executes the full project analysis pipeline."""
+    from ai_context_core.sources.base import resolve_source
+    from ai_context_core.sources.pipeline import compile_context, render_context
+
     proj = pathlib.Path(path).resolve()
     cfg = load_config(proj)
-    analyzer = ProjectAnalyzer(
-        project_path=str(proj),
-        config=cfg,
+    provider = resolve_source(
+        source or "auto",
+        proj,
+        cfg,
         max_workers=workers,
         ignore_cache=no_cache,
         include_md=include_md,
     )
-    if format != "json":
-        click.echo(f"🚀 Analyzing {proj.name}...")
+
     try:
-        res = analyzer.analyze(output_format=format)
-        if format == "json":
-            import json
-
-            click.echo(json.dumps(res, indent=2, ensure_ascii=False))
-            return
-
-        m = res.get("metrics", {})
-        q = m.get(metric_keys.QUALITY_SCORE, 0)
-        click.echo("-" * 40)
-        click.secho(
-            f"🏆 ai-ctx Quality Score (heuristic): {q:.1f}/100",
-            fg="green" if q > 80 else "yellow",
-        )
-        click.echo(
-            f"📊 Lines: {m.get(metric_keys.TOTAL_LINES_CODE, 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"
-        )
-        click.echo("-" * 40)
-        click.secho("✅ Completed.", fg="green")
+        if provider.name == "external":
+            click.echo(f"🚀 Analyzing {proj.name} (source: external)...")
+            result = compile_context(
+                proj,
+                cfg,
+                "external",
+                max_workers=workers,
+                ignore_cache=no_cache,
+                include_md=include_md,
+            )
+            render_context(result, proj, cfg, generate_summary=True, output_format=format)
+            res = result.data
+        else:
+            if format != "json":
+                click.echo(f"🚀 Analyzing {proj.name}...")
+            analyzer = ProjectAnalyzer(
+                project_path=str(proj),
+                config=cfg,
+                max_workers=workers,
+                ignore_cache=no_cache,
+                include_md=include_md,
+            )
+            res = analyzer.analyze(output_format=format)
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
         if os.environ.get("DEBUG"):
             raise e
         sys.exit(1)
+
+    if format == "json":
+        import json
+
+        click.echo(json.dumps(res, indent=2, ensure_ascii=False))
+        return
+
+    m = res.get("metrics", {})
+    q = m.get(metric_keys.QUALITY_SCORE, 0)
+    click.echo("-" * 40)
+    click.secho(
+        f"🏆 ai-ctx Quality Score (heuristic): {q:.1f}/100",
+        fg="green" if q > 80 else "yellow",
+    )
+    click.echo(
+        f"📊 Lines: {m.get(metric_keys.TOTAL_LINES_CODE, 0):,}\n💡 Opts: {len(res.get('optimizations', []))}"
+    )
+    click.echo("-" * 40)
+    click.secho("✅ Completed.", fg="green")
 
 
 def run_context(
@@ -63,21 +90,29 @@ def run_context(
     workers: Optional[int],
     no_cache: bool,
     include_md: Optional[list] = None,
+    source: Optional[str] = None,
 ):
     """Generates context files without emitting or auditing the quality score."""
+    from ai_context_core.sources.pipeline import compile_context, render_context
+
     proj = pathlib.Path(path).resolve()
     cfg = load_config(proj)
-    analyzer = ProjectAnalyzer(
-        project_path=str(proj),
-        config=cfg,
-        max_workers=workers,
-        ignore_cache=no_cache,
-        include_md=include_md,
-    )
     click.echo(f"📝 Generating context for {proj.name}...")
     try:
-        analyzer.analyze(output_format="markdown", generate_summary=False)
-        click.secho("✅ Context generated: AI_CONTEXT.md, project_context.json", fg="green")
+        result = compile_context(
+            proj,
+            cfg,
+            source or "auto",
+            max_workers=workers,
+            ignore_cache=no_cache,
+            include_md=include_md,
+        )
+        render_context(result, proj, cfg, generate_summary=False)
+        click.secho(
+            f"✅ Context generated ({result.provenance.source}): "
+            "AI_CONTEXT.md, project_context.json",
+            fg="green",
+        )
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
         if os.environ.get("DEBUG"):

@@ -241,6 +241,7 @@ output.
 - **Exit**: ADR merged; no code removal yet.
 
 ### F1 — Source layer
+**Status**: ✅ COMPLETED (2026-10-09) — `model/AnalysisResult`, `sources/{base,builtin,external,pipeline}`, `--source` on `analyze`/`context`, `engine.collect()`; tests 333 → 349; external verified against real `sec_interp` output.
 - Implement `sources/` + `model/`; wire `--source`; make `context` the primary path.
 - **Prerequisite**: provision `qgis-plugin-analyzer` + the `sec_interp` checkout (or a
   local fixture) for the external-vs-builtin regression; record if a fixture is substituted.

@@ -9,9 +9,15 @@
 - ADR: `docs/adr/0008-context-only-contract.md`
 - **F0 done**: ADR-0008 accepted; `REMOVAL_VERSION=5.0.0`; score→context-health
   naming recorded (CHANGELOG `[Unreleased]`, README notice). Feature freeze active.
-- **Next**: **F1 — source layer** (`sources/` + `model/`, `--source`, make `context`
-  the primary path). Precondition: provision `qgis-plugin-analyzer` + `sec_interp`
-  checkout (or a local fixture) for the external-vs-builtin regression.
+- **F1 done**: `model/AnalysisResult` + `sources/` (builtin engine source, external
+  qgis-analyzer adapter, hybrid pipeline) and `--source` on `analyze`/`context`;
+  `engine.collect()` split for side-effect-free extraction. Tests 333 → **349**.
+  External smoke-tested on real `sec_interp/analysis_results/project_context.json`
+  (71 modules, provenance external/1.14.0). Note: `qgis-analyzer` CLI is broken in
+  this env; the adapter reads the JSON file (per plan fallback).
+- **Next**: **F2 — removal (v5.0.0)** — delete analysis domains/commands, add
+  facades/redirect stubs, drop `patterns`/`qgis` sections from the generator, split
+  `visitors/issues.py`, prune tests, regenerate golden fixtures (measured count).
 
 ## ✅ Completed in This Session
 

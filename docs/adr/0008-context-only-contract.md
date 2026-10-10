@@ -148,7 +148,7 @@ Detalle completo en
 [`docs/reviews/ia_critic_implementation_plan_context_only_v5.md`](../reviews/ia_critic_implementation_plan_context_only_v5.md)).
 
 - [x] **F0** — Contrato y congelación (este ADR; `REMOVAL_VERSION`; naming de docs).
-- [ ] **F1** — Capa `sources/` + `model/`; `--source`; `context` como ruta primaria.
+- [x] **F1** — Capa `sources/` + `model/`; `--source`; `context` como ruta primaria.
 - [ ] **F2** — Eliminación (v5.0.0): comandos/visitantes/builders; facades; tests.
 - [ ] **F3** — Presupuesto de tokens + manifest.
 - [ ] **F4** — `verify` + symbol index + `health`.

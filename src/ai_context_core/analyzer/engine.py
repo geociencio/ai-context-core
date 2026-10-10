@@ -10,6 +10,7 @@ import pathlib
 import json
 from typing import Dict, Any, List, Optional
 from .providers import (
+    context_fields,
     fs_utils,
     git_analysis,
     worker,
@@ -67,23 +68,15 @@ class ProjectAnalyzer:
         )
         self.error_log = {}
 
-    def analyze(
-        self, output_format: str = "markdown", generate_summary: bool = True
-    ) -> Dict[str, Any]:
-        """Execute the complete project analysis pipeline.
+    def collect(self) -> Dict[str, Any]:
+        """Run the analysis pipeline and return results **without** rendering artifacts.
 
-        Orchestrates scanning, parallel module analysis, dependency graph building,
-        git evolution tracking, and results aggregation.
-
-        Args:
-            output_format: Desired report format ('markdown' or 'html').
-            generate_summary: When False, skip the score-focused
-                ``PROJECT_SUMMARY`` output (context-only mode).
+        This is the side-effect-free core consumed by the ``builtin`` analysis
+        source; artifact rendering is handled by the source/render pipeline.
 
         Returns:
             A comprehensive dictionary containing all analysis results.
         """
-        start_time = time.time()
         logger.info(f"Starting analysis for {self.project_path}")
 
         scan_res = fs_utils.scan_project(self.project_path, self.exclusion_patterns)
@@ -106,78 +99,37 @@ class ProjectAnalyzer:
         results = agg.aggregate(modules_data, graph_data, git_data, qgis_metadata)
 
         # Add tree structure and manual notes
-        results["structure"] = {
-            "tree": fs_utils.generate_tree_optimized(self.project_path),
-            "modules_count": len(modules_data),
-            "file_types": scan_res.file_types,
-            "size_stats": scan_res.size_stats,
-        }
-        results["manual_notes"] = self._read_manual_notes()
+        results["structure"] = context_fields.build_structure(
+            self.project_path, len(modules_data), scan_res=scan_res
+        )
+        results["manual_notes"] = context_fields.read_manual_notes(
+            self.project_path, self.config, self.include_md
+        )
 
-        # 5. Finalization
-        self._generate_outputs(results, output_format, generate_summary)
         fs_utils.save_cache(self.project_path, self.analysis_cache, self._config_fingerprint)
-
-        logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
         return results
 
-    def _read_manual_notes(self) -> str:
-        """Read base architecture notes plus any configured extra context docs.
+    def analyze(
+        self, output_format: str = "markdown", generate_summary: bool = True
+    ) -> Dict[str, Any]:
+        """Execute the project analysis pipeline and render the report artifacts.
+
+        Orchestrates scanning, parallel module analysis, dependency graph building,
+        git evolution tracking, and results aggregation.
+
+        Args:
+            output_format: Desired report format ('markdown' or 'html').
+            generate_summary: When False, skip the score-focused
+                ``PROJECT_SUMMARY`` output (context-only mode).
 
         Returns:
-            Concatenated markdown with the base notes first, followed by each
-            extra document under its own ``### <relative-path>`` heading.
+            A comprehensive dictionary containing all analysis results.
         """
-        sections: List[str] = []
-
-        base_notes = self._read_base_notes()
-        if base_notes:
-            sections.append(base_notes)
-
-        for doc in self._discover_context_docs():
-            rel = doc.relative_to(self.project_path)
-            try:
-                content = doc.read_text(encoding="utf-8", errors="replace").strip()
-            except OSError as e:
-                logger.warning(f"Could not read context doc {rel}: {e}")
-                continue
-            if content:
-                sections.append(f"### {rel}\n\n{content}")
-
-        return "\n\n".join(sections)
-
-    def _read_base_notes(self) -> str:
-        """Read the conventional architecture notes file if present."""
-        for name in ("architecture_notes.md", "project_brain.md"):
-            notes_path = self.project_path / ".ai-context" / name
-            if notes_path.exists():
-                try:
-                    return notes_path.read_text(encoding="utf-8")
-                except Exception as e:
-                    logger.warning(f"Could not read manual notes: {e}")
-        return ""
-
-    def _discover_context_docs(self) -> List[pathlib.Path]:
-        """Resolve config ``context_docs`` and CLI ``include_md`` globs.
-
-        Returns:
-            Sorted, de-duplicated list of matching files.
-        """
-        patterns: List[str] = list(self.config.get("context_docs", []) or [])
-        patterns.extend(self.include_md)
-
-        docs: List[pathlib.Path] = []
-        seen = set()
-        for pattern in patterns:
-            for path in sorted(self.project_path.glob(pattern)):
-                if not path.is_file():
-                    continue
-                resolved = path.resolve()
-                if resolved in seen:
-                    continue
-                seen.add(resolved)
-                docs.append(path)
-        return docs
+        start_time = time.time()
+        results = self.collect()
+        self._generate_outputs(results, output_format, generate_summary)
+        logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
+        return results
 
     def _generate_outputs(self, results: Dict[str, Any], fmt: str, generate_summary: bool = True):
         """Generate final report files based on analysis results."""

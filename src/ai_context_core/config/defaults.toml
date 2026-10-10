@@ -9,6 +9,13 @@ context_docs = []
 [context]
 sections = ["structure", "metrics", "patterns", "dependencies", "git", "qgis"]
 
+# Analysis source selection. ``auto`` prefers external qgis-analyzer output
+# (``analysis_results/project_context.json``) when present, else the builtin
+# engine. ``external_path`` overrides the default output location.
+[sources]
+source = "auto"
+# external_path = "analysis_results/project_context.json"
+
 # Quality Thresholds
 # These values determine when an issue is flagged as a warning or error.
 [quality_thresholds.complexity]
