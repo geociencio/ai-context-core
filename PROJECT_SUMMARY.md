@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-09 19:14:55
+Analysis Date: 2026-10-09 20:38:13
 Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 90.2/100
-- **Source Lines (SLOC)**: 6,149
-- **Total Physical Lines**: 9,823
-- **Maintainability**: 51.8
-- **Test Files**: 73 test files
+- **ai-ctx Quality Score**: 91.2/100
+- **Source Lines (SLOC)**: 6,584
+- **Total Physical Lines**: 10,555
+- **Maintainability**: 52.5
+- **Test Files**: 74 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -19.8
+- Maintainability: -18.8
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 157
+**Total Modules**: 167
 
 ```tree
 ./
@@ -132,10 +132,10 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     analyzer.py
                     compiler.py
                     config_loader.py
+                    context_fields.py
                     fs_cache.py
                     fs_helpers.py
-                    fs_scanner.py
-                    ... (+11 more)
+                    ... (+12 more)
                 visitors/
                     __init__.py
                     antipattern_base.py
@@ -174,6 +174,19 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     builders.py
                     extractor.py
                     store.py
+            model/
+                __init__.py
+                analysis_result.py
+            sources/
+                __init__.py
+                base.py
+                pipeline.py
+                builtin/
+                    __init__.py
+                    engine_source.py
+                external/
+                    __init__.py
+                    qgis_analyzer.py
             templates/
                 initial_prompt.md
                 prompts/
@@ -200,7 +213,7 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_security_extended.py
-        ... (+58 more)
+        ... (+59 more)
         fixtures/
             false_positives.py
             golden_expected/
@@ -225,8 +238,8 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ### 🔄 Circular Dependencies:
 - src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/providers/worker.py
-- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 - src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/aggregator.py
@@ -250,10 +263,10 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 
 ## 🔄 GIT ANALYSIS
 ### Code Churn (last 30 days)
-- **Files Changed**: 198
-- **Additions**: +58697
-- **Deletions**: -65001
-- **Total Churn**: 123698
+- **Files Changed**: 200
+- **Additions**: +59625
+- **Deletions**: -65713
+- **Total Churn**: 125338
 
 ### 🔥 Hotspots
 - `src/ai_context_core/analyzer/engine.py`: 34 commits
@@ -263,5 +276,5 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 7.82
+- **Avg Cyclomatic Complexity**: 7.63
 - **Max Complexity**: 25
