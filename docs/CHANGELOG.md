@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `[context.budget]`. Every render writes `context_manifest.json` with exact
   per-section token deltas, budget and total (`total == header + sum(sections)`),
   plus `_meta` provenance when available. Heuristic `chars/4` estimator.
+- **verify / symbols / health (F4)**: `ai-ctx verify` exits 1 on staleness
+  (content hash of analyzed inputs recorded in `_meta.content_hash`);
+  `ai-ctx context --check` gates CI; `ai-ctx symbols [--grep]` emits versioned
+  `symbols.json` (definitions + references with `file:line`); `ai-ctx health`
+  reports freshness, tokens, symbol coverage and provenance (no quality gate).
 
 ### Changed
 - **Context-only contract (v5.0.0)**: `ai-context-core` is now a **context

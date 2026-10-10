@@ -12,7 +12,7 @@ ADR: `docs/adr/0008-context-only-contract.md`.
 - [x] **F1** — `sources/` + `model/`; `--source`; `context` primary path <!-- id: v5.f1 -->
 - [x] **F2** — removal (v5.0.0): commands/visitors/builders; facades; tests <!-- id: v5.f2 -->
 - [x] **F3** — token budget + manifest <!-- id: v5.f3 -->
-- [ ] **F4** — verify + symbol index + health <!-- id: v5.f4 -->
+- [x] **F4** — verify + symbol index + health <!-- id: v5.f4 -->
 - [ ] **F5** — ecosystem alignment <!-- id: v5.f5 -->
 
 **Feature freeze**: no new analysis capabilities until F2 (@auditor gate).
@@ -49,8 +49,8 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: v5.0.0 — Context-Only Contract (F0–F3 done; F4 next)
-- **Current Metrics**: Tests 177/177 passing; ruff clean
-- **Pending**: F4 verify + symbol index + health
+- **Active Phase**: v5.0.0 — Context-Only Contract (F0–F4 done; F5 next)
+- **Current Metrics**: Tests 189/189 passing; ruff clean
+- **Pending**: F5 ecosystem alignment
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
   scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

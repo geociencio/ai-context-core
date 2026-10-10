@@ -151,7 +151,7 @@ Detalle completo en
 - [x] **F1** — Capa `sources/` + `model/`; `--source`; `context` como ruta primaria.
 - [x] **F2** — Eliminación (v5.0.0): comandos/visitantes/builders; facades; tests.
 - [x] **F3** — Presupuesto de tokens + manifest.
-- [ ] **F4** — `verify` + symbol index + `health`.
+- [x] **F4** — `verify` + symbol index + `health`.
 - [ ] **F5** — Alineación de ecosistema (READMEs, `agentic-forge`, SecInterp).
 
 **Congelación de features**: desde F0 no se añaden nuevas capacidades de análisis

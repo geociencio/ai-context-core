@@ -32,6 +32,9 @@ The central nervous system for your AI-assisted coding workflow.
   `qgis-plugin-analyzer` output or fall back to the built-in engine.
 - **Context Commands**: `context`, `analyze`, `stats`, `deps`, `git`, `graph`,
   `roadmap`, `compare`, `help-me`, `init`, `profiles`, `clean`.
+- **Verifiable & budgeted**: `verify` (staleness), `symbols` (index + `--grep`),
+  `health` (freshness/tokens/provenance), `context --max-tokens N`,
+  `context --check` for CI.
 - **Profiles**: `python-generic` (the `qgis-plugin` profile moved to
   `qgis-plugin-analyzer`).
 

@@ -266,6 +266,7 @@ output.
 - **Exit**: `context --max-tokens` truncates deterministically; manifest matches rendered sizes.
 
 ### F4 — verify + symbol index + health
+**Status**: ✅ COMPLETED (2026-10-09) — `context/verify.py`, `context/symbol_index.py`, `context/health.py`; commands `verify`/`symbols`/`health` + `context --check`; content hash recorded in `_meta`; tests 177 → 189.
 - Implement §4C/§4D/§4E.
 - **Exit**: `verify` returns 0 after fresh `context`, 1 after editing a tracked file;
   `symbols --grep` returns `file:line`.

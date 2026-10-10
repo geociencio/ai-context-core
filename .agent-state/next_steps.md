@@ -21,8 +21,11 @@
   --max-tokens N` (deterministic, strict cap) and `[context.budget]` per-section
   limits; `context_manifest.json` with exact per-section deltas
   (`total == header + sum(sections)`) + `_meta` provenance. Tests 165 → **177**.
-- **Next**: **F4 — verify + symbol index + health** (`context/verify.py`,
-  `context/symbol_index.py`; commands `verify`, `symbols`, `health`; exit 1 on drift).
+- **F4 done**: `verify` (content-hash staleness, exit 1 on drift),
+  `symbols [--grep]` (`symbols.json` with `file:line`), `health`
+  (freshness/tokens/provenance), `context --check` CI gate. Tests 177 → **189**.
+- **Next**: **F5 — ecosystem alignment** (cross-link READMEs, `agentic-forge`
+  `project-context` skill, SecInterp workflows `ai-ctx qgis`/`audit` → analyzer).
 
 ## ✅ Completed in This Session
 
