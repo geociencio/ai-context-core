@@ -58,6 +58,12 @@ def analyze_cmd(
     help="Global token cap for AI_CONTEXT.md (deterministic truncation)",
 )
 @click.option(
+    "--check",
+    "check",
+    is_flag=True,
+    help="Verify freshness after generating; exit 1 if stale (CI)",
+)
+@click.option(
     "--include-md",
     "include_md",
     multiple=True,
@@ -69,6 +75,7 @@ def context_cmd(
     no_cache: bool,
     source: str,
     max_tokens: Optional[int],
+    check: bool,
     include_md: tuple,
 ):
     """Generates AI_CONTEXT.md, project_context.json and context_manifest.json."""
@@ -79,4 +86,5 @@ def context_cmd(
         include_md=list(include_md),
         source=source,
         max_tokens=max_tokens,
+        check=check,
     )

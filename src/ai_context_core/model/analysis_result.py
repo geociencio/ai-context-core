@@ -27,6 +27,7 @@ class Provenance:
     schema: Optional[Any] = None
     tool_version: Optional[str] = None
     git_sha: Optional[str] = None
+    content_hash: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Return the provenance as a plain dictionary."""
@@ -35,6 +36,7 @@ class Provenance:
             "schema": self.schema,
             "tool_version": self.tool_version,
             "git_sha": self.git_sha,
+            "content_hash": self.content_hash,
         }
 
 

@@ -92,6 +92,7 @@ def run_context(
     include_md: Optional[list] = None,
     source: Optional[str] = None,
     max_tokens: Optional[int] = None,
+    check: bool = False,
 ):
     """Generates context files without emitting or auditing the quality score."""
     from ai_context_core.sources.pipeline import compile_context, render_context
@@ -121,6 +122,14 @@ def run_context(
             "AI_CONTEXT.md, project_context.json, context_manifest.json",
             fg="green",
         )
+        if check:
+            from ai_context_core.context.verify import verify_context
+
+            report = verify_context(proj)
+            if not report["fresh"]:
+                click.secho(f"Context check failed: {report['reason']}", fg="red", err=True)
+                sys.exit(1)
+            click.echo("Context check: fresh.")
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
         if os.environ.get("DEBUG"):

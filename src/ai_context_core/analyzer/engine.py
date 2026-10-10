@@ -149,7 +149,13 @@ class ProjectAnalyzer:
                 self.project_path.name,
                 config=self.config,
             )
-            provenance = {"source": "builtin", "tool_version": __version__}
+            from ..context.verify import compute_content_hash
+
+            provenance = {
+                "source": "builtin",
+                "tool_version": __version__,
+                "content_hash": compute_content_hash(self.project_path),
+            }
             reporting.write_context_manifest(self.project_path, manifest, provenance)
             with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
                 payload = dict(results)
