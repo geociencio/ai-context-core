@@ -11,7 +11,7 @@ from . import analyze
 @click.option(
     "--format",
     "-f",
-    type=click.Choice(["markdown", "html", "json"]),
+    type=click.Choice(["markdown", "json"]),
     default="markdown",
 )
 @click.option("--no-cache", is_flag=True, help="Force full analysis, ignoring cache")
