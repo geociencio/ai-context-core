@@ -29,7 +29,7 @@
   `qgis`, `security`, `patterns`, `full-scan`, `fix`, `scaffold`, `doctor`, `interactive`,
   `serve` (~50 analysis modules + qgis profile); hidden redirect stubs (one cycle);
   generator/aggregator re-scoped; `visitors/issues.py` split; golden regenerated.
-  **Measured tests: 349 → 165.**
+  **Measured tests (F2): 349 → 165.**
 - **F3 done**: `context/budget.py` + `context/manifest.py`; `ai-ctx context
   --max-tokens N` (deterministic, strict cap) and `[context.budget]` per-section
   limits; `context_manifest.json` with exact per-section deltas
@@ -42,7 +42,7 @@
   `qgis-plugin-analyzer` (README/cross-link), `sec_interp`
   (workflows `ai-ctx qgis`/`audit` → `qgis-analyzer` + `ai-ctx context`).
 - **ai-context-core v5.0.0 scope is complete** (F0–F4 + divergence/optimization
-  P0–P4). 182 tests passing; ruff clean.
+  P0–P4). 182 tests green; ruff clean.
 - **Released**: version `5.0.0` synced (pyproject/`__init__`/uv.lock), build +
   `twine check` OK, tag + GitHub release, and **published to PyPI** by the
   maintainer (verified: PyPI reports `5.0.0` as latest).
@@ -96,7 +96,9 @@
 
 ## 🎯 Immediate Next Steps
 
-- [ ] **Manual (maintainer)**: publish v4.1.1 to PyPI — `uv run twine upload dist/*`.
+- [ ] **None in-repo** — v5.0.1 released (GitHub + PyPI); F5 ecosystem
+  alignment is owned by the sibling repos (`agentic-forge`,
+  `qgis-plugin-analyzer`, `sec_interp`).
 
 _No agent-side blockers. PyPI uploads are always performed manually by the
 maintainer (see `AGENT_LESSONS.md` → User Preferences); the agent stops at
@@ -110,20 +112,20 @@ build + `twine check` + GitHub release. Proceed with Future Enhancements below._
 
 ## 🐛 Known Issues
 
-**None blocking** — 333 tests passing; `ai-ctx audit` PASS (score 90.2).
+**None blocking** — 196 tests passing; ruff check/format clean; context health green.
 
 - **Metrics validator false positives**: `forge.py metrics validate` flags 5
   entries in the `.agent/` framework submodule — `scaffold/qgis/workflows/release-plugin.md`
   (CC≤10, 763 tests → SecInterp's domain values) and `skills/coding-standards/SKILL.md`
   ("complexity below 10" → generic guideline). These are template/domain values,
-  not stale ai-context-core metrics (CC≤25, 333 tests). The validator scans
+  not stale ai-context-core metrics (CC≤25, 182 tests). The validator scans
   `scaffold/` against this project's ground truth; treat as non-blocking until the
   framework excludes domain packs from ground-truth checks.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
-quality regression; the release gate is 70. (Config changes now invalidate the
-module cache via the F1 cache-fingerprint fix.)
+quality regression; current self-analysis reports ~95.4. (Config changes now
+invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ## 🔧 Technical Debt
 
@@ -137,5 +139,5 @@ module cache via the F1 cache-fingerprint fix.)
 
 ---
 
-**Session Status:** v5.0.0 F0 complete (contract + freeze); F1 (source layer) next.
-(Also pending, manual: publish v4.1.1 to PyPI by the maintainer.)
+**Session Status:** v5.0.1 released (GitHub + PyPI). No in-repo phase active;
+F5 ecosystem alignment deferred to sibling repos.

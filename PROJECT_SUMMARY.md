@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-09 20:50:47
-Analyzer Version: 4.1.1 (Ai-Context-Core)
+Analysis Date: 2026-10-10 16:57:53
+Analyzer Version: 5.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 97.7/100
-- **Source Lines (SLOC)**: 3,950
-- **Total Physical Lines**: 6,405
-- **Maintainability**: 56.8
-- **Test Files**: 40 test files
+- **ai-ctx Quality Score**: 95.3/100
+- **Source Lines (SLOC)**: 4,075
+- **Total Physical Lines**: 6,636
+- **Maintainability**: 55.2
+- **Test Files**: 41 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -12.3
+- Maintainability: -14.7
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 111
+**Total Modules**: 105
 
 ```tree
 ./
@@ -27,10 +27,10 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
     .gitignore
     .gitmodules
     .pre-commit-config.yaml
-    ... (+25 more)
+    ... (+19 more)
     dist/
-        ai_context_core-4.1.1-py3-none-any.whl
-        ai_context_core-4.1.1.tar.gz
+        ai_context_core-5.0.1-py3-none-any.whl
+        ai_context_core-5.0.1.tar.gz
     docs/
         AGENTIC_FORGE_ADOPTION.md
         AGENTIC_IMPLEMENTATION_GUIDE.md
@@ -39,7 +39,7 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
         ARCHITECTURE.md
         AiContextCore_Analysis_Report.md
         CHANGELOG.md
-        ... (+19 more)
+        ... (+20 more)
         adr/
             0001-use-adr-for-architecture-decisions.md
             0002-implement-13-improvements-roadmap.md
@@ -56,19 +56,20 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                 phase8_task.md
                 phase8_walkaround.md
         maintenance/
+            agentic_forge_release_package_proposal.md
             analysis_report.md
             bug_report_v320.md
             bug_report_v321_aggregation.md
             corrections_implementation_plan.md
             dev_feedback.md
             developer_recommendations.md
-            i18n_improvement_guide.md
-            ... (+11 more)
+            ... (+12 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
         plans/
             implementation_plan_ai_context_core_context_only_v5.md
+            implementation_plan_v5.1_alignment_hardening.md
         releases/
             github/
             notes/
@@ -79,13 +80,14 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                 v2.5.1.md
                 v2.5.2.md
                 v3.0.0.md
-                ... (+13 more)
+                ... (+16 more)
             walkthroughs/
                 v3.1.0-walkthrough.md
         reports/
             initial_extraction.md
         research/
         reviews/
+            audit_architecture_redundancies_v500.md
             ia_critic_implementation_plan_context_only_v5.md
         secinterp/
             .ai_context_cache.json
@@ -112,7 +114,6 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
         __init__.py
         ai_context_core/
             __init__.py
-            deprecations.py
             analyzer/
                 __init__.py
                 constants.py
@@ -126,7 +127,7 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     builder.py
                     builder_components.py
                     builders_base.py
-                    ... (+17 more)
+                    ... (+16 more)
                 providers/
                     __init__.py
                     analyzer.py
@@ -146,12 +147,9 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     classes.py
                     ... (+12 more)
             cli/
-                .ai_context_cache.json
-                AI_CONTEXT.md
-                PROJECT_SUMMARY.md
                 __init__.py
                 __main__.py
-                project_context.json
+                console.py
                 commands/
                     __init__.py
                     analysis.py
@@ -159,19 +157,19 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
                     base.py
                     clean.py
                     compare.py
-                    deprecated.py
-                    ... (+9 more)
+                    context_ops.py
+                    ... (+10 more)
             config/
                 defaults.toml
                 loader.py
                 profiles/
             context/
-                manager.py
-                components/
-                    __init__.py
-                    builders.py
-                    extractor.py
-                    store.py
+                __init__.py
+                budget.py
+                health.py
+                manifest.py
+                symbol_index.py
+                verify.py
             model/
                 __init__.py
                 analysis_result.py
@@ -188,10 +186,6 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
             templates/
                 initial_prompt.md
                 prompts/
-                workflows/
-                    create-commit.md
-                    end-session.md
-                    start-session.md
         ai_context_core.egg-info/
             PKG-INFO
             SOURCES.txt
@@ -199,19 +193,15 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
             entry_points.txt
             requires.txt
             top_level.txt
-    test_project/
-        .ai-context-updates.yaml
-        project_context.json
-        test.py
     tests/
         __init__.py
         test_ast_extended.py
         test_ast_metrics_compatibility.py
         test_ast_utils.py
+        test_budget.py
         test_cache_integration.py
         test_cli.py
-        test_cli_error_coverage.py
-        ... (+25 more)
+        ... (+28 more)
         fixtures/
             false_positives.py
             golden_expected/
@@ -230,32 +220,37 @@ Analyzer Version: 4.1.1 (Ai-Context-Core)
 ## 🚨 CRITICAL ISSUES
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py
 - src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/summary_generator.py
+- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/aggregator.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/builders/calculator.py
+### src/ai_context_core/analyzer/visitors/imports_visitor.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/builders/reporting.py
+### src/ai_context_core/analyzer/providers/worker.py
 - Consider breaking down large logic
 
 ## 🔄 GIT ANALYSIS
-### Code Churn (last 30 days)
-- **Files Changed**: 210
-- **Additions**: +62304
-- **Deletions**: -66706
-- **Total Churn**: 129010
 
-### 🔥 Hotspots
-- `src/ai_context_core/analyzer/engine.py`: 35 commits
-- `src/ai_context_core/analyzer/issues.py`: 24 commits
-- `src/ai_context_core/analyzer/fs_utils.py`: 24 commits
-- `src/ai_context_core/analyzer/reporting.py`: 23 commits
-- `src/ai_context_core/analyzer/ast_utils.py`: 21 commits
+## 🔄 GIT AND EVOLUTION
+### Top Hotspots:
+- `src/ai_context_core/analyzer/engine.py` (39 commits)
+- `src/ai_context_core/analyzer/issues.py` (24 commits)
+- `src/ai_context_core/analyzer/fs_utils.py` (24 commits)
+- `src/ai_context_core/analyzer/reporting.py` (23 commits)
+- `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
+### Recent Churn (30 days):
+- Total lines changed: 209720 (analyzed code)
+- Total lines changed (all tracked): 222052
+- Top churned files:
+  - `project_context.json` (+71376 -93238, 164614)
+  - `base.json` (+0 -12186, 12186)
+  - `symbols.json` (+4464 -392, 4856)
+  - `test_analysis.json` (+0 -2706, 2706)
+  - `src/ai_context_core/cli/project_context.json` (+0 -2706, 2706)
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 6.05
-- **Max Complexity**: 23
+- **Avg Cyclomatic Complexity**: 6.71
+- **Max Complexity**: 24
