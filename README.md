@@ -198,12 +198,11 @@ The **canonical public API** lives under `ai_context_core.analyzer` (`engine`,
 `ai_context_core.context`, `ai_context_core.model` and
 `ai_context_core.cli.commands`. Anything else is internal.
 
-Deprecated compatibility aliases emit a `DeprecationWarning` and are scheduled
-for removal in **v5.0.0** (`REMOVAL_VERSION`):
+The v5.0.0 command removals keep hidden redirect stubs (e.g. `ai-ctx audit`,
+`qgis`, `security`, `patterns`) that point to their new owner for one release.
 
-| Deprecated path | Use instead |
-| :--- | :--- |
-| `analyzer.builders.aggregator.ContextAggregator` | `analyzer.builders.aggregator.ResultsAggregator` |
+No import-level compatibility aliases remain: the `ContextAggregator` alias and
+the `deprecations` module were removed in v5.0.1.
 
 ## Docker support
 

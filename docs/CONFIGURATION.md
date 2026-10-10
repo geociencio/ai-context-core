@@ -55,17 +55,6 @@ Additive adjustments applied to a 100-point base to produce the internal
 (no quality gate); canonical quality gates live in `qgis-plugin-analyzer`.
 Values are optional and fall back to the defaults below.
 
-### 3.1 Analysis source (`sources`)
-
-```toml
-[sources]
-source = "auto"   # auto | external | builtin
-# external_path = "analysis_results/project_context.json"
-```
-
-`auto` prefers `qgis-plugin-analyzer` output when present, else the built-in
-engine. The former `qgis` profile was removed in v5.0.0.
-
 ```toml
 [scoring]
 base_score = 100.0
@@ -81,23 +70,43 @@ tests_bonus_per_file = 2.0
 tests_bonus_cap = 10.0
 ```
 
-### 4. Security Patterns (`security_patterns`)
-
-Defines which functions and modules are considered dangerous by the AST scanner.
+### 4. Analysis Source (`sources`)
 
 ```toml
-[security_patterns]
-# Functions that execute dynamic code or system commands
-dangerous_functions = ["exec", "eval", "__import__", "input"]
-
-# Modules known for insecure deserialization or vulnerable protocols
-dangerous_modules = ["pickle", "marshal", "telnetlib"]
-
-# String patterns suggesting SQL Injection
-sql_injection_indicators = ["execute(", "executemany("]
+[sources]
+source = "auto"   # auto | external | builtin
+# external_path = "analysis_results/project_context.json"
 ```
 
-### 5. Analysis Configuration (`analysis`)
+`auto` prefers `qgis-plugin-analyzer` output when present, else the built-in
+engine. The former `qgis` profile was removed in v5.0.0. Security, i18n and QGIS
+compliance analysis are owned by `qgis-plugin-analyzer`; `ai-context-core`
+consumes their output (see `docs/adr/0008-context-only-contract.md`).
+
+### 5. Context Rendering (`context`)
+
+Controls `AI_CONTEXT.md`: which sections render, whether the Mermaid diagram is
+styled, and the token budget.
+
+```toml
+[context]
+# Renderable sections: structure, metrics, dependencies, git.
+sections = ["structure", "metrics", "dependencies", "git"]
+
+# Append Mermaid ``classDef``/``class`` styling lines to the dependency diagram.
+# Off by default: the unstyled diagram is far smaller and stays legible to LLMs.
+mermaid_style = false
+
+# Token budget. ``max_tokens`` caps the whole document (override per run with
+# ``ai-ctx context --max-tokens N``); ``[context.budget.sections]`` adds
+# per-section caps. Remove a key (or set it to 0) to disable that cap.
+[context.budget]
+max_tokens = 8000
+[context.budget.sections]
+dependencies = 2500
+```
+
+### 6. Analysis Configuration (`analysis`)
 
 Technical parameters of the analysis engine to optimize performance.
 
@@ -109,9 +118,9 @@ max_file_size_mb = 10      # Ignores files larger than this limit
 ```
 
 > [!NOTE]
-> Incremental analysis allows subsequent runs to be near-instant if files haven't physically changed.
+> Incremental analysis allows subsequent runs to be near-instant if files haven't physically changed. After editing configuration, run with `--no-cache` once because the module cache is keyed by file hash, not config.
 
-### 6. Context Docs (`context_docs`)
+### 7. Context Docs (`context_docs`)
 
 Extra markdown documents (globs relative to the project root) embedded into the
 "MANUAL ARCHITECTURE NOTES" section of `AI_CONTEXT.md`. Equivalent to the
@@ -119,32 +128,6 @@ Extra markdown documents (globs relative to the project root) embedded into the
 
 ```toml
 context_docs = ["ARCHITECTURE.md", "docs/*.md"]
-```
-
-### 7. QGIS i18n Analysis (`patterns.i18n`)
-
-Configures internationalization analysis for QGIS plugins. The optional
-`ignored_functions` / `ui_functions` lists override the built-in technical
-denylist and user-facing allowlist; omit them to use the defaults.
-
-```toml
-[patterns.i18n]
-# Scope of i18n analysis
-# - "all": Analyze all project files (default)
-# - "gui_only": Analyze only typical GUI paths
-# - "custom": Use custom include/exclude patterns
-scope = "gui_only"
-
-# Patterns used when scope = "gui_only"
-gui_patterns = ["gui/**/*.py", "dialogs/**/*.py", "ui/**/*.py"]
-
-# Custom patterns (only used when scope = "custom")
-include_patterns = ["src/my_plugin/**/*.py"]
-exclude_patterns = ["src/my_plugin/core/**/*.py"]
-
-# Optional classification overrides
-# ignored_functions = ["setObjectName", "addItem"]  # technical denylist
-# ui_functions = ["setText", "setTitle"]            # user-facing allowlist
 ```
 
 ## Customization Example

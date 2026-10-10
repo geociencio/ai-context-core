@@ -28,6 +28,7 @@ Defines the rules for analysis processing, ensuring consistency and integrity th
 - **Pure visitors**: Visitors detect and record only; the engine reports.
 - **Metric contract**: Register metrics using canonical keys from `builders/metric_keys.py`.
 - **No I/O**: Never write files or read from disk inside an AST visitor.
+- **Scope (v5.0.0 freeze)**: i18n, security, QGIS-compliance and quality-gate analysis are owned by `qgis-plugin-analyzer`; do not add new analysis domains here (see `docs/adr/0008-context-only-contract.md`).
 
 ### Decoupling
 - **CLI stays thin**: No analysis logic in `cli/`.

@@ -1,71 +1,115 @@
-# Architecture of AI-Context-Core
+# Architecture of ai-context-core
 
-This document describes the technical architecture of **AI-Context-Core**, focusing on its modular design, AST-driven analysis, and parallel execution model.
+This document describes the technical architecture of **ai-context-core**
+(CLI `ai-ctx`) as of v5.0.1. Since v5.0.0 the project is a **context compiler**,
+not a static-analysis engine: it *consumes* analysis and turns it into
+token-efficient, versioned, verifiable context artifacts for AI agents
+(see `docs/adr/0008-context-only-contract.md`).
 
-## 🏗️ System Overview
+## System overview
 
-AI-Context-Core is designed as a **Semantic Extraction Pipeline**. It transforms raw source code into a structured, AI-ready knowledge base through multiple stages of analysis and aggregation.
+The compiler runs a four-stage pipeline:
 
-```mermaid
-graph TD
-    FS[Filesystem / Git] --> P[Providers: Data Access]
-    P --> E[Orchestration Engine]
-    E --> V[Visitors: AST Analysis]
-    V --> R[Registry: Detector Dispatch]
-    R --> B[Builders: semantic Aggregation]
-    B --> C[Context: Semantic Brain]
-    C --> O[Output: JSON / HTML / MD]
+```
+source (extract)  ->  transform (enrich / budget / symbols)  ->  render (artifacts)  ->  verify (staleness)
 ```
 
-## 📂 Core Architecture Layers
+```mermaid
+graph LR
+    S[sources/] --> T[context/]
+    T --> R[render: AI_CONTEXT.md, project_context.json, context_manifest.json, symbols.json]
+    R --> V[verify: content hash vs. sources]
+    S -. builtin .-> E[analyzer/ engine -> providers -> visitors/builders -> reporting]
+    S -. external .-> Q[qgis-plugin-analyzer output]
+```
 
-### 🔍 Extraction Layer (`analyzer/visitors/`)
-The primary intelligence layer of the system.
-- **Visitor Pattern**: Uses the standard `ast.NodeVisitor` to traverse source code.
-- **Detector Registry**: A specialized registry that allows registering new architectural or security hot-spots dynamically without modifying the engine.
-- **Isolation**: Each visitor is stateless, ensuring thread/process safety during parallel execution.
+## Layers
 
-### ⚙️ Orchestration Layer (`analyzer/engine.py`)
-The heart of the system that coordinates analysis tasks.
-- **Parallel Workers**: Dispatches file analysis across multiple CPU cores using `ProcessPoolExecutor`, bypassing the Python GIL for CPU-bound AST tasks.
-- **Incremental Caching**: Implements a hybrid caching system based on file `mtime` and SHA-256 hashes to skip analysis for unchanged files.
-- **Task Batching**: Groups small files into batches to minimize inter-process communication overhead.
+### Extraction — `sources/`
+The pluggable extraction layer. An `AnalysisProvider` (protocol in
+`sources/base.py`) produces a normalized `model.AnalysisResult`.
 
-### 🏗️ Aggregation Layer (`analyzer/builders/`)
-Transforms raw visitor findings into high-level metrics and reports.
-- **Metric Calculators**: Implements algorithms for Maintenance Index (MI), Cyclomatic Complexity, and Halstead Metrics.
-- **Dependency Graph Engine**: Builds an internal model of module relationships, performs cycle detection, and calculates coupling metrics (CBO).
-- **Template System**: Uses `Jinja2` to generate interactive HTML reports and structured Markdown summaries.
+- `sources/builtin/` — the internal AST engine (`ProjectAnalyzer`) as a
+  standalone fallback for non-QGIS Python projects.
+- `sources/external/` — an adapter that consumes `qgis-plugin-analyzer` output
+  (`analysis_results/project_context.json`, schema version 1).
+- `sources/pipeline.py` — `compile_context()` resolves the source (per
+  `--source auto|external|builtin`), collects it, and applies the **hybrid
+  enrichment** that `ai-context-core` always owns: project structure, git
+  evolution and manual notes.
 
-### 💻 CLI Layer (`cli/`)
-The interface for human and automated users.
-- **Command Pattern**: Every action (`analyze`, `audit`, `security`) is an isolated handler invoked by a centralized Click-based entry point.
-- **Profiles**: Manages domain-specific configuration (e.g., QGIS vs. Generic Python) through a flexible profile system, primarily using **TOML** as the standard format.
+Context-owned sections (structure, git, manual notes) are always computed here,
+regardless of where the static analysis came from.
 
-## 🚀 Key Design Patterns
+### Model — `model/`
+`AnalysisResult` carries the normalized payload plus a `Provenance` block
+(`source`, `schema`, `tool_version`, `git_sha`, `content_hash`). This provenance
+is embedded into every rendered artifact as `_meta`.
 
-### 1. Visitor Pattern
-Used to decouple the AST traversal from the specific rules being checked. This allows adding a new checker (e.g., "Circular Import Detector") by simply adding a new visitor node handler.
+### Transform — `context/`
+- `budget.py` — token estimation (`chars / 4` heuristic; optional `tiktoken`)
+  and deterministic, line-oriented truncation.
+- `manifest.py` — renders the enabled sections and records exact per-section
+  token deltas (`total == header + sum(sections)`).
+- `symbol_index.py` — builds `symbols.json` (definitions and references with
+  `file:line`).
+- `verify.py` — hashes the analyzed Python inputs; `verify` exits `1` when the
+  tracked sources changed since the last render.
+- `health.py` — freshness, token usage, symbol coverage and provenance.
 
-### 2. Command Pattern
-Decouples the CLI front-end from the analyzer business logic. The CLI interprets flags and maps them to specialized `ActionHandlers`.
+### Builtin engine — `analyzer/`
+Used by `sources/builtin/`; follows the strict
+**engine -> providers -> visitors/builders -> reporting** pipeline:
 
-### 3. Registry & Factory
-Detectors and exporters are registered in a centralized `Registry`. This enables "plug-and-play" capabilities where new features are automatically discovered by the engine.
+1. **Engine** (`engine.py`) orchestrates analysis, aggregation and output.
+2. **Providers** (`providers/`): file scanning, ignore filtering, incremental
+   cache and parallel workers.
+3. **Visitors** (`visitors/`): pure AST traversal for context extraction
+   (imports, metrics, structure). Visitors must not perform I/O — they detect and
+   record; the engine reports.
+4. **Builders** (`builders/`): aggregation, metric calculation and report
+   composition, using the canonical keys in `builders/metric_keys.py`.
+5. **Reporting**: `AI_CONTEXT.md`, `PROJECT_SUMMARY.md`, `project_context.json`
+   (side-effect free; no analysis logic).
 
-## ⚙️ Concurrency & Performance
+> i18n, security, QGIS compliance and quality-gate analysis are **not** part of
+> this engine — they are owned by `qgis-plugin-analyzer` and consumed via
+> `sources/external/`.
 
-AI-Context-Core optimizes performance through:
-1.  **Process Isolation**: Each analysis task runs in its own process, preventing memory leaks from affecting the main controller.
-2.  **Shared Memory (Partial)**: Heavy results are serialized to JSON only when strictly necessary.
-3.  **Heuristic Scaling**: The engine automatically detects CPU core count and project size to determine the optimal number of workers.
+### CLI — `cli/`
+A thin Click front-end: parse args -> dispatch to command logic -> pipeline.
+No analysis logic lives in the CLI layer. Commands: `context` (primary),
+`analyze`, `verify`, `symbols`, `health`, plus inspection helpers (`stats`,
+`deps`, `git`, `graph`, `roadmap`, `compare`, `help-me`) and setup
+(`init`, `profiles`, `clean`).
 
-## 🧠 Semantic Context Strategy
+## Generated artifacts
 
-Unlike simple code greppers, AI-Context-Core maintains a **Persistent Context** (`project_context.json`). This file acts as the project's "Long Term Memory", allowing AI agents to:
-- Understand architectural evolution.
-- Track technical debt trends.
-- Make informed refactoring recommendations based on historical hotspots.
+| Artifact | Description |
+| :--- | :--- |
+| `AI_CONTEXT.md` | Structured, token-budgeted context for LLMs. |
+| `project_context.json` | Machine-readable analysis payload + `_meta` provenance. |
+| `context_manifest.json` | Per-section token counts, budget and total. |
+| `symbols.json` | Versioned symbol index (definitions + references). |
+| `PROJECT_SUMMARY.md` | Human-readable summary (emitted by `analyze`). |
+
+Configuration lives in `src/ai_context_core/config/defaults.toml` and an optional
+project `.ai-context/config.toml`; see `docs/CONFIGURATION.md`.
+
+## Concurrency and performance
+
+1. **Incremental cache** — hybrid `mtime` + SHA-256 fingerprint (`.ai_context_cache.json`);
+   `--no-cache` bypasses it. Configuration changes require a `--no-cache` run
+   because the cache key does not include config.
+2. **Adaptive parallelism** — sequential below `PARALLEL_MIN_FILES`, batched
+   `ProcessPoolExecutor` above it.
+3. **Fast ignore** — compiled-regex filtering via `.analyzerignore`.
+
+## Related documents
+
+- `docs/adr/0008-context-only-contract.md` — the context-only contract.
+- `docs/CONFIGURATION.md` — configuration reference.
+- `README.md` — user-facing overview and command reference.
 
 ---
-**Version**: 3.2.0 | **License**: GPL v3 | **Status**: Modular Refactor Complete
+**Version**: 5.0.1 | **License**: GPL v3
