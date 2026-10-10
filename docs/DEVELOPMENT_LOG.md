@@ -1,5 +1,17 @@
 # Development Log
 
+## [2026-10-10] Context Alignment & Hardening (v5.1.0) - COMPLETED
+**THEME**: Align the project's own surfaces with the context-only contract and make context token-efficient by default 🧩
+- **Plan**: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (audited via `/ia-critic`, verdict PASSED after corrections).
+- **WS-1 (docs)**: rewrote `AGENTS.md` identity/self-analysis/visitor list; removed the stale i18n rule; aligned overlay skills (`project-context`, `domain-logic`).
+- **WS-3 (tokens)**: `[context].mermaid_style` (default off) + default budget (`8000`, `dependencies=2500`); `AI_CONTEXT.md` 2680 → 2056 tokens, `dependencies` 2047 → 1423.
+- **WS-4/5 (contract)**: dropped the retired `security`/`qgis_compliance`/`patterns`/`antipatterns` keys from `_ensure_defaults` and the external mapping; regression tests added.
+- **WS-6 (noqa)**: unused-import detector honors `# noqa: F401` via `visitors/noqa.py`; `imports_visitor` kept under the CC 25 budget.
+- **WS-7/8 (docs/init)**: rewrote `ARCHITECTURE.md` + `CONFIGURATION.md`; removed stale workflow templates and made `ai-ctx init` defer to the framework.
+- **Release overlay (B)**: project release specifics in `AGENTS.md` + `.agent-state/skills/release-ai-context-core/`; proposal for agentic-forge in `docs/maintenance/agentic_forge_release_package_proposal.md`.
+- **Version**: bumped to `5.1.0` (minor — backward-compatible). 🏷️
+- **Verification**: 196 tests passing, ruff clean, `ai-ctx context --check` fresh. ✅
+
 ## [2026-10-10] Post-Release Cleanup (v5.0.1) - COMPLETED
 **THEME**: Collapse the render divergence and retire v4 residue (architectural audit P0–P4) 🧹
 - **P0 (render)**: single path `compile_context → render_context` for all sources; removed `ProjectAnalyzer.analyze()`/`_generate_outputs()` and dead HTML branches.

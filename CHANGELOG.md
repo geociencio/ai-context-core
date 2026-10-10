@@ -1,15 +1,41 @@
 # Changelog
 
-# DEVELOPMENT LOG
-
-## [2026-01-25] Modularización Completa y Reducción de Deuda Técnica
-- **Resumen**: Se completó la transformación del proyecto de una base procedimental a una arquitectura 100% modular basada en clases.
-- **Resultado**: El Quality Score se mantuvo sobre 71 y se eliminaron ~1,400 líneas de código duplicado. Los tests (65/65) están pasando en Docker.
-- **Contexto**: Este hito cierra el ciclo de limpieza profunda y prepara la base para visualizaciones avanzadas.
-
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [5.1.0] - 2026-10-10 - Context Alignment & Hardening
+
+### Added
+- `[context].mermaid_style` (default `false`): the dependency diagram is now
+  compact by default; the token-heavy `classDef`/`class … module;` styling block
+  is opt-in.
+- Default token budget in `config/defaults.toml` (`max_tokens = 8000`,
+  `[context.budget.sections] dependencies = 2500`).
+- `# noqa` / `# noqa: F401` opt-out for the unused-import detector
+  (`visitors/noqa.py`).
+- Tests: `test_context_defaults.py`, `test_unused_imports_noqa.py`; retired-domain
+  assertions in `test_sources.py`; `test_init_defers_workflows_to_framework`.
+
+### Changed
+- `AI_CONTEXT.md` is ~23% smaller by default (this repo: 2680 → 2056 tokens;
+  `dependencies` 2047 → 1423) and is now bounded by the default budget.
+- `project_context.json` no longer carries the retired `security`,
+  `qgis_compliance`, `patterns` and `antipatterns` keys (owned by
+  `qgis-plugin-analyzer`).
+- `ai-ctx init` no longer scaffolds workflow templates; it prints a pointer to the
+  agentic-forge framework (`templates/workflows/*.md` removed).
+- `docs/ARCHITECTURE.md` and `docs/CONFIGURATION.md` rewritten for the v5 contract;
+  `AGENTS.md` and overlay skills aligned.
+
+### Fixed
+- The unused-import detector no longer flags intentional re-export/registration
+  imports annotated with `# noqa: F401`.
+
+## [5.0.1] - 2026-10-10 - Post-Release Cleanup
+Internal consolidation and repository hygiene. See `docs/releases/notes/v5.0.1.md`.
+
+## [5.0.0] - 2026-10-09 - Context-Only Contract
+Breaking: `ai-context-core` becomes a context compiler; analysis is delegated to
+sibling tools. See `docs/releases/notes/v5.0.0.md`.
 
 ## [4.1.0] - 2026-10-08 - Context Map & Debt Prioritization
 
