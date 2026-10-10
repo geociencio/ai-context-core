@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Single render path**: `ai-ctx analyze` now runs `compile_context → render_context`
+  for every source (builtin and external) instead of a separate legacy engine render.
+  All artifacts share one provenance/schema (`ProjectAnalyzer.analyze()` /
+  `_generate_outputs()` removed). `ai-ctx analyze --format` is `markdown|json`.
+- `pyproject.toml`: description updated to the context-compiler identity;
+  Development Status classifier raised to Production/Stable.
+
+### Removed
+- Post-v5.0.0 residue: `ContextAggregator` alias + `deprecations.py` (window
+  elapsed), `graph_engine` alias, dead `maintenance_group`, the unused
+  `MetricsCalculator.halstead_metrics`/`calculate_halstead_metrics`,
+  `calculate_project_metrics(extra_data=...)`, unused `get_category` methods and
+  the `SummaryGenerator` alias.
+- Repository hygiene: orphan `test_project/` fixture, `.ai-context/` prompt and
+  root scratch/cruft (`base.json`, `test_analysis.json`, `current_metrics.json`,
+  `full_analysis.md`, `report.md`, `test_strategy.py`, `audit_quality.py`,
+  `check_docs.py`).
+
+### Fixed
+- `sloc_helpers` no longer uses the deprecated `ast.Str` (removed in Python 3.14);
+  string docstrings are detected via `ast.Constant`.
+
 ## [5.0.0] - 2026-10-09 - Context-Only Contract
 
 ### Added
