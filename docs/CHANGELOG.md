@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-10-09 - Context-Only Contract
+
 ### Added
 - **Token budget + manifest (F3)**: `ai-ctx context --max-tokens N` caps
   `AI_CONTEXT.md` with deterministic truncation; per-section limits via

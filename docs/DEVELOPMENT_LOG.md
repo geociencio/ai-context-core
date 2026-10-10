@@ -1,5 +1,17 @@
 # Development Log
 
+## [2026-10-09] Context-Only Contract (v5.0.0) - COMPLETED
+**THEME**: `ai-context-core` becomes a context compiler; analysis delegated to siblings 🧭
+- **Contract**: ADR-0008 (`source → transform → render → verify`); `ai-context-core` consumes analysis, does not own it.
+- **F1 (sources)**: `model/AnalysisResult` + `sources/` (builtin engine source, external qgis-analyzer adapter, hybrid pipeline); `--source auto|external|builtin`; `engine.collect()` split (side-effect-free).
+- **F2 (removal)**: removed `audit`, `inspect`, `qgis`, `security`, `patterns`, `full-scan`, `fix`, `scaffold`, `doctor`, `interactive`, `serve` (~50 analysis modules + `qgis` profile); hidden redirect stubs; generator/aggregator re-scoped. Tests 349 → 165.
+- **F3 (budget)**: `context/budget.py` + `context/manifest.py`; `context --max-tokens N` (strict, deterministic) + `[context.budget]`; `context_manifest.json`.
+- **F4 (verify/index/health)**: `verify` (content-hash staleness, exit 1), `symbols [--grep]` (`symbols.json`), `health`, `context --check`.
+- **Divergence cleanup (P0–P4)**: side-effect-free read-only commands; canonical `load_config` (retire `ConfigLoader`); deleted dead context-manager subtree, unused constants/config; deduped metric/git/unused-import logic; performance (single scan/hash reuse); complexity splits.
+- **Version**: bumped to `5.0.0` (major — breaking context-only contract). 🏷️
+- **Verification**: 182 tests passing, ruff clean, `ai-ctx context --check` fresh. ✅
+- **Deferred**: F5 ecosystem alignment belongs to the sibling repos (`agentic-forge`, `qgis-plugin-analyzer`, `sec_interp`).
+
 ## [2026-10-08] Report Correctness Fixes (v4.1.1) - COMPLETED
 **THEME**: Correctness of cache, severity, imports, churn and QGIS advice 🎯
 - **Source**: `docs/maintenance/improvement_report_v4.1.0.md` (findings F1–F5).
