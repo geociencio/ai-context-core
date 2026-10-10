@@ -71,7 +71,3 @@ class ProjectSummaryGenerator:
         GitTechBuilder(self.analyses).build(lines)
         has_body = any(line.strip() and not line.strip().startswith("## ") for line in lines)
         return "\n".join(lines) if has_body else ""
-
-
-# Alias for backward compatibility
-SummaryGenerator = ProjectSummaryGenerator

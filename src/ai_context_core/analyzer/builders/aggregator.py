@@ -71,7 +71,6 @@ class ResultsAggregator:
             entry_points,
             test_files_count,
             self.config,
-            {},
         )
 
         missing = metric_keys.missing_metric_keys(project_metrics)
@@ -94,16 +93,3 @@ class ResultsAggregator:
             "git": git_data,
             "timestamp": None,
         }
-
-
-def __getattr__(name: str):
-    """Warn on access to deprecated aliases (PEP 562)."""
-    if name == "ContextAggregator":
-        from ai_context_core.deprecations import warn_deprecated
-
-        warn_deprecated(
-            "ai_context_core.analyzer.builders.aggregator.ContextAggregator",
-            "ai_context_core.analyzer.builders.aggregator.ResultsAggregator",
-        )
-        return ResultsAggregator
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

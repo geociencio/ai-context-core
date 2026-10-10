@@ -117,7 +117,6 @@ def render_context(
     config: Dict[str, Any],
     *,
     generate_summary: bool = False,
-    output_format: str = "markdown",
     max_tokens: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Render the context artifacts for an analysis result.
@@ -126,8 +125,7 @@ def render_context(
         result: The analysis result to render.
         project_path: Project root.
         config: Analyzer configuration (``context.sections`` / ``context.budget``).
-        generate_summary: Also emit ``PROJECT_SUMMARY`` (score-focused).
-        output_format: ``markdown`` or ``html`` (affects the summary extension).
+        generate_summary: Also emit ``PROJECT_SUMMARY.md`` (human summary).
         max_tokens: Optional global token cap override.
 
     Returns:
@@ -137,12 +135,10 @@ def render_context(
     data = result.data
 
     if generate_summary:
-        ext = ".html" if output_format == "html" else ".md"
         reporting.generate_project_summary(
             data,
-            project_path / f"PROJECT_SUMMARY{ext}",
+            project_path / "PROJECT_SUMMARY.md",
             project_path.name,
-            format=output_format,
         )
 
     if not result.provenance.content_hash:

@@ -1,4 +1,4 @@
-from ai_context_core.analyzer.builders.summary_generator import SummaryGenerator
+from ai_context_core.analyzer.builders.summary_generator import ProjectSummaryGenerator
 
 
 def test_generate_markdown_with_optimizations(tmp_path):
@@ -18,7 +18,7 @@ def test_generate_markdown_with_optimizations(tmp_path):
         "dependencies": {"import_graph": {"main.py": ["utils.py"], "utils.py": []}},
     }
     output_file = tmp_path / "report.md"
-    generator = SummaryGenerator(analyses, "TestProject")
+    generator = ProjectSummaryGenerator(analyses, "TestProject")
     generator.generate_markdown(output_file)
 
     assert output_file.exists()
@@ -29,5 +29,5 @@ def test_generate_markdown_with_optimizations(tmp_path):
 
 def test_build_manual_notes():
     analyses = {"manual_notes": "Custom architecture notes"}
-    generator = SummaryGenerator(analyses, "Test")
+    generator = ProjectSummaryGenerator(analyses, "Test")
     assert generator._build_manual_notes() == "Custom architecture notes"

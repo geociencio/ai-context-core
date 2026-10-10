@@ -8,7 +8,6 @@ from typing import Optional
 import click
 
 from ai_context_core.analyzer.builders import metric_keys
-from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.analyzer.providers.config_loader import load_config
 
 
@@ -20,45 +19,25 @@ def run_analysis(
     include_md: Optional[list] = None,
     source: Optional[str] = None,
 ):
-    """Executes the full project analysis pipeline."""
-    from ai_context_core.sources.base import resolve_source
+    """Executes the full project analysis pipeline (single render path)."""
     from ai_context_core.sources.pipeline import compile_context, render_context
 
     proj = pathlib.Path(path).resolve()
     cfg = load_config(proj)
-    provider = resolve_source(
-        source or "auto",
-        proj,
-        cfg,
-        max_workers=workers,
-        ignore_cache=no_cache,
-        include_md=include_md,
-    )
+    if format != "json":
+        click.echo(f"🚀 Analyzing {proj.name}...")
 
     try:
-        if provider.name == "external":
-            click.echo(f"🚀 Analyzing {proj.name} (source: external)...")
-            result = compile_context(
-                proj,
-                cfg,
-                "external",
-                max_workers=workers,
-                ignore_cache=no_cache,
-                include_md=include_md,
-            )
-            render_context(result, proj, cfg, generate_summary=True, output_format=format)
-            res = result.data
-        else:
-            if format != "json":
-                click.echo(f"🚀 Analyzing {proj.name}...")
-            analyzer = ProjectAnalyzer(
-                project_path=str(proj),
-                config=cfg,
-                max_workers=workers,
-                ignore_cache=no_cache,
-                include_md=include_md,
-            )
-            res = analyzer.analyze(output_format=format)
+        result = compile_context(
+            proj,
+            cfg,
+            source or "auto",
+            max_workers=workers,
+            ignore_cache=no_cache,
+            include_md=include_md,
+        )
+        render_context(result, proj, cfg, generate_summary=True)
+        res = result.data
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
         if os.environ.get("DEBUG"):

@@ -128,15 +128,13 @@ def generate_project_summary(
     analyses: Dict[str, Any],
     output_path: pathlib.Path,
     project_name: str,
-    format: str = "markdown",
 ) -> None:
-    """Generates an executive summary of the project (markdown-only in v5.0.0).
+    """Generates the markdown project summary.
 
     Args:
         analyses: Analysis results.
         output_path: Destination path.
         project_name: Project name used as the title.
-        format: Retained for API compatibility; only markdown is produced.
     """
     from .summary_generator import ProjectSummaryGenerator
 

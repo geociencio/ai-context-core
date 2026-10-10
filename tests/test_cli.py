@@ -168,7 +168,7 @@ def test_analyze_local_config():
 def test_analyze_error_handling():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        with patch("ai_context_core.cli.commands.analyze.ProjectAnalyzer.analyze") as mock_analyze:
+        with patch("ai_context_core.sources.pipeline.compile_context") as mock_analyze:
             mock_analyze.side_effect = Exception("Analysis failed")
             result = runner.invoke(cli, ["analyze"])
             assert result.exit_code == 1

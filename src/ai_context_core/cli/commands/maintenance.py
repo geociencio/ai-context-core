@@ -4,12 +4,6 @@ import click
 from . import graph, compare, roadmap
 
 
-@click.group(name="maintenance")
-def maintenance_group():
-    """Project maintenance and exploration commands."""
-    pass
-
-
 @click.command(name="graph")
 @click.option("--path", default=".", help="Project path")
 @click.option("--output", "-o", default="ARCHITECTURE.mmd", help="Output file name")

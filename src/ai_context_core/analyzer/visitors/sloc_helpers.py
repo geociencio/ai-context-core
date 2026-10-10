@@ -23,8 +23,8 @@ def _find_docstring_node(node: ast.AST) -> Optional[ast.AST]:
         return None
 
     expr = node.body[0].value
-    # Support both old and new AST styles
-    if isinstance(expr, (ast.Constant, getattr(ast, "Str", ast.Constant))):
+    # Python 3.8+ represents string literals as ast.Constant.
+    if isinstance(expr, ast.Constant) and isinstance(expr.value, str):
         if hasattr(node.body[0], "lineno") and hasattr(node.body[0], "end_lineno"):
             return node.body[0]
     return None

@@ -7,14 +7,6 @@ from .checker_base import BaseChecker
 class OptimizationChecker(BaseChecker):
     """Checks for optimization opportunities."""
 
-    def get_category(self) -> str:
-        """Returns the category of issues this checker detects.
-
-        Returns:
-            String identifier for the category ("optimization").
-        """
-        return "optimization"
-
     def check(self, module_info: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Checks for code optimization opportunities.
 

@@ -6,26 +6,7 @@ import click
 from typing import Dict, Any
 
 from ai_context_core.analyzer.builders import metric_keys
-
-try:
-    from rich.console import Console
-    from rich.table import Table
-except ImportError:
-
-    class Console:
-        def print(self, *args, **kwargs):
-            print(*args)
-
-    class Table:
-        def __init__(self, *args, **kwargs):
-            pass
-
-        def add_column(self, *args, **kwargs):
-            pass
-
-        def add_row(self, *args, **kwargs):
-            pass
-
+from ai_context_core.cli.console import Console, Table
 
 console = Console()
 

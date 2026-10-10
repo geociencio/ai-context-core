@@ -4,26 +4,7 @@ import pathlib
 import click
 from ai_context_core.analyzer.engine import ProjectAnalyzer
 from ai_context_core.analyzer.providers.config_loader import load_config
-
-try:
-    from rich.console import Console
-    from rich.table import Table
-except ImportError:
-
-    class Console:
-        def print(self, *args, **kwargs):
-            print(*args)
-
-    class Table:
-        def __init__(self, *args, **kwargs):
-            pass
-
-        def add_column(self, *args, **kwargs):
-            pass
-
-        def add_row(self, *args, **kwargs):
-            pass
-
+from ai_context_core.cli.console import Console, Table
 
 console = Console()
 

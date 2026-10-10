@@ -7,9 +7,7 @@ aggregating results from AST analysis, dependency checking, and issue detection.
 import logging
 import time
 import pathlib
-import json
 from typing import Dict, Any, List, Optional
-from .. import __version__
 from .providers import (
     context_fields,
     fs_utils,
@@ -17,7 +15,6 @@ from .providers import (
     worker,
 )
 from .builders import (
-    reporting,
     aggregator,
     dependencies,
 )
@@ -112,61 +109,3 @@ class ProjectAnalyzer:
 
         fs_utils.save_cache(self.project_path, self.analysis_cache, self._config_fingerprint)
         return results
-
-    def analyze(
-        self, output_format: str = "markdown", generate_summary: bool = True
-    ) -> Dict[str, Any]:
-        """Execute the project analysis pipeline and render the report artifacts.
-
-        Orchestrates scanning, parallel module analysis, dependency graph building,
-        git evolution tracking, and results aggregation.
-
-        Args:
-            output_format: Desired report format ('markdown' or 'html').
-            generate_summary: When False, skip the score-focused
-                ``PROJECT_SUMMARY`` output (context-only mode).
-
-        Returns:
-            A comprehensive dictionary containing all analysis results.
-        """
-        start_time = time.time()
-        results = self.collect()
-        self._generate_outputs(results, output_format, generate_summary)
-        logger.info(f"Analysis completed in {time.time() - start_time:.2f}s")
-        return results
-
-    def _generate_outputs(self, results: Dict[str, Any], fmt: str, generate_summary: bool = True):
-        """Generate final report files based on analysis results."""
-        try:
-            if generate_summary:
-                ext = ".html" if fmt == "html" else ".md"
-                reporting.generate_project_summary(
-                    results,
-                    self.project_path / f"PROJECT_SUMMARY{ext}",
-                    self.project_path.name,
-                    format=fmt,
-                )
-            manifest = reporting.generate_ai_context(
-                results,
-                self.project_path / "AI_CONTEXT.md",
-                self.project_path.name,
-                config=self.config,
-            )
-            content_hash = self.content_hash
-            if not content_hash:
-                from ..context.verify import compute_content_hash
-
-                content_hash = compute_content_hash(self.project_path)
-
-            provenance = {
-                "source": "builtin",
-                "tool_version": __version__,
-                "content_hash": content_hash,
-            }
-            reporting.write_context_manifest(self.project_path, manifest, provenance)
-            with open(self.project_path / "project_context.json", "w", encoding="utf-8") as f:
-                payload = dict(results)
-                payload["_meta"] = provenance
-                json.dump(payload, f, indent=2, ensure_ascii=False, default=str)
-        except Exception as e:
-            logger.error(f"Error generating outputs: {e}")

@@ -17,7 +17,6 @@ from .visitors import ast_utils
 
 # For backward compatibility with existing tests and CLI imports
 AnalysisWorker = worker.AnalysisWorker
-graph_engine = dependencies
 
 __all__ = [
     "ProjectAnalyzer",

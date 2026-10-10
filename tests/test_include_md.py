@@ -49,13 +49,15 @@ def test_base_notes_still_read(tmp_path):
 
 
 def test_analyze_embeds_docs_in_ai_context(tmp_path):
+    from ai_context_core.sources.pipeline import compile_context, render_context
+
     _write(tmp_path / "app.py", "def f():\n    return 1\n")
     _write(tmp_path / "ARCHITECTURE.md", "# Arch\n\nDESIGN_TOKEN\n")
 
-    analyzer = ProjectAnalyzer(
-        str(tmp_path), config={"context_docs": ["ARCHITECTURE.md"]}, ignore_cache=True
+    result = compile_context(
+        tmp_path, {"context_docs": ["ARCHITECTURE.md"]}, "builtin", ignore_cache=True
     )
-    analyzer.analyze()
+    render_context(result, tmp_path, {"context_docs": ["ARCHITECTURE.md"]})
 
     ai_context = (tmp_path / "AI_CONTEXT.md").read_text(encoding="utf-8")
     assert "MANUAL ARCHITECTURE NOTES" in ai_context

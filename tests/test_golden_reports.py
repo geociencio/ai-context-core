@@ -3,7 +3,7 @@
 import pathlib
 import shutil
 
-from ai_context_core.analyzer.engine import ProjectAnalyzer
+from ai_context_core.sources.pipeline import compile_context, render_context
 
 FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "golden_plugin"
 GOLDEN = pathlib.Path(__file__).parent / "fixtures" / "golden_expected"
@@ -24,7 +24,8 @@ def _normalize(text: str) -> str:
 def _generate(tmp_path, name: str) -> str:
     proj = tmp_path / "golden_plugin"
     shutil.copytree(FIXTURE, proj)
-    ProjectAnalyzer(str(proj), ignore_cache=True).analyze()
+    result = compile_context(proj, {}, "builtin", ignore_cache=True)
+    render_context(result, proj, {}, generate_summary=True)
     return _normalize((proj / name).read_text(encoding="utf-8"))
 
 

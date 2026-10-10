@@ -36,9 +36,7 @@ def test_no_source_module_exceeds_complexity_budget():
 def test_self_quality_score_has_no_outlier_penalty():
     valid, cfg = _analyze_scope()
     entry_points = [m["path"] for m in valid if m.get("has_main")]
-    metrics = calculator.calculate_project_metrics(
-        valid, entry_points, count_test_files(ROOT), cfg, {"qgis_compliance": {}}
-    )
+    metrics = calculator.calculate_project_metrics(valid, entry_points, count_test_files(ROOT), cfg)
 
     assert metrics[metric_keys.SCORE_BREAKDOWN]["max_complexity"] == 0
     # Removing high-MI facade shims lowered the average-based maintainability,

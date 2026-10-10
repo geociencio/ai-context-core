@@ -24,7 +24,3 @@ class BaseChecker:
             List of found issues.
         """
         raise NotImplementedError
-
-    def get_category(self) -> str:
-        """Returns the category name for this checker."""
-        raise NotImplementedError

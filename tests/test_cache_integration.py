@@ -22,7 +22,7 @@ class TestIncrementalCache:
         analyzer = engine.ProjectAnalyzer(str(self.test_dir))
 
         # 1. First run (Cold Cache)
-        results_1 = analyzer.analyze()
+        results_1 = analyzer.collect()
 
         # Verify that modules were analyzed (they won't appear in most_complex_modules due to low complexity)
         assert len(results_1.get("modules", [])) == 2
@@ -40,7 +40,7 @@ class TestIncrementalCache:
         # Re-initialize to simulate fresh run ensuring it loads from disk
         analyzer_2 = engine.ProjectAnalyzer(str(self.test_dir))
 
-        results_2 = analyzer_2.analyze()
+        results_2 = analyzer_2.collect()
 
         # Ideally cached run is faster, but with 2 tiny files overhead might dominate.
         # So we check if results are identical.
@@ -48,14 +48,14 @@ class TestIncrementalCache:
 
     def test_cache_invalidation(self):
         analyzer = engine.ProjectAnalyzer(str(self.test_dir))
-        analyzer.analyze()
+        analyzer.collect()
 
         # Modify a file
         (self.src_dir / "module_a.py").write_text("def foo():\n    print('modified')")
 
         # Run again
         analyzer_2 = engine.ProjectAnalyzer(str(self.test_dir))
-        analyzer_2.analyze()
+        analyzer_2.collect()
 
         # Check if modification was picked up (e.g. by checking hash in cache)
         cache_data = json.loads((self.test_dir / ".ai_context_cache.json").read_text())

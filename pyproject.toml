@@ -1,7 +1,7 @@
 [project]
 name = "ai-context-core"
 version = "5.0.0"
-description = "Core logic for AI-driven development context management"
+description = "Context compiler for AI-assisted coding: renders versioned, verifiable context artifacts"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
@@ -10,7 +10,7 @@ authors = [
 license = {text = "GPL-3.0-or-later"}
 keywords = ["ai", "context", "llm", "analysis", "python", "qgis", "static-analysis", "agentic-coding", "ast", "metrics", "productivity"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
