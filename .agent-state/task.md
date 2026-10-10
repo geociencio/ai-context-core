@@ -15,6 +15,7 @@ ADR: `docs/adr/0008-context-only-contract.md`.
 - [x] **F4** — verify + symbol index + health <!-- id: v5.f4 -->
 - [ ] **F5** — ecosystem alignment — ⏸ **deferred to sibling repos** (agentic-forge / qgis-plugin-analyzer / sec_interp) <!-- id: v5.f5 -->
 - [x] **Release v5.0.0** — version sync + build + `twine check` + tag + GitHub release + **PyPI** <!-- id: v5.rel -->
+- [x] **Release v5.0.1** — post-release cleanup (audit P0–P4); tag + GitHub + **PyPI** <!-- id: v501.rel -->
 
 **Feature freeze**: no new analysis capabilities until F2 (@auditor gate).
 
@@ -50,7 +51,7 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: None — v5.0.0 released (GitHub + PyPI); F5 deferred out-of-repo
+- **Active Phase**: None — v5.0.1 released (GitHub + PyPI); F5 deferred out-of-repo
 - **Current Metrics**: Tests 182/182 passing; ruff check+format clean
 - **Pending**: none in-repo; F5 ecosystem alignment owned by sibling repos (agentic-forge / qgis-plugin-analyzer / sec_interp)
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework

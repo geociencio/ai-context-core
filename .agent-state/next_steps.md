@@ -1,6 +1,18 @@
 # Next Steps - ai-context-core
 
-**Last Updated:** 2026-10-09
+**Last Updated:** 2026-10-10
+
+## ✅ Released — v5.0.1 Post-Release Cleanup
+
+- **Status**: ✅ **Released 2026-10-10** — tag `v5.0.1`, GitHub release + **PyPI**
+  (`ai-context-core==5.0.1` confirmed live).
+- Single render path (`compile_context → render_context` for all sources);
+  retired v4 residue (`ContextAggregator`/`deprecations.py`, `graph_engine`, ...);
+  repo hygiene; `ast.Constant` fix; pyproject metadata.
+- See `docs/reviews/audit_architecture_redundancies_v500.md` (audit P0–P4) and
+  `docs/releases/notes/v5.0.1.md`.
+- **Deferred**: package renames (`analyzer/providers → engine`, split
+  `parser`/`report`), R5 (unrendered payload), CLI coverage.
 
 ## ✅ Released — v5.0.0 Context-Only Contract
 
