@@ -13,33 +13,30 @@
 
 The central nervous system for your AI-assisted coding workflow.
 
-> **Deprecation notice (v5.0.0).** `ai-context-core` is becoming a
-> **context-only compiler** (`source → transform → render → verify`). The
-> *Quality Score* surface is being renamed to **context health** (no quality
-> gate), and the analysis-domain commands move to `qgis-plugin-analyzer` /
-> `agentic-forge`. See [ADR-0008](docs/adr/0008-context-only-contract.md) and the
-> [v5.0.0 plan](docs/plans/implementation_plan_ai_context_core_context_only_v5.md).
-> Behavior in the current v4.x line is unchanged.
+> **Context-only (v5.0.0).** `ai-context-core` is now a **context compiler**
+> (`source → transform → render → verify`): it consumes analysis instead of
+> owning it. QGIS compliance, i18n, security scanning and quality gates live in
+> `qgis-plugin-analyzer`; scaffolding in `agentic-forge`. The former `audit`,
+> `qgis`, `security`, `patterns`, `inspect`, `full-scan`, `fix`, `scaffold`,
+> `doctor`, `interactive` and `serve` commands were removed (hidden redirect
+> stubs remain for one release). See [ADR-0008](docs/adr/0008-context-only-contract.md),
+> the [v5.0.0 plan](docs/plans/implementation_plan_ai_context_core_context_only_v5.md)
+> and the [CHANGELOG](docs/CHANGELOG.md).
 
 ## Features
 
 ### Core Capabilities
-- **Project Analysis**: Deep AST analysis for Python projects with SLOC calculation (excluding comments/docstrings).
-- **Context Management**: Keeps `.ai-context` files updated for AI-assisted development.
-- **20+ CLI Commands**: Comprehensive toolset for analysis, inspection, and maintenance.
-- **Profiles**: 
-    - `python-generic`: Standard Python support.
-    - `qgis-plugin`: Specialized rules for QGIS plugin development, including:
-        - **Processing Framework** validation.
-        - **i18n (self.tr)** coverage metrics.
-        - **Qt6/QGIS 4** transition audit.
-        - **metadata.txt** strict validation.
+- **Context Compilation**: Extracts and renders token-efficient, versioned
+  context artifacts (`AI_CONTEXT.md`, `project_context.json`) for AI agents.
+- **Pluggable Sources**: `--source auto|external|builtin` — consume
+  `qgis-plugin-analyzer` output or fall back to the built-in engine.
+- **Context Commands**: `context`, `analyze`, `stats`, `deps`, `git`, `graph`,
+  `roadmap`, `compare`, `help-me`, `init`, `profiles`, `clean`.
+- **Profiles**: `python-generic` (the `qgis-plugin` profile moved to
+  `qgis-plugin-analyzer`).
 
-### Advanced Analysis
-- **Entry Point Detection**: Supports QGIS plugins, Click CLIs, Flask, and FastAPI apps.
-- **Anti-Pattern Detection**: Identifies God Objects, Spaghetti Code, Magic Numbers, and Dead Code.
-- **Design Pattern Detection**: Native support for **Strategy**, **Singleton**, **Observer**, **Factory**, and **Decorator** patterns.
-- **Security Audit**: Scans for vulnerabilities like SQL Injection, `eval/exec`, and Secrets detection with false-positive filtering.
+### Context Analysis
+- **Entry Point Detection**: `__main__`-guard entry points.
 - **Dependency Analysis**: 
     - Import graph with cycle detection
     - Unused imports identification
@@ -69,7 +66,7 @@ The central nervous system for your AI-assisted coding workflow.
 - **Batch Processing**: Task batching in parallel mode to minimize inter-process communication overhead.
 
 ### Workflow Integration
-- **CI/CD Ready**: `audit` command with configurable quality thresholds and exit codes.
+- **CI/CD Ready**: verify context freshness and enforce token budgets (see the v5.0.0 roadmap).
 - **Workflow Automation**: Standardized scripts for session management.
 - **AI Recommendations**: Heuristic-based actionable advice for code hygiene.
 - **Clean Command**: Automated cleanup of cache and generated artifacts.
@@ -170,10 +167,6 @@ Lists all available configuration profiles.
 
 ### Analysis Commands
 
-#### `ai-ctx inspect <file>`
-Performs a deep, granular analysis of a **single Python file**. Ideal for checking metrics and security for a specific module without running the full project analysis.
-- **Usage**: `ai-ctx inspect src/my_script.py`
-
 #### `ai-ctx stats`
 Shows quick project statistics in a formatted table. Perfect for getting a rapid overview without generating full reports.
 - **Displays**:
@@ -211,46 +204,11 @@ Shows git evolution analysis including hotspots and code churn.
 
 ---
 
-### Specialized Commands
-
-#### `ai-ctx patterns`
-Displays a clean, tabulated view of all **Design Patterns** detected across the project (Singleton, Factory, Observer, Strategy, Decorator).
-- **Usage**: `ai-ctx patterns`
-
-#### `ai-ctx security`
-Executes a **security-focused scan**. It only runs checks for SQL injections, Secrets, and insecure code patterns, making it extremely fast.
-- **Usage**: `ai-ctx security`
-
-#### `ai-ctx qgis`
-Validates QGIS plugin compliance and readiness.
-- **Validates**:
-    - `metadata.txt` according to QGIS.org standards
-    - Internationalization (i18n) coverage with `self.tr()`
-    - Qt6/QGIS 4 transition readiness (PyQt5 vs PyQt6 imports)
-    - Processing Framework usage
-    - Overall QGIS Compliance Score
-- **Usage**: `ai-ctx qgis`
+### Context & Maintenance Commands
 
 #### `ai-ctx help-me`
-Provides a prioritized list of **AI Recommendations** generated by our heuristic engine. It focuses purely on actionable quality improvements.
+Provides context-health recommendations (missing architecture notes, git history, structure).
 - **Usage**: `ai-ctx help-me`
-
----
-
-### CI/CD & Maintenance Commands
-
-#### `ai-ctx audit`
-A utility designed for **CI/CD pipelines**. It calculates the project's Quality Score and exits with code 1 if it falls below the specified threshold.
-- **Options**:
-    - `--threshold <value>`: Minimum score required (default: 70)
-- **Usage**: `ai-ctx audit --threshold 85`
-
-#### `ai-ctx serve`
-Starts a local HTTP server to view the interactive `PROJECT_SUMMARY.html` report in your browser.
-- **Options**:
-    - `--port <number>`: Port to use (default: 8000)
-    - `--open`: Opens the browser automatically
-- **Usage**: `ai-ctx serve --open`
 
 #### `ai-ctx clean`
 Cleans cache and generated artifacts from the project directory.
@@ -270,30 +228,15 @@ Cleans cache and generated artifacts from the project directory.
 
 ---
 
-### Maintenance & Exploration Commands
-
-#### `ai-ctx doctor`
-Environmental diagnostics utility. Checks Python compatibility, configuration consistency, and project structure alignment.
-- **Usage**: `ai-ctx doctor --path .`
-
-#### `ai-ctx fix`
-Automated remediation for common issues.
-- **Fixes**: Missing `__init__.py` files, linting errors (via Ruff), and version synchronization.
-- **Options**: `--sync-version` (Aligns `__init__.py` with `pyproject.toml`)
-- **Usage**: `ai-ctx fix --sync-version`
+### Exploration Commands
 
 #### `ai-ctx graph`
 Architectural visualization tool. Exports the project's internal dependency model to a Mermaid-formatted file.
 - **Usage**: `ai-ctx graph --output ARC.mmd`
 
 #### `ai-ctx compare <file1> <file2>`
-Regression tracking utility. Compares two JSON reports and highlights deltas in quality, complexity, and security metrics.
+Regression tracking utility. Compares two JSON reports and highlights deltas in metrics and complexity.
 - **Usage**: `ai-ctx compare base.json current.json`
-
-#### `ai-ctx scaffold <pattern>`
-Design pattern generator. Bootstraps standards-compliant code templates for architectural patterns.
-- **Supported**: Strategy, Observer (more coming soon).
-- **Usage**: `ai-ctx scaffold strategy -o my_strategy.py`
 
 #### `ai-ctx roadmap`
 Technical debt prioritization engine. Calculates a "Refactor Score" based on (Code Complexity × Churn Frequency) to identify high-risk hotspots.
@@ -314,42 +257,34 @@ Technical debt prioritization engine. Calculates a "Refactor Score" based on (Co
 
 `ai-context-core` is more than a code packager; it is a **deep static intelligence engine** designed to maximize context fidelity for LLMs. While many tools focus on "repository dumping," we focus on **semantic extraction** and **domain-specific hygiene**.
 
-### Detailed Comparison Matrix (2025-2026)
+### How It Differs
 
-| Feature | `ai-context-core` | `Repomix` | `Aider` | `Gitingest` | `Code2Prompt` |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Primary Goal** | **Context + Hygiene** | **Code Packaging** | **AI Pair Progr.** | **Quick Digest** | **Prompt Builder** |
-| **Analysis Depth** | **Deep AST (Python semantics)** | Plain text + Tree-sitter (compress) | Repo Map (signatures) | Plain text | Plain text |
-| **Language Scope** | Python only | Multi-language | 100+ languages | Multi-language | Multi-language |
-| **Pattern Detection** | ✅ **Native (5, heuristic)** | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Anti-Patterns** | ✅ God Object/Spaghetti (detection) | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Quality Metrics** | ✅ **CC, MI, Halstead** (per-module) | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Security Audit** | ✅ **AST (SQLi/Secrets/eval)** | ⚠️ Secretlint (secrets) | ❌ No | ❌ No | ❌ No |
-| **Git Awareness** | ✅ **Hotspots/Churn** | ✅ Logs/Diffs + change-sort | ⚠️ Auto-commit/undo/diffs | ❌ No | ⚠️ `.gitignore` only |
-| **Domain Logic** | ✅ **QGIS/Qt6 Specialists** | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Token Counting / Budget** | ❌ No | ✅ Yes | ✅ Context mgmt | ✅ Yes | ✅ Yes |
-| **Remote / URL Ingest** | ❌ No | ✅ Yes | ❌ No | ✅ Yes | ❌ No |
-| **Custom Templates** | ⚠️ Context docs / `AGENTS.md` | ✅ Instruction header | ⚠️ `CONVENTIONS.md` | ❌ No | ✅ **Jinja2** |
-| **MCP / Editor Integration** | ❌ No | ✅ MCP + IDE/browser ext | ✅ IDE watch | ✅ Browser ext | ❌ No |
-| **Reporting** | ✅ HTML/JSON/Markdown | ✅ XML/JSON/MD/Plain | ❌ In-Chat | ⚠️ Text digest (+web) | ✅ Markdown (Jinja2) |
-| **Performance** | ✅ Parallel + SHA Cache | ✅ Fast (Node) | ✅ Incremental | ✅ Web-Speed | ✅ Fast (Python) |
+| Aspect | `ai-context-core` |
+| :--- | :--- |
+| **Primary Goal** | **Compile context** (`source → transform → render → verify`), not analyze. |
+| **Sources** | `qgis-plugin-analyzer` output (external) or a built-in AST fallback. |
+| **Outputs** | `AI_CONTEXT.md`, `project_context.json` (with `_meta` provenance). |
+| **Analysis Depth** | Delegated: hygiene, QGIS, i18n, security and CC gates live in `qgis-plugin-analyzer`. |
+| **Git Awareness** | Hotspots / churn, rendered into the context. |
+| **Dependencies / Graph** | Import graph, unused imports, coupling, Mermaid diagram. |
+| **Language Scope** | Python. |
 
-> **Scope note:** the `ai-context-core` column describes a **Python-only** static-analysis
-> engine (code hygiene + QGIS focus), not a multi-language packager. Competitor cells are
-> based on their official READMEs (2026). Pattern/anti-pattern detection and quality metrics
-> are heuristics with per-module granularity; anti-patterns are exposed via
-> `project_context.json` / `--format json`.
+> **Scope note:** `ai-context-core` is a **consumer** of analysis. By design it no longer
+> performs security scanning, QGIS/i18n compliance, design-pattern detection or quality
+> gates — those are owned by `qgis-plugin-analyzer`. It focuses on producing compact,
+> versioned, provenance-tagged context artifacts for AI agents.
 
-### Why Choose `ai-context-core`?
+### Why `ai-context-core`?
 
-#### 1. Deep Semantic Understanding vs. Simple Packaging
-Tools like **Repomix** and **Gitingest** are excellent for "packing" your code into a single file. However, `ai-context-core` goes further by extracting **architectural meaning**. We identify **Design Patterns** (Singleton, Factory, etc.) and calculate **Maintenance Index (MI)**, allowing the AI to understand the *why* behind your code structure, not just the *what*.
+#### 1. Pluggable Context Compilation
+Point it at `qgis-plugin-analyzer` output (`--source external`) or let it run its built-in
+engine (`--source builtin`); either way you get the same rendered context with provenance
+recorded in `project_context.json`.
 
-#### 2. Domain-Specific Intelligence (QGIS & Qt6)
-We are the only tool with first-class support for the **QGIS ecosystem**.
-- **i18n Tracking**: Real-time coverage of `self.tr()` strings.
-- **Qt6 Migration**: Automated auditing for PyQt5 to PyQt6 transitions (essential for QGIS 4.x).
-- **Processing Framework**: Detection of QGIS algorithm/provider base classes.
+#### 2. Clean Ecosystem Boundaries
+Hygiene (QGIS, i18n, security, quality gates) is single-sourced in
+`qgis-plugin-analyzer`; scaffolding in `agentic-forge`. `ai-context-core` stays focused on
+the context it compiles.
 
 #### 3. Actionable Technical Debt Identification
 By combining **Git Churn/Hotspots** with **Cyclomatic Complexity**, the `ai-ctx roadmap` command surfaces "Biological Debt"—files that are both complex and frequently modified. This guides your AI assistant to the most critical areas for refactoring.

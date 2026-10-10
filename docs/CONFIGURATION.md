@@ -47,9 +47,24 @@ has_main = 5
 no_syntax_error = 30
 ```
 
-### 3. Project Quality Score (`scoring`)
+### 3. Project Quality Score (`scoring`) — context-only note
 
-Additive adjustments applied to a 100-point base to produce the `ai-ctx Quality Score`. Exposed in `PROJECT_SUMMARY.md` as an explicit **Score Breakdown**. All values are optional and fall back to the defaults below.
+Additive adjustments applied to a 100-point base to produce the internal
+`quality_score` heuristic (reported by `ai-ctx stats`/`analyze`). In the v5.0.0
+**context-only** contract this surface is being renamed to **context health**
+(no quality gate); canonical quality gates live in `qgis-plugin-analyzer`.
+Values are optional and fall back to the defaults below.
+
+### 3.1 Analysis source (`sources`)
+
+```toml
+[sources]
+source = "auto"   # auto | external | builtin
+# external_path = "analysis_results/project_context.json"
+```
+
+`auto` prefers `qgis-plugin-analyzer` output when present, else the built-in
+engine. The former `qgis` profile was removed in v5.0.0.
 
 ```toml
 [scoring]

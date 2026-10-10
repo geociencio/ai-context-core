@@ -7,16 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Context-only contract (v5.0.0)**: `ai-context-core` is now a **context
+  compiler** (`source → transform → render → verify`), a consumer of analysis
+  rather than an analyzer ([ADR-0008](adr/0008-context-only-contract.md)).
+  - New pluggable extraction layer: `ai-ctx context --source auto|external|builtin`
+    (external reads `qgis-plugin-analyzer`'s `analysis_results/project_context.json`;
+    builtin is the retained internal engine). Hybrid: structure/git/manual-notes
+    are always computed by core.
+  - `AI_CONTEXT.md` renders only `structure`, `metrics`, `dependencies`, `git`.
+  - `PROJECT_SUMMARY` is markdown-only (HTML dashboard dropped).
+  - Entry-point detection is limited to the `__main__` guard.
+
+### Removed
+- **Commands**: `audit`, `inspect`, `qgis`, `security`, `patterns`, `full-scan`,
+  `fix`, `scaffold`, `doctor`, `interactive`, `serve` (capabilities moved to
+  `qgis-plugin-analyzer` / `agentic-forge`).
+- **Analysis domains**: security (secrets/injection), QGIS compliance/i18n,
+  design patterns, anti-patterns, Halstead-as-design-pattern, and the
+  `qgis` config profile. QGIS compliance, i18n, security and CC gates are owned
+  by `qgis-plugin-analyzer`.
+- **Modules**: ~50 visitors/builders and their CLI/dependency modules; `serve`
+  HTTP server and `html_builder`.
+
 ### Deprecated
-- **Quality Score surface → "context health" (v5.0.0)**: per
-  [ADR-0008](adr/0008-context-only-contract.md), `ai-context-core` becomes a
-  **context-only compiler** (source → transform → render → verify). The
-  `ai-ctx Quality Score` and the `audit` gate are being renamed to
-  **`context health`** (no quality gate); the analysis-domain commands
-  (`audit`, `inspect`, `qgis`, `security`, `patterns`, `full-scan`, `fix`,
-  `scaffold`, `doctor`, `interactive`) will be removed or redirected to
-  `qgis-plugin-analyzer` / `agentic-forge`. `REMOVAL_VERSION` is now `5.0.0`;
-  current behavior is unchanged until F2.
+- Removed commands are kept as **hidden redirect stubs** for one release
+  (invoke the old name to see where the capability moved); they exit 0.
+  `REMOVAL_VERSION` is `5.0.0`.
 
 ## [4.1.1] - 2026-10-08 - Report Correctness Fixes
 

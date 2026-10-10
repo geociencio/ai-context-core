@@ -11,13 +11,14 @@
   naming recorded (CHANGELOG `[Unreleased]`, README notice). Feature freeze active.
 - **F1 done**: `model/AnalysisResult` + `sources/` (builtin engine source, external
   qgis-analyzer adapter, hybrid pipeline) and `--source` on `analyze`/`context`;
-  `engine.collect()` split for side-effect-free extraction. Tests 333 → **349**.
-  External smoke-tested on real `sec_interp/analysis_results/project_context.json`
-  (71 modules, provenance external/1.14.0). Note: `qgis-analyzer` CLI is broken in
-  this env; the adapter reads the JSON file (per plan fallback).
-- **Next**: **F2 — removal (v5.0.0)** — delete analysis domains/commands, add
-  facades/redirect stubs, drop `patterns`/`qgis` sections from the generator, split
-  `visitors/issues.py`, prune tests, regenerate golden fixtures (measured count).
+  `engine.collect()` split for side-effect-free extraction.
+- **F2 done**: context-only CLI surface (`ai-ctx --help`); removed `audit`, `inspect`,
+  `qgis`, `security`, `patterns`, `full-scan`, `fix`, `scaffold`, `doctor`, `interactive`,
+  `serve` (~50 analysis modules + qgis profile); hidden redirect stubs (one cycle);
+  generator/aggregator re-scoped; `visitors/issues.py` split; golden regenerated.
+  **Measured tests: 349 → 165.**
+- **Next**: **F3 — token budget + manifest** (`context/budget.py`, `[context.budget]`,
+  `--max-tokens`, `context_manifest.json`).
 
 ## ✅ Completed in This Session
 

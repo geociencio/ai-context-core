@@ -10,7 +10,7 @@ ADR: `docs/adr/0008-context-only-contract.md`.
 
 - [x] **F0** — contract & freeze (ADR-0008; `REMOVAL_VERSION=5.0.0`; docs naming) <!-- id: v5.f0 -->
 - [x] **F1** — `sources/` + `model/`; `--source`; `context` primary path <!-- id: v5.f1 -->
-- [ ] **F2** — removal (v5.0.0): commands/visitors/builders; facades; tests <!-- id: v5.f2 -->
+- [x] **F2** — removal (v5.0.0): commands/visitors/builders; facades; tests <!-- id: v5.f2 -->
 - [ ] **F3** — token budget + manifest <!-- id: v5.f3 -->
 - [ ] **F4** — verify + symbol index + health <!-- id: v5.f4 -->
 - [ ] **F5** — ecosystem alignment <!-- id: v5.f5 -->
@@ -49,8 +49,8 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: v5.0.0 — Context-Only Contract (F0–F1 done; F2 next)
-- **Current Metrics**: Tests 349/349 passing; ruff clean
-- **Pending**: F2 removal (v5.0.0) — delete analysis domains, facades, prune tests
+- **Active Phase**: v5.0.0 — Context-Only Contract (F0–F2 done; F3 next)
+- **Current Metrics**: Tests 165/165 passing; ruff clean
+- **Pending**: F3 token budget + manifest
 - **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
   scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.

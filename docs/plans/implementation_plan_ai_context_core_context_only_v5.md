@@ -249,6 +249,7 @@ output.
   source vs. builtin (regression snapshot diff); `pytest` green.
 
 ### F2 — Removal (v5.0.0)
+**Status**: ✅ COMPLETED (2026-10-09) — CLI surface is context-only (`--help`), analysis domains removed (~50 modules + 11 commands), hidden redirect stubs added, generator/aggregator re-scoped, `visitors/issues.py` split, golden regenerated. **Measured tests: 349 → 165.** Legacy `analyze`/`stats` paths retained.
 - Delete §3 files/commands; add deprecation facades; update `README.md`, `CONFIGURATION.md`,
   `.analyzerignore` semantics; prune tests.
 - Update `AIContextGenerator.DEFAULT_SECTIONS` / `_builder_classes` (drop `patterns`,
