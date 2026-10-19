@@ -4,7 +4,8 @@
 - **Framework**: `agentic-forge` (`.agent/` submodule)
 - **Base**: `v1.2.0` (`2de22cf`, detached)
 - **Proposed branch**: `fix/p0-quality-gates`
-- **Local commit**: `d240b54` — `fix: enforce validation and memory gates (v1.3.0)`
+- **Local commits**: `d240b54` — `fix: enforce validation and memory gates (v1.3.0)`,
+  `8967cb6` — `docs: keep memory prune wording generic`
 - **Parent pin**: intentionally **unchanged** (`v1.2.0`) until the framework commit
   is pushed and tagged.
 
@@ -77,6 +78,7 @@ steps for every sibling repo.
 | `forge.py metrics validate` | exit 0 (was 5 violations / exit 1) |
 | `forge.py memory prune` | exit 0, dry-run on bullet lessons |
 | `forge.py memory prune --apply` | YAML fixture rewritten correctly; old consolidated lesson moved to `[PRUNED]` |
+| Sibling simulation | `max_cc = 15`, `scaffold/demo`, bullet lessons and a valid `scripts/` reference: `validate`, `--graph`, `--conflicts`, `metrics validate` and dry-run/`--apply` all green |
 
 ## Rollback
 
