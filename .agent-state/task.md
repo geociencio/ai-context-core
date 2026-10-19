@@ -66,7 +66,9 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 ## Operational Status
 
 - **Active Phase**: None — v5.1.0 released (GitHub); PyPI upload manual (pending)
-- **Current Metrics**: Tests 205/205 passing; ruff check+format clean; quality 94.7
-- **Pending**: PyPI v5.1.0 (maintainer); F5 ecosystem alignment + agentic-forge release-package proposal owned by sibling repos
-- **Known**: `forge.py metrics validate` is green after P0 (scaffold exclusion +
-  project `max_cc`); framework tooling tests are a P1 follow-up.
+- **Current Metrics**: Package 205/205 tests; framework 32/32 tests; ruff
+  check+format clean; quality 94.7
+- **Pending**: PyPI v5.1.0 (maintainer); sibling `agentic-forge` v1.4.0 rollout
+  (`sec_interp`; `qgis-plugin-manager` needs local-fork reconciliation)
+- **Known**: `forge.py metrics validate` is green after v1.3.0/v1.4.0; the
+  framework now has tests and CI.

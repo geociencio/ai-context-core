@@ -1,6 +1,6 @@
 # Task Breakdown - ai-context-core Improvements
 
-Basado en: [implementation_plan_improvements.md](file:///home/jmbernales/qgispluginsdev/ai-context-core/docs/implementation_plan_improvements.md)
+Basado en: [implementation_plan_improvements.md](../docs/implementation_plan_improvements.md)
 
 ## Fase 1: Correcciones Críticas (11-15 horas)
 

@@ -229,11 +229,12 @@ The P0 findings were fixed in the framework working tree after this audit:
 - **A3**: `memory prune` parses Markdown bullets, defaults to dry-run, requires
   `--apply`, and exits non-zero on parse errors.
 
-Because `.agent` is shared by sibling repositories, the fixes were committed to
-the **local `fix/p0-quality-gates` branch** of `agentic-forge` as `d240b54`
-(v1.3.0) instead of being folded into this repository. The parent gitlink remains
-at `v1.2.0` until the framework branch is pushed and tagged. Rollout and
-compatibility notes: [`docs/maintenance/agentic_forge_p0_quality_gates.md`](../maintenance/agentic_forge_p0_quality_gates.md).
+Because `.agent` is shared by sibling repositories, the fixes were released
+through `agentic-forge`: **v1.3.0** (`5bff43a`) and then **v1.4.0** (`5f9c665`),
+which completes the remaining hardening items (tests, CI, lint/mypy, scaffold
+validation, config keys, `--version`, Python 3.9 fallback and docs sync). The
+parent gitlink is updated to `v1.4.0`. Rollout, compatibility and evidence:
+[`docs/maintenance/agentic_forge_v1.4.0_hardening.md`](../maintenance/agentic_forge_v1.4.0_hardening.md).
 
 Remaining work: P1/P2 (SSoT tables, genericization of `forge_metrics` /
 `lesson_extractor`, tests for tooling, Python floor, stale lessons and the

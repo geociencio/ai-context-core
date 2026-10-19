@@ -1,13 +1,17 @@
 # Agentic Forge v1.3.0 — P0 Quality-Gate Fixes (Cross-Repo Proposal)
 
+> **Superseded by v1.4.0.** The remaining hardening items (tests, CI, lint/mypy,
+> scaffold validation, config keys, `--version`, Python 3.9 fallback and docs
+> sync) are complete. See
+> [`agentic_forge_v1.4.0_hardening.md`](agentic_forge_v1.4.0_hardening.md).
+
 - **Date**: 2026-10-18
 - **Framework**: `agentic-forge` (`.agent/` submodule)
 - **Base**: `v1.2.0` (`2de22cf`, detached)
 - **Proposed branch**: `fix/p0-quality-gates`
 - **Local commits**: `d240b54` — `fix: enforce validation and memory gates (v1.3.0)`,
   `8967cb6` — `docs: keep memory prune wording generic`
-- **Parent pin**: intentionally **unchanged** (`v1.2.0`) until the framework commit
-  is pushed and tagged.
+- **Parent pin**: released as v1.3.0, then superseded by v1.4.0.
 
 ## Why this document exists
 

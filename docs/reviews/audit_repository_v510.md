@@ -377,10 +377,11 @@ The P0 findings were fixed after this audit was written:
   install on Python 3.9.
 - **H4**: CI runs Ruff, executes `ai-ctx verify`, and covers Python 3.9–3.13.
 
-The `.agent` fixes are framework-level (see
-[`docs/maintenance/agentic_forge_p0_quality_gates.md`](../maintenance/agentic_forge_p0_quality_gates.md)):
-they live on the local `fix/p0-quality-gates` branch of `agentic-forge` (v1.3.0)
-while the parent gitlink remains at `v1.2.0` until the framework is released.
+The `.agent` fixes are framework-level and were released as `agentic-forge`
+**v1.4.0** (`5f9c665`), which also completes the remaining hardening items
+(tests, CI, lint/mypy, scaffold validation, config keys, `--version`, Python 3.9
+fallback and docs sync). The parent gitlink is updated to `v1.4.0`; see
+[`docs/maintenance/agentic_forge_v1.4.0_hardening.md`](../maintenance/agentic_forge_v1.4.0_hardening.md).
 
 Remaining work: the P1/P2 items (documentation truth pass, provenance in
 `AI_CONTEXT.md`, generic deterministic tree, summary timestamp, v4 residue).

@@ -1,6 +1,17 @@
 # Next Steps - ai-context-core
 
-**Last Updated:** 2026-10-10
+**Last Updated:** 2026-10-18
+
+## ✅ Released — agentic-forge v1.4.0
+
+- **Status**: ✅ **Released 2026-10-18** — tag `v1.4.0` (`5f9c665`).
+- 32 framework tests + CI (Ruff 0.17, mypy, format, validate, memory check).
+- Scaffold validation, `forge.toml` config keys, `--version`, Python 3.9
+  fallback, docs sync and `qa-docker` → `testing-standards` merge.
+- Parent `.agent` pin updated to `v1.4.0`.
+- Sibling rollout pending: `sec_interp`; `qgis-plugin-manager` still has a local
+  framework fork in its submodule and must be reconciled first.
+- Details: `docs/maintenance/agentic_forge_v1.4.0_hardening.md`.
 
 ## ✅ Released — v5.1.0 Context Alignment & Hardening
 
@@ -131,12 +142,12 @@ build + `twine check` + GitHub release. Proceed with Future Enhancements below._
 
 ## 🐛 Known Issues
 
-**None blocking** — 205 tests passing; ruff check/format clean; context health green.
+**None blocking** — 205 package tests + 32 framework tests passing; Ruff
+check/format clean; context health green.
 
-- **Agentic metrics validator**: P0 hardening excludes `scaffold/` domain packs
-  from project ground-truth checks and points `coding-standards` at
-  `[project].max_cc`; `forge.py metrics validate` is green. Framework tooling
-  tests remain a P1 follow-up.
+- **Agentic framework**: `forge.py validate`, `--graph`, `--conflicts`,
+  `metrics validate`, `memory check` and the framework CI script are green.
+  Framework tooling tests are no longer a follow-up; they ship with v1.4.0.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
