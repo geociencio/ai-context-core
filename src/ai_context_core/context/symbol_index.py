@@ -5,6 +5,7 @@ import json
 import pathlib
 from typing import Any, Dict, List, Optional, Tuple
 
+from .. import __version__
 from ..analyzer.providers import fs_utils
 
 SCHEMA_VERSION = 1
@@ -91,10 +92,16 @@ def build_symbol_index(
     definitions.sort(key=lambda d: (d["file"], d["line"]))
     references.sort(key=lambda r: (r["file"], r["line"], r["name"]))
 
+    from .verify import hash_files
+
     return {
         "schema": SCHEMA_VERSION,
         "symbols": definitions,
         "references": references,
+        "_meta": {
+            "content_hash": hash_files(project_path, scan.python_files),
+            "tool_version": __version__,
+        },
     }
 
 

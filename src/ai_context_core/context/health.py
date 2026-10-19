@@ -38,6 +38,9 @@ def compute_health(project_path: pathlib.Path) -> Dict[str, Any]:
         "symbols": {
             "definitions": len(symbols.get("symbols", [])),
             "references": len(symbols.get("references", [])),
+            "present": report.get("symbols", {}).get("present", bool(symbols)),
+            "fresh": report.get("symbols", {}).get("fresh"),
+            "reason": report.get("symbols", {}).get("reason", ""),
         },
         "provenance": manifest.get("_meta", {}),
     }

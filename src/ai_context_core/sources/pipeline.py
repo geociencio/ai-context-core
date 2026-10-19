@@ -13,6 +13,8 @@ from typing import Any, Dict, List, Optional
 
 from ..analyzer.builders import reporting
 from ..analyzer.providers import context_fields, fs_utils, git_analysis
+from ..analyzer.providers.fs_cache import compute_config_fingerprint
+from ..context.verify import SYMBOLS, compute_render_fingerprint
 from ..model import AnalysisResult
 from .base import resolve_source
 
@@ -114,6 +116,7 @@ def render_context(
     *,
     generate_summary: bool = False,
     max_tokens: Optional[int] = None,
+    include_md: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     """Render the context artifacts for an analysis result.
 
@@ -123,6 +126,8 @@ def render_context(
         config: Analyzer configuration (``context.sections`` / ``context.budget``).
         generate_summary: Also emit ``PROJECT_SUMMARY.md`` (human summary).
         max_tokens: Optional global token cap override.
+        include_md: Extra markdown globs embedded during compilation; recorded so
+            ``verify`` can hash the same document set.
 
     Returns:
         The rendered token manifest.
@@ -141,6 +146,16 @@ def render_context(
         from ..context.verify import compute_content_hash
 
         result.provenance.content_hash = compute_content_hash(project_path)
+
+    result.provenance.config_hash = compute_config_fingerprint(config) if config else None
+    result.provenance.include_md = list(include_md or [])
+    result.provenance.symbols_present = (project_path / SYMBOLS).exists()
+    result.provenance.render_fingerprint = compute_render_fingerprint(
+        project_path,
+        config,
+        result.provenance.content_hash,
+        include_md=result.provenance.include_md,
+    )
 
     manifest = reporting.generate_ai_context(
         data,

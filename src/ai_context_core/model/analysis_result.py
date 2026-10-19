@@ -7,7 +7,7 @@ provenance is tracked separately.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 SCHEMA_VERSION = 1
 
@@ -21,6 +21,12 @@ class Provenance:
         schema: Producer schema version (external) or the context schema.
         tool_version: Version of the producing tool.
         git_sha: Git revision of the analyzed project, when available.
+        content_hash: Hash of the analyzed Python inputs.
+        render_fingerprint: Hash of every render input (sources, config, docs,
+            tool version) used to detect stale artifacts.
+        config_hash: Fingerprint of the effective configuration used to render.
+        include_md: Extra markdown globs supplied at render time.
+        symbols_present: Whether ``symbols.json`` existed when the render ran.
     """
 
     source: str
@@ -28,6 +34,10 @@ class Provenance:
     tool_version: Optional[str] = None
     git_sha: Optional[str] = None
     content_hash: Optional[str] = None
+    render_fingerprint: Optional[str] = None
+    config_hash: Optional[str] = None
+    include_md: List[str] = field(default_factory=list)
+    symbols_present: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         """Return the provenance as a plain dictionary."""
@@ -37,6 +47,10 @@ class Provenance:
             "tool_version": self.tool_version,
             "git_sha": self.git_sha,
             "content_hash": self.content_hash,
+            "render_fingerprint": self.render_fingerprint,
+            "config_hash": self.config_hash,
+            "include_md": list(self.include_md),
+            "symbols_present": self.symbols_present,
         }
 
 

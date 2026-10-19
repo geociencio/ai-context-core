@@ -66,8 +66,14 @@ def health_cmd(path: str):
         click.echo(f"- Tokens: {tokens['total']}{budget} (truncated: {tokens['truncated']})")
 
     symbols = report["symbols"]
+    suffix = ""
+    if symbols.get("fresh") is False:
+        suffix = f" (stale: {symbols.get('reason')})"
+    elif not symbols.get("present", True):
+        suffix = " (not generated)"
     click.echo(
-        f"- Symbols: {symbols['definitions']} definitions, {symbols['references']} references"
+        f"- Symbols: {symbols['definitions']} definitions, "
+        f"{symbols['references']} references{suffix}"
     )
 
     provenance = report["provenance"]

@@ -82,14 +82,58 @@ def read_manual_notes(
 
 def _read_base_notes(project_path: pathlib.Path) -> str:
     """Read the conventional architecture notes file if present."""
+    notes_path = base_notes_path(project_path)
+    if notes_path is None:
+        return ""
+    try:
+        return notes_path.read_text(encoding="utf-8")
+    except OSError as e:
+        logger.warning("Could not read manual notes: %s", e)
+        return ""
+
+
+def base_notes_path(project_path: pathlib.Path) -> Optional[pathlib.Path]:
+    """Return the conventional architecture notes file, when present.
+
+    Args:
+        project_path: Project root.
+
+    Returns:
+        The first existing ``.ai-context/architecture_notes.md`` or
+        ``.ai-context/project_brain.md`` path, or ``None``.
+    """
     for name in _BASE_NOTE_NAMES:
         notes_path = project_path / ".ai-context" / name
         if notes_path.exists():
-            try:
-                return notes_path.read_text(encoding="utf-8")
-            except OSError as e:
-                logger.warning("Could not read manual notes: %s", e)
-    return ""
+            return notes_path
+    return None
+
+
+def context_doc_paths(
+    project_path: pathlib.Path,
+    config: Dict[str, Any],
+    include_md: Optional[List[str]] = None,
+) -> List[pathlib.Path]:
+    """Resolve every markdown file embedded as manual architecture notes.
+
+    The base notes file (if any) comes first, followed by the configured and
+    CLI-provided globs. This is the exact input set used for rendering, so the
+    render fingerprint can hash the same files.
+
+    Args:
+        project_path: Project root.
+        config: Analyzer configuration (``context_docs`` globs).
+        include_md: Extra markdown globs (relative to the root) to embed.
+
+    Returns:
+        Ordered, de-duplicated list of context document paths.
+    """
+    docs: List[pathlib.Path] = []
+    base = base_notes_path(project_path)
+    if base is not None:
+        docs.append(base)
+    docs.extend(_discover_context_docs(project_path, config, include_md))
+    return docs
 
 
 def _discover_context_docs(

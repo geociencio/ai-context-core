@@ -36,7 +36,7 @@ def run_analysis(
             ignore_cache=no_cache,
             include_md=include_md,
         )
-        render_context(result, proj, cfg, generate_summary=True)
+        render_context(result, proj, cfg, generate_summary=True, include_md=include_md)
         res = result.data
     except Exception as e:
         click.secho(f"❌ Error: {e}", fg="red")
@@ -88,7 +88,14 @@ def run_context(
             ignore_cache=no_cache,
             include_md=include_md,
         )
-        manifest = render_context(result, proj, cfg, generate_summary=False, max_tokens=max_tokens)
+        manifest = render_context(
+            result,
+            proj,
+            cfg,
+            generate_summary=False,
+            max_tokens=max_tokens,
+            include_md=include_md,
+        )
         total = manifest["total_tokens"]
         budget = manifest["budget"]
         if budget:

@@ -1,8 +1,9 @@
-"""Context staleness verification.
+"""Context fingerprinting and staleness primitives.
 
 Each rendered artifact records a ``content_hash`` of the analyzed Python inputs
-(relative path + file hash) in its ``_meta`` block. ``verify`` recomputes that
-hash and reports drift when a tracked file has changed or an artifact is missing.
+(relative path + file hash) and a ``render_fingerprint`` covering every render
+input: the source hash, the effective configuration, embedded context documents
+and the tool version. The freshness policy lives in :mod:`freshness`.
 """
 
 import hashlib
@@ -11,7 +12,9 @@ import logging
 import pathlib
 from typing import Any, Dict, List, Optional
 
-from ..analyzer.providers import fs_utils
+from .. import __version__
+from ..analyzer.providers import context_fields, fs_utils
+from ..analyzer.providers.fs_cache import compute_config_fingerprint
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +66,7 @@ def hash_files(project_path: pathlib.Path, files: List[pathlib.Path]) -> str:
         try:
             rel = str(pathlib.Path(file_path).relative_to(project_path))
             entries.append([rel, _hash_file(file_path)])
-        except OSError as e:  # pragma: no cover - unreadable file
+        except (OSError, ValueError) as e:  # pragma: no cover - unreadable file
             logger.warning("Skipping %s during hashing: %s", file_path, e)
     entries.sort()
 
@@ -80,54 +83,131 @@ def _hash_file(path: pathlib.Path) -> str:
     return digest.hexdigest()
 
 
-def read_recorded_hash(project_path: pathlib.Path) -> Optional[str]:
-    """Read the recorded ``content_hash`` from the manifest or context JSON."""
+def _doc_key(project_path: pathlib.Path, path: pathlib.Path) -> str:
+    """Return a stable, project-relative key for an embedded document."""
+    try:
+        return str(path.relative_to(project_path))
+    except ValueError:
+        return str(path)
+
+
+def _hash_context_docs(
+    project_path: pathlib.Path,
+    config: Dict[str, Any],
+    include_md: Optional[List[str]] = None,
+) -> List[List[str]]:
+    """Hash every markdown file embedded as manual architecture notes."""
+    entries: List[List[str]] = []
+    for doc in context_fields.context_doc_paths(project_path, config, include_md):
+        key = _doc_key(project_path, doc)
+        try:
+            digest = _hash_file(doc)
+        except OSError:
+            digest = "missing"
+        entries.append([key, digest])
+    entries.sort()
+    return entries
+
+
+def compute_render_fingerprint(
+    project_path: pathlib.Path,
+    config: Optional[Dict[str, Any]],
+    content_hash: str,
+    include_md: Optional[List[str]] = None,
+) -> str:
+    """Hash every input that can change a rendered artifact.
+
+    Args:
+        project_path: Project root.
+        config: Effective configuration used for rendering.
+        content_hash: Hash of the analyzed Python sources.
+        include_md: Extra markdown globs supplied at render time.
+
+    Returns:
+        A ``sha256:<hex>`` string covering sources, configuration, embedded
+        documents and the tool version.
+    """
+    project_path = pathlib.Path(project_path).resolve()
+    config = config or {}
+    payload = {
+        "version": __version__,
+        "content_hash": content_hash,
+        "config_hash": compute_config_fingerprint(config) if config else None,
+        "docs": _hash_context_docs(project_path, config, include_md),
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return HASH_PREFIX + hashlib.sha256(encoded).hexdigest()
+
+
+def read_recorded_meta(project_path: pathlib.Path) -> Optional[Dict[str, Any]]:
+    """Read the recorded ``_meta`` block from the manifest or context JSON."""
     project_path = pathlib.Path(project_path)
     for name in (MANIFEST, PROJECT_CONTEXT):
         data = _read_json(project_path / name)
-        recorded = (data or {}).get("_meta", {}).get("content_hash")
-        if recorded:
-            return recorded
+        meta = (data or {}).get("_meta")
+        if isinstance(meta, dict) and meta.get("content_hash"):
+            return meta
     return None
 
 
+def read_recorded_hash(project_path: pathlib.Path) -> Optional[str]:
+    """Read the recorded ``content_hash`` from the manifest or context JSON."""
+    meta = read_recorded_meta(project_path)
+    return (meta or {}).get("content_hash")
+
+
+def _symbols_report(
+    project_path: pathlib.Path,
+    current_hash: str,
+    recorded_meta: Optional[Dict[str, Any]],
+    missing: List[str],
+) -> Dict[str, Any]:
+    """Check ``symbols.json`` presence and freshness.
+
+    A missing symbol index is only an error when it existed at render time.
+    A present index without a source hash (pre-5.1.1 files) is reported as stale
+    so it can be regenerated with ``ai-ctx symbols``.
+    """
+    path = project_path / SYMBOLS
+    info: Dict[str, Any] = {"present": path.exists(), "fresh": None, "reason": ""}
+
+    recorded_present = bool((recorded_meta or {}).get("symbols_present"))
+    if recorded_present and not path.exists():
+        missing.append(SYMBOLS)
+        info["fresh"] = False
+        info["reason"] = "symbols.json was present at render time but is missing"
+        return info
+
+    if not path.exists():
+        return info
+
+    data = _read_json(path) or {}
+    recorded_symbols_hash = (data.get("_meta") or {}).get("content_hash")
+    if not recorded_symbols_hash:
+        info["fresh"] = False
+        info["reason"] = "symbols.json has no content hash (run 'ai-ctx symbols')"
+    elif recorded_symbols_hash != current_hash:
+        info["fresh"] = False
+        info["reason"] = "symbols.json is stale relative to the sources"
+    else:
+        info["fresh"] = True
+    return info
+
+
 def verify_context(project_path: pathlib.Path) -> Dict[str, Any]:
-    """Verify that context artifacts are fresh relative to the current sources.
+    """Verify that context artifacts are fresh relative to the current inputs.
+
+    Thin compatibility wrapper over :func:`ai_context_core.context.freshness.verify_context`.
 
     Args:
         project_path: Project root.
 
     Returns:
-        A report with ``fresh``, ``recorded``, ``current`` and ``missing``.
+        The freshness report.
     """
-    project_path = pathlib.Path(project_path).resolve()
-    recorded = read_recorded_hash(project_path)
-    current = compute_content_hash(project_path)
-    missing = [name for name in TRACKED_ARTIFACTS if not (project_path / name).exists()]
+    from .freshness import verify_context as _verify_context
 
-    if recorded is None:
-        return {
-            "fresh": False,
-            "reason": "no recorded content hash (run 'ai-ctx context')",
-            "recorded": None,
-            "current": current,
-            "missing": missing,
-        }
-
-    fresh = recorded == current and not missing
-    reason = ""
-    if missing:
-        reason = f"missing artifacts: {', '.join(missing)}"
-    elif recorded != current:
-        reason = "tracked sources changed since the last context render"
-
-    return {
-        "fresh": fresh,
-        "reason": reason,
-        "recorded": recorded,
-        "current": current,
-        "missing": missing,
-    }
+    return _verify_context(project_path)
 
 
 def _read_json(path: pathlib.Path) -> Optional[Dict[str, Any]]:
