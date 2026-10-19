@@ -2,10 +2,10 @@
 
 - **Date**: 2026-10-18
 - **Target**: `qgis-plugin-manager` `.agent` submodule
-- **Current pin**: `v1.2.0` (`2de22cf`) with a large local framework fork
+- **Current pin**: `v1.4.1` (`537f9fd`) — reconciliation completed, local fork backed up/cleaned
 - **Target pin**: `v1.4.2` (`b264e35`)
-- **Status**: ⚠️ Manual reconciliation required; the deployment helper correctly
-  refuses the dirty worktree.
+- **Status**: ✅ Reconciled; run the deployment helper with `--apply` to bump to
+  `v1.4.2` from a normal shell.
 
 ## Findings
 

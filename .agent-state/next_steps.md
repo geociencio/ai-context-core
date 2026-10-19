@@ -11,9 +11,8 @@
 - Scaffold validation, `forge.toml` config keys, `--version`, Python 3.9
   fallback, docs sync and `qa-docker` → `testing-standards` merge.
 - Parent `.agent` pin updated to `v1.4.2`.
-- `sec_interp` and `qgis-plugin-manager` pass v1.4.2 validation; apply the helper
-  with `--apply` from a normal shell.
-- `qgis-plugin-manager` still has a local framework fork in its submodule; reconcile first.
+- `sec_interp` and `qgis-plugin-manager` are pinned to `v1.4.1` and pass v1.4.2
+  validation; run the deployment helper with `--apply` to bump them to `v1.4.2`.
 - Details: `docs/maintenance/agentic_forge_v1.4.0_hardening.md`.
 
 ## ✅ Released — v5.1.0 Context Alignment & Hardening

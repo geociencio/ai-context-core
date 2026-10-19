@@ -68,7 +68,7 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 - **Active Phase**: None — v5.1.0 released (GitHub); PyPI upload manual (pending)
 - **Current Metrics**: Package 205/205 tests; framework 37/37 tests; ruff
   check+format clean; quality 94.7
-- **Pending**: PyPI v5.1.0 (maintainer); sibling `agentic-forge` v1.4.2 rollout
-  (`sec_interp`; `qgis-plugin-manager` needs local-fork reconciliation)
-- **Known**: `forge.py metrics validate` is green after v1.3.0/v1.4.0; the
+- **Pending**: PyPI v5.1.0 (maintainer); sibling `agentic-forge` v1.4.2 bump
+  (`sec_interp` and `qgis-plugin-manager` are pinned to v1.4.1; run the helper)
+- **Known**: `forge.py metrics validate` is green after v1.3.0/v1.4.x; the
   framework now has tests and CI.
