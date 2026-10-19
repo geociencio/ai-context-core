@@ -24,6 +24,21 @@ def _meta_matches(cached: Optional[Dict[str, Any]], stats: Dict[str, Any]) -> bo
     )
 
 
+def _module_path(module: Dict[str, Any]) -> str:
+    """Return the stable sort key for a module result."""
+    return str(module.get("path", ""))
+
+
+def _sorted_modules(modules: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Sort module results by path so renders are reproducible.
+
+    Parallel analysis completes in nondeterministic order. Sorting at the
+    worker boundary keeps downstream aggregation, graphs and rendered artifacts
+    byte-for-byte stable across runs and hosts.
+    """
+    return sorted(modules, key=_module_path)
+
+
 class AnalysisWorker:
     """Handles individual and parallel module analysis."""
 
@@ -70,12 +85,12 @@ class AnalysisWorker:
         results, to_analyze = self._partition_by_cache(files)
 
         if not to_analyze:
-            return results
+            return _sorted_modules(results)
 
         if len(to_analyze) < PARALLEL_MIN_FILES:
             for f in to_analyze:
                 self._analyze_and_cache(f, results)
-            return results
+            return _sorted_modules(results)
 
         from ..constants import PARALLEL_BATCH_SIZE
 
@@ -100,7 +115,7 @@ class AnalysisWorker:
                     logger.error(f"Error analyzing batch {batch_files}: {e}")
                     for f in batch_files:
                         self.error_log[str(f)] = str(e)
-        return results
+        return _sorted_modules(results)
 
     def analyze_batch(self, files: List[pathlib.Path]) -> List[Dict[str, Any]]:
         """Analyze a batch of files."""

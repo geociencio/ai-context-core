@@ -50,6 +50,9 @@ class ResultsAggregator:
             A post-processed results dictionary ready for reporting.
         """
         valid_modules = [m for m in m_data if not m.get("syntax_error")]
+        # Keep the public payload deterministic even when a caller bypasses the
+        # worker's ordering (e.g. a custom source).
+        modules = sorted(m_data, key=lambda m: str(m.get("path", "")))
 
         # Dependency analysis
         unused_imports = dependencies.detect_unused_imports_in_project(valid_modules, self.config)
@@ -86,7 +89,7 @@ class ResultsAggregator:
             "project_name": self.project_path.name,
             "metrics": project_metrics,
             "complexity": complexity_agg,
-            "modules": m_data,
+            "modules": modules,
             "dependencies": graph_data,
             "optimizations": optimizations,
             "entry_points": entry_points_detail,
