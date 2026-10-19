@@ -63,6 +63,28 @@ project-state warnings remain (exit 0).
    or discard that local diff before pinning `v1.4.0`; do not run
    `git submodule update` there first.
 
+### Deployment helper
+
+The repository ships a safe helper that refuses dirty worktrees, validates the
+new pin and rolls back on failure:
+
+```bash
+# Dry-run: show current and desired framework versions
+./scripts/deploy_agentic_forge.sh ~/qgispluginsdev/sec_interp
+
+# Apply: fetch, checkout, run all gates and commit the submodule pin
+./scripts/deploy_agentic_forge.sh ~/qgispluginsdev/sec_interp --apply
+```
+
+### Deployment status (2026-10-18)
+
+| Repository | Status |
+| :--- | :--- |
+| `ai-context-core` | ✅ Pinned to `v1.4.0` and pushed (`main` `8de343c`). |
+| `sec_interp` | ⏸️ Pre-flight green; automated update blocked by the workspace write policy. Run the helper with `--apply` from a normal shell. |
+| `qgis-plugin-manager` | ⚠️ Dirty local framework fork; the helper refuses until it is reconciled. |
+| `qgis-plugin-analyzer`, `sistema_agent_ai`, `antigravity-*` | — No `.agent` submodule; no action. |
+
 ## Rollback
 
 ```bash
