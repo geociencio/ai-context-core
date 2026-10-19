@@ -131,19 +131,16 @@ build + `twine check` + GitHub release. Proceed with Future Enhancements below._
 
 ## 🐛 Known Issues
 
-**None blocking** — 196 tests passing; ruff check/format clean; context health green.
+**None blocking** — 205 tests passing; ruff check/format clean; context health green.
 
-- **Metrics validator false positives**: `forge.py metrics validate` flags 5
-  entries in the `.agent/` framework submodule — `scaffold/qgis/workflows/release-plugin.md`
-  (CC≤10, 763 tests → SecInterp's domain values) and `skills/coding-standards/SKILL.md`
-  ("complexity below 10" → generic guideline). These are template/domain values,
-  not stale ai-context-core metrics (CC≤25, 196 tests). The validator scans
-  `scaffold/` against this project's ground truth; treat as non-blocking until the
-  framework excludes domain packs from ground-truth checks.
+- **Agentic metrics validator**: P0 hardening excludes `scaffold/` domain packs
+  from project ground-truth checks and points `coding-standards` at
+  `[project].max_cc`; `forge.py metrics validate` is green. Framework tooling
+  tests remain a P1 follow-up.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
-quality regression; current self-analysis reports ~95.3. (Config changes now
+quality regression; current self-analysis reports ~94.7. (Config changes now
 invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ## 🔧 Technical Debt

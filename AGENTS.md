@@ -48,6 +48,7 @@ When the user types `/name` (e.g. `/start-session`), read the corresponding `.ag
 | `/create-commit` | `.agent/workflows/create-commit.md` | Commit changes cleanly with quality validation (handling hooks). |
 | `/run-tests` | `.agent/workflows/run-tests.md` | Run unit tests reliably with interpretation. |
 | `/fix-linting` | `.agent/workflows/fix-linting.md` | Automatically correct linting and formatting issues. |
+| `/i18n-maintenance` | `.agent/workflows/i18n-maintenance.md` | Add or update translations following the i18n standard. |
 | `/ia-critic` | `.agent/workflows/ia-critic.md` | Critical review of implementation plans by the Agent Auditor. |
 | `/verify-standards` | `.agent/workflows/verify-standards.md` | Audit the agentic system (skills/workflows) for consistency. |
 | `/release-package` | `.agent/workflows/release-package.md` | Unified release workflow for the Python package (PyPI). |
@@ -187,6 +188,7 @@ Skills live in `.agent/skills/*/SKILL.md` (framework) and `.agent-state/skills/*
 | [debug-specialist](.agent-state/skills/debug-specialist/SKILL.md) | Systematic bug resolution via the scientific method. |
 | [skill-authoring](.agent-state/skills/skill-authoring/SKILL.md) | Designing new agent skills. |
 | [tech-stack](.agent-state/skills/tech-stack/SKILL.md) | Toolchain, dependency management with uv, quality tools. |
+| [release-ai-context-core](.agent-state/skills/release-ai-context-core/SKILL.md) | Project-specific release deltas (version sites, generated artifacts, manual PyPI). |
 
 ---
 
@@ -215,7 +217,7 @@ python scripts/sync_metrics.py                  # self-analysis + metrics sync (
 - **Episodic**: `docs/maintenance/` session logs + `.agent-state/history/`.
 - **Semantic**: `.agent-state/memory/AGENT_LESSONS.md` + `SKILL.md` files.
 
-Policy: `.agent-state/memory/memory_policy.md`. Lessons older than 90 days that are already reflected in a `SKILL.md` are pruned by `forge memory prune`.
+Policy: `.agent-state/memory/memory_policy.md`. Lessons older than 90 days that are already reflected in a `SKILL.md` are pruned by `forge memory prune --apply` (preview without the flag).
 
 ---
 

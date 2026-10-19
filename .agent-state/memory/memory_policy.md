@@ -11,14 +11,16 @@
 - **Pruning**: Manual review every 6 months
 
 ### Tier 2: Semantic Memory (Lessons)
-- **Location**: `.agent/memory/AGENT_LESSONS.md`
-- **Format**: YAML-structured entries with `date`, `category`, `topic`, `lesson`, `action`
+- **Location**: `.agent-state/memory/AGENT_LESSONS.md`
+- **Format**: Markdown bullet entries with `date`, `category`, `topic`, `lesson`, `action`
+  (a fenced YAML block is also accepted by the pruner)
 - **Purpose**: Distilled technical patterns, user preferences, and reusable solutions
 - **Retention**: Active for 90 days, then marked `[consolidated]` if reflected in a `SKILL.md`
-- **Pruning**: Lessons marked `[consolidated]` are moved to `[PRUNED]` index on next review
+- **Pruning**: `forge.py memory prune` previews; `--apply` moves `[consolidated]`
+  entries to the `[PRUNED]` index
 
 ### Tier 3: Long-Term Archive (Metrics)
-- **Location**: `.agent/memory/agent_metrics.json`
+- **Location**: `.agent-state/memory/agent_metrics.json`
 - **Purpose**: Structured quality metrics across sessions for trend analysis
 - **Retention**: Indefinite
 - **Pruning**: None — metrics accumulate as time series

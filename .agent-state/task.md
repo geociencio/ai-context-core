@@ -66,7 +66,7 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 ## Operational Status
 
 - **Active Phase**: None — v5.1.0 released (GitHub); PyPI upload manual (pending)
-- **Current Metrics**: Tests 196/196 passing; ruff check+format clean; quality 95.3
+- **Current Metrics**: Tests 205/205 passing; ruff check+format clean; quality 94.7
 - **Pending**: PyPI v5.1.0 (maintainer); F5 ecosystem alignment + agentic-forge release-package proposal owned by sibling repos
-- **Known**: 5 `forge.py metrics validate` false positives in `.agent/` framework
-  scaffold/generic skills (see `next_steps.md` → Known Issues). Non-blocking.
+- **Known**: `forge.py metrics validate` is green after P0 (scaffold exclusion +
+  project `max_cc`); framework tooling tests are a P1 follow-up.
