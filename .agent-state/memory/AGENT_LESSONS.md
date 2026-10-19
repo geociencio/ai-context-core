@@ -31,6 +31,24 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
 
 ## Technical Lessons
 
+- date: 2026-10-19
+  category: ARCHITECTURE
+  topic: Removing a shared skill is a breaking change
+  lesson: "agentic-forge v1.4.0 deleted qa-docker, but sec_interp overlays and AGENTS links still referenced it, so validation failed on a real consumer."
+  action: "In the shared framework, keep a pointer-only deprecated alias for one minor release before removing a skill, and validate against a sibling overlay before tagging."
+
+- date: 2026-10-19
+  category: TESTING
+  topic: Simulation copy silently ran in the parent project root
+  lesson: "A chained `rsync ... && cd tmp` skipped the cd when rsync returned 23 for a log chgrp, so the gates ran in ai-context-core (205/94.7) instead of sec_interp (792/55.7)."
+  action: "After copying a project to a temp dir, assert pwd, framework VERSION and project name before gates; run cd in a separate statement from rsync."
+
+- date: 2026-10-19
+  category: AGENTIC_SYSTEM
+  topic: Cross-repo writes need a user-run helper
+  lesson: "The DSH sandbox denies writes to sibling .git directories and the full-access escalation was rejected; the safe path is a deployment helper that refuses dirty trees and rolls back on failure."
+  action: "Ship scripts/deploy_agentic_forge.sh with dry-run/--apply and validate the target with a temp copy; leave sibling pin commits to the user when writes are denied."
+
 - date: 2026-10-10
   category: TOOLING
   topic: Analyzer UNUSED IMPORTS false positive on re-export imports

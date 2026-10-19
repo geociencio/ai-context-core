@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-18 23:10:58
+Analysis Date: 2026-10-19 00:31:34
 Analyzer Version: 5.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -7,7 +7,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 - **Source Lines (SLOC)**: 4,256
 - **Total Physical Lines**: 6,931
 - **Maintainability**: 54.8
-- **Test Files**: 44 test files
+- **Test Files**: 51 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
@@ -28,6 +28,41 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
     .gitmodules
     .pre-commit-config.yaml
     ... (+19 more)
+    build/
+        bdist.linux-x86_64/
+        lib/
+            __init__.py
+            ai_context_core/
+                __init__.py
+                analyzer/
+                    __init__.py
+                    constants.py
+                    engine.py
+                    registry.py
+                cli/
+                    __init__.py
+                    __main__.py
+                    console.py
+                config/
+                    defaults.toml
+                    loader.py
+                context/
+                    __init__.py
+                    budget.py
+                    freshness.py
+                    health.py
+                    manifest.py
+                    symbol_index.py
+                    verify.py
+                model/
+                    __init__.py
+                    analysis_result.py
+                sources/
+                    __init__.py
+                    base.py
+                    pipeline.py
+                templates/
+                    initial_prompt.md
     dist/
         ai_context_core-5.1.0-py3-none-any.whl
         ai_context_core-5.1.0.tar.gz
@@ -56,14 +91,14 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
                 phase8_task.md
                 phase8_walkaround.md
         maintenance/
+            agentic_forge_p0_quality_gates.md
+            agentic_forge_qgis_plugin_manager_reconciliation.md
             agentic_forge_release_package_proposal.md
+            agentic_forge_v1.4.0_hardening.md
             analysis_report.md
             bug_report_v320.md
             bug_report_v321_aggregation.md
-            corrections_implementation_plan.md
-            dev_feedback.md
-            developer_recommendations.md
-            ... (+13 more)
+            ... (+17 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -111,6 +146,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
             PROFILES_GUIDE.md
             QUICK_START.md
     scripts/
+        deploy_agentic_forge.sh
         sync_metrics.py
     src/
         __init__.py
@@ -223,9 +259,9 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 ## 🚨 CRITICAL ISSUES
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/context/verify.py -> src/ai_context_core/context/freshness.py
 - src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/aggregator.py
+- src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/summary_generator.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/algorithms.py
@@ -245,12 +281,12 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 212185 (analyzed code)
-- Total lines changed (all tracked): 221733
+- Total lines changed: 219997 (analyzed code)
+- Total lines changed (all tracked): 230080
 - Top churned files:
-  - `project_context.json` (+71433 -94355, 165788)
+  - `project_context.json` (+74659 -97421, 172080)
   - `base.json` (+0 -12186, 12186)
-  - `symbols.json` (+4464 -392, 4856)
+  - `symbols.json` (+4825 -512, 5337)
   - `test_analysis.json` (+0 -2706, 2706)
   - `src/ai_context_core/cli/project_context.json` (+0 -2706, 2706)
 

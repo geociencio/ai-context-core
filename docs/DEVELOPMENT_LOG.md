@@ -1,5 +1,16 @@
 # Development Log
 
+## [2026-10-19] Agentic Forge v1.4.2 Hardening & Rollout - COMPLETED
+**THEME**: Make the shared framework releasable and deploy it without breaking sibling consumers 🧱
+- **Framework hardening**: 37 tests, GitHub/Forgejo CI, Ruff 0.17.1, mypy, format, scaffold validation, genericization, `forge.toml` config keys, `--version`, and Python 3.9 `tomli` fallback.
+- **Docs/skills**: synchronized `QUICK_REFERENCE`, removed the pre-push claim, marked GEN8 partially implemented, and merged `qa-docker` into `testing-standards`.
+- **v1.4.1 compatibility**: restored `qa-docker` as a deprecated pointer-only alias after `sec_interp` overlays failed validation against v1.4.0.
+- **v1.4.2 hotfix**: merged `fix/v1.4.2-quality-gates` (TOML `ValueError`, metrics cache skipping, four regression tests).
+- **Cross-repo validation**: `sec_interp` (792 tests, quality 55.7) and `qgis-plugin-manager` (217 tests, quality 90.48, strict mode) pass the v1.4.2 simulations.
+- **Release**: `agentic-forge` v1.4.0 `5f9c665`, v1.4.1 `537f9fd`, v1.4.2 `b264e35`; parent `.agent` pinned to v1.4.2.
+- **Rollout**: `scripts/deploy_agentic_forge.sh` added (dry-run/`--apply`, dirty-tree refusal, rollback); sibling pins are at v1.4.1 and need the user-run `--apply`.
+- **Verification**: 205 package tests passing; Ruff/format clean; `ai-ctx verify` fresh; framework gates and metrics green. ✅
+
 ## [2026-10-10] Context Alignment & Hardening (v5.1.0) - COMPLETED
 **THEME**: Align the project's own surfaces with the context-only contract and make context token-efficient by default 🧩
 - **Plan**: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (audited via `/ia-critic`, verdict PASSED after corrections).

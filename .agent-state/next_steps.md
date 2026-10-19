@@ -1,6 +1,14 @@
 # Next Steps - ai-context-core
 
-**Last Updated:** 2026-10-18
+**Last Updated:** 2026-10-19
+
+## 🚀 Handover (next session)
+
+- [ ] Bump `sec_interp` and `qgis-plugin-manager` from framework **v1.4.1** to
+  **v1.4.2** with `./scripts/deploy_agentic_forge.sh <repo> --apply`, then push
+  each repository. Both pass the v1.4.2 simulations.
+- [ ] PyPI `ai-context-core==5.1.0` remains a manual maintainer step.
+- [ ] Resume with `/start-session`.
 
 ## ✅ Released — agentic-forge v1.4.0 → v1.4.2
 
@@ -127,10 +135,10 @@
 ## 🎯 Immediate Next Steps
 
 - [ ] **Manual (maintainer)**: publish v5.1.0 to PyPI — `uv run twine upload dist/*`.
-- [ ] **Cross-repo (agentic-forge)**: make `release-package` config-driven
-  (`docs/maintenance/agentic_forge_release_package_proposal.md`).
-- [ ] **Cross-repo (F5)**: ecosystem alignment owned by `qgis-plugin-analyzer` and
-  `sec_interp`.
+- [ ] **Cross-repo (agentic-forge)**: bump `sec_interp` and `qgis-plugin-manager`
+  from v1.4.1 to v1.4.2 with `scripts/deploy_agentic_forge.sh --apply`; push each.
+- [ ] **Cross-repo (F5)**: remaining ecosystem alignment owned by
+  `qgis-plugin-analyzer` and `sec_interp`.
 
 _No agent-side blockers. PyPI uploads are always performed manually by the
 maintainer (see `AGENT_LESSONS.md` → User Preferences); the agent stops at
@@ -144,12 +152,12 @@ build + `twine check` + GitHub release. Proceed with Future Enhancements below._
 
 ## 🐛 Known Issues
 
-**None blocking** — 205 package tests + 32 framework tests passing; Ruff
+**None blocking** — 205 package tests + 37 framework tests passing; Ruff
 check/format clean; context health green.
 
 - **Agentic framework**: `forge.py validate`, `--graph`, `--conflicts`,
   `metrics validate`, `memory check` and the framework CI script are green.
-  Framework tooling tests are no longer a follow-up; they ship with v1.4.0.
+  Framework tooling tests ship with v1.4.0; v1.4.2 adds the cache/TOML hotfix.
 
 Note: the `ai-ctx Quality Score` is a heuristic, average-based metric. Removing
 small high-maintainability shim files lowered it from 100 to ~90 without a real
@@ -168,5 +176,6 @@ invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ---
 
-**Session Status:** v5.1.0 released (GitHub; PyPI manual pending). No in-repo phase
-active; next work is cross-repo (agentic-forge release-package, F5 ecosystem).
+**Session Status:** agentic-forge v1.4.2 released and pinned; v5.1.0 published to
+GitHub (PyPI manual pending). Sibling pins are at v1.4.1 and need the user-run
+`--apply`. No in-repo phase active.

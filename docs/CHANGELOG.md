@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Agentic framework v1.4.2**: the `.agent/` submodule is pinned to a hardened
+  framework with 37 tooling tests, CI, configurable project commands, Python 3.9
+  support, and validated QGIS domain-pack templates. `qa-docker` is retained as a
+  deprecated alias for `testing-standards`. No package API changes.
+
 ## [5.0.1] - 2026-10-10 - Post-Release Cleanup
 
 ### Changed
