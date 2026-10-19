@@ -35,7 +35,7 @@ if [[ ! -f "$repo/forge.toml" ]]; then
     exit 2
 fi
 
-version="${AGENTIC_FORGE_VERSION:-v1.4.1}"
+version="${AGENTIC_FORGE_VERSION:-v1.4.2}"
 
 cd "$repo"
 if [[ -n "$(git status --porcelain)" ]]; then
