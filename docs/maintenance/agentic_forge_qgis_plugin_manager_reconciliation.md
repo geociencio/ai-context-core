@@ -28,6 +28,24 @@ The parent repository's own `scaffold/qgis/skills/qa-docker/SKILL.md` is **not**
 inside `.agent`; it is project-owned and is not touched by this reconciliation.
 v1.4.1 also keeps a deprecated core `qa-docker` alias for existing overlays.
 
+## Verification (v1.4.1 simulation)
+
+A copy of `qgis-plugin-manager` with `.agent` replaced by v1.4.1 was validated
+without touching the repository:
+
+```
+validate (strict): 19 skills, 14 workflows, 6 templates → exit 0
+validate --graph:  0 broken references → exit 0
+validate --conflicts: exit 0
+metrics validate:  tests=217, quality=90.48, CC≤10 → exit 0
+memory check:      102/350 lines → exit 0
+framework tests:   33 passed
+```
+
+This confirms that the tooling, tests, requirements, workflows and generic docs
+can be replaced with v1.4.1. Preserve project-owned `scaffold/qgis` and
+consumer-specific documentation after reviewing the backup.
+
 ## Recommended procedure
 
 1. **Save the parent worktree** (the helper requires a clean repository):
