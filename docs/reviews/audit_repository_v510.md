@@ -364,4 +364,23 @@ sha256sum /tmp/acc-copy/AI_CONTEXT.md
 
 ---
 
-*Independent audit produced for `ai-context-core` v5.1.0. No code was changed.*
+## 10. Remediation status (2026-10-19)
+
+The P0 findings were fixed after this audit was written:
+
+- **H1**: module results are sorted by path at the worker/aggregator boundary, and a
+  byte-stability regression test renders a >5-module fixture twice.
+- **H2**: `verify` now records and checks a `render_fingerprint` covering sources,
+  effective configuration, embedded context documents and tool version;
+  `symbols.json` carries and validates a source `content_hash`.
+- **H3**: `tomli` is declared for Python `<3.11`, and CI runs a clean runtime
+  install on Python 3.9.
+- **H4**: CI runs Ruff, executes `ai-ctx verify`, and covers Python 3.9–3.13.
+
+Remaining work: the P1/P2 items (documentation truth pass, provenance in
+`AI_CONTEXT.md`, generic deterministic tree, summary timestamp, v4 residue).
+
+---
+
+*Independent audit of the pre-remediation state. See §10 for fixes applied
+afterwards.*

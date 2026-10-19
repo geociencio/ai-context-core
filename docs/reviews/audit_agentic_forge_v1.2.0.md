@@ -218,5 +218,22 @@ That is the highest structural risk in the agentic system.
 
 ---
 
-*Independent audit of `agentic-forge` v1.2.0 as mounted in `ai-context-core`. No file
-was changed.*
+## 9. Remediation status (2026-10-19)
+
+The P0 findings were fixed in the framework working tree after this audit:
+
+- **A1**: `validate --graph` now exits 1 when broken references exist (verified
+  with a temporary broken workflow).
+- **A2**: `scaffold/` is excluded from project ground-truth checks and
+  `coding-standards` references `[project].max_cc`; `metrics validate` is green.
+- **A3**: `memory prune` parses Markdown bullets, defaults to dry-run, requires
+  `--apply`, and exits non-zero on parse errors.
+
+Remaining work: P1/P2 (SSoT tables, genericization of `forge_metrics` /
+`lesson_extractor`, tests for tooling, Python floor, stale lessons and the
+`pre-push` claim).
+
+---
+
+*Independent audit of the pre-remediation state. See §9 for fixes applied
+afterwards.*
