@@ -378,9 +378,9 @@ The P0 findings were fixed after this audit was written:
 - **H4**: CI runs Ruff, executes `ai-ctx verify`, and covers Python 3.9–3.13.
 
 The `.agent` fixes are framework-level and were released as `agentic-forge`
-**v1.4.0** (`5f9c665`) and **v1.4.1** (`537f9fd`), which complete the remaining hardening items
+**v1.4.0** (`5f9c665`), **v1.4.1** (`537f9fd`) and **v1.4.2** (`b264e35`), which complete the remaining hardening items
 (tests, CI, lint/mypy, scaffold validation, config keys, `--version`, Python 3.9
-fallback and docs sync). The parent gitlink is updated to `v1.4.1`; see
+fallback and docs sync). The parent gitlink is updated to `v1.4.2`; see
 [`docs/maintenance/agentic_forge_v1.4.0_hardening.md`](../maintenance/agentic_forge_v1.4.0_hardening.md).
 
 Remaining work: the P1/P2 items (documentation truth pass, provenance in

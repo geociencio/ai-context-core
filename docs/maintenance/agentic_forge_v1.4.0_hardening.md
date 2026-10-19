@@ -1,13 +1,13 @@
-# Agentic Forge v1.4.0/v1.4.1 — Hardening Completion
+# Agentic Forge v1.4.0 → v1.4.2 — Hardening Completion
 
 - **Date**: 2026-10-18
-- **Framework**: `agentic-forge` v1.4.0 (hardening) + v1.4.1 (compatibility)
-- **Commit / tag**: `5f9c665` / `v1.4.0`; `537f9fd` / `v1.4.1`
+- **Framework**: `agentic-forge` v1.4.0 (hardening) + v1.4.1 (compatibility) + v1.4.2 (hotfix)
+- **Commit / tag**: `5f9c665` / `v1.4.0`; `537f9fd` / `v1.4.1`; `b264e35` / `v1.4.2`
   (published to `codeberg.org/geociencio/agentic-forge`)
 - **Supersedes**: the v1.3.0 P0 proposal in
   [`agentic_forge_p0_quality_gates.md`](agentic_forge_p0_quality_gates.md)
-- **Status**: ✅ Released; `sec_interp` passes the v1.4.1 simulation and is
-  ready for the deployment helper.
+- **Status**: ✅ Released; `sec_interp` and `qgis-plugin-manager` pass the v1.4.2 validation;
+  use the deployment helper for the remaining pins.
 
 ## v1.4.1 compatibility patch
 
@@ -15,6 +15,13 @@ v1.4.0 removed `qa-docker`, but existing project overlays and `AGENTS.md` links
 still reference it. v1.4.1 restores it as a **deprecated, pointer-only alias** for
 `testing-standards`, so v1.3.x consumers keep validating without duplicated
 guidance. The alias is scheduled for removal in the next major release.
+
+## v1.4.2 quality-gate hotfix
+
+v1.4.2 fixes the v1.4.1 tooling gates: `forge_paths` catches TOML `ValueError`
+(mypy clean on 3.11+), metric scanning skips tool caches and the metrics file, and
+`.gitignore` covers `.mypy_cache`/`.pytest_cache`. It adds regression tests; no
+consumer action is required beyond the normal pin bump.
 
 ## Checklist from the v1.3.0 review
 
@@ -56,20 +63,20 @@ project-state warnings remain (exit 0).
 
 ## Rollout
 
-1. `agentic-forge` is published at `v1.4.1` (supersedes `v1.4.0`).
+1. `agentic-forge` is published at `v1.4.2` (supersedes `v1.4.0`/`v1.4.1`).
 2. Update each sibling pin:
    ```bash
    git -C .agent fetch --tags
-   git -C .agent checkout v1.4.1
+   git -C .agent checkout v1.4.2
    git add .agent
-   git commit -m "chore(agent): bump agentic-forge to v1.4.1"
+   git commit -m "chore(agent): bump agentic-forge to v1.4.2"
    ```
 3. Run `forge.py validate`, `validate --graph`, `validate --conflicts`,
    `metrics validate`, `memory check` and `memory prune` in each repository.
 4. Replace any custom `qa-docker` references with `testing-standards`.
 5. `qgis-plugin-manager` has a **local framework fork** in its submodule
    (project commands, tests and requirements that are now upstreamed). Reconcile
-   or discard that local diff before pinning `v1.4.1`; do not run
+   or discard that local diff before pinning `v1.4.2`; do not run
    `git submodule update` there first.
 
 ### Deployment helper
@@ -89,8 +96,8 @@ new pin and rolls back on failure:
 
 | Repository | Status |
 | :--- | :--- |
-| `ai-context-core` | ✅ Pinned to `v1.4.1` and pushed. |
-| `sec_interp` | ✅ v1.4.1 simulation green (overlay workflows, metrics, memory check); apply the helper with `--apply` from a normal shell. |
+| `ai-context-core` | ✅ Pinned to `v1.4.2` and pushed. |
+| `sec_interp` | ✅ v1.4.2 validation green (overlay workflows, metrics, memory check); apply the helper with `--apply` from a normal shell. |
 | `qgis-plugin-manager` | ⚠️ Dirty local framework fork; see the [reconciliation guide](agentic_forge_qgis_plugin_manager_reconciliation.md). |
 | `qgis-plugin-analyzer`, `sistema_agent_ai`, `antigravity-*` | — No `.agent` submodule; no action. |
 

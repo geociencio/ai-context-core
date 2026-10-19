@@ -231,10 +231,10 @@ The P0 findings were fixed in the framework working tree after this audit:
 
 Because `.agent` is shared by sibling repositories, the fixes were released
 through `agentic-forge`: **v1.3.0** (`5bff43a`), **v1.4.0** (`5f9c665`) and the
-**v1.4.1** compatibility patch (`537f9fd`),
+**v1.4.1** compatibility patch (`537f9fd`) and the **v1.4.2** hotfix (`b264e35`),
 which completes the remaining hardening items (tests, CI, lint/mypy, scaffold
 validation, config keys, `--version`, Python 3.9 fallback and docs sync). The
-parent gitlink is updated to `v1.4.1`. Rollout, compatibility and evidence:
+parent gitlink is updated to `v1.4.2`. Rollout, compatibility and evidence:
 [`docs/maintenance/agentic_forge_v1.4.0_hardening.md`](../maintenance/agentic_forge_v1.4.0_hardening.md).
 
 Remaining work: P1/P2 (SSoT tables, genericization of `forge_metrics` /
