@@ -1,6 +1,6 @@
 # Agentic Forge v1.3.0 — P0 Quality-Gate Fixes (Cross-Repo Proposal)
 
-> **Superseded by v1.4.0.** The remaining hardening items (tests, CI, lint/mypy,
+> **Superseded by v1.4.0 and v1.4.1.** The remaining hardening items (tests, CI, lint/mypy,
 > scaffold validation, config keys, `--version`, Python 3.9 fallback and docs
 > sync) are complete. See
 > [`agentic_forge_v1.4.0_hardening.md`](agentic_forge_v1.4.0_hardening.md).

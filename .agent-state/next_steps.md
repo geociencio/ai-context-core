@@ -2,15 +2,16 @@
 
 **Last Updated:** 2026-10-18
 
-## ✅ Released — agentic-forge v1.4.0
+## ✅ Released — agentic-forge v1.4.0 / v1.4.1
 
-- **Status**: ✅ **Released 2026-10-18** — tag `v1.4.0` (`5f9c665`).
+- **Status**: ✅ **Released 2026-10-18** — `v1.4.0` (`5f9c665`) and `v1.4.1` (`537f9fd`).
+- `v1.4.1` restores `qa-docker` as a deprecated alias so v1.3.x consumers keep validating.
 - 32 framework tests + CI (Ruff 0.17, mypy, format, validate, memory check).
 - Scaffold validation, `forge.toml` config keys, `--version`, Python 3.9
   fallback, docs sync and `qa-docker` → `testing-standards` merge.
-- Parent `.agent` pin updated to `v1.4.0`.
-- Sibling rollout pending: `sec_interp`; `qgis-plugin-manager` still has a local
-  framework fork in its submodule and must be reconciled first.
+- Parent `.agent` pin updated to `v1.4.1`.
+- `sec_interp` passes the v1.4.1 simulation; apply the helper with `--apply`.
+- `qgis-plugin-manager` still has a local framework fork in its submodule; reconcile first.
 - Details: `docs/maintenance/agentic_forge_v1.4.0_hardening.md`.
 
 ## ✅ Released — v5.1.0 Context Alignment & Hardening
