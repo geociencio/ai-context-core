@@ -1,6 +1,6 @@
 # Repository Audit — ai-context-core v5.1.0
 
-- **Date**: 2026-10-19
+- **Date**: 2026-10-18
 - **Version audited**: 5.1.0 (`d05afe7`, branch `main`)
 - **Scope**: source, tests, configuration, generated artifacts, documentation, packaging and CI
 - **Method**: static inspection plus reproducible execution of the test suite, linters, lockfile,
@@ -364,7 +364,7 @@ sha256sum /tmp/acc-copy/AI_CONTEXT.md
 
 ---
 
-## 10. Remediation status (2026-10-19)
+## 10. Remediation status (2026-10-18)
 
 The P0 findings were fixed after this audit was written:
 
@@ -376,6 +376,11 @@ The P0 findings were fixed after this audit was written:
 - **H3**: `tomli` is declared for Python `<3.11`, and CI runs a clean runtime
   install on Python 3.9.
 - **H4**: CI runs Ruff, executes `ai-ctx verify`, and covers Python 3.9–3.13.
+
+The `.agent` fixes are framework-level (see
+[`docs/maintenance/agentic_forge_p0_quality_gates.md`](../maintenance/agentic_forge_p0_quality_gates.md)):
+they live on the local `fix/p0-quality-gates` branch of `agentic-forge` (v1.3.0)
+while the parent gitlink remains at `v1.2.0` until the framework is released.
 
 Remaining work: the P1/P2 items (documentation truth pass, provenance in
 `AI_CONTEXT.md`, generic deterministic tree, summary timestamp, v4 residue).

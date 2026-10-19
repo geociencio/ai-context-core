@@ -1,6 +1,6 @@
 # Agentic Forge Audit — `.agent` v1.2.0
 
-- **Date**: 2026-10-19
+- **Date**: 2026-10-18
 - **Framework**: `agentic-forge` v1.2.0 (`2de22cf`, git submodule at `.agent/`)
 - **Project overlay**: `.agent-state/`
 - **Scope**: framework skills, workflows, tooling, domain pack, project overlays, memory and metrics
@@ -218,7 +218,7 @@ That is the highest structural risk in the agentic system.
 
 ---
 
-## 9. Remediation status (2026-10-19)
+## 9. Remediation status (2026-10-18)
 
 The P0 findings were fixed in the framework working tree after this audit:
 
@@ -228,6 +228,12 @@ The P0 findings were fixed in the framework working tree after this audit:
   `coding-standards` references `[project].max_cc`; `metrics validate` is green.
 - **A3**: `memory prune` parses Markdown bullets, defaults to dry-run, requires
   `--apply`, and exits non-zero on parse errors.
+
+Because `.agent` is shared by sibling repositories, the fixes were committed to
+the **local `fix/p0-quality-gates` branch** of `agentic-forge` as `d240b54`
+(v1.3.0) instead of being folded into this repository. The parent gitlink remains
+at `v1.2.0` until the framework branch is pushed and tagged. Rollout and
+compatibility notes: [`docs/maintenance/agentic_forge_p0_quality_gates.md`](../maintenance/agentic_forge_p0_quality_gates.md).
 
 Remaining work: P1/P2 (SSoT tables, genericization of `forge_metrics` /
 `lesson_extractor`, tests for tooling, Python floor, stale lessons and the
