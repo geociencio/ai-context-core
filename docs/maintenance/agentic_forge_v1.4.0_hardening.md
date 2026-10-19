@@ -91,7 +91,7 @@ new pin and rolls back on failure:
 | :--- | :--- |
 | `ai-context-core` | ✅ Pinned to `v1.4.1` and pushed. |
 | `sec_interp` | ✅ v1.4.1 simulation green (overlay workflows, metrics, memory check); apply the helper with `--apply` from a normal shell. |
-| `qgis-plugin-manager` | ⚠️ Dirty local framework fork; the helper refuses until it is reconciled. |
+| `qgis-plugin-manager` | ⚠️ Dirty local framework fork; see the [reconciliation guide](agentic_forge_qgis_plugin_manager_reconciliation.md). |
 | `qgis-plugin-analyzer`, `sistema_agent_ai`, `antigravity-*` | — No `.agent` submodule; no action. |
 
 ## Rollback
