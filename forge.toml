@@ -16,3 +16,11 @@ test_dirs = ["tests"]
 analyzer_command = "uv run ai-ctx analyze --path ."
 max_cc = 25
 module_size_limit = 400
+max_lesson_lines = 350
+strict_agent_system = true
+
+# Commands consumed by the shared framework workflows.
+test_command = "uv run pytest -q"
+test_command_full = "uv run pytest -q --cov=ai_context_core --cov-report=term-missing"
+lint_command = "uv run ruff check ."
+format_command = "uv run ruff format ."

@@ -22,7 +22,7 @@ The agent adopts one of three roles depending on the task. Roles are registered 
 - **Goal**: Scrutinize the @architect's code to ensure a "Zero Bug Release" standard natively.
 - **Traits**: Paranoid about false positives, unhandled exceptions, and performance regressions in the analyzer itself. Focuses heavily on edge cases (invalid AST, malformed config, missing binaries).
 - **Constraint**: Focuses on finding, fixing, and validating code, rarely proposing entirely new abstractions. Full test coverage is the gold standard.
-- **Skills**: [commit-standards](.agent/skills/commit-standards/SKILL.md), [coding-standards](.agent/skills/coding-standards/SKILL.md), [qa-docker](.agent/skills/qa-docker/SKILL.md), [testing-standards](.agent/skills/testing-standards/SKILL.md)
+- **Skills**: [commit-standards](.agent/skills/commit-standards/SKILL.md), [coding-standards](.agent/skills/coding-standards/SKILL.md), [testing-standards](.agent/skills/testing-standards/SKILL.md)
 
 ### 🕵️ Agent Auditor (@auditor)
 - **Role**: AI technical auditor specializing in architectural rigor and standards compliance.
@@ -175,7 +175,6 @@ Skills live in `.agent/skills/*/SKILL.md` (framework) and `.agent-state/skills/*
 | [commit-standards](.agent/skills/commit-standards/SKILL.md) | Clean, conventional commits with quality validation. |
 | [documentation-standards](.agent/skills/documentation-standards/SKILL.md) | Standards for technical logs, session records, and project history. |
 | [i18n-standards](.agent/skills/i18n-standards/SKILL.md) | Internationalization standards. |
-| [qa-docker](.agent/skills/qa-docker/SKILL.md) | Dockerized testing and Mock-first testing. |
 | [release-management](.agent/skills/release-management/SKILL.md) | Python package release process. |
 | [testing-standards](.agent/skills/testing-standards/SKILL.md) | Automated testing, CI/CD, and Mock usage. |
 
