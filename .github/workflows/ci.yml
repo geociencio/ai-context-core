@@ -7,17 +7,17 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test-and-audit:
+  quality:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v5
       with:
@@ -30,12 +30,30 @@ jobs:
       run: |
         uv sync --all-extras --dev
 
-    - name: Run Tests
+    - name: Lint and format
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+
+    - name: Run tests
       run: |
         uv run pytest tests/ -v --cov=src/ai_context_core --cov-report=term-missing
 
-    - name: Audit Quality Score
+    - name: Verify committed context artifacts are fresh
       run: |
-        # Threshold set to 50 based on initial analysis (current score ~55)
-        # Increase this value as project quality improves
-        uv run ai-ctx audit --threshold 50
+        uv run ai-ctx verify
+
+    - name: Clean runtime install (no dev dependencies)
+      if: matrix.python-version == '3.9'
+      run: |
+        uv venv .runtime-venv --python 3.9
+        uv pip install --python .runtime-venv/bin/python .
+        .runtime-venv/bin/python - <<'PY'
+        from ai_context_core.analyzer.providers.config_loader import load_config
+
+        config = load_config(None)
+        assert config["context"]["budget"]["max_tokens"] == 8000
+        assert config["sources"]["source"] == "auto"
+        assert config["patterns"]["unused_imports"]["ignore_package_reexports"] is True
+        print("runtime defaults OK on Python 3.9")
+        PY
