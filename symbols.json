@@ -221,25 +221,25 @@
       "name": "BaseBuilder",
       "kind": "class",
       "file": "src/ai_context_core/analyzer/builders/builders_base.py",
-      "line": 22
+      "line": 25
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/builders_base.py",
-      "line": 28
+      "line": 31
     },
     {
       "name": "build",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/builders_base.py",
-      "line": 33
+      "line": 36
     },
     {
       "name": "_log_error",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/builders_base.py",
-      "line": 41
+      "line": 44
     },
     {
       "name": "src/ai_context_core/analyzer/builders/calculator.py",
@@ -416,6 +416,12 @@
       "line": 161
     },
     {
+      "name": "_mermaid_style",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/builders/dependencies.py",
+      "line": 214
+    },
+    {
       "name": "src/ai_context_core/analyzer/builders/formatter.py",
       "kind": "module",
       "file": "src/ai_context_core/analyzer/builders/formatter.py",
@@ -551,49 +557,49 @@
       "name": "_node_id",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 47
+      "line": 57
     },
     {
       "name": "MarkdownBuilder",
       "kind": "class",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 85
+      "line": 96
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 91
+      "line": 102
     },
     {
       "name": "add_section",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 106
+      "line": 117
     },
     {
       "name": "build",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 118
+      "line": 129
     },
     {
       "name": "generate_project_summary",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 127
+      "line": 138
     },
     {
       "name": "generate_ai_context",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 145
+      "line": 156
     },
     {
       "name": "write_context_manifest",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 178
+      "line": 189
     },
     {
       "name": "src/ai_context_core/analyzer/builders/structure.py",
@@ -848,10 +854,22 @@
       "line": 83
     },
     {
-      "name": "_discover_context_docs",
+      "name": "base_notes_path",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/providers/context_fields.py",
       "line": 95
+    },
+    {
+      "name": "context_doc_paths",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 112
+    },
+    {
+      "name": "_discover_context_docs",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 139
     },
     {
       "name": "src/ai_context_core/analyzer/providers/fs_cache.py",
@@ -1166,52 +1184,64 @@
       "line": 18
     },
     {
+      "name": "_module_path",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 27
+    },
+    {
+      "name": "_sorted_modules",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 32
+    },
+    {
       "name": "AnalysisWorker",
       "kind": "class",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 27
+      "line": 42
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 30
+      "line": 45
     },
     {
       "name": "_partition_by_cache",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 43
+      "line": 58
     },
     {
       "name": "run_parallel",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 68
+      "line": 83
     },
     {
       "name": "analyze_batch",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 105
+      "line": 120
     },
     {
       "name": "_cache_entry",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 109
+      "line": 124
     },
     {
       "name": "_analyze_and_cache",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 121
+      "line": 136
     },
     {
       "name": "analyze_single",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 127
+      "line": 142
     },
     {
       "name": "src/ai_context_core/analyzer/registry.py",
@@ -1667,79 +1697,109 @@
       "name": "get_package",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 8
+      "line": 19
     },
     {
       "name": "_resolve_relative_package",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 25
+      "line": 36
     },
     {
       "name": "ImportVisitor",
       "kind": "class",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 45
+      "line": 56
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 48
+      "line": 59
+    },
+    {
+      "name": "_span",
+      "kind": "method",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 74
     },
     {
       "name": "visit_Import",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 61
+      "line": 78
     },
     {
       "name": "visit_ImportFrom",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 68
+      "line": 87
     },
     {
       "name": "visit_Name",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 83
+      "line": 104
     },
     {
       "name": "visit_Attribute",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 88
+      "line": 109
     },
     {
       "name": "visit_Assign",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 97
+      "line": 118
     },
     {
       "name": "visit_AugAssign",
       "kind": "method",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 102
+      "line": 123
     },
     {
       "name": "extract_imports",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 108
+      "line": 129
+    },
+    {
+      "name": "_is_unused",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 145
     },
     {
       "name": "detect_unused_imports",
       "kind": "function",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 124
+      "line": 153
     },
     {
       "name": "src/ai_context_core/analyzer/visitors/issues.py",
       "kind": "module",
       "file": "src/ai_context_core/analyzer/visitors/issues.py",
       "line": 1
+    },
+    {
+      "name": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "kind": "module",
+      "file": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "line": 1
+    },
+    {
+      "name": "_suppresses_imports",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "line": 16
+    },
+    {
+      "name": "find_noqa_lines",
+      "kind": "function",
+      "file": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "line": 27
     },
     {
       "name": "src/ai_context_core/analyzer/visitors/optimization_checker.py",
@@ -2300,6 +2360,18 @@
       "line": 171
     },
     {
+      "name": "src/ai_context_core/context/freshness.py",
+      "kind": "module",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 1
+    },
+    {
+      "name": "verify_context",
+      "kind": "function",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 22
+    },
+    {
       "name": "src/ai_context_core/context/health.py",
       "kind": "module",
       "file": "src/ai_context_core/context/health.py",
@@ -2315,7 +2387,7 @@
       "name": "_read_json",
       "kind": "function",
       "file": "src/ai_context_core/context/health.py",
-      "line": 46
+      "line": 49
     },
     {
       "name": "src/ai_context_core/context/manifest.py",
@@ -2357,43 +2429,43 @@
       "name": "_collect_definitions",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 14
+      "line": 15
     },
     {
       "name": "visit",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 19
+      "line": 20
     },
     {
       "name": "_collect_references",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 45
+      "line": 46
     },
     {
       "name": "build_symbol_index",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 54
+      "line": 55
     },
     {
       "name": "write_symbol_index",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 101
+      "line": 108
     },
     {
       "name": "load_symbol_index",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 109
+      "line": 116
     },
     {
       "name": "search_symbols",
       "kind": "function",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 120
+      "line": 127
     },
     {
       "name": "src/ai_context_core/context/verify.py",
@@ -2405,37 +2477,67 @@
       "name": "compute_content_hash",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 27
+      "line": 30
     },
     {
       "name": "hash_files",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 48
+      "line": 51
     },
     {
       "name": "_hash_file",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 74
+      "line": 77
     },
     {
-      "name": "read_recorded_hash",
+      "name": "_doc_key",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 83
+      "line": 86
     },
     {
-      "name": "verify_context",
+      "name": "_hash_context_docs",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
       "line": 94
     },
     {
+      "name": "compute_render_fingerprint",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 112
+    },
+    {
+      "name": "read_recorded_meta",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 142
+    },
+    {
+      "name": "read_recorded_hash",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 153
+    },
+    {
+      "name": "_symbols_report",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 159
+    },
+    {
+      "name": "verify_context",
+      "kind": "function",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 197
+    },
+    {
       "name": "_read_json",
       "kind": "function",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 133
+      "line": 213
     },
     {
       "name": "src/ai_context_core/model/__init__.py",
@@ -2459,19 +2561,19 @@
       "name": "to_dict",
       "kind": "method",
       "file": "src/ai_context_core/model/analysis_result.py",
-      "line": 32
+      "line": 42
     },
     {
       "name": "AnalysisResult",
       "kind": "class",
       "file": "src/ai_context_core/model/analysis_result.py",
-      "line": 44
+      "line": 58
     },
     {
       "name": "with_meta",
       "kind": "method",
       "file": "src/ai_context_core/model/analysis_result.py",
-      "line": 55
+      "line": 69
     },
     {
       "name": "src/ai_context_core/sources/__init__.py",
@@ -2597,19 +2699,19 @@
       "name": "ExternalSource",
       "kind": "class",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 125
+      "line": 121
     },
     {
       "name": "__init__",
       "kind": "method",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 130
+      "line": 126
     },
     {
       "name": "collect",
       "kind": "method",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 141
+      "line": 137
     },
     {
       "name": "src/ai_context_core/sources/pipeline.py",
@@ -2621,42 +2723,42 @@
       "name": "enrich_context",
       "kind": "function",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 22
+      "line": 24
     },
     {
       "name": "_ensure_defaults",
       "kind": "function",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 60
+      "line": 62
     },
     {
       "name": "compile_context",
       "kind": "function",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 79
+      "line": 77
     },
     {
       "name": "render_context",
       "kind": "function",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 114
+      "line": 112
     }
   ],
   "references": [
     {
       "name": "count_test_files",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 68
+      "line": 71
     },
     {
       "name": "format_complexity_agg",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 82
+      "line": 85
     },
     {
       "name": "find_optimizations",
       "file": "src/ai_context_core/analyzer/builders/aggregator.py",
-      "line": 83
+      "line": 86
     },
     {
       "name": "StructureBuilder",
@@ -2866,52 +2968,52 @@
     {
       "name": "set",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 45
+      "line": 55
     },
     {
       "name": "_short_name",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 50
+      "line": 60
     },
     {
       "name": "set",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 61
+      "line": 71
     },
     {
       "name": "set",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 62
+      "line": 72
     },
     {
       "name": "_node_id",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 66
+      "line": 76
     },
     {
       "name": "_node_id",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 70
+      "line": 80
     },
     {
       "name": "ProjectSummaryGenerator",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 141
+      "line": 152
     },
     {
       "name": "AIContextGenerator",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 169
+      "line": 180
     },
     {
       "name": "budget_from_config",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 170
+      "line": 181
     },
     {
       "name": "render_sections",
       "file": "src/ai_context_core/analyzer/builders/reporting.py",
-      "line": 172
+      "line": 183
     },
     {
       "name": "BaseContextBuilder",
@@ -3054,9 +3156,24 @@
       "line": 70
     },
     {
+      "name": "base_notes_path",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 85
+    },
+    {
+      "name": "base_notes_path",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 132
+    },
+    {
+      "name": "_discover_context_docs",
+      "file": "src/ai_context_core/analyzer/providers/context_fields.py",
+      "line": 135
+    },
+    {
       "name": "set",
       "file": "src/ai_context_core/analyzer/providers/context_fields.py",
-      "line": 109
+      "line": 153
     },
     {
       "name": "LRUCache",
@@ -3149,14 +3266,34 @@
       "line": 23
     },
     {
+      "name": "_module_path",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 39
+    },
+    {
       "name": "_meta_matches",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 56
+      "line": 71
+    },
+    {
+      "name": "_sorted_modules",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 88
+    },
+    {
+      "name": "_sorted_modules",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 93
+    },
+    {
+      "name": "_sorted_modules",
+      "file": "src/ai_context_core/analyzer/providers/worker.py",
+      "line": 118
     },
     {
       "name": "get_package",
       "file": "src/ai_context_core/analyzer/providers/worker.py",
-      "line": 153
+      "line": 168
     },
     {
       "name": "AnalysisRegistry",
@@ -3191,7 +3328,7 @@
     {
       "name": "detect_unused_imports",
       "file": "src/ai_context_core/analyzer/visitors/ast_visitors.py",
-      "line": 17
+      "line": 25
     },
     {
       "name": "ClassVisitor",
@@ -3256,37 +3393,67 @@
     {
       "name": "set",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 58
+      "line": 70
     },
     {
       "name": "set",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 59
+      "line": 71
     },
     {
       "name": "_resolve_relative_package",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 73
+      "line": 93
     },
     {
       "name": "collect_exported_names",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 99
+      "line": 120
     },
     {
       "name": "collect_exported_names",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 104
+      "line": 125
     },
     {
       "name": "ImportVisitor",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 119
+      "line": 140
     },
     {
       "name": "ImportVisitor",
       "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
-      "line": 130
+      "line": 145
+    },
+    {
+      "name": "ImportVisitor",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 169
+    },
+    {
+      "name": "find_noqa_lines",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 171
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 171
+    },
+    {
+      "name": "_is_unused",
+      "file": "src/ai_context_core/analyzer/visitors/imports_visitor.py",
+      "line": 175
+    },
+    {
+      "name": "_suppresses_imports",
+      "file": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "line": 45
+    },
+    {
+      "name": "set",
+      "file": "src/ai_context_core/analyzer/visitors/noqa.py",
+      "line": 48
     },
     {
       "name": "BaseChecker",
@@ -3451,12 +3618,12 @@
     {
       "name": "check",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 104
+      "line": 111
     },
     {
       "name": "verify_context",
       "file": "src/ai_context_core/cli/commands/analyze.py",
-      "line": 107
+      "line": 114
     },
     {
       "name": "list_profiles",
@@ -3739,6 +3906,36 @@
       "line": 171
     },
     {
+      "name": "read_recorded_meta",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 35
+    },
+    {
+      "name": "compute_content_hash",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 37
+    },
+    {
+      "name": "_symbols_report",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 39
+    },
+    {
+      "name": "load_config",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 58
+    },
+    {
+      "name": "compute_config_fingerprint",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 61
+    },
+    {
+      "name": "compute_render_fingerprint",
+      "file": "src/ai_context_core/context/freshness.py",
+      "line": 69
+    },
+    {
       "name": "verify_context",
       "file": "src/ai_context_core/context/health.py",
       "line": 25
@@ -3821,107 +4018,137 @@
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 14
+      "line": 15
     },
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 17
+      "line": 18
     },
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 17
+      "line": 18
     },
     {
       "name": "visit",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 26
+      "line": 27
     },
     {
       "name": "visit",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 37
+      "line": 38
     },
     {
       "name": "visit",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 39
+      "line": 40
     },
     {
       "name": "visit",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 41
+      "line": 42
     },
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 45
+      "line": 46
     },
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 74
+      "line": 75
     },
     {
       "name": "set",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 74
+      "line": 75
     },
     {
       "name": "scan",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 76
+      "line": 77
     },
     {
       "name": "_collect_definitions",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 82
+      "line": 83
     },
     {
       "name": "_collect_references",
       "file": "src/ai_context_core/context/symbol_index.py",
-      "line": 89
+      "line": 90
+    },
+    {
+      "name": "hash_files",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 102
+    },
+    {
+      "name": "scan",
+      "file": "src/ai_context_core/context/symbol_index.py",
+      "line": 102
     },
     {
       "name": "hash_files",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 45
+      "line": 48
     },
     {
       "name": "scan",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 45
+      "line": 48
     },
     {
       "name": "_hash_file",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 65
+      "line": 68
     },
     {
-      "name": "_read_json",
+      "name": "_doc_key",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 87
+      "line": 102
     },
     {
-      "name": "read_recorded_hash",
+      "name": "_hash_file",
       "file": "src/ai_context_core/context/verify.py",
       "line": 104
     },
     {
-      "name": "compute_content_hash",
+      "name": "compute_config_fingerprint",
       "file": "src/ai_context_core/context/verify.py",
-      "line": 105
+      "line": 135
+    },
+    {
+      "name": "_hash_context_docs",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 136
+    },
+    {
+      "name": "_read_json",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 146
+    },
+    {
+      "name": "read_recorded_meta",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 155
+    },
+    {
+      "name": "_read_json",
+      "file": "src/ai_context_core/context/verify.py",
+      "line": 184
     },
     {
       "name": "Provenance",
       "file": "src/ai_context_core/model/analysis_result.py",
-      "line": 53
+      "line": 67
     },
     {
       "name": "Provenance",
       "file": "src/ai_context_core/model/analysis_result.py",
-      "line": 53
+      "line": 67
     },
     {
       "name": "AnalysisResult",
@@ -4006,67 +4233,81 @@
     {
       "name": "_map_entry_points",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 120
+      "line": 116
     },
     {
       "name": "AnalysisResult",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 141
+      "line": 137
     },
     {
       "name": "external_output_path",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 147
+      "line": 143
     },
     {
       "name": "map_project_context",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 154
+      "line": 150
     },
     {
       "name": "AnalysisResult",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 155
+      "line": 151
     },
     {
       "name": "Provenance",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 157
+      "line": 153
     },
     {
       "name": "current_git_sha",
       "file": "src/ai_context_core/sources/external/qgis_analyzer.py",
-      "line": 161
+      "line": 157
     },
     {
       "name": "_ensure_defaults",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 56
+      "line": 58
     },
     {
       "name": "AnalysisResult",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 87
+      "line": 85
     },
     {
       "name": "resolve_source",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 101
+      "line": 99
     },
     {
       "name": "enrich_context",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 110
+      "line": 108
     },
     {
       "name": "AnalysisResult",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 115
+      "line": 113
     },
     {
       "name": "compute_content_hash",
       "file": "src/ai_context_core/sources/pipeline.py",
-      "line": 147
+      "line": 148
+    },
+    {
+      "name": "compute_config_fingerprint",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 150
+    },
+    {
+      "name": "compute_render_fingerprint",
+      "file": "src/ai_context_core/sources/pipeline.py",
+      "line": 153
     }
-  ]
+  ],
+  "_meta": {
+    "content_hash": "sha256:0d5685e1336bfe452663ba93737266132e73f22c25667f4e2cfe0e799ab995cd",
+    "tool_version": "5.1.0"
+  }
 }

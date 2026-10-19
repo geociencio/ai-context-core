@@ -1,22 +1,22 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-10 16:57:53
+Analysis Date: 2026-10-18 23:10:58
 Analyzer Version: 5.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
-- **ai-ctx Quality Score**: 95.3/100
-- **Source Lines (SLOC)**: 4,075
-- **Total Physical Lines**: 6,636
-- **Maintainability**: 55.2
-- **Test Files**: 41 test files
+- **ai-ctx Quality Score**: 94.7/100
+- **Source Lines (SLOC)**: 4,256
+- **Total Physical Lines**: 6,931
+- **Maintainability**: 54.8
+- **Test Files**: 44 test files
 - _Note: the ai-ctx Quality Score is a heuristic, non-canonical metric._
 
 **Score Breakdown**:
 - Base: 100
-- Maintainability: -14.7
+- Maintainability: -15.3
 - Tests: +10.0
 
 ## 📁 STRUCTURE
-**Total Modules**: 105
+**Total Modules**: 106
 
 ```tree
 ./
@@ -29,8 +29,8 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
     .pre-commit-config.yaml
     ... (+19 more)
     dist/
-        ai_context_core-5.0.1-py3-none-any.whl
-        ai_context_core-5.0.1.tar.gz
+        ai_context_core-5.1.0-py3-none-any.whl
+        ai_context_core-5.1.0.tar.gz
     docs/
         AGENTIC_FORGE_ADOPTION.md
         AGENTIC_IMPLEMENTATION_GUIDE.md
@@ -63,7 +63,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
             corrections_implementation_plan.md
             dev_feedback.md
             developer_recommendations.md
-            ... (+12 more)
+            ... (+13 more)
             v321_fix/
                 implementation_plan.md
                 walkthrough.md
@@ -87,7 +87,9 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
             initial_extraction.md
         research/
         reviews/
+            audit_agentic_forge_v1.2.0.md
             audit_architecture_redundancies_v500.md
+            audit_repository_v510.md
             ia_critic_implementation_plan_context_only_v5.md
         secinterp/
             .ai_context_cache.json
@@ -166,6 +168,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
             context/
                 __init__.py
                 budget.py
+                freshness.py
                 health.py
                 manifest.py
                 symbol_index.py
@@ -201,7 +204,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
         test_budget.py
         test_cache_integration.py
         test_cli.py
-        ... (+28 more)
+        ... (+31 more)
         fixtures/
             false_positives.py
             golden_expected/
@@ -220,16 +223,16 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 ## 🚨 CRITICAL ISSUES
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/__init__.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py
 - src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 - src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/aggregator.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/algorithms.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/visitors/imports_visitor.py
+### src/ai_context_core/analyzer/builders/calculator.py
 - Consider breaking down large logic
-### src/ai_context_core/analyzer/providers/worker.py
+### src/ai_context_core/analyzer/builders/dependencies.py
 - Consider breaking down large logic
 
 ## 🔄 GIT ANALYSIS
@@ -242,15 +245,15 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 209720 (analyzed code)
-- Total lines changed (all tracked): 222052
+- Total lines changed: 212185 (analyzed code)
+- Total lines changed (all tracked): 221733
 - Top churned files:
-  - `project_context.json` (+71376 -93238, 164614)
+  - `project_context.json` (+71433 -94355, 165788)
   - `base.json` (+0 -12186, 12186)
   - `symbols.json` (+4464 -392, 4856)
   - `test_analysis.json` (+0 -2706, 2706)
   - `src/ai_context_core/cli/project_context.json` (+0 -2706, 2706)
 
 ## 📈 COMPLEXITY DISTRIBUTION
-- **Avg Cyclomatic Complexity**: 6.71
+- **Avg Cyclomatic Complexity**: 6.97
 - **Max Complexity**: 24
