@@ -4,9 +4,8 @@
 
 ## 🚀 Handover (next session)
 
-- [ ] Bump `sec_interp` and `qgis-plugin-manager` from framework **v1.4.1** to
-  **v1.4.2** with `./scripts/deploy_agentic_forge.sh <repo> --apply`, then push
-  each repository. Both pass the v1.4.2 simulations.
+- [x] `sec_interp` and `qgis-plugin-manager` are pinned to framework **v1.4.2**
+  and clean (verified 2026-10-25).
 - [ ] PyPI `ai-context-core==5.1.0` remains a manual maintainer step.
 - [ ] Resume with `/start-session`.
 
@@ -19,8 +18,8 @@
 - Scaffold validation, `forge.toml` config keys, `--version`, Python 3.9
   fallback, docs sync and `qa-docker` → `testing-standards` merge.
 - Parent `.agent` pin updated to `v1.4.2`.
-- `sec_interp` and `qgis-plugin-manager` are pinned to `v1.4.1` and pass v1.4.2
-  validation; run the deployment helper with `--apply` to bump them to `v1.4.2`.
+- `sec_interp` and `qgis-plugin-manager` are pinned to `v1.4.2` and pass the
+  v1.4.2 validation (verified 2026-10-25).
 - Details: `docs/maintenance/agentic_forge_v1.4.0_hardening.md`.
 
 ## ✅ Released — v5.1.0 Context Alignment & Hardening
@@ -135,8 +134,8 @@
 ## 🎯 Immediate Next Steps
 
 - [ ] **Manual (maintainer)**: publish v5.1.0 to PyPI — `uv run twine upload dist/*`.
-- [ ] **Cross-repo (agentic-forge)**: bump `sec_interp` and `qgis-plugin-manager`
-  from v1.4.1 to v1.4.2 with `scripts/deploy_agentic_forge.sh --apply`; push each.
+- [x] **Cross-repo (agentic-forge)**: `sec_interp` and `qgis-plugin-manager` are
+  pinned to v1.4.2 and clean.
 - [ ] **Cross-repo (F5)**: remaining ecosystem alignment owned by
   `qgis-plugin-analyzer` and `sec_interp`.
 

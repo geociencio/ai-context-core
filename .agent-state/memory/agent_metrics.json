@@ -1,52 +1,48 @@
 {
-    "version": "1.0",
-    "project": "ai-context-core",
-    "summary": {
-        "test_count": 205,
-        "tests_ok": 205,
-        "quality_score_latest": 94.7,
-        "maintainability_score": 54.8,
-        "avg_complexity": 6.97,
-        "max_complexity": 24
+  "version": "1.0",
+  "project": "ai-context-core",
+  "summary": {
+    "test_count": 205,
+    "tests_ok": 205,
+    "quality_score_latest": 94.7,
+    "maintainability_score": 54.8,
+    "avg_complexity": 6.97,
+    "max_complexity": 24
+  },
+  "last_session": {
+    "date": "2026-10-25",
+    "topic": "sync_metrics_auto",
+    "tests_ok": 205,
+    "quality_score": 94.7,
+    "status": "SUCCESS"
+  },
+  "history": [
+    {
+      "date": "2026-10-19",
+      "tests_ok": 205,
+      "quality_score": 94.7,
+      "status": "SUCCESS",
+      "session": "sync_metrics_auto"
     },
-    "last_session": {
-        "date": "2026-10-19",
-        "topic": "agentic_forge_v142_merge",
-        "tests_ok": 205,
-        "quality_score": 94.7,
-        "task_completion_rate": null,
-        "retries": 0,
-        "stop_conditions_triggered": 0,
-        "tasks": [],
-        "status": "SUCCESS"
+    {
+      "date": "2026-10-10",
+      "tests_ok": 196,
+      "quality_score": 95.3,
+      "status": "SUCCESS",
+      "session": "sync_metrics_auto"
     },
-    "history": [
-        {
-            "date": "2026-10-19",
-            "tests_ok": 205,
-            "quality_score": 94.7,
-            "status": "SUCCESS",
-            "session": "sync_metrics_auto"
-        },
-        {
-            "date": "2026-10-10",
-            "tests_ok": 196,
-            "quality_score": 95.3,
-            "status": "SUCCESS",
-            "session": "sync_metrics_auto"
-        },
-        {
-            "date": "2026-10-08",
-            "tests_ok": 333,
-            "quality_score": 90.2,
-            "status": "SUCCESS",
-            "session": "sync_metrics_auto"
-        },
-        {
-            "date": "2026-09-17",
-            "session": "sync_metrics_auto",
-            "quality_score": 97.3,
-            "tests_ok": 286
-        }
-    ]
+    {
+      "date": "2026-10-08",
+      "tests_ok": 333,
+      "quality_score": 90.2,
+      "status": "SUCCESS",
+      "session": "sync_metrics_auto"
+    },
+    {
+      "date": "2026-09-17",
+      "session": "sync_metrics_auto",
+      "quality_score": 97.3,
+      "tests_ok": 286
+    }
+  ]
 }

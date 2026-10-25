@@ -269,10 +269,10 @@ graph TD
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 219997 (analyzed code)
-- Total lines changed (all tracked): 230080
+- Total lines changed: 221257 (analyzed code)
+- Total lines changed (all tracked): 231655
 - Top churned files:
-  - `project_context.json` (+74659 -97421, 172080)
+  - `project_context.json` (+75168 -97916, 173084)
   - `base.json` (+0 -12186, 12186)
   - `symbols.json` (+4825 -512, 5337)
   - `test_analysis.json` (+0 -2706, 2706)
