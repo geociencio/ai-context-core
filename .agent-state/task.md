@@ -11,10 +11,10 @@ Plan: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (ia-critic PA
 - [x] **P2** — retire domain keys + external regression (WS-4/5) <!-- id: v51.p2 -->
 - [x] **P3** — `# noqa: F401` detector + docs + `ai-ctx init` (WS-6/7/8) <!-- id: v51.p3 -->
 - [x] **P4** — release v5.1.0 (3 version sites, CHANGELOG, notes, build, tag, GitHub) <!-- id: v51.p4 -->
-- [ ] **PyPI v5.1.0** — manual (maintainer): `uv run twine upload dist/*` <!-- id: v51.pypi -->
+- [x] **PyPI v5.1.0** — confirmed live 2026-10-25; future uploads use Trusted Publishing <!-- id: v51.pypi -->
 
-**Cross-repo**: agentic-forge `release-package` config-driven proposal —
-`docs/maintenance/agentic_forge_release_package_proposal.md`.
+**Cross-repo**: agentic-forge v1.4.2 released and pinned; siblings at v1.4.2.
+`docs/maintenance/agentic_forge_v1.4.0_hardening.md`.
 
 ## Phase: v5.0.0 — Context-Only Contract (F0–F5)
 
@@ -65,10 +65,10 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 
 ## Operational Status
 
-- **Active Phase**: None — v5.1.0 released (GitHub); PyPI upload manual (pending)
+- **Active Phase**: None — v5.1.0 is live on GitHub and PyPI
 - **Current Metrics**: Package 205/205 tests; framework 37/37 tests; ruff
   check+format clean; quality 94.7
-- **Pending**: PyPI v5.1.0 (maintainer); sibling framework rollout is complete
-  (`sec_interp` and `qgis-plugin-manager` at v1.4.2)
-- **Known**: `forge.py metrics validate` is green after v1.3.0/v1.4.x; the
-  framework now has tests and CI.
+- **Pending**: one-time PyPI Trusted Publisher + GitHub `pypi` environment
+  configuration before the next tag; sibling framework rollout is complete
+- **Known**: `.github/workflows/release.yml` is added; the first automated
+  publish needs the external trusted-publisher setup.

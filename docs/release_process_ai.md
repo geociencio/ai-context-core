@@ -1,112 +1,206 @@
 ---
-description: Unified Release Workflow (Quality + Automation)
+description: Automated release workflow (tests, build, trusted publishing)
 ---
 
-# Release Workflow for Ai-Context-Core
+# Release Workflow for ai-context-core
 
-This document is the master guide for performing a project release. It combines rigorous Quality Assurance steps with automated CLI tools (`uv`, `sed`, `gh`) to ensure a robust and efficient process.
+Canonical release guide for **ai-context-core**. It describes how a version is
+prepared, tagged, published on GitHub and uploaded to PyPI by
+`.github/workflows/release.yml`.
 
-## Phase 1: Quality & Readiness
-Before touching version numbers, validate the project state.
-
-1. **Run Project Analyzer**:
-   // turbo
-   `uv run ai-ctx analyze`
-   > [!NOTE]
-   > Scores should ideally be high (>90%) for a release.
-
-2. **Update Quality Badge**:
-   - Check `PROJECT_SUMMARY.md` in the root.
-   - Update `Code Score` and `Doc Coverage` badges in `README.md`.
-   - Ensure **Docstring Coverage** is > 95%.
-
-## Phase 2: Versioning & Documentation
-1. **Determine Version**:
-   - Check `pyproject.toml` and `ROADMAP.md`.
-   - Decide next SemVer (Major/Minor/Patch).
-
-2. **Bump Version (pyproject.toml)**:
-   **Option A: Automated (sed)**
-   ```bash
-   # Example: 1.1.0 -> 1.2.0
-   sed -i 's/^version = "1.1.0"/version = "1.2.0"/' pyproject.toml
-   ```
-   **Option B: Manual**
-   - Edit `pyproject.toml` directly.
-
-3. **Update CHANGELOG.md**:
-   - Move `[Unreleased]` content to `[X.Y.Z] - YYYY-MM-DD`.
-   - Ensure specific sections (`Added`, `Fixed`) are correct.
-
-4. **Generate Release Notes**:
-   ```bash
-   VERSION=1.0.0
-   mkdir -p docs/releases/notes
-   sed -e "s/{version}/$VERSION/g" -e "s/{date}/$(date +%F)/g" .github/release_template.md > docs/releases/notes/v$VERSION.md
-   ```
-   > **Review**: Check `docs/releases/notes/v$VERSION.md` and fill in any placeholders.
-
-## Phase 3: Verification
-Ensure the codebase is clean and functional before tagging.
-
-1. **Run Linting & Formatting**:
-   // turbo
-   `uv run ruff check .`
-   // turbo
-   `uv run ruff format .`
-   - Fix any errors.
-
-2. **Run Tests**:
-   // turbo
-   `uv run python -m unittest discover tests`
-   - **Requirement**: 100% Pass Rate.
-
-## Phase 4: Git Operations
-1. **Commit Changes**:
-   ```bash
-   git add pyproject.toml CHANGELOG.md README.md
-   git commit -m "chore(release): prepare v$VERSION"
-   ```
-
-2. **Create Tag**:
-   ```bash
-   git tag -a "v$VERSION" -m "Release v$VERSION"
-   ```
-
-3. **Push to Origin**:
-   ```bash
-   git push origin main
-   git push origin "v$VERSION"
-   ```
-
-## Phase 5: Build & Distribution
-1. **Build Artifacts**:
-   ```bash
-   uv build
-   # Verify output in dist/
-   ls -la dist/
-   ```
-
-2. **Create GitHub Release**:
-   Use `gh` to create a Draft Release with assets attached.
-   ```bash
-   gh release create "v$VERSION" --title "v$VERSION" --notes-file /tmp/release_notes.md --draft
-   gh release upload "v$VERSION" dist/* --clobber
-   ```
-
-3. **Publish (PyPI)**:
-   - Go to GitHub -> Releases.
-   - Edit the Draft.
-   - Click **"Publish release"**.
-   - *Note: This triggers the `release.yml` workflow to upload to PyPI automatically.*
+> **Toolchain**: `uv` (build + lock), `pytest`, `ruff`, `gh`. `mypy` is not used.
+> The version source of truth is `pyproject.toml`, mirrored in
+> `src/ai_context_core/__init__.py` (fallback) and `uv.lock`.
 
 ---
 
-## ✅ Quick Checklist
-- [ ] Quality Analysis run (`ai-ctx analyze`) & Badge updated.
-- [ ] Version bumped in `pyproject.toml`.
-- [ ] `CHANGELOG.md` finalized.
-- [ ] Tests and Linter passed.
-- [ ] Git Tag created and pushed.
-- [ ] Artifacts built (`uv build`).
-- [ ] GitHub Draft Release created (with assets).
+## 0. How the pipeline works
+
+```text
+git push origin vX.Y.Z
+        │
+        ▼
+[release.yml · draft-release]  →  GitHub Release (DRAFT)
+        │  (maintainer publishes it)
+        ▼
+[release.yml · verify-build]   →  version guard + lint + tests + build + twine check
+        │
+        ▼
+[release.yml · publish-pypi]   →  PyPI Trusted Publishing (OIDC)
+        │
+        ▼
+[release.yml · attach-assets]  →  wheel + sdist attached to the GitHub Release
+```
+
+Publishing the draft is the **human approval gate**. After that, tests, build and
+the PyPI upload are automatic.
+
+---
+
+## 1. One-time prerequisites
+
+### PyPI Trusted Publishing
+
+1. Sign in at <https://pypi.org>.
+2. Project `ai-context-core` → **Publishing** → **Add a new publisher**.
+3. Fill in the GitHub publisher:
+   - **Owner**: `geociencio`
+   - **Repository**: `ai-context-core`
+   - **Workflow name**: `release.yml`
+   - **Environment name**: `pypi`
+4. Save. No API token is stored in GitHub.
+
+### GitHub environment
+
+Create **Settings → Environments → `pypi`**. Optionally require reviewers; the
+workflow references this environment for the publish job.
+
+> `PYPI_TOKEN` is no longer required. Remove it after a successful OIDC publish.
+
+---
+
+## 2. Prepare the release
+
+1. **Quality gates**:
+   ```bash
+   uv run ruff check .
+   uv run ruff format --check .
+   uv run pytest -q
+   uv run ai-ctx verify
+   ```
+2. **Bump the three version sites**:
+   - `pyproject.toml` → `version`
+   - `src/ai_context_core/__init__.py` → `__version__` fallback string
+   - `uv.lock` → the `ai-context-core` package version
+3. **Validate the guard**:
+   ```bash
+   uv run python scripts/check_release_version.py --tag vX.Y.Z
+   ```
+4. **Documentation**:
+   - Move `[Unreleased]` in `CHANGELOG.md` to `[X.Y.Z] - YYYY-MM-DD`.
+   - Create `docs/releases/notes/vX.Y.Z.md`.
+   - Add an entry to `docs/DEVELOPMENT_LOG.md`.
+5. **Sync agent metrics**:
+   ```bash
+   uv run python scripts/sync_metrics.py
+   ```
+6. **Commit** the release prep and generated artifacts separately:
+   ```bash
+   git add pyproject.toml uv.lock src/ai_context_core/__init__.py \
+           CHANGELOG.md docs/DEVELOPMENT_LOG.md docs/releases/notes/vX.Y.Z.md
+   git commit -m "chore(release): prepare vX.Y.Z"
+   git add AI_CONTEXT.md PROJECT_SUMMARY.md project_context.json context_manifest.json
+   git commit -m "chore(docs): regenerate context artifacts for vX.Y.Z"
+   ```
+
+---
+
+## 3. Local build safety net (optional)
+
+```bash
+rm -rf dist
+uv build
+uv run twine check dist/*
+```
+
+The release workflow repeats this on the tag commit.
+
+---
+
+## 4. Tag and draft
+
+```bash
+git push origin main
+git tag -a "vX.Y.Z" -m "Release vX.Y.Z"
+git push origin "vX.Y.Z"
+```
+
+Pushing the tag triggers `draft-release`, which creates the GitHub Release in
+**draft** mode using `docs/releases/notes/vX.Y.Z.md` (legacy names and a generic
+fallback are supported).
+
+---
+
+## 5. Publish the draft (triggers automation)
+
+```bash
+gh release edit vX.Y.Z --draft=false --title "vX.Y.Z" \
+  --notes-file docs/releases/notes/vX.Y.Z.md
+```
+
+Publishing fires `release: published` and the workflow runs:
+
+1. `verify-build`: checkout the tag, install Python 3.11 + dev dependencies,
+   `scripts/check_release_version.py`, Ruff, format, pytest, `ai-ctx verify`,
+   `uv build`, `twine check`.
+2. `publish-pypi`: Trusted Publishing with `pypa/gh-action-pypi-publish` and
+   PEP 740 attestations. No token is used.
+3. `attach-assets`: uploads `dist/*` to the GitHub Release.
+
+Pre-releases are skipped by design; only stable releases reach PyPI.
+
+---
+
+## 6. Verify
+
+```bash
+gh run list --workflow=release.yml --limit 3
+gh run view <run-id>        # verify-build, publish-pypi and attach-assets success
+gh release view vX.Y.Z      # wheel + sdist assets
+```
+
+PyPI check:
+
+```bash
+python - <<'EOF'
+import json, urllib.request
+d = json.load(urllib.request.urlopen("https://pypi.org/pypi/ai-context-core/json"))
+print("latest:", d["info"]["version"])
+print("files:", [f["filename"] for f in d["releases"].get("X.Y.Z", [])])
+EOF
+```
+
+---
+
+## 7. Manual fallback
+
+If GitHub Actions is unavailable, build locally and upload with your own PyPI
+token. This bypasses Trusted Publishing and attachment automation:
+
+```bash
+rm -rf dist
+uv build
+uv run twine check dist/*
+UV_PUBLISH_TOKEN=pypi-******** uv publish
+```
+
+Do not use the repository secret for local publishing; it is not readable
+locally.
+
+---
+
+## 8. Troubleshooting
+
+- **Version guard fails**: the tag, `pyproject.toml`, `__init__.py` fallback and
+  `uv.lock` disagree. Fix all four and re-tag.
+- **Trusted publishing fails**: verify the PyPI publisher uses workflow
+  `release.yml` and environment `pypi`, and that the GitHub environment exists.
+- **Release event uses the tag's workflow**: the workflow file is read from the
+  tagged commit, not `main`. Fix the workflow before tagging, or move the tag if
+  nothing has been published to PyPI.
+- **PyPI upload succeeds but assets fail**: re-run only the failed
+  `attach-assets` job.
+- **Pre-release**: mark the GitHub release as pre-release; PyPI is skipped.
+
+---
+
+## ✅ Checklist
+
+- [ ] Ruff, format, pytest and `ai-ctx verify` green.
+- [ ] Three version sites updated and `scripts/check_release_version.py` passes.
+- [ ] CHANGELOG, release notes, DEVELOPMENT_LOG and metrics synced.
+- [ ] Release prep + generated artifacts committed.
+- [ ] `uv build` + `twine check` green locally (optional).
+- [ ] Tag `vX.Y.Z` pushed; GitHub draft created.
+- [ ] Draft published; `verify-build`, `publish-pypi` and `attach-assets` success.
+- [ ] Wheel + sdist visible on PyPI and attached to the GitHub Release.

@@ -6,7 +6,10 @@
 
 - [x] `sec_interp` and `qgis-plugin-manager` are pinned to framework **v1.4.2**
   and clean (verified 2026-10-25).
-- [ ] PyPI `ai-context-core==5.1.0` remains a manual maintainer step.
+- [x] PyPI `ai-context-core==5.1.0` is live (confirmed by the maintainer).
+- [ ] One-time before the next release: add the PyPI Trusted Publisher
+  (`geociencio/ai-context-core`, workflow `release.yml`, environment `pypi`) and
+  create the GitHub `pypi` environment.
 - [ ] Resume with `/start-session`.
 
 ## ✅ Released — agentic-forge v1.4.0 → v1.4.2
@@ -25,7 +28,7 @@
 ## ✅ Released — v5.1.0 Context Alignment & Hardening
 
 - **Status**: ✅ **Released 2026-10-10** — tag `v5.1.0`, GitHub release (wheel +
-  sdist). **PyPI pending (manual, maintainer).**
+  sdist) and **PyPI 5.1.0 confirmed live** (2026-10-25).
 - Plan: `docs/plans/implementation_plan_v5.1_alignment_hardening.md` (ia-critic PASSED).
 - Surfaces aligned with the context-only contract (`AGENTS.md`, overlay skills);
   `docs/ARCHITECTURE.md` + `docs/CONFIGURATION.md` rewritten; stale `ai-ctx init`
@@ -133,20 +136,22 @@
 
 ## 🎯 Immediate Next Steps
 
-- [ ] **Manual (maintainer)**: publish v5.1.0 to PyPI — `uv run twine upload dist/*`.
+- [x] **Manual (maintainer)**: v5.1.0 is live on PyPI.
+- [ ] **One-time (maintainer)**: configure PyPI Trusted Publishing and the GitHub
+  `pypi` environment before the next tag (see `docs/release_process_ai.md`).
 - [x] **Cross-repo (agentic-forge)**: `sec_interp` and `qgis-plugin-manager` are
   pinned to v1.4.2 and clean.
 - [ ] **Cross-repo (F5)**: remaining ecosystem alignment owned by
   `qgis-plugin-analyzer` and `sec_interp`.
 
-_No agent-side blockers. PyPI uploads are always performed manually by the
-maintainer (see `AGENT_LESSONS.md` → User Preferences); the agent stops at
-build + `twine check` + GitHub release. Proceed with Future Enhancements below._
+_PyPI uploads are automated by `.github/workflows/release.yml` after the trusted
+publisher is configured; publishing the GitHub draft is the human gate. A local
+`UV_PUBLISH_TOKEN` fallback remains documented for Actions outages._
 
 ## 📋 Future Enhancements
 
 - [ ] Performance profiling on large projects (10k+ files).
-- [ ] CI/CD release automation (PyPI upload from GitHub Actions).
+- [x] CI/CD release automation with PyPI Trusted Publishing (2026-10-25).
 - [ ] Custom rule engine (user-defined AST patterns).
 
 ## 🐛 Known Issues
@@ -175,6 +180,7 @@ invalidate the module cache via the F1 cache-fingerprint fix.)
 
 ---
 
-**Session Status:** agentic-forge v1.4.2 released and pinned; v5.1.0 published to
-GitHub (PyPI manual pending). Sibling pins are at v1.4.1 and need the user-run
-`--apply`. No in-repo phase active.
+**Session Status:** agentic-forge v1.4.2 released and pinned; v5.1.0 is live on
+PyPI. The automated release workflow (Trusted Publishing + version guard) is in
+place; the remaining step is the one-time PyPI/GitHub environment configuration.
+No in-repo phase active.

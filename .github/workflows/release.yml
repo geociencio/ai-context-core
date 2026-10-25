@@ -1,59 +1,153 @@
-name: Release Configuration
+name: Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   release:
     types: [published]
-  workflow_dispatch:
 
 permissions:
-  contents: write
-  id-token: write
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  # 1. Create Draft Release on Tag Push
+  # Stage 1: a tag creates a draft GitHub Release. Publishing it is the human
+  # approval gate that triggers Stage 2.
   draft-release:
-    if: github.event_name == 'push' && startswith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Resolve release notes
+        id: notes
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          NORMALIZED="docs/releases/notes/${TAG}.md"
+          LEGACY="docs/releases/notes/RELEASE_NOTES_${TAG}.md"
+          if [ -f "$NORMALIZED" ]; then
+            echo "path=$NORMALIZED" >> "$GITHUB_OUTPUT"
+          elif [ -f "$LEGACY" ]; then
+            echo "path=$LEGACY" >> "$GITHUB_OUTPUT"
+          else
+            FALLBACK="${RUNNER_TEMP}/release-notes-${TAG}.md"
+            printf '# Release %s\n\nNo dedicated release notes were provided.\n' "$TAG" > "$FALLBACK"
+            echo "path=$FALLBACK" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create GitHub Release Draft
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          tag_name: ${{ github.ref_name }}
           name: "Release ${{ github.ref_name }}"
-          # Use our persistent release notes
-          body_path: docs/releases/notes/${{ github.ref_name }}.md
+          draft: true
+          body_path: ${{ steps.notes.outputs.path }}
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # 2. Publish to PyPI only when Release is Published
-  # Manual-only: PyPI publication is performed out-of-band. Keep this job
-  # available via workflow_dispatch for when CI publishing is re-enabled.
-  publish-pypi:
-    if: github.event_name == 'workflow_dispatch'
+  # Stage 2: publishing a stable draft runs the release gates, builds the
+  # distributions and publishes them with PyPI Trusted Publishing (OIDC).
+  verify-build:
+    if: >-
+      github.event_name == 'release' &&
+      github.event.action == 'published' &&
+      !github.event.release.prerelease
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout release tag
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.release.tag_name }}
           submodules: recursive
-      
+
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
 
-      - name: Build distribution
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync --python 3.11 --dev
+
+      - name: Check tag and version sources
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: uv run python scripts/check_release_version.py --tag "$TAG"
+
+      - name: Lint and format
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Run tests
+        run: uv run pytest -q
+
+      - name: Verify context artifacts
+        run: uv run ai-ctx verify
+
+      - name: Build distributions
         run: uv build
 
-      - name: Publish to PyPI
-        run: uv publish
+      - name: Check distributions
+        run: uv run twine check dist/*
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+          if-no-files-found: error
+
+  publish-pypi:
+    needs: verify-build
+    environment: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI (Trusted Publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          attestations: true
+
+  attach-assets:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Attach distributions to the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: dist/*
+          fail_on_unmatched_files: true
         env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

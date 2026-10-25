@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Automated release workflow** `.github/workflows/release.yml`: a tag creates a
+  draft GitHub Release; publishing it runs the version guard, Ruff, tests,
+  `ai-ctx verify`, build, `twine check`, PyPI Trusted Publishing (OIDC) and
+  attaches the wheel/sdist to the release.
+- `scripts/check_release_version.py` verifies that the tag, `pyproject.toml`,
+  `__init__.py` fallback and `uv.lock` report the same version.
+
 ### Changed
 - **Agentic framework v1.4.2**: the `.agent/` submodule is pinned to a hardened
   framework with 37 tooling tests, CI, configurable project commands, Python 3.9
