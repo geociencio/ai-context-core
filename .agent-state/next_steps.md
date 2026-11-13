@@ -1,6 +1,6 @@
 # Next Steps - ai-context-core
 
-**Last Updated:** 2026-10-19
+**Last Updated:** 2026-11-12
 
 ## 🚀 Handover (next session)
 
@@ -9,7 +9,7 @@
 - [x] PyPI `ai-context-core==5.1.0` is live (confirmed by the maintainer).
 - [ ] One-time before the next release: add the PyPI Trusted Publisher
   (`geociencio/ai-context-core`, workflow `release.yml`, environment `pypi`) and
-  create the GitHub `pypi` environment.
+  create the GitHub `pypi` environment (still absent on 2026-11-12).
 - [ ] Resume with `/start-session`.
 
 ## ✅ Released — agentic-forge v1.4.0 → v1.4.2

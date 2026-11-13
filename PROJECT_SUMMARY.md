@@ -1,5 +1,5 @@
 # PROJECT SUMMARY - ai-context-core
-Analysis Date: 2026-10-25 14:12:33
+Analysis Date: 2026-11-12 20:11:24
 Analyzer Version: 5.1.0 (Ai-Context-Core)
 
 ## 📊 KEY METRICS
@@ -64,6 +64,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
                 templates/
                     initial_prompt.md
     dist/
+        .gitignore
         ai_context_core-5.1.0-py3-none-any.whl
         ai_context_core-5.1.0.tar.gz
     docs/
@@ -146,6 +147,7 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
             PROFILES_GUIDE.md
             QUICK_START.md
     scripts/
+        check_release_version.py
         deploy_agentic_forge.sh
         sync_metrics.py
     src/
@@ -259,9 +261,9 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 ## 🚨 CRITICAL ISSUES
 
 ### 🔄 Circular Dependencies:
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
-- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/ai_context_generator.py -> src/ai_context_core/analyzer/builders/__init__.py -> src/ai_context_core/analyzer/builders/dependencies.py
+- src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py
+- src/ai_context_core/analyzer/builders/aggregator.py -> src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
+- src/ai_context_core/analyzer/builders/dependencies.py -> src/ai_context_core/analyzer/builders/reporting.py -> src/ai_context_core/analyzer/builders/summary_generator.py -> src/ai_context_core/analyzer/builders/__init__.py
 
 ## 💡 MAIN RECOMMENDATIONS
 ### src/ai_context_core/analyzer/builders/algorithms.py
@@ -281,14 +283,14 @@ Analyzer Version: 5.1.0 (Ai-Context-Core)
 - `src/ai_context_core/analyzer/reporting.py` (23 commits)
 - `src/ai_context_core/analyzer/ast_utils.py` (21 commits)
 ### Recent Churn (30 days):
-- Total lines changed: 221257 (analyzed code)
-- Total lines changed (all tracked): 231655
+- Total lines changed: 10969 (analyzed code)
+- Total lines changed (all tracked): 12091
 - Top churned files:
-  - `project_context.json` (+75168 -97916, 173084)
-  - `base.json` (+0 -12186, 12186)
-  - `symbols.json` (+4825 -512, 5337)
-  - `test_analysis.json` (+0 -2706, 2706)
-  - `src/ai_context_core/cli/project_context.json` (+0 -2706, 2706)
+  - `project_context.json` (+4172 -4000, 8172)
+  - `symbols.json` (+361 -120, 481)
+  - `docs/reviews/audit_repository_v510.md` (+403 -11, 414)
+  - `docs/reviews/audit_agentic_forge_v1.2.0.md` (+260 -13, 273)
+  - `docs/release_process_ai.md` (+178 -84, 262)
 
 ## 📈 COMPLEXITY DISTRIBUTION
 - **Avg Cyclomatic Complexity**: 6.97

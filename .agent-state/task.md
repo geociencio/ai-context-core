@@ -69,6 +69,7 @@ Plan: `docs/maintenance/refactoring_plan_v4.1.0.md` (WS-0..WS-5).
 - **Current Metrics**: Package 205/205 tests; framework 37/37 tests; ruff
   check+format clean; quality 94.7
 - **Pending**: one-time PyPI Trusted Publisher + GitHub `pypi` environment
-  configuration before the next tag; sibling framework rollout is complete
-- **Known**: `.github/workflows/release.yml` is added; the first automated
+  configuration before the next tag (verified absent 2026-11-12); sibling
+  framework rollout is complete
+- **Known**: `.github/workflows/release.yml` is active; the first automated
   publish needs the external trusted-publisher setup.

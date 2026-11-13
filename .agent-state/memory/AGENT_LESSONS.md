@@ -22,11 +22,11 @@ Structured technical lessons and user preferences for `ai-context-core`. Entries
   lesson: "Commit messages follow Conventional Commits and are written in English."
   action: "Use the `type(scope): description` format."
 
-- date: 2026-10-08
+- date: 2026-10-25
   category: USER_PREFERENCE
-  topic: PyPI releases are manual
-  lesson: "Publishing to PyPI is performed manually by the maintainer; the agent must not attempt `twine upload`."
-  action: "For a release: build + `twine check` + create the GitHub release with gh, then hand `uv run twine upload dist/*` to the user."
+  topic: PyPI releases use Trusted Publishing
+  lesson: "PyPI publication is automated by `.github/workflows/release.yml` with OIDC after the maintainer publishes the GitHub draft; no long-lived `PYPI_TOKEN` is used."
+  action: "Tag → draft → publish the draft; let the workflow build, test and upload. Use a local `UV_PUBLISH_TOKEN` only as an outage fallback."
 
 
 ## Technical Lessons
